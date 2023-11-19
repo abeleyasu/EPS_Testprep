@@ -83,7 +83,13 @@
                                 <div class="w-75">
                                     <h2 class="fs-base lh-base fw-medium text-muted mb-0">
                                         This test has {{ $mainSectionsCount }} sections and
-                                        {{ isset($total_all_section_question) ? $total_all_section_question : '' }}
+                                        {{-- isset($total_all_section_question) ? $total_all_section_question : '' --}}
+                                        @if($newTotal != 0)
+                                            {{ $newTotal }}
+                                        @elseif(isset($total_all_section_question))
+
+                                            {{ $total_all_section_question }}
+                                        @endif
                                         questions
                                     </h2> 
                                 </div>
@@ -99,6 +105,20 @@
                                         <option value="untimed">Untimed</option>
                                     </select>
                                 @endif
+                    
+                                {{--  href="/user/practice-test/{{ $firstSectionId }}?test_id={{ $testSections[0]->testid }}&time=regular&section=all&sections={{  htmlspecialchars(json_encode($sectionIdsArray), JSON_NUMERIC_CHECK) }}" style="white-space: nowrap" data-test_id="{{ $selected_test_id }}"--}}
+                                @php
+                                    $str = 'test_id='.$testSections[0]->testid.'&time=regular&section=all&sections='. htmlspecialchars(json_encode($sectionIdsArray), JSON_NUMERIC_CHECK);
+                                @endphp
+                                <a href="{{ route('startAllSections', ['sec_id' => $firstSectionId,'str' => $str, 'id' => $testSections[0]->testid ]) }}" style="white-space: nowrap" data-test_id="{{ $selected_test_id }}"
+                                        class="btn btn-alt-primary fs-8  ms-2">
+                                        <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
+                                    </a>
+                                    <a href="{{ route('reset_test', ['id' => $testSections[0]->id]) . '?test_id=' . $testSections[0]->testid . '&type=all' }}"
+                                        style="white-space: nowrap" class="btn btn-alt-primary fs-8 mx-2">
+                                        <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Reset Test
+                                    </a>
+                                {{--
                                 @if ($check_test_completed == 'yes')
                                     @if (isset($testSections[0]) && !empty($testSections[0]))
                                         <a href="{{ route('single_review', ['test' => $testSections[0]->title, 'id' => $testSections[0]->testid]) . '?test_id=' . $testSections[0]->testid . '&type=all' }}"
@@ -126,6 +146,7 @@
                                         <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
                                     </a>
                                 @endif
+                                --}}
 
                             </div>
                         </div>
@@ -162,7 +183,12 @@
             {{-- start Description  --}}
             <h6 class="fs-6 mb-3 p-2 test-description text-muted mt-2">
                 {{-- isset($testSection[0]->description) ? $testSection[0]->description : '' --}}
-                {{ isset($total_all_section_question) ? $total_all_section_question : '' }}
+                @if($newTotal != 0)
+                    {{ $newTotal }}
+                @elseif(isset($total_all_section_question))
+
+                    {{ $total_all_section_question }}
+                @endif
                 questions
             </h6>
             {{-- end Description --}}
@@ -173,7 +199,16 @@
                         $sectionArray = [];
                         $key = 0;
                         $count = 0;
+                        
+                        // dump($totalQuest);
+                        // dump($totalAttempetdQuestions);
+                        // dump($totalNonAttempetdQuestions);
+
+                        // dump($newTotal);
+                        // dump($mathCount);
+                        // dump($rwCount);
                         // dump($testSectionsDetails);
+                        // dump($score);
                     @endphp
                     @foreach ($testSectionsDetails as $singletestSections)
                        
@@ -283,7 +318,9 @@
                                                     Section</h3>
                                                 <div class="block-options">
                                                     <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                        {{ isset($singletestSections['Sections'][0]['yesSectionCount']) ? $singletestSections['Sections'][0]['yesSectionCount'] : '0' }}
+                                                        {{-- isset($singletestSections['Sections'][0]['yesSectionCount']) ? $singletestSections['Sections'][0]['yesSectionCount'] : '0' --}}
+                                                        {{ isset($singletestSections['Sections'][0]['section_quest_count']) ? $singletestSections['Sections'][0]['section_quest_count'] : '0' }}
+                                                        
                                                         Questions
                                                     </div>
                                                    
@@ -298,10 +335,12 @@
 
                                                     </div>
                                                     <div>
+                                                        {{--
                                                         <a href="#" style='padding: 5px 20px fs-5'
                                                             class="btn btn-alt-success text-success 1">
                                                             {{ $score[$singletestSections['Sections'][0]['id']] }}
                                                         </a>
+                                                        --}}
                                                         {{--                                                        
                                                         <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&type=single' }}"
                                                             style='padding: 5px 20px fs-5'
@@ -346,7 +385,8 @@
                                                             Section</h3>
                                                         <div class="block-options">
                                                             <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                                    {{ isset($singletestSections['Sections'][0]['noSectionCount']) ? $singletestSections['Sections'][0]['noSectionCount'] : '0' }}
+                                                                    {{-- isset($singletestSections['Sections'][0]['noSectionCount']) ? $singletestSections['Sections'][0]['noSectionCount'] : '0' --}}
+                                                                    {{ isset($singletestSections['Sections'][0]['section_quest_count']) ? $singletestSections['Sections'][0]['section_quest_count'] : '0' }}
                                                                 Questions
                                                             </div>
                                                             

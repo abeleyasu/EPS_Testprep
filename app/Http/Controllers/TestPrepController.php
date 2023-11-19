@@ -1785,44 +1785,54 @@ class TestPrepController extends Controller
         }
         return response()->json(['success' => '0', 'questions' => $testSectionQuestions, 'total_question' => $get_total_question, 'get_offset' => $get_offset, 'set_next_offset' => $set_next_offset, 'set_prev_offset' => $set_prev_offset, 'practice_test_id' => $practice_test_id]);
     }
+    
+    public function startAllSections(Request $request){
+        // reset all the setion first.
+        UserAnswers::where('user_id', Auth::id())->where('test_id', $request->id)->delete();
+        $current_user_id = Auth::id();
+        $existingRecord = TestProgress::where('test_id', $request->id)
+            ->where('user_id', $current_user_id)
+            ->delete();
+        // dump($request);
+        // dump($request->sec_id);
+        // dump($request->str);
+        // dump($request->id);
+        return redirect()->to('/user/practice-test/'.$request->sec_id.'?'.$request->str);
 
+        
+    }
     public function singleSection(Request $request, $id)
-    {
+    {   
+        $testSection = DB::table('practice_test_sections')
+            ->where('practice_test_sections.id', $id)
+            ->get();
+            
+        // if (strpos($request->getRequestUri(), 'all') !== false) {
+        //     if( in_array($testSection[0]->practice_test_type, ['Math' ,'Reading_And_Writing'])){
+        //         // reset all the setion first.
+        //         UserAnswers::where('user_id', Auth::id())->where('test_id', $request->test_id)->delete();
+        //         $current_user_id = Auth::id();
+        //         $existingRecord = TestProgress::where('test_id', $request->test_id)
+        //             ->where('user_id', $current_user_id)
+        //             ->delete();
+        //     }    
+            
+        // }
+        
         $set_offset = 0;
         $test_id = $request->test_id ?? '';
+        $testSection = DB::table('practice_test_sections')
+            ->where('practice_test_sections.id', $id)
+            ->get();
 
         $total_questions = PracticeQuestion::where('practice_test_sections_id', $id)
             ->orderBy('question_order', 'ASC')
             ->pluck('id')
             ->toArray();
-
-        $testSection = DB::table('practice_test_sections')
-            ->where('practice_test_sections.id', $id)
-            ->get();
         
         $testQuestion = DB::table('practice_tests')
             ->where('id', $test_id)
             ->first();
-
-        // dump($total_questions);
-        // dump($testSection);
-
-        // lets calculate the score and redirect to other sections based on the required_number_of_correct_answers.
-        // if(isset($testSection[0]->id))  {  
-        //     if(($testSection[0]->format == 'DSAT') ||  ($testSection[0]->format == 'DPSAT')) {
-        //         $allTestSection = DB::table('practice_test_sections')
-        //             ->where('testid', $testSection[0]->testid)
-        //             ->get();
-                
-        //         $all_question_answers = PracticeQuestion::where('practice_test_sections_id', $id)
-        //             ->orderBy('question_order', 'ASC')
-        //             ->select('id','answer')
-        //             ->get();
-                
-        //         dump($allTestSection);
-        //         dump($all_question_answers);
-        //     }
-        // }
 
         $isSubmitted = 0;
         if (!empty($test_id)) {
@@ -1840,11 +1850,6 @@ class TestPrepController extends Controller
                 $testProgress->save();
             }
         }
-        // dd($isSubmitted);
-
-        // check if this test is DSAT/DPSAT, then check if this section has 6 sections, 
-        // and then redirect to 10 minute break.
-        // also ask how break shoulb be imposed.
 
         // update this part.
         if ($isSubmitted == 1) {
@@ -1895,9 +1900,11 @@ class TestPrepController extends Controller
             $section_questions = PracticeQuestion::whereIn('practice_test_sections_id', $section_ids_without_records)->orderBy('question_order', 'ASC')->pluck('id')->toArray();
             $total_questions = array_merge($total_questions, $section_questions);
         }
+
         $testSection = DB::table('practice_test_sections')
             ->where('practice_test_sections.testid', $id)
             ->get();
+        // dd($testSection);
         return view('user.practice-test', ['section_id' => $id, 'set_offset' => $set_offset, 'question_type' => 'all', 'total_questions' => $total_questions, 'testSection' => $testSection]);
     }
 
@@ -2044,7 +2051,7 @@ class TestPrepController extends Controller
         $section_score = [];
         foreach ($sections as $section) {
             if ($section['practice_test_type'] == 'Math_no_calculator') {
-                $other_section = PracticeTestSection::where('testid', $id)->whereIn('practice_test_type', ['Math_with_calculator', 'Math_no_calculator'])->whereNotIn('id', [$section['id']])->pluck('id')->toArray();
+                $other_section = PracticeTestSection::where('testid', $id)->whereIn('practice_test_type', ['Math','Math_with_calculator', 'Math_no_calculator'])->whereNotIn('id', [$section['id']])->pluck('id')->toArray();
                 $other_right = 0;
                 foreach ($other_section as $sec) {
                     $other_right += count($count_right_question[$sec]);
@@ -2057,7 +2064,7 @@ class TestPrepController extends Controller
                     $section_score[$section['id']] = 0;
                 }
             } else if ($section['practice_test_type'] == 'Math_with_calculator') {
-                $other_section = PracticeTestSection::where('testid', $id)->whereIn('practice_test_type', ['Math_no_calculator', 'Math_with_calculator'])->whereNotIn('id', [$section['id']])->pluck('id')->toArray();
+                $other_section = PracticeTestSection::where('testid', $id)->whereIn('practice_test_type', ['Math','Math_no_calculator', 'Math_with_calculator'])->whereNotIn('id', [$section['id']])->pluck('id')->toArray();
                 $other_right = 0;
                 foreach ($other_section as $sec) {
                     $other_right += count($count_right_question[$sec]);
@@ -2083,12 +2090,12 @@ class TestPrepController extends Controller
         $math_score = 0;
         foreach ($sections as $section) {
             if (
+                    $section['practice_test_type'] == 'Math' || 
                     $section['practice_test_type'] == 'Math_no_calculator' || 
                     $section['practice_test_type'] == 'Math_with_calculator' || 
+                    $section['practice_test_type'] == 'Reading_And_Writing' || 
                     $section['practice_test_type'] == 'Easy_Reading_And_Writing' || 
                     $section['practice_test_type'] == 'Hard_Reading_And_Writing'
-
-
                 )
             {
                 $math_score = $section_score[$section['id']];
@@ -2173,6 +2180,7 @@ class TestPrepController extends Controller
                             $secCount = count($sections['Sections_question']);
                             $readingSectionCount = ($readingSectionCount + $secCount);
                             $store_sections_details[$rwSectionID]['Sections'][0]['yesSectionCount'] = $readingSectionCount;
+                            // $totalAttempetdQuestions = $totalAttempetdQuestions + $readingSectionCount;
                             // $readingSectionCount = 0;
                         }
 
@@ -2185,6 +2193,7 @@ class TestPrepController extends Controller
                             $mathSectionCount = ($mathSectionCount + $secCount);
                             $store_sections_details[$mathSectionID]['Sections'][0]['yesSectionCount'] = $mathSectionCount;
                             // $mathSectionCount = 0;
+                            // $totalAttempetdQuestions = $totalAttempetdQuestions + $mathSectionCount;
                         }
                     }
 
@@ -2200,7 +2209,107 @@ class TestPrepController extends Controller
                     }
                 }
             }
+
+            
         }
+        $totalAttempetdQuestions = 0;
+        $totalNonAttempetdQuestions = 0;
+        $totalQuestions = 0;
+        $totalQuest = 0;
+        $firstSectionId = 0;
+        $sectionIdsArray = [];
+        $i = 0;
+
+        $newTotal = 0;
+        $mathCount = 0;
+        $rwCount = 0;
+        $count1 = 0;
+        $count2 = 0;
+        $count3 = 0;
+        $count4 = 0;
+        foreach($store_sections_details as $key => $singletestSections) {
+
+            if (isset($singletestSections['Sections']) && isset($singletestSections['Sections_question'])) {
+                if($singletestSections['Sections'][0]['practice_test_type'] == 'Math'){
+                    $mathCount = count($singletestSections['Sections_question']);
+                }
+
+                if($singletestSections['Sections'][0]['practice_test_type'] == 'Math_with_calculator'){
+                    $count1 = count($singletestSections['Sections_question']);
+                }
+
+                if($singletestSections['Sections'][0]['practice_test_type'] == 'Math_no_calculator'){
+                    $count2 = count($singletestSections['Sections_question']);
+                }
+
+                
+
+                if($singletestSections['Sections'][0]['practice_test_type'] == 'Reading_And_Writing'){
+                    $rwCount = count($singletestSections['Sections_question']);
+                }
+
+                if($singletestSections['Sections'][0]['practice_test_type'] == 'Easy_Reading_And_Writing'){
+                    $count3 = count($singletestSections['Sections_question']);
+                }
+
+                if($singletestSections['Sections'][0]['practice_test_type'] == 'Hard_Reading_And_Writing'){
+                    $count4 = count($singletestSections['Sections_question']);
+                }
+
+                
+            }
+
+            if (isset($singletestSections['Sections'])) {
+                array_push($sectionIdsArray, (int) $singletestSections['Sections'][0]['id']);
+                if($i == 0) {
+                    $firstSectionId = $singletestSections['Sections'][0]['id'];
+                    $i++;
+                }
+            }
+
+            if(in_array($singletestSections['Sections'][0]['format'],['DSAT' ,'DPSAT'])){
+                if (isset($singletestSections['Sections_question'])) {
+                    if (isset($singletestSections['check_if_section_completed']) &&
+                        $singletestSections['check_if_section_completed'][0] == 'yes') {
+                        if(in_array($singletestSections['Sections'][0]['practice_test_type'],['Math' ,'Reading_And_Writing'])){
+                            $totalQuest = $totalQuest + (isset($singletestSections['Sections'][0]['yesSectionCount']) ? $singletestSections['Sections'][0]['yesSectionCount'] : 0 );
+                        }
+                    }
+                }
+            }
+
+            if (isset($singletestSections['Sections_question'])) {
+                if (isset($singletestSections['check_if_section_completed']) &&
+                    $singletestSections['check_if_section_completed'][0] == 'no'){
+                    if(in_array($singletestSections['Sections'][0]['practice_test_type'],['Math' ,'Reading_And_Writing'])){
+                        $totalQuest = $totalQuest + (isset($singletestSections['Sections'][0]['noSectionCount']) ? $singletestSections['Sections'][0]['noSectionCount'] : 0 );
+                    }
+                    
+                }
+            }
+            // if(isset($sections['Sections'][0]['yesSectionCount'])) {
+            //     $totalAttempetdQuestions = $totalAttempetdQuestions + $sections['Sections'][0]['yesSectionCount'];
+            //     $totalNonAttempetdQuestions = 0;
+            // }
+            // if(isset($sections['Sections'][0]['yesSectionCount'])) {
+            //     $totalNonAttempetdQuestions = $totalNonAttempetdQuestions + $sections['Sections'][0]['noSectionCount'];
+            // }
+        }
+        if($count1 >= $count2) {
+            $mathCount = $mathCount + $count1;
+        }else{
+            $mathCount = $mathCount + $count2;
+        }
+        if($count3 >= $count4) {
+            $rwCount = $rwCount + $count3;
+        }else{
+            $rwCount = $rwCount + $count4;
+        }
+        $newTotal = $mathCount + $rwCount;
+
+        $store_sections_details[$rwSectionID]['Sections'][0]['section_quest_count'] = $rwCount;
+        $store_sections_details[$mathSectionID]['Sections'][0]['section_quest_count'] = $mathCount;
+
 
         // dump($mathSectionCount);
         // dump($readingSectionCount);
@@ -2221,6 +2330,14 @@ class TestPrepController extends Controller
             'get_test_description' => $get_test_description,
             'score' => $section_score,
             'total_score' => $total_score,
+            'totalQuest' => $totalQuest,
+            'firstSectionId' => $firstSectionId,
+            'sectionIdsArray' => $sectionIdsArray,
+            'newTotal' => $newTotal,
+            'mathCount' => $mathCount,
+            'rwCount' => $rwCount,
+            'totalAttempetdQuestions' => $totalAttempetdQuestions,
+            'totalNonAttempetdQuestions' => $totalNonAttempetdQuestions,
             'total_all_section_question' => isset($total_all_section_question) ? $total_all_section_question : '0'
         ]);
     }

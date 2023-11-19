@@ -884,7 +884,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 <div class="d-flex align-items-center">
                                     <input class="form-control"
                                             placeholder="Diff Value" 
-                                            min="0" max="100" type="number" 
+                                            min="1" max="100" type="number" 
                                             oninput="validateInput(this)"
                                             required
                                             id="diffValueEdit" name="diff_value_edit">
@@ -900,7 +900,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 <div class="d-flex align-items-center">
                                     <input class="form-control"
                                                 placeholder="Disc Value" 
-                                                min="0" max="100" type="number" 
+                                                min="1" max="100" type="number" 
                                                 oninput="validateInput(this)"
                                                 required
                                                 type="number" id="discValueEdit" name="disc_value_edit">
@@ -999,7 +999,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                        min="1" max="100" type="number" oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFourOdd_edit_guessing_value_A" name="oneInFourOdd_edit_guessing_value_A">
                                                     </div>
@@ -1031,7 +1031,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFourOdd_edit_guessing_value_B" name="oneInFourOdd_edit_guessing_value_B">
@@ -1063,7 +1063,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFourOdd_edit_guessing_value_C" name="oneInFourOdd_edit_guessing_value_C">
@@ -1096,7 +1096,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFourOdd_edit_guessing_value_D" name="oneInFourOdd_edit_guessing_value_D">
@@ -1134,7 +1134,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFourEven_edit_guessing_value_F" name="oneInFourEven_edit_guessing_value_F">
@@ -1165,7 +1165,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFourEven_edit_guessing_value_G" name="oneInFourEven_edit_guessing_value_G">
@@ -1197,7 +1197,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFourEven_edit_guessing_value_H" name="oneInFourEven_edit_guessing_value_H">
@@ -1229,7 +1229,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFourEven_edit_guessing_value_J" name="oneInFourEven_edit_guessing_value_J">
@@ -1266,7 +1266,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFiveOdd_edit_guessing_value_A" name="oneInFiveOdd_edit_guessing_value_A">
@@ -1298,7 +1298,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFiveOdd_edit_guessing_value_B" name="oneInFiveOdd_edit_guessing_value_B">
@@ -1330,7 +1330,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFiveOdd_edit_guessing_value_C" name="oneInFiveOdd_edit_guessing_value_C">
@@ -1362,7 +1362,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFiveOdd_edit_guessing_value_D" name="oneInFiveOdd_edit_guessing_value_D">
@@ -1395,7 +1395,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFiveOdd_edit_guessing_value_E" name="oneInFiveOdd_edit_guessing_value_E">
@@ -1434,7 +1434,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFiveEven_edit_guessing_value_F" name="oneInFiveEven_edit_guessing_value_F">
@@ -1467,7 +1467,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFiveEven_edit_guessing_value_G" name="oneInFiveEven_edit_guessing_value_G">
@@ -1500,7 +1500,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFiveEven_edit_guessing_value_H" name="oneInFiveEven_edit_guessing_value_H">
@@ -1533,7 +1533,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFiveEven_edit_guessing_value_J" name="oneInFiveEven_edit_guessing_value_J">
@@ -1566,7 +1566,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFiveEven_edit_guessing_value_K" name="oneInFiveEven_edit_guessing_value_K">
@@ -1605,7 +1605,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="edit_guessing_value_A" name="edit_guessing_value_A">
@@ -1638,7 +1638,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="edit_guessing_value_B" name="edit_guessing_value_B">
@@ -1671,7 +1671,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="edit_guessing_value_C" name="edit_guessing_value_C">
@@ -1704,7 +1704,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="edit_guessing_value_D" name="edit_guessing_value_D">
@@ -1744,7 +1744,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFourPassEven_edit_guessing_value_F" name="oneInFourPassEven_edit_guessing_value_F">
@@ -1777,7 +1777,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFourPassEven_edit_guessing_value_G" name="oneInFourPassEven_edit_guessing_value_G">
@@ -1810,7 +1810,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFourPassEven_edit_guessing_value_H" name="oneInFourPassEven_edit_guessing_value_H">
@@ -1843,7 +1843,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         
                                                     <div class="d-flex align-items-center">
                                                         <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
+                                                        min="1" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
                                                         id="oneInFourPassEven_edit_guessing_value_J" name="oneInFourPassEven_edit_guessing_value_J">
@@ -1893,7 +1893,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control edit_guessing_value" 
                                                             placeholder="Guessing Value" 
-                                                            min="0" max="100" type="number" oninput="validateInput(this)"
+                                                            min="1" max="100" type="number" oninput="validateInput(this)"
                                                             
                                                             id="cb_choiceMultInFourFill_edit_guessing_value_A" name="cb_choiceMultInFourFill_edit_guessing_value_A">
                                                         </div>
@@ -1925,7 +1925,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control  edit_guessing_value" 
                                                             placeholder="Guessing Value" 
-                                                            min="0" max="100" type="number" oninput="validateInput(this)"
+                                                            min="1" max="100" type="number" oninput="validateInput(this)"
                                                             
                                                             id="cb_choiceMultInFourFill_edit_guessing_value_B" name="cb_choiceMultInFourFill_edit_guessing_value_B">
                                                         </div>
@@ -1958,7 +1958,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control edit_guessing_value" 
                                                             placeholder="Guessing Value" 
-                                                            min="0" max="100" type="number" oninput="validateInput(this)"
+                                                            min="1" max="100" type="number" oninput="validateInput(this)"
 
                                                             id="cb_choiceMultInFourFill_edit_guessing_value_C" name="cb_choiceMultInFourFill_edit_guessing_value_C">
                                                         </div>
@@ -1990,7 +1990,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control edit_guessing_value" 
                                                             placeholder="Guessing Value" 
-                                                            min="0" max="100" type="number" oninput="validateInput(this)"
+                                                            min="1" max="100" type="number" oninput="validateInput(this)"
 
                                                             id="cb_choiceMultInFourFill_edit_guessing_value_D" name="cb_choiceMultInFourFill_edit_guessing_value_D">
                                                         </div>
@@ -2027,7 +2027,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control edit_guessing_value" 
                                                             placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                        min="1" max="100" type="number" oninput="validateInput(this)"
 
                                                             id="choiceMultInFourFill_edit_guessing_value_A" name="choiceMultInFourFill_edit_guessing_value_A">
                                                         </div>
@@ -2058,7 +2058,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control edit_guessing_value" 
                                                             placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                        min="1" max="100" type="number" oninput="validateInput(this)"
                                                             
                                                             id="choiceMultInFourFill_edit_guessing_value_B" name="choiceMultInFourFill_edit_guessing_value_B">
                                                         </div>
@@ -2091,7 +2091,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control edit_guessing_value" 
                                                             placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                        min="1" max="100" type="number" oninput="validateInput(this)"
                                                             
                                                             id="choiceMultInFourFill_edit_guessing_value_C" name="choiceMultInFourFill_edit_guessing_value_C">
                                                         </div>
@@ -2124,7 +2124,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control edit_guessing_value" 
                                                             placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                        min="1" max="100" type="number" oninput="validateInput(this)"
                                                             
                                                             id="choiceMultInFourFill_edit_guessing_value_D" name="choiceMultInFourFill_edit_guessing_value_D">
                                                         </div>
@@ -2320,7 +2320,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 <div class="d-flex align-items-center">
                                     <input class="form-control"
                                             placeholder="Diff Value" 
-                                            min="0" max="100" type="number" 
+                                            min="1" max="100" type="number" 
                                             oninput="validateInput(this)"
                                             required
                                             id="diffValue" name="diff_value">
@@ -2336,7 +2336,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 <div class="d-flex align-items-center">
                                     <input class="form-control"
                                                 placeholder="Disc Value" 
-                                                min="0" max="100" type="number" 
+                                                min="1" max="100" type="number" 
                                                 oninput="validateInput(this)"
                                                 required
                                                 type="number" id="discValue" name="disc_value">
@@ -2474,7 +2474,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFourOdd_add_guessing_value_A" name="oneInFourOdd_add_guessing_value_A">
                                                 </div>
@@ -2507,7 +2507,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFourOdd_add_guessing_value_B" name="oneInFourOdd_add_guessing_value_B">
                                                 </div>
@@ -2542,7 +2542,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFourOdd_add_guessing_value_C" name="oneInFourOdd_add_guessing_value_C">
                                                 </div>
@@ -2577,7 +2577,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFourOdd_add_guessing_value_D" name="oneInFourOdd_add_guessing_value_D">
                                                 </div>
@@ -2618,7 +2618,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFourEven_add_guessing_value_F" name="oneInFourEven_add_guessing_value_F">
                                                 </div>
@@ -2651,7 +2651,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFourEven_add_guessing_value_G" name="oneInFourEven_add_guessing_value_G">
                                                 </div>
@@ -2685,7 +2685,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFourEven_add_guessing_value_H" name="oneInFourEven_add_guessing_value_H">
                                                 </div>
@@ -2720,7 +2720,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFourEven_add_guessing_value_J" name="oneInFourEven_add_guessing_value_J">
                                                 </div>
@@ -2760,7 +2760,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFiveOdd_add_guessing_value_A" name="oneInFiveOdd_add_guessing_value_A">
                                                 </div>
@@ -2793,7 +2793,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFiveOdd_add_guessing_value_B" name="oneInFiveOdd_add_guessing_value_B">
                                                 </div>
@@ -2827,7 +2827,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFiveOdd_add_guessing_value_C" name="oneInFiveOdd_add_guessing_value_C">
                                                 </div>
@@ -2860,7 +2860,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFiveOdd_add_guessing_value_D" name="oneInFiveOdd_add_guessing_value_D">
                                                 </div>
@@ -2894,7 +2894,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFiveOdd_add_guessing_value_E" name="oneInFiveOdd_add_guessing_value_E">
                                                 </div>
@@ -2934,7 +2934,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFiveEven_add_guessing_value_F" name="oneInFiveEven_add_guessing_value_F">
                                                 </div>
@@ -2967,7 +2967,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value"
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFiveEven_add_guessing_value_G" name="oneInFiveEven_add_guessing_value_G">
                                                 </div>
@@ -3000,7 +3000,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFiveEven_add_guessing_value_H" name="oneInFiveEven_add_guessing_value_H">
                                                 </div>
@@ -3033,7 +3033,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value"
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFiveEven_add_guessing_value_J" name="oneInFiveEven_add_guessing_value_J">
                                                 </div>
@@ -3066,7 +3066,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value"
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFiveEven_add_guessing_value_K" name="oneInFiveEven_add_guessing_value_K">
                                                 </div>
@@ -3105,7 +3105,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="add_guessing_value_A" name="add_guessing_value_A">
                                                 </div>
@@ -3138,7 +3138,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="add_guessing_value_B" name="add_guessing_value_B">
                                                 </div>
@@ -3171,7 +3171,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="add_guessing_value_C" name="add_guessing_value_C">
                                                 </div>
@@ -3205,7 +3205,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="add_guessing_value_D" name="add_guessing_value_D">
                                                 </div>
@@ -3244,7 +3244,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFourPassEven_add_guessing_value_F" name="oneInFourPassEven_add_guessing_value_F">
                                                 </div>
@@ -3277,7 +3277,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value"
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFourPassEven_add_guessing_value_G" name="oneInFourPassEven_add_guessing_value_G">
                                                 </div>
@@ -3310,7 +3310,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFourPassEven_add_guessing_value_H" name="oneInFourPassEven_add_guessing_value_H">
                                                 </div>
@@ -3342,7 +3342,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="oneInFourPassEven_add_guessing_value_J" name="oneInFourPassEven_add_guessing_value_J">
                                                 </div>
@@ -3390,7 +3390,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="cb_choiceMultInFourFill_add_guessing_value_A" name="cb_choiceMultInFourFill_add_guessing_value_A">
                                                 </div>
@@ -3422,7 +3422,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="cb_choiceMultInFourFill_add_guessing_value_B" name="cb_choiceMultInFourFill_add_guessing_value_B">
                                                 </div>
@@ -3455,7 +3455,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="cb_choiceMultInFourFill_add_guessing_value_C" name="cb_choiceMultInFourFill_add_guessing_value_C">
                                                 </div>
@@ -3488,7 +3488,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="cb_choiceMultInFourFill_add_guessing_value_D" name="cb_choiceMultInFourFill_add_guessing_value_D">
                                                 </div>
@@ -3525,7 +3525,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="choiceMultInFourFill_add_guessing_value_A" name="choiceMultInFourFill_add_guessing_value_A">
                                                 </div>
@@ -3558,7 +3558,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="choiceMultInFourFill_add_guessing_value_B" name="choiceMultInFourFill_add_guessing_value_B">
                                                 </div>
@@ -3591,7 +3591,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="choiceMultInFourFill_add_guessing_value_C" name="choiceMultInFourFill_add_guessing_value_C">
                                                 </div>
@@ -3624,7 +3624,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     
                                                 <div class="d-flex align-items-center">
                                                     <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    min="1" max="100" type="number" oninput="validateInput(this)"
                                                     
                                                     id="choiceMultInFourFill_add_guessing_value_D" name="choiceMultInFourFill_add_guessing_value_D">
                                                 </div>
@@ -7652,13 +7652,17 @@ var test = Sortable.create(addListWithHandleQuestion, {
     function validateInput(input) {
         // console.log(input);
         // console.log(parseInt(input.value));
+        
         var value = parseInt(input.value);
+        if (value < 0) {
+            value = Math.abs( value );
+            input.value = input.min;
+        }
+
         if (value > parseInt(input.max)) {
             // console.log('here1');
             input.value = input.max;
         }
-        // console.log('here2');
-
     }
 
     function deleteSection(data) {
