@@ -1593,7 +1593,7 @@ class TestPrepController extends Controller
                 // dump($allTestSection);
                 // dump($redirectUrl);
                 $currectSection->section_title = strtolower($currectSection->section_title);
-
+                // dump($currectSection);
                 // check here the number of sections.
                 // then check if there are two module sections and then set the time break.
                 $sectionIds = DB::table('practice_test_sections')
@@ -1601,7 +1601,7 @@ class TestPrepController extends Controller
                         ->pluck('id');
 
                 // if (strpos($currectSection->practice_test_type, 'easy') == true) {
-                    if (strpos($currectSection->section_title, 'easy') == true) {
+                if (strpos($currectSection->section_title, 'easy') == true) {
                     $redirectUrl = 0;
 
                     // section=all
@@ -1611,14 +1611,14 @@ class TestPrepController extends Controller
                                 ->where('practice_test_sections.testid', $testSection[0]->testid)
                                 ->where('practice_test_sections.practice_test_type','Math')
                                 ->first();
-                    
+                            // dump($mathSectionId);
                             $rwSectionId = DB::table('practice_test_sections')
                                 ->where('practice_test_sections.testid', $testSection[0]->testid)
                                 ->where('practice_test_sections.practice_test_type','Reading_And_Writing')
                                 ->first();
-
+                            // dump($rwSectionId);
                             $breakTime = 1;
-                            if($currectSection->practice_test_type = 'Math_with_calculator') {
+                            if($currectSection->practice_test_type == 'Math_with_calculator') {
                                 // $next_section_id = $mathSectionId->id;
                                 $next_section_id = $rwSectionId->id;
                             }else{
@@ -1639,14 +1639,15 @@ class TestPrepController extends Controller
                                 ->where('practice_test_sections.testid', $testSection[0]->testid)
                                 ->where('practice_test_sections.practice_test_type','Math')
                                 ->first();
-                    
+                            // dump($mathSectionId);
                             $rwSectionId = DB::table('practice_test_sections')
                                 ->where('practice_test_sections.testid', $testSection[0]->testid)
                                 ->where('practice_test_sections.practice_test_type','Reading_And_Writing')
                                 ->first();
+                            // dump($rwSectionId);
 
                             $breakTime = 1;
-                            if($currectSection->practice_test_type = 'Math_with_calculator') {
+                            if($currectSection->practice_test_type == 'Math_with_calculator') {
                                 // $next_section_id = $mathSectionId->id;
                                 $next_section_id = $rwSectionId->id;
                             }else{
@@ -1658,8 +1659,8 @@ class TestPrepController extends Controller
                 }
             }
         }
-
-        // dd($redirectUrl);
+        // dump($next_section_id);
+        // dump($redirectUrl);
         return response()->json(
             [
                 'success' => '0',
