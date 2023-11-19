@@ -515,6 +515,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::get('/test-break/{id}', [TestPrepController::class, 'testBreak'])->name('testBreak');
 
             Route::view('/practice-test', 'user.practice-test')->name('practicetest');
+            Route::get('/start-all-sections/{sec_id}/{str}/{id}', [TestPrepController::class, 'startAllSections'])->name('startAllSections');
             Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
             Route::get('/practice-test/all/{id}', [TestPrepController::class, 'allSection'])->name('all_section');
         });
