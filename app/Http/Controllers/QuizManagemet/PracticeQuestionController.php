@@ -54,7 +54,7 @@ class PracticeQuestionController extends Controller
 
         $question->disc_value = $request->diffValue;
         $question->diff_value = $request->discValue;
-        $question->guessing_value = $request->guessingValue;
+        // $question->guessing_value = $request->guessingValue;
 
         $rating_array = $request->diff_rating ?? ['2'];
 
@@ -97,6 +97,7 @@ class PracticeQuestionController extends Controller
             $checkbox_values[$choice] = $ctValue;
         }
         $question->checkbox_values = json_encode($checkbox_values);
+        $question->guessing_value = json_encode($request->guessing_value);
 
 
         $super_category_values = [];
@@ -115,7 +116,6 @@ class PracticeQuestionController extends Controller
             $super_category_values[$choice] = $super_category_array;
         }
         $question->super_category_values = json_encode($super_category_values);
-
 
         $category_type_values = [];
         foreach ($ans_choices as $choice) {
@@ -254,6 +254,9 @@ class PracticeQuestionController extends Controller
     }
     public function updatePracticeQuestion(Request $request)
     {
+        // dump($request->id);
+        // dump($request->guessingValue);
+        // dd($request);
         $question = PracticeQuestion::find($request->id);
         $question->format = $request->format;
         $question->test_source = $request->test_source;
@@ -278,7 +281,6 @@ class PracticeQuestionController extends Controller
 
         $question->disc_value = $request->disc_value;
         $question->diff_value = $request->diff_value;
-        $question->guessing_value = $request->guessingValue;
 
         $rating_array = $request->diff_rating;
         foreach ($rating_array as $key => $value) {
@@ -331,6 +333,7 @@ class PracticeQuestionController extends Controller
             $super_category_values[$choice] = $super_category_array;
         }
         $question->super_category_values = json_encode($super_category_values);
+        $question->guessing_value = json_encode($request->guessingValue);
 
 
         $category_type_values = [];
@@ -758,7 +761,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2B (Hard) - Math';
                 $practiceSection->practice_test_type = 'Math_no_calculator';
                 $practiceSection->testid = $request->get_test_id;
-                $practiceSection->section_order = $request->order+1;
+                $practiceSection->section_order = $request->order+2;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
                 $practiceSection->fifty_per_extended = $request->fifty;
