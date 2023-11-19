@@ -998,14 +998,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
-                                                        min="0" max="100" type="number" 
-                                                        oninput="validateInput(this)"
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_A_0">
+                                                        id="oneInFourOdd_edit_guessing_value_A" name="oneInFourOdd_edit_guessing_value_A">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFourOdd_edit_guessing_valueE_A"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1031,14 +1030,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_B_1">
+                                                        id="oneInFourOdd_edit_guessing_value_B" name="oneInFourOdd_edit_guessing_value_B">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFourOdd_edit_guessing_valueE_B"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1063,14 +1062,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_C_2">
+                                                        id="oneInFourOdd_edit_guessing_value_C" name="oneInFourOdd_edit_guessing_value_C">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFourOdd_edit_guessing_valueE_C"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1096,14 +1095,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_D_3">
+                                                        id="oneInFourOdd_edit_guessing_value_D" name="oneInFourOdd_edit_guessing_value_D">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFourOdd_edit_guessing_valueE_D"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1134,14 +1133,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_F_0">
+                                                        id="oneInFourEven_edit_guessing_value_F" name="oneInFourEven_edit_guessing_value_F">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFourEven_edit_guessing_valueE_F"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1165,14 +1164,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_G_1">
+                                                        id="oneInFourEven_edit_guessing_value_G" name="oneInFourEven_edit_guessing_value_G">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFourEven_edit_guessing_valueE_G"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1197,14 +1196,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_H_2">
+                                                        id="oneInFourEven_edit_guessing_value_H" name="oneInFourEven_edit_guessing_value_H">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFourEven_edit_guessing_valueE_H"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1229,14 +1228,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_J_3">
+                                                        id="oneInFourEven_edit_guessing_value_J" name="oneInFourEven_edit_guessing_value_J">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFourEven_edit_guessing_valueE_J"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1266,14 +1265,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_A_0">
+                                                        id="oneInFiveOdd_edit_guessing_value_A" name="oneInFiveOdd_edit_guessing_value_A">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_A"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1298,14 +1297,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_B_1">
+                                                        id="oneInFiveOdd_edit_guessing_value_B" name="oneInFiveOdd_edit_guessing_value_B">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_B"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1330,14 +1329,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_C_2">
+                                                        id="oneInFiveOdd_edit_guessing_value_C" name="oneInFiveOdd_edit_guessing_value_C">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_C"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1362,14 +1361,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_D_3">
+                                                        id="oneInFiveOdd_edit_guessing_value_D" name="oneInFiveOdd_edit_guessing_value_D">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_D"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1395,14 +1394,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_E_4">
+                                                        id="oneInFiveOdd_edit_guessing_value_E" name="oneInFiveOdd_edit_guessing_value_E">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_E"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1434,14 +1433,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_F_0">
+                                                        id="oneInFiveEven_edit_guessing_value_F" name="oneInFiveEven_edit_guessing_value_F">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_F"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1467,14 +1466,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_G_1">
+                                                        id="oneInFiveEven_edit_guessing_value_G" name="oneInFiveEven_edit_guessing_value_G">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_G"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1500,14 +1499,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_H_2">
+                                                        id="oneInFiveEven_edit_guessing_value_H" name="oneInFiveEven_edit_guessing_value_H">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_H"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1533,14 +1532,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_J_3">
+                                                        id="oneInFiveEven_edit_guessing_value_J" name="oneInFiveEven_edit_guessing_value_J">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_J"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1566,14 +1565,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_K_4">
+                                                        id="oneInFiveEven_edit_guessing_value_K" name="oneInFiveEven_edit_guessing_value_K">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_K"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1605,14 +1604,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_A_0">
+                                                        id="edit_guessing_value_A" name="edit_guessing_value_A">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="edit_guessing_valueE_A"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1638,14 +1637,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_B_1">
+                                                        id="edit_guessing_value_B" name="edit_guessing_value_B">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="edit_guessing_valueE_B"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1671,14 +1670,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_C_2">
+                                                        id="edit_guessing_value_C" name="edit_guessing_value_C">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="edit_guessing_valueE_C"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1704,14 +1703,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_D_3">
+                                                        id="edit_guessing_value_D" name="edit_guessing_value_D">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="edit_guessing_valueE_D"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1744,14 +1743,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_F_0">
+                                                        id="oneInFourPassEven_edit_guessing_value_F" name="oneInFourPassEven_edit_guessing_value_F">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFourPassEven_edit_guessing_valueE_F"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1777,14 +1776,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_G_1">
+                                                        id="oneInFourPassEven_edit_guessing_value_G" name="oneInFourPassEven_edit_guessing_value_G">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFourPassEven_edit_guessing_valueE_G"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1810,14 +1809,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_H_2">
+                                                        id="oneInFourPassEven_edit_guessing_value_H" name="oneInFourPassEven_edit_guessing_value_H">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFourPassEven_edit_guessing_valueE_H"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1843,14 +1842,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        <input class="form-control edit_guessing_value" placeholder="Guessing Value" 
                                                         min="0" max="100" type="number" 
                                                         oninput="validateInput(this)"
                                                         required 
-                                                        id="guessing-value" name="edit_guessing_value_J_3">
+                                                        id="oneInFourPassEven_edit_guessing_value_J" name="oneInFourPassEven_edit_guessing_value_J">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessing-valueError"></span>
+                                                <span class="text-danger" id="oneInFourPassEven_edit_guessing_valueE_J"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -1892,12 +1891,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" 
-                                                            placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="edit_guessing_value_A_0">
+                                                            <input class="form-control edit_guessing_value" 
+                                                            placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" oninput="validateInput(this)"
+                                                            
+                                                            id="cb_choiceMultInFourFill_edit_guessing_value_A" name="cb_choiceMultInFourFill_edit_guessing_value_A">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                    <span class="text-danger" id="cb_choiceMultInFourFill_edit_guessing_valueE_A"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1922,12 +1923,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" 
-                                                            placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="edit_guessing_value_B_1">
+                                                            <input class="form-control  edit_guessing_value" 
+                                                            placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" oninput="validateInput(this)"
+                                                            
+                                                            id="cb_choiceMultInFourFill_edit_guessing_value_B" name="cb_choiceMultInFourFill_edit_guessing_value_B">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                    <span class="text-danger" id="cb_choiceMultInFourFill_edit_guessing_valueE_B"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1953,12 +1956,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" 
-                                                            placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="edit_guessing_value_C_2">
+                                                            <input class="form-control edit_guessing_value" 
+                                                            placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                            id="cb_choiceMultInFourFill_edit_guessing_value_C" name="cb_choiceMultInFourFill_edit_guessing_value_C">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                    <span class="text-danger" id="cb_choiceMultInFourFill_edit_guessing_valueE_C"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1983,12 +1988,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" 
-                                                            placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="edit_guessing_value_D_3">
+                                                            <input class="form-control edit_guessing_value" 
+                                                            placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                            id="cb_choiceMultInFourFill_edit_guessing_value_D" name="cb_choiceMultInFourFill_edit_guessing_value_D">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                    <span class="text-danger" id="cb_choiceMultInFourFill_edit_guessing_valueE_D"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -2018,12 +2025,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" 
-                                                            placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="edit_guessing_value_A_0">
+                                                            <input class="form-control edit_guessing_value" 
+                                                            placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                            id="choiceMultInFourFill_edit_guessing_value_A" name="choiceMultInFourFill_edit_guessing_value_A">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                    <span class="text-danger" id="choiceMultInFourFill_edit_guessing_valueE_A"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -2047,12 +2056,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" 
-                                                            placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="edit_guessing_value_B_1">
+                                                            <input class="form-control edit_guessing_value" 
+                                                            placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                            
+                                                            id="choiceMultInFourFill_edit_guessing_value_B" name="choiceMultInFourFill_edit_guessing_value_B">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                    <span class="text-danger" id="choiceMultInFourFill_edit_guessing_valueE_B"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -2078,12 +2089,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" 
-                                                            placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="edit_guessing_value_C_2">
+                                                            <input class="form-control edit_guessing_value" 
+                                                            placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                            
+                                                            id="choiceMultInFourFill_edit_guessing_value_C" name="choiceMultInFourFill_edit_guessing_value_C">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                    <span class="text-danger" id="choiceMultInFourFill_edit_guessing_valueE_C"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -2109,12 +2122,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" 
-                                                            placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="edit_guessing_value_D_3">
+                                                            <input class="form-control edit_guessing_value" 
+                                                            placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                            
+                                                            id="choiceMultInFourFill_edit_guessing_value_D" name="choiceMultInFourFill_edit_guessing_value_D">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                    <span class="text-danger" id="choiceMultInFourFill_edit_guessing_valueE_D"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -2239,7 +2254,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
             <div class="modal-header">
                 <h5 class="modal-title" >Add Question</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -2459,10 +2473,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_A">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFourOdd_add_guessing_value_A" name="oneInFourOdd_add_guessing_value_A">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFourOdd_add_guessing_valueE_A"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2489,10 +2506,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_B">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFourOdd_add_guessing_value_B" name="oneInFourOdd_add_guessing_value_B">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFourOdd_add_guessing_valueE_B"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2521,10 +2541,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_C">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFourOdd_add_guessing_value_C" name="oneInFourOdd_add_guessing_value_C">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFourOdd_add_guessing_valueE_C"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2553,10 +2576,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_D">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFourOdd_add_guessing_value_D" name="oneInFourOdd_add_guessing_value_D">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFourOdd_add_guessing_valueE_D"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2591,10 +2617,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_F">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFourEven_add_guessing_value_F" name="oneInFourEven_add_guessing_value_F">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFourEven_add_guessing_valueE_F"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2621,10 +2650,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_G">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFourEven_add_guessing_value_G" name="oneInFourEven_add_guessing_value_G">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFourEven_add_guessing_valueE_G"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2652,10 +2684,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_H">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFourEven_add_guessing_value_H" name="oneInFourEven_add_guessing_value_H">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFourEven_add_guessing_valueE_H"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2684,10 +2719,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_J">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFourEven_add_guessing_value_J" name="oneInFourEven_add_guessing_value_J">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFourEven_add_guessing_valueE_J"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2721,10 +2759,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_A">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFiveOdd_add_guessing_value_A" name="oneInFiveOdd_add_guessing_value_A">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_A"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2751,10 +2792,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_B">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFiveOdd_add_guessing_value_B" name="oneInFiveOdd_add_guessing_value_B">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_B"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2782,10 +2826,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_C">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFiveOdd_add_guessing_value_C" name="oneInFiveOdd_add_guessing_value_C">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_C"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2812,10 +2859,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_D">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFiveOdd_add_guessing_value_D" name="oneInFiveOdd_add_guessing_value_D">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_D"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2843,10 +2893,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_E">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFiveOdd_add_guessing_value_E" name="oneInFiveOdd_add_guessing_value_E">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_E"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2880,10 +2933,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_F">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFiveEven_add_guessing_value_F" name="oneInFiveEven_add_guessing_value_F">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_F"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2910,10 +2966,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_G">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value"
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFiveEven_add_guessing_value_G" name="oneInFiveEven_add_guessing_value_G">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_G"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2940,10 +2999,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_H">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFiveEven_add_guessing_value_H" name="oneInFiveEven_add_guessing_value_H">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_H"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -2970,10 +3032,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_J">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value"
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFiveEven_add_guessing_value_J" name="oneInFiveEven_add_guessing_value_J">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_J"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3000,10 +3065,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_K">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value"
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFiveEven_add_guessing_value_K" name="oneInFiveEven_add_guessing_value_K">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_K"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3036,10 +3104,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_A">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="add_guessing_value_A" name="add_guessing_value_A">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="add_guessing_valueE_A"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3066,10 +3137,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_B">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="add_guessing_value_B" name="add_guessing_value_B">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="add_guessing_valueE_B"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3096,10 +3170,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_C">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="add_guessing_value_C" name="add_guessing_value_C">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="add_guessing_valueE_C"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3127,10 +3204,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_D">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="add_guessing_value_D" name="add_guessing_value_D">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="add_guessing_valueE_D"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3163,10 +3243,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_F">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFourPassEven_add_guessing_value_F" name="oneInFourPassEven_add_guessing_value_F">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFourPassEven_add_guessing_valueE_F"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3193,10 +3276,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_G">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value"
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFourPassEven_add_guessing_value_G" name="oneInFourPassEven_add_guessing_value_G">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFourPassEven_add_guessing_valueE_G"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3223,10 +3309,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_H">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFourPassEven_add_guessing_value_H" name="oneInFourPassEven_add_guessing_value_H">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFourPassEven_add_guessing_valueE_H"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3252,10 +3341,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_J">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="oneInFourPassEven_add_guessing_value_J" name="oneInFourPassEven_add_guessing_value_J">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="oneInFourPassEven_add_guessing_valueE_J"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3297,10 +3389,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_A">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="cb_choiceMultInFourFill_add_guessing_value_A" name="cb_choiceMultInFourFill_add_guessing_value_A">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="cb_choiceMultInFourFill_add_guessing_valueE_A"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3326,10 +3421,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_B">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="cb_choiceMultInFourFill_add_guessing_value_B" name="cb_choiceMultInFourFill_add_guessing_value_B">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="cb_choiceMultInFourFill_add_guessing_valueE_B"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3356,10 +3454,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_C">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="cb_choiceMultInFourFill_add_guessing_value_C" name="cb_choiceMultInFourFill_add_guessing_value_C">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="cb_choiceMultInFourFill_add_guessing_valueE_C"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3386,10 +3487,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_D">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="cb_choiceMultInFourFill_add_guessing_value_D" name="cb_choiceMultInFourFill_add_guessing_value_D">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="cb_choiceMultInFourFill_add_guessing_valueE_D"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3420,10 +3524,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_A">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="choiceMultInFourFill_add_guessing_value_A" name="choiceMultInFourFill_add_guessing_value_A">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="choiceMultInFourFill_add_guessing_valueE_A"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3450,10 +3557,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_B">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="choiceMultInFourFill_add_guessing_value_B" name="choiceMultInFourFill_add_guessing_value_B">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="choiceMultInFourFill_add_guessing_valueE_B"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3480,10 +3590,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_C">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="choiceMultInFourFill_add_guessing_value_C" name="choiceMultInFourFill_add_guessing_value_C">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="choiceMultInFourFill_add_guessing_valueE_C"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -3510,10 +3623,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_D">
+                                                    <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                    min="0" max="100" type="number" oninput="validateInput(this)"
+                                                    
+                                                    id="choiceMultInFourFill_add_guessing_value_D" name="choiceMultInFourFill_add_guessing_value_D">
                                                 </div>
                                             </label>
-                                            <span class="text-danger" id="guessing-valueError"></span>
+                                            <span class="text-danger" id="choiceMultInFourFill_add_guessing_valueE_D"></span>
                                         </div>  
                                     </div>
                                 </div>
@@ -4440,6 +4556,7 @@ aria-hidden="true">
                 ans_choices = ['F', 'G', 'H', 'J'];
                 disp_section = 'oneInFourPassEven_';
             } else if(questionType == 'choiceMultInFourFill') {
+
                 // ans_choices = ['A', 'B', 'C', 'D'];
                 // if(multiChoice == '1') {
                 //     disp_section = 'cb_choiceMultInFourFill_';
@@ -4455,36 +4572,38 @@ aria-hidden="true">
                     disp_section = 'choiceMultInFourFill_';
                 } else if (multiChoice == '2') {
                     ans_choices = ['A'];
-                    disp_section = 'fc_';
+                    disp_section = 'fc_'; 
                 }
             } else {
                 ans_choices = ['A', 'B', 'C', 'D'];
                 disp_section = '';
             }
 
+
+
             //For checkbox
             const checkboxValues = {};
             ans_choices.forEach(ans_choice => {
                 checkboxValues[ans_choice] = $(`input[name="${disp_section}edit_ct_checkbox_${ans_choice}"]`)
-                    .map(function(i, v) {
-                        return $(v).is(':checked') ? 1 : 0;
-                    })
-                    .get();
-            });
-
-            //For Guessing Values
-            let guessing_value = ['A', 'B', 'C', 'D'];
-            const guessingValue = {};
-            guessing_value.forEach(guessing_value => {
-                guessingValue[guessing_value] = $(`input[name="edit_guessing_value_${guessing_value}"]`)
                 .map(function(i, v) {
-                    return $(v).val();
+                    return $(v).is(':checked') ? 1 : 0;
                 })
                 .get();
             });
 
-            // console.log(disp_section);
-            // console.log(ans_choices);
+            //For Guessing Values
+            const guessingValue = {};
+            ans_choices.forEach(ans_choice => {
+                const selectElements = $(`input[name="${disp_section}edit_guessing_value_${ans_choice}"]`);
+                // console.log(disp_section+'edit_guessing_value_'+ans_choice);
+                // console.log(selectElements);
+                const values = selectElements.map(function() {
+                    const edit_guessing_value = $(this).val();
+                    return (edit_guessing_value !== '') ? edit_guessing_value : null;
+                }).get().filter(value => value !== null);
+                guessingValue[ans_choice] = values;
+            });
+
             //For super category
             const superCategoryValues = {};
             ans_choices.forEach(ans_choice => {
@@ -4518,10 +4637,6 @@ aria-hidden="true">
                 getQuestionTypeValues[ans_choice] = values;
             });
 
-            // console.log(superCategoryValues);
-            // console.log(getCategoryTypeValues);
-            // console.log(getQuestionTypeValues);
-
             var testSectionType = $('#testSectionTypeRead').val();
             var question = CKEDITOR.instances['js-ckeditor-addQue'].getData();
             // var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
@@ -4530,8 +4645,8 @@ aria-hidden="true">
 			var passagesType = $('#questionMultiModal #passagesType').val();
             var passagesTypeTxt = $("#passagesType option:selected").text();
 
-            // console.log('here 1');
             if($('#passageRequired_2').is(':checked')) {
+
                 if(
                     question == '' ||
                     tags.length == 0 ||
@@ -4543,13 +4658,12 @@ aria-hidden="true">
                         const super_category_values = superCategoryValues[choice];
                         const get_category_type_values = getCategoryTypeValues[choice];
                         const get_question_type_values = getQuestionTypeValues[choice];
-                        // console.log(super_category_values);
-                        // console.log(get_category_type_values);
-                        // console.log(get_question_type_values);
+                        const get_guess_values = guessingValue[choice];
 
                         return (
                             super_category_values.length === 0 ||
                             get_category_type_values.length === 0 ||
+                            get_guess_values.length === 0 ||
                             get_question_type_values.length === 0
                         );
                     })
@@ -4571,10 +4685,13 @@ aria-hidden="true">
                         const super_category_values = superCategoryValues[choice];
                         const get_category_type_values = getCategoryTypeValues[choice];
                         const get_question_type_values = getQuestionTypeValues[choice];
+                        const get_guess_values = guessingValue[choice];
 
                         $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
                         $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
                         $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                        $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                        $(`#questionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(get_guess_values.length == 0 ? 'Guessing Value is required!' : '');
                     
                     });
 
@@ -4591,6 +4708,7 @@ aria-hidden="true">
                         $(`#questionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text('');
                         $(`#questionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text('');
                         $(`#questionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text('');
+                        $(`#questionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
                     });
                 }
             } else {
@@ -4603,9 +4721,11 @@ aria-hidden="true">
                         const super_category_values = superCategoryValues[choice];
                         const get_category_type_values = getCategoryTypeValues[choice];
                         const get_question_type_values = getQuestionTypeValues[choice];
+                        const get_guess_values = guessingValue[choice];
                         return (
                             (super_category_values && super_category_values?.length) === 0 ||
                             get_category_type_values.length === 0 ||
+                            get_guess_values.length === 0 ||
                             get_question_type_values.length === 0
                         );
                     })
@@ -4619,13 +4739,20 @@ aria-hidden="true">
                     $('#editQuestionTag').focus();
 
                     ans_choices.forEach(choice => {
-                        var super_category_values = eval(`super_category_values_${choice}`);
-                        var get_category_type_values = eval(`get_category_type_values_${choice}`);
-                        var get_question_type_values = eval(`get_question_type_values_${choice}`);
+                        const super_category_values = superCategoryValues[choice];
+                        const get_category_type_values = getCategoryTypeValues[choice];
+                        const get_question_type_values = getQuestionTypeValues[choice];
+                        // var super_category_values = eval(`super_category_values_${choice}`);
+                        // var get_category_type_values = eval(`get_category_type_values_${choice}`);
+                        // var get_question_type_values = eval(`get_question_type_values_${choice}`);
+
+                        var get_guess_values = guessingValue[choice];
 
                         $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
                         $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
                         $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                        $(`#questionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(get_guess_values.length == 0 ? 'Guessing Value is required!' : '');
+                    
                     });
 
                     return false;
@@ -4639,6 +4766,8 @@ aria-hidden="true">
                         $(`#questionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text('');
                         $(`#questionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text('');
                         $(`#questionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text('');
+                        $(`#questionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
+                    
                     });
                 }
             }
@@ -4749,6 +4878,7 @@ aria-hidden="true">
                         'diff_rating': difficulty,
                         'diff_value': diffValue,
                         'disc_value': discValue,
+                        'guessingValue': guessingValue,
 						'multiChoice':multiChoice,
                         'section_id':section_id,
                         'tags':tags,
@@ -4824,9 +4954,9 @@ aria-hidden="true">
             $('input[name="addChoiceMultInFourFill_fill[]"]').val('');
             $('.addChoiceMultInFourFill_filltype').val('');
             $('.addMultiChoice').val('');
+            $('.add_guessing_value').val('');
 
             // count++;
-
             // $(".getFilterChoice").val('').trigger('change');
 
             $('#passageRequired_1').prop('checked',true);
@@ -4864,10 +4994,9 @@ aria-hidden="true">
             appendAnswerOption(AnuserOpts,format);
             getPassages(format);
 
-
             whichModel = 'question';
             removeMoreFillOption();
-            
+
             // addMultiChoice();
             // editMultiChoice();
             $('#addQuestionMultiModal').modal('show');
@@ -5299,6 +5428,18 @@ aria-hidden="true">
                     .get();
                 });
 
+                //For Guessing Values
+                const addGuessingValue = {};
+                ans_choices.forEach(ans_choice => {
+                    const selectElements = $(`input[name="${disp_section}add_guessing_value_${ans_choice}"]`);
+                    const values = selectElements.map(function() {
+                        const add_guessing_value = $(this).val();
+                        return (add_guessing_value !== '') ? add_guessing_value : null;
+                    }).get().filter(value => value !== null);
+                    addGuessingValue[ans_choice] = values;
+                });
+                // console.log(addGuessingValue);
+
                 const superCategoryValues = {};
                 ans_choices.forEach(ans_choice => {
                 superCategoryValues[ans_choice] = $(`select[name="${disp_section}super_category_create_${ans_choice}"]`)
@@ -5332,7 +5473,6 @@ aria-hidden="true">
                     .filter(value => value !== null);
                 });
 
-
                 const labels = ['superCategoryError', 'categoryTypeError', 'questionTypeError'];
 
                 var get_question_type_values = $('select[name=add_search-input]').map(function(i,v) {
@@ -5356,9 +5496,11 @@ aria-hidden="true">
                             const super_category_values = superCategoryValues[choice];
                             const get_category_type_values = getCategoryTypeValues[choice];
                             const get_question_type_values = getQuestionTypeValues[choice];
+                            const get_addGuessingValue = addGuessingValue[choice];
                             return (
-                                super_category_values.length === 0 ||
-                                get_category_type_values.length === 0 ||
+                                super_category_values.length === 0 || 
+                                get_category_type_values.length === 0 || 
+                                get_addGuessingValue.length === 0 || 
                                 get_question_type_values.length === 0
                             );
                         })
@@ -5379,10 +5521,12 @@ aria-hidden="true">
                                 const super_category_values = superCategoryValues[choice];
                                 const get_category_type_values = getCategoryTypeValues[choice];
                                 const get_question_type_values = getQuestionTypeValues[choice];
+                                const get_addGuessingValue = addGuessingValue[choice];
 
                                 $(`#addQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
                                 $(`#addQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
                                 $(`#addQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                                $(`#addQuestionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
                             });
                         return false;
                     }
@@ -5392,9 +5536,11 @@ aria-hidden="true">
                         $('#addQuestionMultiModal #tagError').text('');
                         $('#addQuestionMultiModal #passNumberError').text('');
                         $('#addQuestionMultiModal #passageTypeError').text('');
+                        $('#addQuestionMultiModal #passageTypeError').text('');
 
                         ans_choices.forEach(choice => {
                             emptyError('addQuestionMultiModal', disp_section, choice);
+                            $(`#addQuestionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
                         });
                     }
                 } else {
@@ -5406,9 +5552,12 @@ aria-hidden="true">
                             const super_category_values = superCategoryValues[choice];
                             const get_category_type_values = getCategoryTypeValues[choice];
                             const get_question_type_values = getQuestionTypeValues[choice];
+                            const get_addGuessingValue = addGuessingValue[choice];
+
                             return (
                                 super_category_values.length === 0 ||
                                 get_category_type_values.length === 0 ||
+                                get_addGuessingValue.length === 0 ||
                                 get_question_type_values.length === 0
                             );
                         })
@@ -5420,13 +5569,20 @@ aria-hidden="true">
                         $('#questionTags').focus();
 
                         ans_choices.forEach(choice => {
-                            var super_category_values = eval(`super_category_values_${choice}`);
-                            var get_category_type_values = eval(`get_category_type_values_${choice}`);
-                            var get_question_type_values = eval(`get_question_type_values_${choice}`);
+                            // var super_category_values = eval(`super_category_values_${choice}`);
+                            // var get_category_type_values = eval(`get_category_type_values_${choice}`);
+                            // var get_question_type_values = eval(`get_question_type_values_${choice}`);
+
+                            var super_category_values = superCategoryValues[choice];
+                            var get_category_type_values = getCategoryTypeValues[choice];
+                            var get_question_type_values = getQuestionTypeValues[choice];
+                            var get_addGuessingValue = addGuessingValue[choice];
 
                             $(`#addQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
                             $(`#addQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
                             $(`#addQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                            $(`#addQuestionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
+
                         });
                         return false;
                     }else{
@@ -5435,6 +5591,7 @@ aria-hidden="true">
 
                         ans_choices.forEach(choice => {
                             emptyError('addQuestionMultiModal', disp_section, choice);
+                            $(`#addQuestionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
                         });
                     }
                 }
@@ -5539,6 +5696,7 @@ aria-hidden="true">
                         'fill': fill,
                         'diffValue': diffValue,
                         'discValue': discValue,
+                        'guessing_value': addGuessingValue,
                         'fillType': fillType,
                         'multiChoice': multiChoice,
                         'section_id':section_id,
@@ -6054,14 +6212,22 @@ function practQuestioEdit(id){
                                 }
                             }
 
+                            // edit_guessing_value_
+                            // guessing_value
+                            // guessing_value_arr
                             //For guessing value
-                            // for (let key in checkbox_values_Arr) {
-                            //     if (checkbox_values_Arr.hasOwnProperty(key)) {
-                            //         $(checkbox_values_Arr[key]).each((i,v) => {
-                            //             $(`#${disp_section}edit_ct_checkbox_${key}_${i}`).prop('checked', v==1);
-                            //         });
-                            //     }
+                            $('.edit_guessing_value').val('');
+                            // if(guessing_value) {
+                                let guessing_value_arr = JSON.parse(result.guessing_value);
+                                for (let key in guessing_value_arr) {
+                                    if (guessing_value_arr.hasOwnProperty(key)) {
+                                        $(guessing_value_arr[key]).each((i,v) => {
+                                            $(`#${disp_section}edit_guessing_value_${key}`).val(v);
+                                        });
+                                    }
+                                }
                             // }
+
 
                             //For super category
                             for (let key in super_category_values_Arr) {
@@ -6408,7 +6574,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                     var arrIndex = Number(i)-1;
                     var editInd = Number(i)+1;
                     if(selectedOpt == optObj[arrIndex]){
-                        console.log(selectedOpt);
+                        // console.log(selectedOpt);
                         $('.choiceMultInFourFill .withOutFillOptChoice ul li.choiceMultInFourFillwithOutFillOptChoice_'+arrIndex+' input[type="radio"]').prop("checked", true);
 
                     }
@@ -6837,7 +7003,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                             $('.addchoiceOneInFour_Even').hide();
                             $('.addchoiceOneInFive_Odd').show();
                             $('.addchoiceOneInFive_Even').hide();
-                            $('.addchoiceOneInFourPass_Odd').hide();
+                            $('.addchoiceOneInFourPass_Odd').hide(); 
                             $('.addchoiceOneInFourPass_Even').hide();
                             $('.addchoiceMultInFourFill').hide();
                         }
@@ -7484,10 +7650,15 @@ var test = Sortable.create(addListWithHandleQuestion, {
     });
 
     function validateInput(input) {
+        // console.log(input);
+        // console.log(parseInt(input.value));
         var value = parseInt(input.value);
         if (value > parseInt(input.max)) {
+            // console.log('here1');
             input.value = input.max;
         }
+        // console.log('here2');
+
     }
 
     function deleteSection(data) {

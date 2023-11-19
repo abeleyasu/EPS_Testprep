@@ -1035,10 +1035,13 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" oninput="validateInput(this)"
+                                                            
+                                                            id="oneInFourOdd_add_guessing_value_A" name="oneInFourOdd_add_guessing_value_A">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFourOdd_add_guessing_valueE_A"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1068,15 +1071,15 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" 
+                                                            <input class="form-control add_guessing_value" 
                                                                 placeholder="Guessing Value" 
                                                                 min="0" max="100" type="number" 
                                                                 oninput="validateInput(this)"
                                                                 required
-                                                                id="guessing-value" name="guessing_value">
+                                                                id="oneInFourOdd_add_guessing_value_B" name="oneInFourOdd_add_guessing_value_B">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFourOdd_add_guessing_valueE_B"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1108,13 +1111,13 @@
                                                             
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control" placeholder="Guessing Value" 
-                                                            min="0" max="100" type="number" 
+                                                            min="0" max="100" type="number add_guessing_value" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFourOdd_add_guessing_value_C" name="oneInFourOdd_add_guessing_value_C">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFourOdd_add_guessing_valueE_C"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1145,14 +1148,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                              min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFourOdd_add_guessing_value_D" name="oneInFourOdd_add_guessing_value_D">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFourOdd_add_guessing_valueE_D"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1189,14 +1192,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required  
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFourEven_add_guessing_value_F" name="oneInFourEven_add_guessing_value_F">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="guessinoneInFourEven_add_guessing_valueE_Fg_valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1225,19 +1228,18 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFourEven_add_guessing_value_G" name="oneInFourEven_add_guessing_value_G">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFourEven_add_guessing_valueE_G"></span>
                                                 </div>  
                                             </div>
                                         </div>
                                         
-
                                         @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', [
                                             'ans_choices' => 'G',
                                             'disp_section' => 'oneInFourEven_',
@@ -1263,14 +1265,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required  
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFourEven_add_guessing_value_H" name="oneInFourEven_add_guessing_value_H">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFourEven_add_guessing_valueE_H"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1300,14 +1302,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFourEven_add_guessing_value_J" name="oneInFourEven_add_guessing_value_J">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFourEven_add_guessing_valueE_J"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1344,14 +1346,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required  
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFiveOdd_add_guessing_value_A" name="oneInFiveOdd_add_guessing_value_A">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_A"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1382,14 +1384,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required  
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFiveOdd_add_guessing_value_B" name="oneInFiveOdd_add_guessing_value_B">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_B"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1420,14 +1422,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required  
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFiveOdd_add_guessing_value_C" name="oneInFiveOdd_add_guessing_value_C">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_C"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1457,18 +1459,17 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required  
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFiveOdd_add_guessing_value_D" name="oneInFiveOdd_add_guessing_value_D">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_D"></span>
                                                 </div>  
                                             </div>
                                         </div>
-                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -1495,14 +1496,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             type="number"min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required  
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFiveOdd_add_guessing_value_E" name="oneInFiveOdd_add_guessing_value_E">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_E"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1540,14 +1541,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFiveEven_add_guessing_value_F" name="oneInFiveEven_add_guessing_value_F">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_F"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1578,14 +1579,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required  
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFiveEven_add_guessing_value_G" name="oneInFiveEven_add_guessing_value_G">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_G"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1616,14 +1617,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                             id="guessing-value" name="guessing_value">
+                                                             id="oneInFiveEven_add_guessing_value_H" name="oneInFiveEven_add_guessing_value_H">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_H"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1654,15 +1655,15 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" 
+                                                            <input class="form-control add_guessing_value" 
                                                             placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                             id="guessing-value" name="guessing_value">
+                                                             id="oneInFiveEven_add_guessing_value_J" name="oneInFiveEven_add_guessing_value_J">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_J"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1693,14 +1694,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFiveEven_add_guessing_value_K" name="oneInFiveEven_add_guessing_value_K">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_K"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1737,14 +1738,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="add_guessing_value_A" name="add_guessing_value_A">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="add_guessing_valueE_A"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1775,14 +1776,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="add_guessing_value_B" name="add_guessing_value_B">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="add_guessing_valueE_B"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1813,14 +1814,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required  
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="add_guessing_value_C" name="add_guessing_value_C">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="add_guessing_valueE_C"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1851,14 +1852,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="add_guessing_value_D" name="add_guessing_value_D">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="add_guessing_valueE_D"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1896,14 +1897,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFourPassEven_add_guessing_value_F" name="oneInFourPassEven_add_guessing_value_F">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFourPassEven_add_guessing_valueE_F"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1934,18 +1935,17 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFourPassEven_add_guessing_value_G" name="oneInFourPassEven_add_guessing_value_G">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFourPassEven_add_guessing_valueE_G"></span>
                                                 </div>  
                                             </div>
                                         </div>
-                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -1972,14 +1972,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             type="number"min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required  
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFourPassEven_add_guessing_value_H" name="oneInFourPassEven_add_guessing_value_H">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFourPassEven_add_guessing_valueE_H"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -2010,19 +2010,18 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                             min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required  
-                                                            id="guessing-value" name="guessing_value">
+                                                            id="oneInFourPassEven_add_guessing_value_J" name="oneInFourPassEven_add_guessing_value_J">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessing-valueError"></span>
+                                                    <span class="text-danger" id="oneInFourPassEven_add_guessing_valueE_J"></span>
                                                 </div>  
                                             </div>
                                         </div>
                                         
-
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
                                             ['ans_choices' => 'J', 'disp_section' => 'oneInFourPassEven_']
@@ -2068,14 +2067,14 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                                 min="0" max="100" type="number" 
                                                                 oninput="validateInput(this)"
                                                                 required  
-                                                                id="guessing-value" name="guessing_value">
+                                                                id="cb_choiceMultInFourFill_add_guessing_value_A" name="cb_choiceMultInFourFill_add_guessing_value_A">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessing-valueError"></span>
+                                                        <span class="text-danger" id="cb_choiceMultInFourFill_add_guessing_valueE_A"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2109,18 +2108,17 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                                 min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required  
-                                                                id="guessing-value" name="guessing_value">
+                                                                id="cb_choiceMultInFourFill_add_guessing_value_B" name="cb_choiceMultInFourFill_add_guessing_value_B">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessing-valueError"></span>
+                                                        <span class="text-danger" id="cb_choiceMultInFourFill_add_guessing_valueE_B"></span>
                                                     </div>  
                                                 </div>
                                             </div>
-                                            
 
                                             @include(
                                                 'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -2150,14 +2148,14 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                                 min="0" max="100" type="number" 
                                                                 oninput="validateInput(this)"
                                                                 required  
-                                                                id="guessing-value" name="guessing_value">
+                                                                id="cb_choiceMultInFourFill_add_guessing_value_C" name="cb_choiceMultInFourFill_add_guessing_value_C">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessing-valueError"></span>
+                                                        <span class="text-danger" id="cb_choiceMultInFourFill_add_guessing_valueE_C"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2191,14 +2189,14 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                                 min="0" max="100" type="number" 
                                                                 oninput="validateInput(this)"
                                                                 required  
-                                                                id="guessing-value" name="guessing_value">
+                                                                id="cb_choiceMultInFourFill_add_guessing_value_D" name="cb_choiceMultInFourFill_add_guessing_value_D">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessing-valueError"></span>
+                                                        <span class="text-danger" id="cb_choiceMultInFourFill_add_guessing_valueE_D"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2237,14 +2235,14 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                                 min="0" max="100" type="number" 
                                                                 oninput="validateInput(this)"
                                                                 required  
-                                                                id="guessing-value" name="guessing_value">
+                                                                id="choiceMultInFourFill_add_guessing_value_A" name="choiceMultInFourFill_add_guessing_value_A">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessing-valueError"></span>
+                                                        <span class="text-danger" id="choiceMultInFourFill_add_guessing_valueE_A"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2277,14 +2275,14 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                                 min="0" max="100" type="number" 
                                                                 oninput="validateInput(this)"
                                                                 required 
-                                                                id="guessing-value" name="guessing_value">
+                                                                id="choiceMultInFourFill_add_guessing_value_B" name="choiceMultInFourFill_add_guessing_value_B">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessing-valueError"></span>
+                                                        <span class="text-danger" id="choiceMultInFourFill_add_guessing_valueE_B"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2317,14 +2315,14 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                                 min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                                id="guessing-value" name="guessing_value">
+                                                                id="choiceMultInFourFill_add_guessing_value_C" name="choiceMultInFourFill_add_guessing_value_C">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessing-valueError"></span>
+                                                        <span class="text-danger" id="choiceMultInFourFill_add_guessing_valueE_C"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2353,18 +2351,18 @@
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2 ">
-                                                        <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        <label class="form-label " for="guessing-value">Guessing Value<span
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
                                                                 min="0" max="100" type="number" 
                                                             oninput="validateInput(this)"
                                                             required 
-                                                                id="guessing-value" name="guessing_value">
+                                                                id="choiceMultInFourFill_add_guessing_value_D" name="choiceMultInFourFill_add_guessing_value_D">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessing-valueError"></span>
+                                                        <span class="text-danger" id="choiceMultInFourFill_add_guessing_valueE_D"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2646,12 +2644,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                        
+                                                        id="oneInFourOdd_edit_guessing_value_A" name="oneInFourOdd_edit_guessing_value_A">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFourOdd_edit_guessing_valueE_A"></span>
                                             </div>  
                                         </div>
                                     </div>
@@ -2682,12 +2682,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value"
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                         
+                                                        id="oneInFourOdd_edit_guessing_value_B" name="oneInFourOdd_edit_guessing_value_B">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFourOdd_edit_guessing_valueE_B"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -2719,12 +2721,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value"
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFourOdd_edit_guessing_value_C" name="oneInFourOdd_edit_guessing_value_C">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFourOdd_edit_guessing_valueE_C"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -2757,12 +2761,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value"
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFourOdd_edit_guessing_value_D" name="oneInFourOdd_edit_guessing_value_D">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFourOdd_edit_guessing_valueE_D"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -2802,17 +2808,18 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFourEven_edit_guessing_value_F" name="oneInFourEven_edit_guessing_value_F">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFourEven_edit_guessing_valueE_F"></span>
                                             </div>  
                                         </div>
                                         </div>
                                         
-
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
                                             ['ans_choices' => 'F', 'disp_section' => 'oneInFourEven_']
@@ -2839,12 +2846,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFourEven_edit_guessing_value_G" name="oneInFourEven_edit_guessing_value_G">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFourEven_edit_guessing_valueE_G"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -2875,12 +2884,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFourEven_edit_guessing_value_H" name="oneInFourEven_edit_guessing_value_H">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFourEven_edit_guessing_valueE_H"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -2912,12 +2923,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFourEven_edit_guessing_value_J" name="oneInFourEven_edit_guessing_value_J">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFourEven_edit_guessing_valueE_J"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -2956,12 +2969,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFiveOdd_edit_guessing_value_A" name="oneInFiveOdd_edit_guessing_value_A">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_A"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -2992,12 +3007,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFiveOdd_edit_guessing_value_B" name="oneInFiveOdd_edit_guessing_value_B">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_B"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3029,12 +3046,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFiveOdd_edit_guessing_value_C" name="oneInFiveOdd_edit_guessing_value_C">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_C"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3066,12 +3085,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFiveOdd_edit_guessing_value_D" name="oneInFiveOdd_edit_guessing_value_D">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_D"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3103,12 +3124,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFiveOdd_edit_guessing_value_E" name="oneInFiveOdd_edit_guessing_value_E">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_E"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3147,12 +3170,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFiveEven_edit_guessing_value_F" name="oneInFiveEven_edit_guessing_value_F">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_F"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3184,12 +3209,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFiveEven_edit_guessing_value_G" name="oneInFiveEven_edit_guessing_value_G">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_G"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3222,12 +3249,15 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFiveEven_edit_guessing_value_H" name="oneInFiveEven_edit_guessing_value_H">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_H"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3257,12 +3287,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                        
+                                                        id="oneInFiveEven_edit_guessing_value_J" name="oneInFiveEven_edit_guessing_value_J">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_J"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3293,12 +3325,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                        
+                                                        id="oneInFiveEven_edit_guessing_value_K" name="oneInFiveEven_edit_guessing_value_K">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_K"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3336,12 +3370,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="edit_guessing_value_A" name="edit_guessing_value_A">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="edit_guessing_valueE_A"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3372,12 +3408,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="edit_guessing_value_B" name="edit_guessing_value_B">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="edit_guessing_valueE_B"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3408,12 +3446,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="edit_guessing_value_C" name="edit_guessing_value_C">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="edit_guessing_valueE_C"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3444,12 +3484,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="edit_guessing_value_D" name="edit_guessing_value_D">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="edit_guessing_valueE_D"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3488,12 +3530,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFourPassEven_edit_guessing_value_F" name="oneInFourPassEven_edit_guessing_value_F">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFourPassEven_edit_guessing_valueE_F"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3524,12 +3568,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" 
-                                                            placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                            <input class="form-control edit_guessing_value" 
+                                                            placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                            id="oneInFourPassEven_edit_guessing_value_G" name="oneInFourPassEven_edit_guessing_value_G">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                    <span class="text-danger" id="oneInFourPassEven_edit_guessing_valueE_G"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -3560,12 +3606,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFourPassEven_edit_guessing_value_H" name="oneInFourPassEven_edit_guessing_value_H">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFourPassEven_edit_guessing_valueE_H"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3596,12 +3644,14 @@
                                                         class="text-danger">*</span>
                                                         
                                                     <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                        <input class="form-control edit_guessing_value" 
+                                                        placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                        id="oneInFourPassEven_edit_guessing_value_J" name="oneInFourPassEven_edit_guessing_value_J">
                                                     </div>
                                                 </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
+                                                <span class="text-danger" id="oneInFourPassEven_edit_guessing_valueE_J"></span>
                                             </div>  
                                         </div>
                                         </div>
@@ -3656,12 +3706,14 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" 
-                                                                placeholder="Guessing Value" type="number" 
-                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                                <input class="form-control edit_guessing_value" 
+                                                                placeholder="Guessing Value" 
+                                                                min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                                id="cb_choiceMultInFourFill_edit_guessing_value_A" name="cb_choiceMultInFourFill_edit_guessing_value_A">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                        <span class="text-danger" id="cb_choiceMultInFourFill_edit_guessing_valueE_A"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -3696,12 +3748,14 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" 
-                                                                placeholder="Guessing Value" type="number" 
-                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                                <input class="form-control edit_guessing_value" 
+                                                                placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                                id="cb_choiceMultInFourFill_edit_guessing_value_B" name="cb_choiceMultInFourFill_edit_guessing_value_B">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                        <span class="text-danger" id="cb_choiceMultInFourFill_edit_guessing_valueE_B"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -3735,12 +3789,12 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" 
+                                                                <input class="form-control edit_guessing_value" 
                                                                 placeholder="Guessing Value" type="number" 
-                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                                id="cb_choiceMultInFourFill_edit_guessing_value_C" name="cb_choiceMultInFourFill_edit_guessing_value_C">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                        <span class="text-danger" id="cb_choiceMultInFourFill_edit_guessing_valueE_C"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -3775,12 +3829,14 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" 
-                                                                placeholder="Guessing Value" type="number" 
-                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                                <input class="form-control edit_guessing_value" 
+                                                                placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                                
+                                                                id="cb_choiceMultInFourFill_edit_guessing_value_D" name="cb_choiceMultInFourFill_edit_guessing_value_D">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                        <span class="text-danger" id="cb_choiceMultInFourFill_edit_guessing_valueE_D"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -3820,12 +3876,14 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" 
-                                                                placeholder="Guessing Value" type="number" 
-                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                                <input class="form-control edit_guessing_value" 
+                                                                placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+                                                                
+                                                                id="choiceMultInFourFill_edit_guessing_value_A" name="choiceMultInFourFill_edit_guessing_value_A">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                        <span class="text-danger" id="choiceMultInFourFill_edit_guessing_valueE_A"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -3857,12 +3915,14 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" 
-                                                                placeholder="Guessing Value" type="number" 
-                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                                <input class="form-control edit_guessing_value" 
+                                                                placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                                id="choiceMultInFourFill_edit_guessing_value_B" name="choiceMultInFourFill_edit_guessing_value_B">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                        <span class="text-danger" id="choiceMultInFourFill_edit_guessing_valueE_B"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -3895,12 +3955,14 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" 
-                                                                placeholder="Guessing Value" type="number" 
-                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                                <input class="form-control edit_guessing_value" 
+                                                                placeholder="Guessing Value"
+                                                                min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                                id="choiceMultInFourFill_edit_guessing_value_C" name="choiceMultInFourFill_edit_guessing_value_C">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                        <span class="text-danger" id="choiceMultInFourFill_edit_guessing_valueE_C"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -3932,12 +3994,14 @@
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" 
-                                                                placeholder="Guessing Value" type="number" 
-                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                                <input class="form-control edit_guessing_value" 
+                                                                placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" oninput="validateInput(this)"
+
+                                                                id="choiceMultInFourFill_edit_guessing_value_D" name="choiceMultInFourFill_edit_guessing_value_D">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                        <span class="text-danger" id="choiceMultInFourFill_edit_guessing_valueE_D"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -4912,6 +4976,8 @@
             $("input[name=diff_value]"). val("");
             $("input[name=disc_value]"). val("");
             $("input[name=guessing_value]"). val("");
+            $('.add_guessing_value').val('');
+
             $('#passageRequired_1').prop('checked', true);
             $('#passage_number').prop('disabled', false);
             $('select[name="passagesType"]').prop('disabled', false);
@@ -5525,12 +5591,23 @@
                         .get()
                         .filter(value => value !== null);
                 });
+
+                //For Guessing Values
+                const addGuessingValue = {};
+                ans_choices.forEach(ans_choice => {
+                    const selectElements = $(`input[name="${disp_section}add_guessing_value_${ans_choice}"]`);
+                    const values = selectElements.map(function() {
+                        const add_guessing_value = $(this).val();
+                        return (add_guessing_value !== '') ? add_guessing_value : null;
+                    }).get().filter(value => value !== null);
+                    addGuessingValue[ans_choice] = values;
+                });
+                // console.log(addGuessingValue);
                 
                 var pass = $('select[name="passagesType"] :selected').text();
                 var passNumber = $('#questionMultiModal .passNumber').val();
                 var passagesType = $('.passagesType').val();
                 var passagesTypeTxt = $(".passagesType option:selected").text();
-
 
                 if ($('#passageRequired_1').is(':checked')) {
                     if (
@@ -5546,9 +5623,12 @@
                             const super_category_values = superCategoryValues[choice];
                             const get_category_type_values = getCategoryTypeValues[choice];
                             const get_question_type_values = getQuestionTypeValues[choice];
+                            const get_addGuessingValue = addGuessingValue[choice];
+
                             return (
                                 super_category_values.length === 0 ||
                                 get_category_type_values.length === 0 ||
+                                get_addGuessingValue.length === 0 || 
                                 get_question_type_values.length === 0
                             );
                         })
@@ -5576,6 +5656,7 @@
                             const super_category_values = superCategoryValues[choice];
                             const get_category_type_values = getCategoryTypeValues[choice];
                             const get_question_type_values = getQuestionTypeValues[choice];
+                            const get_addGuessingValue = addGuessingValue[choice];
 
                             $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(
                                 super_category_values.length == 0 ? 'Super Category is required!' : '');
@@ -5585,6 +5666,8 @@
                             $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(
                                 get_question_type_values.length == 0 ? 'Question type is required!' : ''
                             );
+                            $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
+                            
                         });
 
                         return false;
@@ -5599,6 +5682,7 @@
 
                         ans_choices.forEach(choice => {
                             emptyError('questionMultiModal', disp_section, choice);
+                            $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
                         });
                     }
                 } else {
@@ -5612,9 +5696,12 @@
                             const super_category_values = superCategoryValues[choice];
                             const get_category_type_values = getCategoryTypeValues[choice];
                             const get_question_type_values = getQuestionTypeValues[choice];
+                            const get_addGuessingValue = addGuessingValue[choice];
+
                             return (
                                 super_category_values.length === 0 ||
                                 get_category_type_values.length === 0 ||
+                                get_addGuessingValue.length === 0 ||
                                 get_question_type_values.length === 0
                             );
                         })
@@ -5634,6 +5721,7 @@
                             const super_category_values = superCategoryValues[choice];
                             const get_category_type_values = getCategoryTypeValues[choice];
                             const get_question_type_values = getQuestionTypeValues[choice];
+                            const get_addGuessingValue = addGuessingValue[choice];
 
                             $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(
                                 super_category_values.length == 0 ? 'Super Category is required!' : '');
@@ -5643,6 +5731,8 @@
                             $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(
                                 get_question_type_values.length == 0 ? 'Question type is required!' : ''
                             );
+                            $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
+
                         });
 
                         return false;
@@ -5652,6 +5742,7 @@
 
                         ans_choices.forEach(choice => {
                             emptyError('questionMultiModal', disp_section, choice); 
+                            $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
                         });
                     }
                 }
@@ -5770,7 +5861,7 @@
                         'tags': tags,
                         'diffValue': diffValue,
                         'discValue': discValue,
-                        'guessingValue': guessingValue,
+                        'guessing_value': addGuessingValue,
                         'section_id': section_id,
                         'ct_checkbox_values': checkboxValues,
                         'super_category_values': superCategoryValues,
@@ -6011,6 +6102,17 @@
                                         }
                                     }
                                 }
+
+                                $('.edit_guessing_value').val('');
+                                let guessing_value_arr = JSON.parse(result.guessing_value);
+                                for (let key in guessing_value_arr) {
+                                    if (guessing_value_arr.hasOwnProperty(key)) {
+                                        $(guessing_value_arr[key]).each((i,v) => {
+                                            $(`#${disp_section}edit_guessing_value_${key}`).val(v);
+                                        });
+                                    }
+                                }
+                            
                                 
                                 $('#diffValueEdit').val(result.diff_value);
                                 $('#discValueEdit').val(result.disc_value);
@@ -6603,6 +6705,18 @@
                     .get();
             });
 
+
+            //For Guessing Values
+            const guessingValue = {};
+            ans_choices.forEach(ans_choice => {
+                const selectElements = $(`input[name="${disp_section}edit_guessing_value_${ans_choice}"]`);
+                const values = selectElements.map(function() {
+                    const edit_guessing_value = $(this).val();
+                    return (edit_guessing_value !== '') ? edit_guessing_value : null;
+                }).get().filter(value => value !== null);
+                guessingValue[ans_choice] = values;
+            });
+
             //For super category
             const superCategoryValues = {};
             ans_choices.forEach(ans_choice => {
@@ -6659,10 +6773,12 @@
                         const super_category_values = superCategoryValues[choice];
                         const get_category_type_values = getCategoryTypeValues[choice];
                         const get_question_type_values = getQuestionTypeValues[choice];
+                        const get_guessingValue = guessingValue[choice];
 
                         return (
                             (super_category_values && super_category_values?.length) === 0 ||
                             get_category_type_values.length === 0 ||
+                            get_guessingValue.length === 0 ||
                             get_question_type_values.length === 0
                         );
                     })
@@ -6682,6 +6798,7 @@
                         const super_category_values = superCategoryValues[choice];
                         const get_category_type_values = getCategoryTypeValues[choice];
                         const get_question_type_values = getQuestionTypeValues[choice];
+                        const get_guessingValue = guessingValue[choice];
 
                         $(`#editQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(
                             !super_category_values || super_category_values.length == 0 ?
@@ -6690,6 +6807,10 @@
                             get_category_type_values.length == 0 ? 'Category type is required!' : '');
                         $(`#editQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(
                             get_question_type_values.length == 0 ? 'Question type is required!' : '');
+
+                        $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(
+                            get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
+                    
                     });
 
                     return false;
@@ -6706,6 +6827,7 @@
                             '');
                         $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text(
                             '');
+                        $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
                     });
                 }
             } else {
@@ -6717,9 +6839,12 @@
                         const super_category_values = superCategoryValues[choice];
                         const get_category_type_values = getCategoryTypeValues[choice];
                         const get_question_type_values = getQuestionTypeValues[choice];
+                        const get_guessingValue = guessingValue[choice];
+
                         return (
                             (super_category_values && super_category_values?.length) === 0 ||
                             get_category_type_values.length === 0 ||
+                            get_guessingValue.length === 0 ||
                             get_question_type_values.length === 0
                         );
                     })
@@ -6733,6 +6858,7 @@
                         const super_category_values = superCategoryValues[choice];
                         const get_category_type_values = getCategoryTypeValues[choice];
                         const get_question_type_values = getQuestionTypeValues[choice];
+                        const get_guessingValue = guessingValue[choice];
 
                         $(`#editQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(
                             !super_category_values || super_category_values.length == 0 ?
@@ -6741,6 +6867,10 @@
                             get_category_type_values.length == 0 ? 'Category type is required!' : '');
                         $(`#editQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(
                             get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                        
+                        $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(
+                            get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
+                        
                     });
                     return false;
                 } else {
@@ -6754,6 +6884,7 @@
                             '');
                         $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text(
                             '');
+                        $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
                     });
                 }
             }
@@ -6818,7 +6949,6 @@
                         .val();
                     multiChoice = $('.editMultipleChoice option:selected').val();
                 }
-
 
                 var singleChoM = $('#editQuestionMultiModal ' + activeAnswerType +
                     ' input[name="editChoiceMultiChoiceInFourFill"]:checked').val();
@@ -6886,6 +7016,7 @@
                     'diff_rating': difficulty,
                     'diff_value': diffValue,
                     'disc_value': discValue,
+                    'guessingValue': guessingValue,
                     'multiChoice': multiChoice,
                     'section_id': section_id,
                     'tags': tags,
