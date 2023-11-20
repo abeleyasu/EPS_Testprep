@@ -5608,142 +5608,285 @@
                 var passNumber = $('#questionMultiModal .passNumber').val();
                 var passagesType = $('.passagesType').val();
                 var passagesTypeTxt = $(".passagesType option:selected").text();
+                // getFilterChoice editMultipleChoice
+                var ifFillChoice = $('.getFilterChoice').val();
+                // console.log(ifFillChoice);
+                if(ifFillChoice == 2) {
 
-                if ($('#passageRequired_1').is(':checked')) {
-                    if (
-                        question == '' ||
-                        tags.length == 0 ||
-                        diffValue == '' ||
-                        discValue == '' ||
-                        jQuery.type(passNumber) == "null" ||
-                        passagesType == '' ||
-                        format == '' ||
-                        testSectionType == '' ||
-                        ans_choices.some(choice => {
-                            const super_category_values = superCategoryValues[choice];
-                            const get_category_type_values = getCategoryTypeValues[choice];
-                            const get_question_type_values = getQuestionTypeValues[choice];
-                            const get_addGuessingValue = addGuessingValue[choice];
+                    if ($('#passageRequired_1').is(':checked')) {
+                        if (
+                            question == '' ||
+                            tags.length == 0 ||
+                            diffValue == '' ||
+                            discValue == '' ||
+                            jQuery.type(passNumber) == "null" ||
+                            passagesType == '' ||
+                            format == '' ||
+                            testSectionType == '' ||
+                            ans_choices.some(choice => {
+                                const super_category_values = superCategoryValues[choice];
+                                const get_category_type_values = getCategoryTypeValues[choice];
+                                const get_question_type_values = getQuestionTypeValues[choice];
+                                // const get_addGuessingValue = addGuessingValue[choice];
 
-                            return (
-                                super_category_values.length === 0 ||
-                                get_category_type_values.length === 0 ||
-                                get_addGuessingValue.length === 0 || 
-                                get_question_type_values.length === 0
-                            );
-                        })
-                    ) {
-                        $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
-                        $('#js-ckeditor-addQue').focus();
-                        
-                        $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
-                        $('#addTag').focus();
-
-                        $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
-                        $('#addTag').focus();
-
-                        $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
-                        $('#addTag').focus();
-
-                        $('#questionMultiModal #passNumberError').text(jQuery.type(passNumber) == "null" ?
-                            'Passage Number is required!' : '');
-                        $('#passage_number').focus();
-                        $('#questionMultiModal #passageTypeError').text(passagesType == '' ?
-                            'Passage Type is required!' : '');
-                        $('#passagesType').focus();
-
-                        ans_choices.forEach(choice => {
-                            const super_category_values = superCategoryValues[choice];
-                            const get_category_type_values = getCategoryTypeValues[choice];
-                            const get_question_type_values = getQuestionTypeValues[choice];
-                            const get_addGuessingValue = addGuessingValue[choice];
-
-                            $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(
-                                super_category_values.length == 0 ? 'Super Category is required!' : '');
-                            $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
-                                get_category_type_values.length == 0 ? 'Category type is required!' : ''
-                            );
-                            $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(
-                                get_question_type_values.length == 0 ? 'Question type is required!' : ''
-                            );
-                            $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
+                                return (
+                                    super_category_values.length === 0 ||
+                                    get_category_type_values.length === 0 ||
+                                    // get_addGuessingValue.length === 0 || 
+                                    get_question_type_values.length === 0
+                                );
+                            })
+                        ) {
+                            $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                            $('#js-ckeditor-addQue').focus();
                             
-                        });
+                            $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
+                            $('#addTag').focus();
 
-                        return false;
+                            $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
+                            $('#addTag').focus();
+
+                            $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
+                            $('#addTag').focus();
+
+                            $('#questionMultiModal #passNumberError').text(jQuery.type(passNumber) == "null" ?
+                                'Passage Number is required!' : '');
+                            $('#passage_number').focus();
+                            $('#questionMultiModal #passageTypeError').text(passagesType == '' ?
+                                'Passage Type is required!' : '');
+                            $('#passagesType').focus();
+
+                            ans_choices.forEach(choice => {
+                                const super_category_values = superCategoryValues[choice];
+                                const get_category_type_values = getCategoryTypeValues[choice];
+                                const get_question_type_values = getQuestionTypeValues[choice];
+                                // const get_addGuessingValue = addGuessingValue[choice];
+
+                                $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(
+                                    super_category_values.length == 0 ? 'Super Category is required!' : '');
+                                $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
+                                    get_category_type_values.length == 0 ? 'Category type is required!' : ''
+                                );
+                                $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(
+                                    get_question_type_values.length == 0 ? 'Question type is required!' : ''
+                                );
+                                // $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
+                                
+                            });
+
+                            return false;
+                        } else {
+                            $('#questionMultiModal #questionError').text('');
+                            $('#questionMultiModal #tagError').text('');
+                            // $('#questionMultiModal #categoryTypeError').text('');
+                            // $('#questionMultiModal #questionTypeError').text('');
+                            $('#questionMultiModal #passNumberError').text('');
+                            $('#questionMultiModal #passageTypeError').text('');
+                            // $('#questionMultiModal #superCategoryError').text('');
+
+                            ans_choices.forEach(choice => {
+                                emptyError('questionMultiModal', disp_section, choice);
+                                // $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
+                            });
+                        }
                     } else {
-                        $('#questionMultiModal #questionError').text('');
-                        $('#questionMultiModal #tagError').text('');
-                        // $('#questionMultiModal #categoryTypeError').text('');
-                        // $('#questionMultiModal #questionTypeError').text('');
-                        $('#questionMultiModal #passNumberError').text('');
-                        $('#questionMultiModal #passageTypeError').text('');
-                        // $('#questionMultiModal #superCategoryError').text('');
+                        if (question == '' ||
+                            tags.length == 0 ||
+                            diffValue == '' ||
+                            discValue == '' ||
+                            format == '' ||
+                            testSectionType == '' ||
+                            ans_choices.some(choice => {
+                                const super_category_values = superCategoryValues[choice];
+                                const get_category_type_values = getCategoryTypeValues[choice];
+                                const get_question_type_values = getQuestionTypeValues[choice];
+                                // const get_addGuessingValue = addGuessingValue[choice];
 
-                        ans_choices.forEach(choice => {
-                            emptyError('questionMultiModal', disp_section, choice);
-                            $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
-                        });
+                                return (
+                                    super_category_values.length === 0 ||
+                                    get_category_type_values.length === 0 ||
+                                    // get_addGuessingValue.length === 0 ||
+                                    get_question_type_values.length === 0
+                                );
+                            })
+                        ) {
+                            $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                            $('#js-ckeditor-addQue').focus();
+                            $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
+                            $('#addTag').focus();
+
+                            $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
+                            $('#addTag').focus();
+
+                            $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
+                            $('#addTag').focus();
+
+                            ans_choices.forEach(choice => {
+                                const super_category_values = superCategoryValues[choice];
+                                const get_category_type_values = getCategoryTypeValues[choice];
+                                const get_question_type_values = getQuestionTypeValues[choice];
+                                // const get_addGuessingValue = addGuessingValue[choice];
+
+                                $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(
+                                    super_category_values.length == 0 ? 'Super Category is required!' : '');
+                                $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
+                                    get_category_type_values.length == 0 ? 'Category type is required!' : ''
+                                );
+                                $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(
+                                    get_question_type_values.length == 0 ? 'Question type is required!' : ''
+                                );
+                                // $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
+
+                            });
+
+                            return false;
+                        } else {
+                            $('#questionMultiModal #questionError').text('');
+                            $('#questionMultiModal #tagError').text('');
+
+                            ans_choices.forEach(choice => {
+                                emptyError('questionMultiModal', disp_section, choice); 
+                                // $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
+                            });
+                        }
                     }
-                } else {
-                    if (question == '' ||
-                        tags.length == 0 ||
-                        diffValue == '' ||
-                        discValue == '' ||
-                        format == '' ||
-                        testSectionType == '' ||
-                        ans_choices.some(choice => {
-                            const super_category_values = superCategoryValues[choice];
-                            const get_category_type_values = getCategoryTypeValues[choice];
-                            const get_question_type_values = getQuestionTypeValues[choice];
-                            const get_addGuessingValue = addGuessingValue[choice];
+                }else{
+                    if ($('#passageRequired_1').is(':checked')) {
+                        if (
+                            question == '' ||
+                            tags.length == 0 ||
+                            diffValue == '' ||
+                            discValue == '' ||
+                            jQuery.type(passNumber) == "null" ||
+                            passagesType == '' ||
+                            format == '' ||
+                            testSectionType == '' ||
+                            ans_choices.some(choice => {
+                                const super_category_values = superCategoryValues[choice];
+                                const get_category_type_values = getCategoryTypeValues[choice];
+                                const get_question_type_values = getQuestionTypeValues[choice];
+                                const get_addGuessingValue = addGuessingValue[choice];
 
-                            return (
-                                super_category_values.length === 0 ||
-                                get_category_type_values.length === 0 ||
-                                get_addGuessingValue.length === 0 ||
-                                get_question_type_values.length === 0
-                            );
-                        })
-                    ) {
-                        $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
-                        $('#js-ckeditor-addQue').focus();
-                        $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
-                        $('#addTag').focus();
+                                return (
+                                    super_category_values.length === 0 ||
+                                    get_category_type_values.length === 0 ||
+                                    get_addGuessingValue.length === 0 || 
+                                    get_question_type_values.length === 0
+                                );
+                            })
+                        ) {
+                            $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                            $('#js-ckeditor-addQue').focus();
+                            
+                            $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
+                            $('#addTag').focus();
 
-                        $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
-                        $('#addTag').focus();
+                            $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
+                            $('#addTag').focus();
 
-                        $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
-                        $('#addTag').focus();
+                            $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
+                            $('#addTag').focus();
 
-                        ans_choices.forEach(choice => {
-                            const super_category_values = superCategoryValues[choice];
-                            const get_category_type_values = getCategoryTypeValues[choice];
-                            const get_question_type_values = getQuestionTypeValues[choice];
-                            const get_addGuessingValue = addGuessingValue[choice];
+                            $('#questionMultiModal #passNumberError').text(jQuery.type(passNumber) == "null" ?
+                                'Passage Number is required!' : '');
+                            $('#passage_number').focus();
+                            $('#questionMultiModal #passageTypeError').text(passagesType == '' ?
+                                'Passage Type is required!' : '');
+                            $('#passagesType').focus();
 
-                            $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(
-                                super_category_values.length == 0 ? 'Super Category is required!' : '');
-                            $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
-                                get_category_type_values.length == 0 ? 'Category type is required!' : ''
-                            );
-                            $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(
-                                get_question_type_values.length == 0 ? 'Question type is required!' : ''
-                            );
-                            $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
+                            ans_choices.forEach(choice => {
+                                const super_category_values = superCategoryValues[choice];
+                                const get_category_type_values = getCategoryTypeValues[choice];
+                                const get_question_type_values = getQuestionTypeValues[choice];
+                                const get_addGuessingValue = addGuessingValue[choice];
 
-                        });
+                                $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(
+                                    super_category_values.length == 0 ? 'Super Category is required!' : '');
+                                $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
+                                    get_category_type_values.length == 0 ? 'Category type is required!' : ''
+                                );
+                                $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(
+                                    get_question_type_values.length == 0 ? 'Question type is required!' : ''
+                                );
+                                $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
+                                
+                            });
 
-                        return false;
+                            return false;
+                        } else {
+                            $('#questionMultiModal #questionError').text('');
+                            $('#questionMultiModal #tagError').text('');
+                            // $('#questionMultiModal #categoryTypeError').text('');
+                            // $('#questionMultiModal #questionTypeError').text('');
+                            $('#questionMultiModal #passNumberError').text('');
+                            $('#questionMultiModal #passageTypeError').text('');
+                            // $('#questionMultiModal #superCategoryError').text('');
+
+                            ans_choices.forEach(choice => {
+                                emptyError('questionMultiModal', disp_section, choice);
+                                $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
+                            });
+                        }
                     } else {
-                        $('#questionMultiModal #questionError').text('');
-                        $('#questionMultiModal #tagError').text('');
+                        if (question == '' ||
+                            tags.length == 0 ||
+                            diffValue == '' ||
+                            discValue == '' ||
+                            format == '' ||
+                            testSectionType == '' ||
+                            ans_choices.some(choice => {
+                                const super_category_values = superCategoryValues[choice];
+                                const get_category_type_values = getCategoryTypeValues[choice];
+                                const get_question_type_values = getQuestionTypeValues[choice];
+                                const get_addGuessingValue = addGuessingValue[choice];
 
-                        ans_choices.forEach(choice => {
-                            emptyError('questionMultiModal', disp_section, choice); 
-                            $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
-                        });
+                                return (
+                                    super_category_values.length === 0 ||
+                                    get_category_type_values.length === 0 ||
+                                    get_addGuessingValue.length === 0 ||
+                                    get_question_type_values.length === 0
+                                );
+                            })
+                        ) {
+                            $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                            $('#js-ckeditor-addQue').focus();
+                            $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
+                            $('#addTag').focus();
+
+                            $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
+                            $('#addTag').focus();
+
+                            $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
+                            $('#addTag').focus();
+
+                            ans_choices.forEach(choice => {
+                                const super_category_values = superCategoryValues[choice];
+                                const get_category_type_values = getCategoryTypeValues[choice];
+                                const get_question_type_values = getQuestionTypeValues[choice];
+                                const get_addGuessingValue = addGuessingValue[choice];
+
+                                $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(
+                                    super_category_values.length == 0 ? 'Super Category is required!' : '');
+                                $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
+                                    get_category_type_values.length == 0 ? 'Category type is required!' : ''
+                                );
+                                $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(
+                                    get_question_type_values.length == 0 ? 'Question type is required!' : ''
+                                );
+                                $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
+
+                            });
+
+                            return false;
+                        } else {
+                            $('#questionMultiModal #questionError').text('');
+                            $('#questionMultiModal #tagError').text('');
+
+                            ans_choices.forEach(choice => {
+                                emptyError('questionMultiModal', disp_section, choice); 
+                                $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
+                            });
+                        }
                     }
                 }
 
@@ -6760,132 +6903,270 @@
             var passagesTypeTxt = $(".editPassagesType option:selected").text();
             var testSectionType = $('#testSectionTypeRead').val();
 
-            if ($('#passageRequired_2').is(':checked')) {
-                // console.log('checked 1');
-                if (
-                    question == '' ||
-                    tags.length == 0 ||
-                    jQuery.type(passNumber) == "null" ||
-                    passagesType == '' ||
-                    format == '' ||
-                    testSectionType == '' ||
-                    ans_choices.some(choice => {
-                        const super_category_values = superCategoryValues[choice];
-                        const get_category_type_values = getCategoryTypeValues[choice];
-                        const get_question_type_values = getQuestionTypeValues[choice];
-                        const get_guessingValue = guessingValue[choice];
+            var ifFillChoice = $('.editMultipleChoice').val();
+            // console.log(ifFillChoice);
+            if(ifFillChoice == 2) {
+                if ($('#passageRequired_2').is(':checked')) {
+                    console.log('checked 1');
+                    if (
+                        question == '' ||
+                        tags.length == 0 ||
+                        jQuery.type(passNumber) == "null" ||
+                        passagesType == '' ||
+                        format == '' ||
+                        testSectionType == '' ||
+                        ans_choices.some(choice => {
+                            const super_category_values = superCategoryValues[choice];
+                            const get_category_type_values = getCategoryTypeValues[choice];
+                            const get_question_type_values = getQuestionTypeValues[choice];
+                            // const get_guessingValue = guessingValue[choice];
 
-                        return (
-                            (super_category_values && super_category_values?.length) === 0 ||
-                            get_category_type_values.length === 0 ||
-                            get_guessingValue.length === 0 ||
-                            get_question_type_values.length === 0
-                        );
-                    })
-                ) {
-                    $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
-                    $('#js-ckeditor-edit-addQue').focus();
-                    $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
-                    $('#questionTag').focus();
-                    $('#editQuestionMultiModal #passNumberError').text(jQuery.type(passNumber) == 'null' ?
-                        'Passage Number is required!' : '');
-                    $('#edit_passage_number').focus();
-                    $('#editQuestionMultiModal #passageTypeError').text(jQuery.type(passagesType) == 'null' ?
-                        'Passage Type is required!' : '');
-                    $('#edit_passage_type').focus();
+                            return (
+                                (super_category_values && super_category_values?.length) === 0 ||
+                                get_category_type_values.length === 0 ||
+                                // get_guessingValue.length === 0 ||
+                                get_question_type_values.length === 0
+                            );
+                        })
+                    ) {
+                        console.log('checked 2');
+                        $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                        $('#js-ckeditor-edit-addQue').focus();
+                        $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
+                        $('#questionTag').focus();
+                        $('#editQuestionMultiModal #passNumberError').text(jQuery.type(passNumber) == 'null' ?
+                            'Passage Number is required!' : '');
+                        $('#edit_passage_number').focus();
+                        $('#editQuestionMultiModal #passageTypeError').text(jQuery.type(passagesType) == 'null' ?
+                            'Passage Type is required!' : '');
+                        $('#edit_passage_type').focus();
 
-                    ans_choices.forEach(choice => {
-                        const super_category_values = superCategoryValues[choice];
-                        const get_category_type_values = getCategoryTypeValues[choice];
-                        const get_question_type_values = getQuestionTypeValues[choice];
-                        const get_guessingValue = guessingValue[choice];
+                        ans_choices.forEach(choice => {
+                            const super_category_values = superCategoryValues[choice];
+                            const get_category_type_values = getCategoryTypeValues[choice];
+                            const get_question_type_values = getQuestionTypeValues[choice];
+                            // const get_guessingValue = guessingValue[choice];
 
-                        $(`#editQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(
-                            !super_category_values || super_category_values.length == 0 ?
-                            'Super Category is required!' : '');
-                        $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
-                            get_category_type_values.length == 0 ? 'Category type is required!' : '');
-                        $(`#editQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(
-                            get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(
+                                !super_category_values || super_category_values.length == 0 ?
+                                'Super Category is required!' : '');
+                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
+                                get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(
+                                get_question_type_values.length == 0 ? 'Question type is required!' : '');
 
-                        $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(
-                            get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
-                    
-                    });
+                            // $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(
+                            //     get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
+                        
+                        });
 
-                    return false;
+                        return false;
+                    } else {
+                        console.log('checked 3');
+                        $('#editQuestionMultiModal #questionError').text('');
+                        $('#editQuestionMultiModal #tagError').text('');
+                        $('#editQuestionMultiModal #passNumberError').text('');
+                        $('#editQuestionMultiModal #passageTypeError').text('');
+
+                        ans_choices.forEach(ans_choice => {
+                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text(
+                                '');
+                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text(
+                                '');
+                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text(
+                                '');
+                            // $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
+                        });
+                    }
                 } else {
-                    $('#editQuestionMultiModal #questionError').text('');
-                    $('#editQuestionMultiModal #tagError').text('');
-                    $('#editQuestionMultiModal #passNumberError').text('');
-                    $('#editQuestionMultiModal #passageTypeError').text('');
+                    console.log('checked 4');
+                    if (question == '' ||
+                        tags == 0 ||
+                        format == '' ||
+                        testSectionType == '' ||
+                        ans_choices.some(choice => {
+                            const super_category_values = superCategoryValues[choice];
+                            const get_category_type_values = getCategoryTypeValues[choice];
+                            const get_question_type_values = getQuestionTypeValues[choice];
+                            // const get_guessingValue = guessingValue[choice];
 
-                    ans_choices.forEach(ans_choice => {
-                        $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text(
-                            '');
-                        $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text(
-                            '');
-                        $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text(
-                            '');
-                        $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
-                    });
+                            return (
+                                (super_category_values && super_category_values?.length) === 0 ||
+                                get_category_type_values.length === 0 ||
+                                // get_guessingValue.length === 0 ||
+                                get_question_type_values.length === 0
+                            );
+                        })
+                    ) {
+                        $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                        $('#js-ckeditor-edit-addQue').focus();
+                        $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
+                        $('#questionTag').focus();
+
+                        ans_choices.forEach(choice => {
+                            const super_category_values = superCategoryValues[choice];
+                            const get_category_type_values = getCategoryTypeValues[choice];
+                            const get_question_type_values = getQuestionTypeValues[choice];
+                            // const get_guessingValue = guessingValue[choice];
+
+                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(
+                                !super_category_values || super_category_values.length == 0 ?
+                                'Super Category is required!' : '');
+                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
+                                get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(
+                                get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                            
+                            // $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(
+                            //     get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
+                            
+                        });
+                        return false;
+                    } else {
+
+                        console.log('checked 5');
+                        $('#editQuestionMultiModal #questionError').text('');
+                        $('#editQuestionMultiModal #tagError').text('');
+
+                        ans_choices.forEach(ans_choice => {
+                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text(
+                                '');
+                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text(
+                                '');
+                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text(
+                                '');
+                            // $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
+                        });
+                    }
                 }
-            } else {
-                if (question == '' ||
-                    tags == 0 ||
-                    format == '' ||
-                    testSectionType == '' ||
-                    ans_choices.some(choice => {
-                        const super_category_values = superCategoryValues[choice];
-                        const get_category_type_values = getCategoryTypeValues[choice];
-                        const get_question_type_values = getQuestionTypeValues[choice];
-                        const get_guessingValue = guessingValue[choice];
+            }else{
+                if ($('#passageRequired_2').is(':checked')) {
+                    console.log('checked 1 not fill choice');
+                    if (
+                        question == '' ||
+                        tags.length == 0 ||
+                        jQuery.type(passNumber) == "null" ||
+                        passagesType == '' ||
+                        format == '' ||
+                        testSectionType == '' ||
+                        ans_choices.some(choice => {
+                            const super_category_values = superCategoryValues[choice];
+                            const get_category_type_values = getCategoryTypeValues[choice];
+                            const get_question_type_values = getQuestionTypeValues[choice];
+                            const get_guessingValue = guessingValue[choice];
 
-                        return (
-                            (super_category_values && super_category_values?.length) === 0 ||
-                            get_category_type_values.length === 0 ||
-                            get_guessingValue.length === 0 ||
-                            get_question_type_values.length === 0
-                        );
-                    })
-                ) {
-                    $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
-                    $('#js-ckeditor-edit-addQue').focus();
-                    $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
-                    $('#questionTag').focus();
+                            return (
+                                (super_category_values && super_category_values?.length) === 0 ||
+                                get_category_type_values.length === 0 ||
+                                get_guessingValue.length === 0 ||
+                                get_question_type_values.length === 0
+                            );
+                        })
+                    ) {
+                        $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                        $('#js-ckeditor-edit-addQue').focus();
+                        $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
+                        $('#questionTag').focus();
+                        $('#editQuestionMultiModal #passNumberError').text(jQuery.type(passNumber) == 'null' ?
+                            'Passage Number is required!' : '');
+                        $('#edit_passage_number').focus();
+                        $('#editQuestionMultiModal #passageTypeError').text(jQuery.type(passagesType) == 'null' ?
+                            'Passage Type is required!' : '');
+                        $('#edit_passage_type').focus();
 
-                    ans_choices.forEach(choice => {
-                        const super_category_values = superCategoryValues[choice];
-                        const get_category_type_values = getCategoryTypeValues[choice];
-                        const get_question_type_values = getQuestionTypeValues[choice];
-                        const get_guessingValue = guessingValue[choice];
+                        ans_choices.forEach(choice => {
+                            const super_category_values = superCategoryValues[choice];
+                            const get_category_type_values = getCategoryTypeValues[choice];
+                            const get_question_type_values = getQuestionTypeValues[choice];
+                            const get_guessingValue = guessingValue[choice];
 
-                        $(`#editQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(
-                            !super_category_values || super_category_values.length == 0 ?
-                            'Super Category is required!' : '');
-                        $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
-                            get_category_type_values.length == 0 ? 'Category type is required!' : '');
-                        $(`#editQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(
-                            get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(
+                                !super_category_values || super_category_values.length == 0 ?
+                                'Super Category is required!' : '');
+                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
+                                get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(
+                                get_question_type_values.length == 0 ? 'Question type is required!' : '');
+
+                            $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(
+                                get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
                         
-                        $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(
-                            get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
-                        
-                    });
-                    return false;
+                        });
+
+                        return false;
+                    } else {
+                        $('#editQuestionMultiModal #questionError').text('');
+                        $('#editQuestionMultiModal #tagError').text('');
+                        $('#editQuestionMultiModal #passNumberError').text('');
+                        $('#editQuestionMultiModal #passageTypeError').text('');
+
+                        ans_choices.forEach(ans_choice => {
+                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text(
+                                '');
+                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text(
+                                '');
+                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text(
+                                '');
+                            $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
+                        });
+                    }
                 } else {
-                    $('#editQuestionMultiModal #questionError').text('');
-                    $('#editQuestionMultiModal #tagError').text('');
+                    if (question == '' ||
+                        tags == 0 ||
+                        format == '' ||
+                        testSectionType == '' ||
+                        ans_choices.some(choice => {
+                            const super_category_values = superCategoryValues[choice];
+                            const get_category_type_values = getCategoryTypeValues[choice];
+                            const get_question_type_values = getQuestionTypeValues[choice];
+                            const get_guessingValue = guessingValue[choice];
 
-                    ans_choices.forEach(ans_choice => {
-                        $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text(
-                            '');
-                        $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text(
-                            '');
-                        $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text(
-                            '');
-                        $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
-                    });
+                            return (
+                                (super_category_values && super_category_values?.length) === 0 ||
+                                get_category_type_values.length === 0 ||
+                                get_guessingValue.length === 0 ||
+                                get_question_type_values.length === 0
+                            );
+                        })
+                    ) {
+                        $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                        $('#js-ckeditor-edit-addQue').focus();
+                        $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
+                        $('#questionTag').focus();
+
+                        ans_choices.forEach(choice => {
+                            const super_category_values = superCategoryValues[choice];
+                            const get_category_type_values = getCategoryTypeValues[choice];
+                            const get_question_type_values = getQuestionTypeValues[choice];
+                            const get_guessingValue = guessingValue[choice];
+
+                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(
+                                !super_category_values || super_category_values.length == 0 ?
+                                'Super Category is required!' : '');
+                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
+                                get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(
+                                get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                            
+                            $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(
+                                get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
+                            
+                        });
+                        return false;
+                    } else {
+                        $('#editQuestionMultiModal #questionError').text('');
+                        $('#editQuestionMultiModal #tagError').text('');
+
+                        ans_choices.forEach(ans_choice => {
+                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text(
+                                '');
+                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text(
+                                '');
+                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text(
+                                '');
+                            $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
+                        });
+                    }
                 }
             }
 
