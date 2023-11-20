@@ -1628,7 +1628,7 @@ class TestPrepController extends Controller
                         }
                     }
                 }
-
+                // dump($next_section_id);
                 if (strpos($currectSection->section_title, 'hard') == true) {
                     $redirectUrl = 0;
 
@@ -1647,13 +1647,14 @@ class TestPrepController extends Controller
                             // dump($rwSectionId);
 
                             $breakTime = 1;
-                            if($currectSection->practice_test_type == 'Math_with_calculator') {
-                                // $next_section_id = $mathSectionId->id;
+                            if(in_array($currectSection->practice_test_type,['Math_with_calculator','Math_no_calculator'])) {
                                 $next_section_id = $rwSectionId->id;
+                                // dump($next_section_id);
                             }else{
-                                // $next_section_id = $mathSectionId->id;
                                 $next_section_id = $mathSectionId->id;
+                                // dump($next_section_id);
                             }
+                            
                         }
                     }
                 }
@@ -2228,74 +2229,78 @@ class TestPrepController extends Controller
         $count2 = 0;
         $count3 = 0;
         $count4 = 0;
+        $whichSection = 0;
         foreach($store_sections_details as $key => $singletestSections) {
+            if(in_array($singletestSections['Sections'][0]['format'],['DSAT' ,'DPSAT'])) {
+                $whichSection = 1;
 
-            if (isset($singletestSections['Sections']) && isset($singletestSections['Sections_question'])) {
-                if($singletestSections['Sections'][0]['practice_test_type'] == 'Math'){
-                    $mathCount = count($singletestSections['Sections_question']);
-                }
-
-                if($singletestSections['Sections'][0]['practice_test_type'] == 'Math_with_calculator'){
-                    $count1 = count($singletestSections['Sections_question']);
-                }
-
-                if($singletestSections['Sections'][0]['practice_test_type'] == 'Math_no_calculator'){
-                    $count2 = count($singletestSections['Sections_question']);
-                }
-
-                
-
-                if($singletestSections['Sections'][0]['practice_test_type'] == 'Reading_And_Writing'){
-                    $rwCount = count($singletestSections['Sections_question']);
-                }
-
-                if($singletestSections['Sections'][0]['practice_test_type'] == 'Easy_Reading_And_Writing'){
-                    $count3 = count($singletestSections['Sections_question']);
-                }
-
-                if($singletestSections['Sections'][0]['practice_test_type'] == 'Hard_Reading_And_Writing'){
-                    $count4 = count($singletestSections['Sections_question']);
-                }
-
-                
-            }
-
-            if (isset($singletestSections['Sections'])) {
-                array_push($sectionIdsArray, (int) $singletestSections['Sections'][0]['id']);
-                if($i == 0) {
-                    $firstSectionId = $singletestSections['Sections'][0]['id'];
-                    $i++;
-                }
-            }
-
-            if(in_array($singletestSections['Sections'][0]['format'],['DSAT' ,'DPSAT'])){
-                if (isset($singletestSections['Sections_question'])) {
-                    if (isset($singletestSections['check_if_section_completed']) &&
-                        $singletestSections['check_if_section_completed'][0] == 'yes') {
-                        if(in_array($singletestSections['Sections'][0]['practice_test_type'],['Math' ,'Reading_And_Writing'])){
-                            $totalQuest = $totalQuest + (isset($singletestSections['Sections'][0]['yesSectionCount']) ? $singletestSections['Sections'][0]['yesSectionCount'] : 0 );
-                        }
+                if (isset($singletestSections['Sections']) && isset($singletestSections['Sections_question'])) {
+                    if($singletestSections['Sections'][0]['practice_test_type'] == 'Math'){
+                        $mathCount = count($singletestSections['Sections_question']);
                     }
-                }
-            }
 
-            if (isset($singletestSections['Sections_question'])) {
-                if (isset($singletestSections['check_if_section_completed']) &&
-                    $singletestSections['check_if_section_completed'][0] == 'no'){
-                    if(in_array($singletestSections['Sections'][0]['practice_test_type'],['Math' ,'Reading_And_Writing'])){
-                        $totalQuest = $totalQuest + (isset($singletestSections['Sections'][0]['noSectionCount']) ? $singletestSections['Sections'][0]['noSectionCount'] : 0 );
+                    if($singletestSections['Sections'][0]['practice_test_type'] == 'Math_with_calculator'){
+                        $count1 = count($singletestSections['Sections_question']);
+                    }
+
+                    if($singletestSections['Sections'][0]['practice_test_type'] == 'Math_no_calculator'){
+                        $count2 = count($singletestSections['Sections_question']);
+                    }
+
+                    if($singletestSections['Sections'][0]['practice_test_type'] == 'Reading_And_Writing'){
+                        $rwCount = count($singletestSections['Sections_question']);
+                    }
+
+                    if($singletestSections['Sections'][0]['practice_test_type'] == 'Easy_Reading_And_Writing'){
+                        $count3 = count($singletestSections['Sections_question']);
+                    }
+
+                    if($singletestSections['Sections'][0]['practice_test_type'] == 'Hard_Reading_And_Writing'){
+                        $count4 = count($singletestSections['Sections_question']);
                     }
                     
                 }
+
+                if (isset($singletestSections['Sections'])) {
+                    array_push($sectionIdsArray, (int) $singletestSections['Sections'][0]['id']);
+                    if($i == 0) {
+                        $firstSectionId = $singletestSections['Sections'][0]['id'];
+                        $i++;
+                    }
+                }
+
+                if(in_array($singletestSections['Sections'][0]['format'],['DSAT' ,'DPSAT'])){
+                    if (isset($singletestSections['Sections_question'])) {
+                        if (isset($singletestSections['check_if_section_completed']) &&
+                            $singletestSections['check_if_section_completed'][0] == 'yes') {
+                            if(in_array($singletestSections['Sections'][0]['practice_test_type'],['Math' ,'Reading_And_Writing'])){
+                                $totalQuest = $totalQuest + (isset($singletestSections['Sections'][0]['yesSectionCount']) ? $singletestSections['Sections'][0]['yesSectionCount'] : 0 );
+                            }
+                        }
+                    }
+                }
+
+                if (isset($singletestSections['Sections_question'])) {
+                    if (isset($singletestSections['check_if_section_completed']) &&
+                        $singletestSections['check_if_section_completed'][0] == 'no'){
+                        if(in_array($singletestSections['Sections'][0]['practice_test_type'],['Math' ,'Reading_And_Writing'])){
+                            $totalQuest = $totalQuest + (isset($singletestSections['Sections'][0]['noSectionCount']) ? $singletestSections['Sections'][0]['noSectionCount'] : 0 );
+                        }
+                        
+                    }
+                }
+                // if(isset($sections['Sections'][0]['yesSectionCount'])) {
+                //     $totalAttempetdQuestions = $totalAttempetdQuestions + $sections['Sections'][0]['yesSectionCount'];
+                //     $totalNonAttempetdQuestions = 0;
+                // }
+                // if(isset($sections['Sections'][0]['yesSectionCount'])) {
+                //     $totalNonAttempetdQuestions = $totalNonAttempetdQuestions + $sections['Sections'][0]['noSectionCount'];
+                // }
+            }else{
+                $whichSection = 0;
             }
-            // if(isset($sections['Sections'][0]['yesSectionCount'])) {
-            //     $totalAttempetdQuestions = $totalAttempetdQuestions + $sections['Sections'][0]['yesSectionCount'];
-            //     $totalNonAttempetdQuestions = 0;
-            // }
-            // if(isset($sections['Sections'][0]['yesSectionCount'])) {
-            //     $totalNonAttempetdQuestions = $totalNonAttempetdQuestions + $sections['Sections'][0]['noSectionCount'];
-            // }
         }
+        
         if($count1 >= $count2) {
             $mathCount = $mathCount + $count1;
         }else{
@@ -2307,9 +2312,18 @@ class TestPrepController extends Controller
             $rwCount = $rwCount + $count4;
         }
         $newTotal = $mathCount + $rwCount;
+        // if(($rwCount && $mathCount ) != 0){
+            if($whichSection == 1){
+                if($rwCount != 0){
+                    $store_sections_details[$rwSectionID]['Sections'][0]['section_quest_count'] = $rwCount;
+                }
+                if($mathCount != 0){
+                    $store_sections_details[$mathSectionID]['Sections'][0]['section_quest_count'] = $mathCount;
+                }
+            }
+        // }
 
-        $store_sections_details[$rwSectionID]['Sections'][0]['section_quest_count'] = $rwCount;
-        $store_sections_details[$mathSectionID]['Sections'][0]['section_quest_count'] = $mathCount;
+        
 
 
         // dump($mathSectionCount);
