@@ -49,6 +49,7 @@
 @endsection
 
 @section('user-content')
+
     <!-- Main Container -->
     <main id="main-container">
         <div class="bg-body-light">
@@ -105,19 +106,35 @@
                                         <option value="untimed">Untimed</option>
                                     </select>
                                 @endif
-                    
-                                {{--  href="/user/practice-test/{{ $firstSectionId }}?test_id={{ $testSections[0]->testid }}&time=regular&section=all&sections={{  htmlspecialchars(json_encode($sectionIdsArray), JSON_NUMERIC_CHECK) }}" style="white-space: nowrap" data-test_id="{{ $selected_test_id }}"--}}
-                                @php
-                                    $str = 'test_id='.$testSections[0]->testid.'&time=regular&section=all&sections='. htmlspecialchars(json_encode($sectionIdsArray), JSON_NUMERIC_CHECK);
-                                @endphp
-                                <a href="{{ route('startAllSections', ['sec_id' => $firstSectionId,'str' => $str, 'id' => $testSections[0]->testid ]) }}" style="white-space: nowrap" data-test_id="{{ $selected_test_id }}"
+
+                                
+                                
+                                    @if (isset($testSections[0]->testid) && ($firstSectionId != 0)) 
+                                        @php
+                                            $str = 'test_id='.$testSections[0]->testid.'&time=regular&section=all&sections='. htmlspecialchars(json_encode($sectionIdsArray), JSON_NUMERIC_CHECK);
+                                        @endphp
+                                        <a href="{{ route('startAllSections', ['sec_id' => $firstSectionId,'str' => $str, 'id' => $testSections[0]->testid ]) }}" style="white-space: nowrap" data-test_id="{{ $selected_test_id }}"
+                                            class="btn btn-alt-primary fs-8  ms-2">
+                                            <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
+                                        </a>
+                                        <a href="{{ route('reset_test', ['id' => $testSections[0]->id]) . '?test_id=' . $testSections[0]->testid . '&type=all' }}"
+                                            style="white-space: nowrap" class="btn btn-alt-primary fs-8 mx-2">
+                                            <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Reset Test
+                                        </a>
+                                    @else
+                                    <a href="#" style="white-space: nowrap" data-test_id="{{ $selected_test_id }}"
                                         class="btn btn-alt-primary fs-8  ms-2">
                                         <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
                                     </a>
-                                    <a href="{{ route('reset_test', ['id' => $testSections[0]->id]) . '?test_id=' . $testSections[0]->testid . '&type=all' }}"
+                                    <a href="#"
                                         style="white-space: nowrap" class="btn btn-alt-primary fs-8 mx-2">
                                         <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Reset Test
                                     </a>
+                                    @endif
+
+                                
+                                
+                            
                                 {{--
                                 @if ($check_test_completed == 'yes')
                                     @if (isset($testSections[0]) && !empty($testSections[0]))
