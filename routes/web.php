@@ -181,6 +181,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         //new
         Route::post('/score/save', [PracticeQuestionController::class, 'saveScore'])->name('score_save');
         Route::post('/check/score', [PracticeQuestionController::class, 'checkScore'])->name('check_score');
+        Route::post('/check/digi-score', [PracticeQuestionController::class, 'digiCheckScore'])->name('digi_check_score');
         Route::post('/check/section', [PracticeQuestionController::class, 'checkSectionType'])->name('check_section_type');
 
         Route::post('addPracticeTest', [PracticeTestsController::class, 'addPracticeTest'])->name('addPracticeTest');

@@ -352,12 +352,12 @@
 
                                                     </div>
                                                     <div>
-                                                        {{--
+                                                        
                                                         <a href="#" style='padding: 5px 20px fs-5'
                                                             class="btn btn-alt-success text-success 1">
                                                             {{ $score[$singletestSections['Sections'][0]['id']] }}
                                                         </a>
-                                                        --}}
+                                                    
                                                         {{--                                                        
                                                         <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&type=single' }}"
                                                             style='padding: 5px 20px fs-5'
@@ -457,6 +457,7 @@
                             </div>
                             <hr class="m-0">
                             <div class="block-content pb-3 d-flex justify-content-center align-items-center">
+                                
                                 @if ($check_test_completed == 'yes')
                                     <a href="#" style='padding: 5px 20px fs-5'
                                         class="btn btn-alt-success text-success">

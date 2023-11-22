@@ -2053,7 +2053,7 @@ class TestPrepController extends Controller
         $section_score = [];
         foreach ($sections as $section) {
             if ($section['practice_test_type'] == 'Math_no_calculator') {
-                $other_section = PracticeTestSection::where('testid', $id)->whereIn('practice_test_type', ['Math','Math_with_calculator', 'Math_no_calculator'])->whereNotIn('id', [$section['id']])->pluck('id')->toArray();
+                $other_section = PracticeTestSection::where('testid', $id)->whereIn('practice_test_type', ['Math_with_calculator', 'Math_no_calculator'])->whereNotIn('id', [$section['id']])->pluck('id')->toArray();
                 $other_right = 0;
                 foreach ($other_section as $sec) {
                     $other_right += count($count_right_question[$sec]);
@@ -2066,7 +2066,7 @@ class TestPrepController extends Controller
                     $section_score[$section['id']] = 0;
                 }
             } else if ($section['practice_test_type'] == 'Math_with_calculator') {
-                $other_section = PracticeTestSection::where('testid', $id)->whereIn('practice_test_type', ['Math','Math_no_calculator', 'Math_with_calculator'])->whereNotIn('id', [$section['id']])->pluck('id')->toArray();
+                $other_section = PracticeTestSection::where('testid', $id)->whereIn('practice_test_type', ['Math_no_calculator', 'Math_with_calculator'])->whereNotIn('id', [$section['id']])->pluck('id')->toArray();
                 $other_right = 0;
                 foreach ($other_section as $sec) {
                     $other_right += count($count_right_question[$sec]);
@@ -2114,7 +2114,7 @@ class TestPrepController extends Controller
             $total_score = $total_score;
         }
 
-        // also put this check for other tyep of tests.
+        // also put this check for other type of tests.
         $mainSectionsCount = 0;
         $mathSectionID = 0;
         $rwSectionID = 0;
@@ -2211,8 +2211,6 @@ class TestPrepController extends Controller
                     }
                 }
             }
-
-            
         }
         $totalAttempetdQuestions = 0;
         $totalNonAttempetdQuestions = 0;
@@ -2289,13 +2287,6 @@ class TestPrepController extends Controller
                         
                     }
                 }
-                // if(isset($sections['Sections'][0]['yesSectionCount'])) {
-                //     $totalAttempetdQuestions = $totalAttempetdQuestions + $sections['Sections'][0]['yesSectionCount'];
-                //     $totalNonAttempetdQuestions = 0;
-                // }
-                // if(isset($sections['Sections'][0]['yesSectionCount'])) {
-                //     $totalNonAttempetdQuestions = $totalNonAttempetdQuestions + $sections['Sections'][0]['noSectionCount'];
-                // }
             }else{
                 $whichSection = 0;
             }
@@ -2324,8 +2315,6 @@ class TestPrepController extends Controller
         // }
 
         
-
-
         // dump($mathSectionCount);
         // dump($readingSectionCount);
         // dump($store_sections_details);
