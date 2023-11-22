@@ -2341,7 +2341,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                 required
                                                 type="number" id="discValue" name="disc_value">
                                 </div>
-                                <span class="text-danger" id="disc-valueError"></span>
+                                <span class="text-danger" id="discValueError"></span>
                             </div>
                         </div>
                     </div>
@@ -4776,6 +4776,8 @@ aria-hidden="true">
                         question == '' ||
                         tags.length == 0 ||
                         jQuery.type(passNumber) == "null" ||
+                        diffValue == '' ||
+                        discValue == '' ||
                         passagesType == '' ||
                         format == '' ||
                         testSectionType == '' ||
@@ -4800,6 +4802,11 @@ aria-hidden="true">
                         $('#js-ckeditor-addQue').focus();
                         $('#questionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
                         $('#editQuestionTag').focus();
+                         
+                        $('#questionMultiModal #diffValueError').text(diffValue == '' ? 'Diff value is required!' : '');
+                        $('#diffValueEdit').focus();
+                        $('#questionMultiModal #discValueError').text(discValue == '' ? 'Disc value is required!' : '');
+                        $('#discValueEdit').focus();
 
                         $('#questionMultiModal #passNumberError').text(passNumber =='' ? 'Passage Number is required!' : '');
                         $('#passage_number').focus();
@@ -4829,6 +4836,9 @@ aria-hidden="true">
                         $('#questionMultiModal #passNumberError').text('');
                         $('#questionMultiModal #passageTypeError').text('');
 
+                        $('#questionMultiModal #diffValueError').text('');
+                        $('#questionMultiModal #discValueError').text('');
+
                         ans_choices.forEach(ans_choice => {
                             $(`#questionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text('');
                             $(`#questionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text('');
@@ -4842,6 +4852,8 @@ aria-hidden="true">
                     if(question =='' ||
                         tags ==0 ||
                         format =='' ||
+                        diffValue == '' ||
+                        discValue == '' ||
                         testSectionType =='' ||
                         ans_choices.some(choice => {
                             const super_category_values = superCategoryValues[choice];
@@ -4863,6 +4875,11 @@ aria-hidden="true">
                         $('#js-ckeditor-addQue').focus();
                         $('#questionMultiModal #tagError').text(tags =='' ? 'Tag is required!' : '');
                         $('#editQuestionTag').focus();
+
+                        $('#questionMultiModal #diffValueError').text(diffValue == '' ? 'Diff value is required!' : '');
+                        $('#diffValueEdit').focus();
+                        $('#questionMultiModal #discValueError').text(discValue == '' ? 'Disc value is required!' : '');
+                        $('#discValueEdit').focus();
 
                         ans_choices.forEach(choice => {
                             const super_category_values = superCategoryValues[choice];
@@ -4887,6 +4904,9 @@ aria-hidden="true">
                         // $('#questionMultiModal .validError').text('');
                         $('#questionMultiModal #questionError').text('');
                         $('#questionMultiModal #tagError').text('');
+
+                        $('#questionMultiModal #diffValueError').text('');
+                        $('#questionMultiModal #discValueError').text('');
 
                         ans_choices.forEach(ans_choice => {
                             $(`#questionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text('');
@@ -5381,7 +5401,6 @@ aria-hidden="true">
             }
 
             if (whichModel == 'section') {
-
                 if (format == '' || testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0') {
                     $('#sectionModal .validError').text('Below fields are required!');
                     return false;
@@ -5651,7 +5670,6 @@ aria-hidden="true">
 
                 var questTypeArr = ['ACT','SAT','PSAT'];
                 if((jQuery.inArray(format, questTypeArr) != -1) || (ifFillChoice == 2)) {
-
                     if($('#passageRequired_1').is(':checked')){
                         if(
                             question =='' ||
@@ -5673,29 +5691,29 @@ aria-hidden="true">
                                 );
                             })
                         ) {
-                                $('#addQuestionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
-                                $('#js-ckeditor-add-addQue').focus();
-                                $('#addQuestionMultiModal #tagError').text(tags =='' ? 'Tag is required!' : '');
-                                $('#questionTags').focus();
-                                $('#super_category_create').focus();
-                                $('#add_category_type_0').focus();
-                                $('#add_search-input_0').focus();
-                                $('#addQuestionMultiModal #passNumberError').text(passNumber =='' ? 'Passage Number is required!' : '');
-                                $('#add_passage_number').focus();
-                                $('#addQuestionMultiModal #passageTypeError').text(passagesType == '' ? 'Passage Type is required!' : '');
-                                $('.addPassagesType').focus();
+                            $('#addQuestionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
+                            $('#js-ckeditor-add-addQue').focus();
+                            $('#addQuestionMultiModal #tagError').text(tags =='' ? 'Tag is required!' : '');
+                            $('#questionTags').focus();
+                            $('#super_category_create').focus();
+                            $('#add_category_type_0').focus();
+                            $('#add_search-input_0').focus();
+                            $('#addQuestionMultiModal #passNumberError').text(passNumber =='' ? 'Passage Number is required!' : '');
+                            $('#add_passage_number').focus();
+                            $('#addQuestionMultiModal #passageTypeError').text(passagesType == '' ? 'Passage Type is required!' : '');
+                            $('.addPassagesType').focus();
 
-                                ans_choices.forEach(choice => {
-                                    const super_category_values = superCategoryValues[choice];
-                                    const get_category_type_values = getCategoryTypeValues[choice];
-                                    const get_question_type_values = getQuestionTypeValues[choice];
-                                    // const get_addGuessingValue = addGuessingValue[choice];
+                            ans_choices.forEach(choice => {
+                                const super_category_values = superCategoryValues[choice];
+                                const get_category_type_values = getCategoryTypeValues[choice];
+                                const get_question_type_values = getQuestionTypeValues[choice];
+                                // const get_addGuessingValue = addGuessingValue[choice];
 
-                                    $(`#addQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
-                                    $(`#addQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
-                                    $(`#addQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
-                                    // $(`#addQuestionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
-                                });
+                                $(`#addQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
+                                $(`#addQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                                $(`#addQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                                // $(`#addQuestionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
+                            });
                             return false;
                         }
                         else{
@@ -5769,6 +5787,8 @@ aria-hidden="true">
                             question =='' ||
                             tags ==0 ||
                             passNumber == '' ||
+                            diffValue == '' ||
+                            discValue == '' ||
                             passagesType =='' ||
                             format =='' ||
                             testSectionType =='' ||
@@ -5797,6 +5817,11 @@ aria-hidden="true">
                                 $('#addQuestionMultiModal #passageTypeError').text(passagesType == '' ? 'Passage Type is required!' : '');
                                 $('.addPassagesType').focus();
 
+                                $('#addQuestionMultiModal #diffValueError').text(diffValue == '' ? 'Diff value is required!' : '');
+                                $('#diffValue').focus();
+                                $('#addQuestionMultiModal #discValueError').text(discValue == '' ? 'Disc value is required!' : '');
+                                $('#discValue').focus();
+
                                 ans_choices.forEach(choice => {
                                     const super_category_values = superCategoryValues[choice];
                                     const get_category_type_values = getCategoryTypeValues[choice];
@@ -5818,6 +5843,9 @@ aria-hidden="true">
                             $('#addQuestionMultiModal #passageTypeError').text('');
                             $('#addQuestionMultiModal #passageTypeError').text('');
 
+                            $('#addQuestionMultiModal #diffValueError').text('');
+                            $('#addQuestionMultiModal #discValueError').text('');
+                            
                             ans_choices.forEach(choice => {
                                 emptyError('addQuestionMultiModal', disp_section, choice);
                                 $(`#addQuestionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
@@ -5827,6 +5855,8 @@ aria-hidden="true">
                         if(question =='' ||
                             tags.length ==0 ||
                             format =='' ||
+                            diffValue == '' ||
+                            discValue == '' ||
                             testSectionType =='' ||
                             ans_choices.some(choice => {
                                 const super_category_values = superCategoryValues[choice];
@@ -5848,6 +5878,11 @@ aria-hidden="true">
                             $('#addQuestionMultiModal #tagError').text(tags =='' ? 'Tag is required!' : '');
                             $('#questionTags').focus();
 
+                            $('#addQuestionMultiModal #diffValueError').text(diffValue == '' ? 'Diff value is required!' : '');
+                            $('#diffValue').focus();
+                            $('#addQuestionMultiModal #discValueError').text(discValue == '' ? 'Disc value is required!' : '');
+                            $('#discValue').focus();
+
                             ans_choices.forEach(choice => {
                                 // var super_category_values = eval(`super_category_values_${choice}`);
                                 // var get_category_type_values = eval(`get_category_type_values_${choice}`);
@@ -5868,6 +5903,8 @@ aria-hidden="true">
                         }else{
                             $('#addQuestionMultiModal #questionError').text('');
                             $('#addQuestionMultiModal #tagError').text('');
+                            $('#addQuestionMultiModal #diffValueError').text('');
+                            $('#addQuestionMultiModal #discValueError').text('');
 
                             ans_choices.forEach(choice => {
                                 emptyError('addQuestionMultiModal', disp_section, choice);
@@ -7931,18 +7968,19 @@ var test = Sortable.create(addListWithHandleQuestion, {
     });
 
     function validateInput(input) {
-        // console.log(input);
-        // console.log(parseInt(input.value));
         
         var value = parseInt(input.value);
+            value = Math.round(value);
         if (value < 0) {
             value = Math.abs( value );
             input.value = input.min;
-        }
-
-        if (value > parseInt(input.max)) {
-            // console.log('here1');
+        }else if (value == 0) {
+            value = Math.abs( value );
+            input.value = input.min;
+        }else if (value > parseInt(input.max)) {
             input.value = input.max;
+        }else{
+            input.value = value;
         }
     }
 
