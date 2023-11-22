@@ -1163,6 +1163,42 @@ class PracticeQuestionController extends Controller
         return response()->json(['records' => $records]);
     }
 
+    public function digiCheckScore(Request $request)
+    {
+        $test_id = $request->test_id;
+        $section_type = $request->section_type;
+
+        if (in_array($section_type, ['Math_no_calculator','Math_with_calculator','Math'])) {
+            $section_name = 'Math';
+        }
+
+        if (in_array($section_type, ['Hard_Reading_And_Writing','Easy_Reading_And_Writing','Reading_And_Writing'])) {
+            $section_name = 'Reading';
+        }
+
+        $main_section_id = 0;
+        $numberOfQuestions = 0;
+        $allScores = Score::where(['test_id' => $test_id])->get();
+        // dump($allScores);
+        $practice_test_sections = \DB::table('practice_test_sections')
+                                        ->where(['testid' => $test_id])
+                                        ->where('practice_test_type','LIKE', '%'.$section_name.'%')
+                                        ->get();
+        
+        // foreach($practice_test_sections as $sections) {
+        //     $questions = \DB::table('practice_questions')->where(['practice_test_sections_id' => $sections->id])->count();
+        //     $numberOfQuestions = $numberOfQuestions + $questions;
+        // }
+
+        return view('admin.quiz-management.practicetests.digiCheckScore',  [
+            'test_id' => $test_id,
+            'main_section_id' => $main_section_id,
+            'section_name' => $section_name,
+            'allScores' => $allScores,
+            'numberOfQuestions' => $numberOfQuestions,
+            'practice_test_sections' => $practice_test_sections,
+        ]);
+    }
 
     public function checkSectionType(Request $request)
     {

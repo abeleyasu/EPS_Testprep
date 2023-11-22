@@ -523,7 +523,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 					<div class="mb-2 mb-4  partTestOrder">
 
                         <button type="button"  data-id="{{ $testsection->id }}" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button>
-                        <button type="button"  data-id="{{ $testsection->id }}" data-section_type="{{ $testsection->practice_test_type }}" data-test_id="{{ $testsection->testid }}" item-count="1" class="btn w-25 btn-alt-success  add_score_btn" data-bs-dismiss="modal"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button>
+                        <button type="button"  data-id="{{ $testsection->id }}" data-section_type="{{ $testsection->practice_test_type }}" data-test_id="{{ $testsection->testid }}" item-count="1" class="btn w-25 btn-alt-success {{ (in_array($testsection->format, ['DSAT','DPSAT'])) ? 'digi_add_score_btn ' : ' add_score_btn' }} " data-bs-dismiss="modal"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button>
                         <div class="part_order">
                             <input type="number" readonly class="form-control" name="section_order" value="{{ $testsection->section_order }}" id="order_{{ $testsection->id }}"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderQuesDialog({{$testsection->id}})"><i class="fa-solid fa-check"></i></button>
                         </div>
@@ -4579,8 +4579,6 @@ aria-hidden="true">
                 disp_section = '';
             }
 
-
-
             //For checkbox
             const checkboxValues = {};
             ans_choices.forEach(ans_choice => {
@@ -4646,7 +4644,10 @@ aria-hidden="true">
             var passagesTypeTxt = $("#passagesType option:selected").text();
             var ifFillChoice = $('.editMultipleChoice').val();
             // console.log(ifFillChoice);
-            if(ifFillChoice == 2) {
+
+            var questTypeArr = ['ACT','SAT','PSAT'];
+
+            if((jQuery.inArray(format, questTypeArr) != -1) || (ifFillChoice == 2)) {
                 if($('#passageRequired_2').is(':checked')) {
                     if(
                         question == '' ||
@@ -4659,12 +4660,10 @@ aria-hidden="true">
                             const super_category_values = superCategoryValues[choice];
                             const get_category_type_values = getCategoryTypeValues[choice];
                             const get_question_type_values = getQuestionTypeValues[choice];
-                            // const get_guess_values = guessingValue[choice];
 
                             return (
                                 super_category_values.length === 0 ||
                                 get_category_type_values.length === 0 ||
-                                // get_guess_values.length === 0 ||
                                 get_question_type_values.length === 0
                             );
                         })
@@ -4686,13 +4685,11 @@ aria-hidden="true">
                             const super_category_values = superCategoryValues[choice];
                             const get_category_type_values = getCategoryTypeValues[choice];
                             const get_question_type_values = getQuestionTypeValues[choice];
-                            // const get_guess_values = guessingValue[choice];
 
                             $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
                             $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
                             $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
                             $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
-                            // $(`#questionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(get_guess_values.length == 0 ? 'Guessing Value is required!' : '');
                         
                         });
 
@@ -5146,8 +5143,9 @@ aria-hidden="true">
         //new
         $(document).on('click','.add_score_btn', function(){
             $('.table_body').empty();
-            $("input[name=actualScore]"). val("");
-            $("input[name=convertedScore]"). val("");
+            $("input[name=actualScore]").val("");
+            $("input[name=convertedScore]").val("");
+            let formatVal = $('#format').val();
             let section_id = $(this).attr('data-id');
             let section_types = $(this).attr('data-section_type');
             let test_ids = $(this).attr('data-test_id');
@@ -5217,14 +5215,39 @@ aria-hidden="true">
                                 }
                             }
                         }
-                        $("input[name=actualScore]"). val("");
-                        $("input[name=convertedScore]"). val("");
+                        // $("input[name=actualScore]").val("");
+                        // $("input[name=convertedScore]").val("");
                     },
                     error: function(xhr, status, error) {
                         console.log(xhr.responseText);
                     }
                 });
             // }
+            $('#scoreModalMulti').modal('show');
+        });
+
+        // for DSAT, DPSAT
+        $(document).on('click','.digi_add_score_btn', function(){
+            let test_id = $(this).attr('data-test_id');
+            let section_type = $(this).attr('data-section_type');
+            console.log(section_type);
+            console.log(test_id);
+            $.ajax({
+                type: 'POST',
+                url: '{{route("digi_check_score")}}',
+                data: {
+                    test_id: test_id,
+                    section_type: section_type,
+                    '_token': $('input[name="_token"]').val()
+                },
+                dataType: "html",
+                success: function(result) {
+                    $('.table_body').html(result);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
             $('#scoreModalMulti').modal('show');
         });
 
@@ -5289,6 +5312,8 @@ aria-hidden="true">
                 };
                 scores.push(scoreObj);
             });
+            // console.log(scores);
+            // die;
             $.ajax({
                 type: 'POST',
                 url: '{{route("score_save")}}',
@@ -5347,6 +5372,13 @@ aria-hidden="true">
 
             var diffValue = $('input[name="diff_value"]').val();
             var discValue = $('input[name="disc_value"]').val();
+
+            let formatVal = $('#format').val();
+            var myarray = ['DSAT','DPSAT'];
+            var add_score_button_class = 'add_score_btn';
+            if(jQuery.inArray(formatVal, myarray) != -1) {
+                add_score_button_class = 'digi_add_score_btn';
+            }
 
             if (whichModel == 'section') {
 
@@ -5431,7 +5463,7 @@ aria-hidden="true">
                                     '" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><button type="button" data-id="' +
                                     res + '" data-section_type="' + testSectionType + '" data-test_id="' +
                                     get_test_id +
-                                    '" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="part_order"><input type="number" readonly class="form-control" name="question_order" value="'+newSectionOrder+'" id="order_' +
+                                    '" class="btn w-25 btn-alt-success '+add_score_button_class+'"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="part_order"><input type="number" readonly class="form-control" name="question_order" value="'+newSectionOrder+'" id="order_' +
                                     res +
                                     '"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openQuestionDialog(' +
                                     
@@ -5616,8 +5648,9 @@ aria-hidden="true">
                 }).get();
 
                 var ifFillChoice = $('.getFilterChoice').val();
-                // console.log(ifFillChoice);
-                if(ifFillChoice == 2) {
+
+                var questTypeArr = ['ACT','SAT','PSAT'];
+                if((jQuery.inArray(format, questTypeArr) != -1) || (ifFillChoice == 2)) {
 
                     if($('#passageRequired_1').is(':checked')){
                         if(

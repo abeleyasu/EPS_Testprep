@@ -5042,6 +5042,31 @@
             }
         }
 
+        // for DSAT, DPSAT
+        $(document).on('click','.digi_add_score_btn', function(){
+            let test_id = $(this).attr('data-test_id');
+            let section_type = $(this).attr('data-section_type');
+            console.log(section_type);
+            console.log(test_id);
+            $.ajax({
+                type: 'POST',
+                url: '{{route("digi_check_score")}}',
+                data: {
+                    test_id: test_id,
+                    section_type: section_type,
+                    '_token': $('input[name="_token"]').val()
+                },
+                dataType: "html",
+                success: function(result) {
+                    $('.table_body').html(result);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+            $('#scoreModalMulti').modal('show');
+        });
+
         //new
         $(document).on('click', '.add_score_btn', function() {
             $('.table_body').empty();
@@ -5371,6 +5396,13 @@
                                 // console.log(value);
                                 let res = value['id'];
                                 newSectionOrder = value['order'];
+
+                                let testFormatType = $('#format').val();
+                                var myarray = ['DSAT','DPSAT'];
+                                var add_score_button_class = 'add_score_btn';
+                                if(jQuery.inArray(testFormatType, myarray) != -1) {
+                                    add_score_button_class = 'digi_add_score_btn';
+                                }
                                 
                                 let section = value['section'];
                                 section = section.replaceAll('_', ' ');
@@ -5416,7 +5448,7 @@
                                     '" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><button type="button" data-id="' +
                                     res + '" data-section_type="' + testSectionType + '" data-test_id="' +
                                     get_test_id +
-                                    '" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="'+newSectionOrder+'" id="order_' +
+                                    '" class="btn w-25 btn-alt-success '+add_score_button_class+'"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="'+newSectionOrder+'" id="order_' +
                                     res +
                                     '"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openQuestionDialog(' +
                                     res + ')"><i class="fa-solid fa-check"></i></button></div></div></div>');
@@ -5610,15 +5642,14 @@
                 var passagesTypeTxt = $(".passagesType option:selected").text();
                 // getFilterChoice editMultipleChoice
                 var ifFillChoice = $('.getFilterChoice').val();
-                // console.log(ifFillChoice);
-                if(ifFillChoice == 2) {
+
+                var questTypeArr = ['ACT','SAT','PSAT'];
+                if((jQuery.inArray(format, questTypeArr) != -1) || (ifFillChoice == 2)) {
 
                     if ($('#passageRequired_1').is(':checked')) {
                         if (
                             question == '' ||
                             tags.length == 0 ||
-                            diffValue == '' ||
-                            discValue == '' ||
                             jQuery.type(passNumber) == "null" ||
                             passagesType == '' ||
                             format == '' ||
@@ -5640,11 +5671,11 @@
                             $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
                             $('#js-ckeditor-addQue').focus();
                             
-                            $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
-                            $('#addTag').focus();
+                            // $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
+                            // $('#addTag').focus();
 
-                            $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
-                            $('#addTag').focus();
+                            // $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
+                            // $('#addTag').focus();
 
                             $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
                             $('#addTag').focus();
@@ -5692,8 +5723,8 @@
                     } else {
                         if (question == '' ||
                             tags.length == 0 ||
-                            diffValue == '' ||
-                            discValue == '' ||
+                            // diffValue == '' ||
+                            // discValue == '' ||
                             format == '' ||
                             testSectionType == '' ||
                             ans_choices.some(choice => {
@@ -5715,11 +5746,11 @@
                             $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
                             $('#addTag').focus();
 
-                            $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
-                            $('#addTag').focus();
+                            // $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
+                            // $('#addTag').focus();
 
-                            $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
-                            $('#addTag').focus();
+                            // $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
+                            // $('#addTag').focus();
 
                             ans_choices.forEach(choice => {
                                 const super_category_values = superCategoryValues[choice];
@@ -6904,8 +6935,8 @@
             var testSectionType = $('#testSectionTypeRead').val();
 
             var ifFillChoice = $('.editMultipleChoice').val();
-            // console.log(ifFillChoice);
-            if(ifFillChoice == 2) {
+            var questTypeArr = ['ACT','SAT','PSAT'];
+            if((jQuery.inArray(format, questTypeArr) != -1) || (ifFillChoice == 2)) {
                 if ($('#passageRequired_2').is(':checked')) {
                     console.log('checked 1');
                     if (
