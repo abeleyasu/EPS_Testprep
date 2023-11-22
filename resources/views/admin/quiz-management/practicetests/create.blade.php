@@ -942,7 +942,7 @@
                                                  required
                                                  type="number" id="discValue" name="disc_value">
                                     </div>
-                                    <span class="text-danger" id="disc-valueError"></span>
+                                    <span class="text-danger" id="discValueError"></span>
                                 </div>
                             </div>
                         </div>
@@ -5808,12 +5808,11 @@
                         ) {
                             $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
                             $('#js-ckeditor-addQue').focus();
-                            
-                            $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
-                            $('#addTag').focus();
 
-                            $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
-                            $('#addTag').focus();
+                            $('#questionMultiModal #diffValueError').text(diffValue == '' ? 'Diff value is required!' : '');
+                            $('#diffValue').focus();
+                            $('#questionMultiModal #discValueError').text(discValue == '' ? 'Disc value is required!' : '');
+                            $('#discValue').focus();
 
                             $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
                             $('#addTag').focus();
@@ -5853,6 +5852,10 @@
                             $('#questionMultiModal #passageTypeError').text('');
                             // $('#questionMultiModal #superCategoryError').text('');
 
+                            $('#questionMultiModal #diffValueError').text('');
+                            $('#questionMultiModal #discValueError').text('');
+
+
                             ans_choices.forEach(choice => {
                                 emptyError('questionMultiModal', disp_section, choice);
                                 $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
@@ -5884,11 +5887,10 @@
                             $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
                             $('#addTag').focus();
 
-                            $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
-                            $('#addTag').focus();
-
-                            $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
-                            $('#addTag').focus();
+                            $('#questionMultiModal #diffValueError').text(diffValue == '' ? 'Diff value is required!' : '');
+                            $('#diffValue').focus();
+                            $('#questionMultiModal #discValueError').text(discValue == '' ? 'Disc value is required!' : '');
+                            $('#discValue').focus();
 
                             ans_choices.forEach(choice => {
                                 const super_category_values = superCategoryValues[choice];
@@ -5912,6 +5914,9 @@
                         } else {
                             $('#questionMultiModal #questionError').text('');
                             $('#questionMultiModal #tagError').text('');
+
+                            $('#questionMultiModal #diffValueError').text('');
+                            $('#questionMultiModal #discValueError').text('');
 
                             ans_choices.forEach(choice => {
                                 emptyError('questionMultiModal', disp_section, choice); 
@@ -6823,6 +6828,9 @@
             var questionType = $('#editQuestionMultiModal ' + activeAnswerType + ' #editQuestionType').val();
             // console.log('questionType>>'+questionType);
 
+            var diffValue = $('#diffValueEdit').val();
+            var discValue =  $('#discValueEdit').val();
+
             multiChoice = $('.editMultipleChoice option:selected').val();
 
             let ans_choices;
@@ -6938,7 +6946,7 @@
             var questTypeArr = ['ACT','SAT','PSAT'];
             if((jQuery.inArray(format, questTypeArr) != -1) || (ifFillChoice == 2)) {
                 if ($('#passageRequired_2').is(':checked')) {
-                    console.log('checked 1');
+                    // console.log('checked 1');
                     if (
                         question == '' ||
                         tags.length == 0 ||
@@ -6960,7 +6968,7 @@
                             );
                         })
                     ) {
-                        console.log('checked 2');
+                        // console.log('checked 2');
                         $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
                         $('#js-ckeditor-edit-addQue').focus();
                         $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
@@ -6993,7 +7001,7 @@
 
                         return false;
                     } else {
-                        console.log('checked 3');
+                        // console.log('checked 3');
                         $('#editQuestionMultiModal #questionError').text('');
                         $('#editQuestionMultiModal #tagError').text('');
                         $('#editQuestionMultiModal #passNumberError').text('');
@@ -7010,7 +7018,7 @@
                         });
                     }
                 } else {
-                    console.log('checked 4');
+                    // console.log('checked 4');
                     if (question == '' ||
                         tags == 0 ||
                         format == '' ||
@@ -7055,7 +7063,7 @@
                         return false;
                     } else {
 
-                        console.log('checked 5');
+                        // console.log('checked 5');
                         $('#editQuestionMultiModal #questionError').text('');
                         $('#editQuestionMultiModal #tagError').text('');
 
@@ -7072,12 +7080,14 @@
                 }
             }else{
                 if ($('#passageRequired_2').is(':checked')) {
-                    console.log('checked 1 not fill choice');
+                    // console.log('checked 1 not fill choice');
                     if (
                         question == '' ||
                         tags.length == 0 ||
                         jQuery.type(passNumber) == "null" ||
                         passagesType == '' ||
+                        diffValue == '' ||
+                        discValue == '' ||
                         format == '' ||
                         testSectionType == '' ||
                         ans_choices.some(choice => {
@@ -7105,6 +7115,11 @@
                             'Passage Type is required!' : '');
                         $('#edit_passage_type').focus();
 
+                        $('#editQuestionMultiModal #diffValueError').text(diffValue == '' ? 'Diff value is required!' : '');
+                        $('#diffValueEdit').focus();
+                        $('#editQuestionMultiModal #discValueError').text(discValue == '' ? 'Disc value is required!' : '');
+                        $('#discValueEdit').focus();
+
                         ans_choices.forEach(choice => {
                             const super_category_values = superCategoryValues[choice];
                             const get_category_type_values = getCategoryTypeValues[choice];
@@ -7131,6 +7146,9 @@
                         $('#editQuestionMultiModal #passNumberError').text('');
                         $('#editQuestionMultiModal #passageTypeError').text('');
 
+                        $('#editQuestionMultiModal #diffValueError').text('');
+                        $('#editQuestionMultiModal #discValueError').text('');
+
                         ans_choices.forEach(ans_choice => {
                             $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text(
                                 '');
@@ -7145,6 +7163,8 @@
                     if (question == '' ||
                         tags == 0 ||
                         format == '' ||
+                        diffValue == '' ||
+                        discValue == '' ||
                         testSectionType == '' ||
                         ans_choices.some(choice => {
                             const super_category_values = superCategoryValues[choice];
@@ -7164,6 +7184,11 @@
                         $('#js-ckeditor-edit-addQue').focus();
                         $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
                         $('#questionTag').focus();
+
+                        $('#editQuestionMultiModal #diffValueError').text(diffValue == '' ? 'Diff value is required!' : '');
+                        $('#diffValueEdit').focus();
+                        $('#editQuestionMultiModal #discValueError').text(discValue == '' ? 'Disc value is required!' : '');
+                        $('#discValueEdit').focus();
 
                         ans_choices.forEach(choice => {
                             const super_category_values = superCategoryValues[choice];
@@ -7187,6 +7212,9 @@
                     } else {
                         $('#editQuestionMultiModal #questionError').text('');
                         $('#editQuestionMultiModal #tagError').text('');
+
+                        $('#editQuestionMultiModal #diffValueError').text('');
+                        $('#editQuestionMultiModal #discValueError').text('');
 
                         ans_choices.forEach(ans_choice => {
                             $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text(
@@ -8401,9 +8429,19 @@
         });
 
         function validateInput(input) {
+
             var value = parseInt(input.value);
-            if (value > parseInt(input.max)) {
+                value = Math.round(value);
+            if (value < 0) {
+                value = Math.abs( value );
+                input.value = input.min;
+            }else if (value == 0) {
+                value = Math.abs( value );
+                input.value = input.min;
+            }else if (value > parseInt(input.max)) {
                 input.value = input.max;
+            }else{
+                input.value = value;
             }
         }
 
