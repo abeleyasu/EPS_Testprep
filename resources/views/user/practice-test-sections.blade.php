@@ -224,7 +224,7 @@
                         // dump($newTotal);
                         // dump($mathCount);
                         // dump($rwCount);
-                        // dump($testSectionsDetails);
+                        // dd($testSectionsDetails);
                         // dump($score);
                     @endphp
                     @foreach ($testSectionsDetails as $singletestSections)
@@ -355,7 +355,7 @@
                                                         
                                                         <a href="#" style='padding: 5px 20px fs-5'
                                                             class="btn btn-alt-success text-success 1">
-                                                            {{ $score[$singletestSections['Sections'][0]['id']] }}
+                                                            {{ $singletestSections['Sections'][0]['newScore'] }}
                                                         </a>
                                                     
                                                         {{--                                                        
@@ -458,7 +458,7 @@
                             <hr class="m-0">
                             <div class="block-content pb-3 d-flex justify-content-center align-items-center">
                                 
-                                @if ($check_test_completed == 'yes')
+                                @if ($whichSection == 0)
                                     <a href="#" style='padding: 5px 20px fs-5'
                                         class="btn btn-alt-success text-success">
                                         {{ number_format($total_score, 0) }}
@@ -466,7 +466,7 @@
                                 @else
                                     <a href="#" style='padding: 5px 20px fs-5'
                                         class="btn btn-alt-success text-success">
-                                        {{ number_format(0, 0) }}
+                                        {{ number_format($compositeScore, 0) }}
                                     </a>
                                 @endif
                             </div>
