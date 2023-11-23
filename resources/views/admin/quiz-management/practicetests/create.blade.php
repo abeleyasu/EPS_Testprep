@@ -6015,10 +6015,6 @@
                 questionOrder++;
                 var section_id = $('.sectionAddId').val();
 
-                // adding validations here.
-
-
-
                 $.ajax({
                     data: {
                         'format': format,
