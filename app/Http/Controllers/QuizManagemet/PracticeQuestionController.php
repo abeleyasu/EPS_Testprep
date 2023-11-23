@@ -62,6 +62,10 @@ class PracticeQuestionController extends Controller
             $question->multiChoice = "0";
         }
 
+        if (strpos($request->testSectionType, 'Reading') !== false) {
+            $question->multiChoice = NULL;
+        }
+
         foreach ($rating_array as $key => $value) {
             $rating_id = DiffRating::where('title', $value)->orWhere('id', $value)->first();
         }
