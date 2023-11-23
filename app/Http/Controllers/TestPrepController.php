@@ -2133,17 +2133,28 @@ class TestPrepController extends Controller
         $compositeScore = 0;
         $newRwScore = 0;
         $newMathScore = 0;
+        $rwCScore = 0;
+        $mathCScore = 0;
+        $mathIdsArr = [];
+        $rwIdsArr = [];
 
         // new calculation score for DSAT/DPSAT only
         // dump($count_right_question);
         // dump($store_sections_details);
 
-        // foreach($count_right_question as $key => $singletestSections) {
-            // $eachScore = \DB::table('scores')->where()->get();
-        // }
-
         foreach($store_sections_details as $key => $sections) {
+            
             if(isset($sections['Sections_question'])) {
+
+                if (strpos($sections['Sections'][0]['practice_test_type'], 'Reading') !== false) {
+                    array_push($rwIdsArr,$key);
+                    // dump($rwIdsArr);
+                }
+
+                if (strpos($sections['Sections'][0]['practice_test_type'], 'Math') !== false) {
+                    array_push($mathIdsArr,$key);
+                    // dump($mathIdsArr);
+                }
 
                 if($sections['Sections'][0]['format'] == 'ACT') {
                     $mainSectionsCount++;
@@ -2180,10 +2191,10 @@ class TestPrepController extends Controller
 
                 if($sections['Sections'][0]['format'] == 'DPSAT' || $sections['Sections'][0]['format'] == 'DSAT') {
                     // update section count.
-                    
                     if ((isset($sections['check_if_section_completed'])) && ($sections['check_if_section_completed'][0] == 'yes') ) {
 
                         if (strpos($sections['Sections'][0]['practice_test_type'], 'Reading') !== false) {
+                            
                             $url = route('single_review', ['test' => $sections['Sections'][0]['title'], 'id' => $sections['Sections'][0]['id']]) . '?test_id=' . $id . '&type=single';
                             $rwUrl .= "<a href='".$url."' style='padding: 5px 20px fs-5' class='btn btn-alt-success text-success 2'><i class='fa-solid fa-circle-check' style='margin-right:5px'></i>Review Module ".$rwValue." </a> ";
                             $store_sections_details[$rwSectionID]['Sections'][0]['reviewUrls'] = $rwUrl;
@@ -2195,25 +2206,30 @@ class TestPrepController extends Controller
                             // $readingSectionCount = 0;
 
                             // calculate Score for reading.
-                            if(count($count_right_question[$key]) != 0){
-                                foreach($count_right_question[$key] as $questions){
-                                    $eachScore = \DB::table('scores')
-                                                    ->where('section_id',$key)
-                                                    ->where('question_id',$questions)
-                                                    ->where('test_id', $id)
-                                                    ->first(['actual_score','converted_score']);
-                                    // dump($eachScore);
-                                    if($eachScore) {
-                                        $compositeScore =  $compositeScore + $eachScore->converted_score;
-                                        $newRwScore = $newRwScore + $eachScore->converted_score;
-                                        
-                                    }
+                            if(count($count_right_question[$key]) != 0) {
+                                foreach($count_right_question[$key] as $questions) {
+                                    $newRwScore++;
+                                    // dump($newRwScore);
                                 }
                             }
-                            $store_sections_details[$rwSectionID]['Sections'][0]['newScore'] = $newRwScore;
+                            
+                            $eachScore = \DB::table('scores')
+                                            ->whereIn('section_id',$rwIdsArr)
+                                            ->where('test_id', $id)
+                                            ->where('actual_score', $newRwScore)
+                                            ->first('converted_score');
+                            
+                            // dump($eachScore);
+                            if($eachScore) {
+                                $rwCScore = $eachScore->converted_score;
+                                // $compositeScore =  $compositeScore + $rwCScore;
+                            }
+
+                            $store_sections_details[$rwSectionID]['Sections'][0]['newScore'] = $rwCScore;
                         }
 
                         if (strpos($sections['Sections'][0]['practice_test_type'], 'Math') !== false) {
+                            
                             $url = route('single_review', ['test' => $sections['Sections'][0]['title'], 'id' => $sections['Sections'][0]['id']]) . '?test_id=' . $id . '&type=single';
                             $mathUrl .= "<a href='".$url."' style='padding: 5px 20px fs-5' class='btn btn-alt-success text-success 2'><i class='fa-solid fa-circle-check' style='margin-right:5px'></i>Review Module ".$mathValue." </a> ";
                             $store_sections_details[$mathSectionID]['Sections'][0]['reviewUrls'] = $mathUrl;
@@ -2225,22 +2241,40 @@ class TestPrepController extends Controller
                             // $totalAttempetdQuestions = $totalAttempetdQuestions + $mathSectionCount;
 
                             // calculate Score for math.
-                            if(count($count_right_question[$key]) != 0){
-                                foreach($count_right_question[$key] as $questions){
-                                    $eachScore = \DB::table('scores')
-                                                    ->where('section_id',$key)
-                                                    ->where('question_id',$questions)
-                                                    ->where('test_id', $id)
-                                                    ->first(['actual_score','converted_score']);
-                                    // dump($eachScore);
-                                    if($eachScore) {
-                                        $compositeScore =  $compositeScore + $eachScore->converted_score;
-                                        $newMathScore = $newMathScore + $eachScore->converted_score;
-                                        
-                                    }
+                            // if(count($count_right_question[$key]) != 0) {
+                            //     foreach($count_right_question[$key] as $questions){
+                            //         $eachScore = \DB::table('scores')
+                            //                         ->where('section_id',$key)
+                            //                         ->where('question_id',$questions)
+                            //                         ->where('test_id', $id)
+                            //                         ->first(['actual_score','converted_score']);
+                            //         if($eachScore) {
+                            //             $compositeScore =  $compositeScore + $eachScore->converted_score;
+                            //             $newMathScore = $newMathScore + $eachScore->converted_score;
+                            //         }
+                            //     }
+                            // }
+
+                            if(count($count_right_question[$key]) != 0) {
+                                foreach($count_right_question[$key] as $questions) {
+                                    $newMathScore++;
+                                    // dump($newMathScore);
                                 }
                             }
-                            $store_sections_details[$mathSectionID]['Sections'][0]['newScore'] = $newMathScore;
+                            
+                            $eachMathScore = \DB::table('scores')
+                                            ->whereIn('section_id',$mathIdsArr)
+                                            ->where('test_id', $id)
+                                            ->where('actual_score', $newMathScore)
+                                            ->first('converted_score');
+
+                            // dump($eachMathScore);
+                            if($eachMathScore) {
+                                $mathCScore = $eachMathScore->converted_score;
+                                // $compositeScore =  $compositeScore + $mathCScore;
+                            }
+                            
+                            $store_sections_details[$mathSectionID]['Sections'][0]['newScore'] = $mathCScore;
                         }
                     }
 
@@ -2257,6 +2291,9 @@ class TestPrepController extends Controller
                 }
             }
         }
+
+
+        // dump($newRwScore);
         $totalAttempetdQuestions = 0;
         $totalNonAttempetdQuestions = 0;
         $totalQuestions = 0;
@@ -2276,6 +2313,11 @@ class TestPrepController extends Controller
         // dump($compositeScore);
         foreach($store_sections_details as $key => $singletestSections) {
             if(in_array($singletestSections['Sections'][0]['format'],['DSAT' ,'DPSAT'])) {
+
+                if(isset($singletestSections['Sections'][0]['newScore'])){
+                    $compositeScore = $compositeScore + $singletestSections['Sections'][0]['newScore'];
+                }
+
                 $whichSection = 1;
 
                 if (isset($singletestSections['Sections']) && isset($singletestSections['Sections_question'])) {
@@ -2308,6 +2350,7 @@ class TestPrepController extends Controller
                 if (isset($singletestSections['Sections'])) {
                     array_push($sectionIdsArray, (int) $singletestSections['Sections'][0]['id']);
                     if($i == 0) {
+                        
                         $firstSectionId = $singletestSections['Sections'][0]['id'];
                         $i++;
                     }
@@ -2350,10 +2393,10 @@ class TestPrepController extends Controller
         }
         $newTotal = $mathCount + $rwCount;
         
-        if($whichSection == 1){
+        if($whichSection == 1){ 
             if($rwCount != 0){
                 $store_sections_details[$rwSectionID]['Sections'][0]['section_quest_count'] = $rwCount;
-            }
+            } 
             if($mathCount != 0){
                 $store_sections_details[$mathSectionID]['Sections'][0]['section_quest_count'] = $mathCount;
             }
