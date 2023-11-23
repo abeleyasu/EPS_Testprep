@@ -315,6 +315,11 @@ class PracticeQuestionController extends Controller
             }
         }
 
+        if (strpos($request->testSectionType, 'Reading') !== false) {
+            $question->multiChoice = NULL;
+        }
+
+
         $checkbox_values = [];
         foreach ($ans_choices as $choice) {
             $ctValue = $request->input('ct_checkbox_values')[$choice];
