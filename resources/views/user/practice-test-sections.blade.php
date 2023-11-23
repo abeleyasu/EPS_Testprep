@@ -224,7 +224,7 @@
                         // dump($newTotal);
                         // dump($mathCount);
                         // dump($rwCount);
-                        // dd($testSectionsDetails);
+                        // dump($testSectionsDetails);
                         // dump($score);
                     @endphp
                     @foreach ($testSectionsDetails as $singletestSections)
