@@ -1620,11 +1620,11 @@
                                                                                         style="width: 100px;">
                                                                                         DSAT Math<span class="mt-2"> Score
                                                                                             (Timing)</span></th>
-                                                                                    <th class="text-center"
+                                                                                    {{--<th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         DSAT <span class="mt-2">
                                                                                             (Combined
-                                                                                            Section 2 & 3)</span></th>
+                                                                                            Section 2 & 3)</span></th>--}}
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         Composite <span>(Total) Score</span>
@@ -1637,38 +1637,39 @@
                                                                             <tbody>
                                                                                 @foreach ($dsat_details_array as $psat_test)
                                                                                     @if ($psat_test['date_taken'] !== '-')
+                                                                                        
                                                                                         <tr>
                                                                                             <td class="text-center">
                                                                                                 <a
                                                                                                     href="{{ url('user/practice-test-sections/' . $psat_test['test_id']) }}"><button
                                                                                                         class="btn btn-success d-block mb-2">{{ $psat_test['test_name'] }}</button></a>
                                                                                             </td>
-                                                                                            <td class="text-center">
-                                                                                                {{ isset($psat_test['Reading']) ? $psat_test['Reading'] : '0' }}
+                                                                                            <td class="text-center 1">
+                                                                                                {{ isset($psat_test['ReadSectionsScore']) ? $psat_test['ReadSectionsScore'] : '0' }}
                                                                                                 <br>
                                                                                                 <span
                                                                                                     class="custom-actual-time">
-                                                                                                    @if (isset($psat_test['Reading_actual_time']) && $psat_test['Reading_actual_time'] !== '')
-                                                                                                        ({{ $psat_test['Reading_actual_time'] }})
+                                                                                                    @if (isset($psat_test['Reading_And_Writing_actual_time']) && $psat_test['Reading_And_Writing_actual_time'] !== '')
+                                                                                                        ({{ $psat_test['Reading_And_Writing_actual_time'] }})
                                                                                                     @else
-                                                                                                        {{ $psat_test['Reading_actual_time'] ?? '' }}
+                                                                                                        {{ $psat_test['Reading_And_Writing_actual_time'] ?? '' }}
                                                                                                     @endif
                                                                                                 </span>
                                                                                             </td>
-                                                                                            <td class="text-center">
-                                                                                                {{ isset($psat_test['Writing']) ? $psat_test['Writing'] : '0' }}
+                                                                                            <td class="text-center 2">
+                                                                                                {{ isset($psat_test['MathSectionsScore']) ? $psat_test['MathSectionsScore'] : '0' }}
                                                                                                 <br>
                                                                                                 <span
                                                                                                     class="custom-actual-time">
-                                                                                                    @if (isset($psat_test['Writing_actual_time']) && $psat_test['Writing_actual_time'] !== '')
-                                                                                                        ({{ $psat_test['Writing_actual_time'] }})
+                                                                                                    @if (isset($psat_test['Math_actual_time']) && $psat_test['Math_actual_time'] !== '')
+                                                                                                        ({{ $psat_test['Math_actual_time'] }})
                                                                                                     @else
-                                                                                                        {{ $psat_test['Writing_actual_time'] ?? '' }}
+                                                                                                        {{ $psat_test['Math_actual_time'] ?? '' }}
                                                                                                     @endif
                                                                                                 </span>
                                                                                             </td>
-                                                                                            <td class="text-center">
-                                                                                                {{ isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0) }}
+                                                                                            {{--<td class="text-center 3">
+                                                                                                {{ isset($psat_test['CompSectionsScore']) ? $psat_test['CompSectionsScore'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0) }}
                                                                                                 <br>
                                                                                                 <span
                                                                                                     class="custom-actual-time">
@@ -1682,9 +1683,9 @@
                                                                                                         ({{ $totalTime }})
                                                                                                     @endif
                                                                                                 </span>
-                                                                                            </td>
+                                                                                            </td>--}}
                                                                                             <td class="text-center">
-                                                                                                {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0)) }}
+                                                                                                {{ (isset($psat_test['CompSectionsScore']) ? $psat_test['CompSectionsScore'] : '0') }}
                                                                                             </td>
                                                                                             <td class="text-center">
                                                                                                 {{ isset($psat_test['date_taken']) ? $psat_test['date_taken'] : '-' }}
@@ -1933,11 +1934,11 @@
                                                                                         style="width: 100px;">
                                                                                         DPSAT WriMathting<span class="mt-2"> Score
                                                                                             (Timing)</span></th>
-                                                                                    <th class="text-center"
+                                                                                    {{--<th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         PSAT <span class="mt-2">
                                                                                             (Combined
-                                                                                            Section 2 & 3)</span></th>
+                                                                                            Section 2 & 3)</span></th>--}}
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         Composite <span>(Total) Score</span>
@@ -1957,33 +1958,33 @@
                                                                                                         class="btn btn-success d-block mb-2">{{ $psat_test['test_name'] }}</button></a>
                                                                                             </td>
                                                                                             <td class="text-center">
-                                                                                                {{ isset($psat_test['Reading']) ? $psat_test['Reading'] : '0' }}
+                                                                                                {{ isset($psat_test['ReadSectionsScore']) ? $psat_test['ReadSectionsScore'] : '0' }}
                                                                                                 <br>
                                                                                                 <span
                                                                                                     class="custom-actual-time">
-                                                                                                    @if (isset($psat_test['Reading_actual_time']) && $psat_test['Reading_actual_time'] !== '')
-                                                                                                        ({{ $psat_test['Reading_actual_time'] }})
+                                                                                                    @if (isset($psat_test['Reading_And_Writing_actual_time']) && $psat_test['Reading_And_Writing_actual_time'] !== '')
+                                                                                                        ({{ $psat_test['Reading_And_Writing_actual_time'] }})
                                                                                                     @else
-                                                                                                        {{ $psat_test['Reading_actual_time'] ?? '' }}
+                                                                                                        {{ $psat_test['Reading_And_Writing_actual_time'] ?? '' }}
                                                                                                     @endif
                                                                                                 </span>
                                                                                             </td>
                                                                                             <td class="text-center">
-                                                                                                {{ isset($psat_test['Writing']) ? $psat_test['Writing'] : '0' }}
+                                                                                                {{ isset($psat_test['MathSectionsScore']) ? $psat_test['MathSectionsScore'] : '0' }}
                                                                                                 <br>
                                                                                                 <span
                                                                                                     class="custom-actual-time">
-                                                                                                    @if (isset($psat_test['Writing_actual_time']) && $psat_test['Writing_actual_time'] !== '')
-                                                                                                        ({{ $psat_test['Writing_actual_time'] }})
+                                                                                                    @if (isset($psat_test['Math_actual_time']) && $psat_test['Math_actual_time'] !== '')
+                                                                                                        ({{ $psat_test['Math_actual_time'] }})
                                                                                                     @else
-                                                                                                        {{ $psat_test['Writing_actual_time'] ?? '' }}
+                                                                                                        {{ $psat_test['Math_actual_time'] ?? '' }}
                                                                                                     @endif
                                                                                                 </span>
                                                                                             </td>
-                                                                                            <td class="text-center">
+                                                                                            {{--<td class="text-center">--}}
                                                                                                 {{-- {{(isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') +  (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0')}} --}}
-                                                                                                {{ isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0) }}
-                                                                                                <br>
+                                                                                                {{-- isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0) --}}
+                                                                                                {{--<br>
                                                                                                 <span
                                                                                                     class="custom-actual-time">
                                                                                                     @php
@@ -1996,10 +1997,11 @@
                                                                                                         ({{ $totalTime }})
                                                                                                     @endif
                                                                                                 </span>
-                                                                                            </td>
+                                                                                            </td>--}}
                                                                                             <td class="text-center">
                                                                                                 {{-- {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') + (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0') }} --}}
-                                                                                                {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0)) }}
+                                                                                                {{-- (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0)) --}}
+                                                                                                {{ (isset($psat_test['CompSectionsScore']) ? $psat_test['CompSectionsScore'] : '0') }}
                                                                                             </td>
                                                                                             <td class="text-center">
                                                                                                 {{ isset($psat_test['date_taken']) ? $psat_test['date_taken'] : '-' }}
