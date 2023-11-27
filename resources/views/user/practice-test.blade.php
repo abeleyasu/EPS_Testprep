@@ -444,7 +444,8 @@
             });
 
             var count = 1;
-            jQuery(".next").click(function() {
+            jQuery(".next").click(async function() {
+                await storeProgress();
                 var get_offset = jQuery(this).val();
                 let data_count = jQuery(this).attr('data-count');
                 data_count = parseInt(data_count);
@@ -737,7 +738,8 @@
                 });
             }
 
-            jQuery(".submit_section_btn").click(function() {
+            jQuery(".submit_section_btn").click(async function() {
+                await storeProgress();
                 if (jQuery('.next').prop('disabled') == false) {
                     var timeisover = jQuery('#timeisover').val();
                     if (timeisover == 1) {
@@ -1835,8 +1837,174 @@
                         //Progress Saving Ends
                     }, 1000);
                 }
-
             });
+        }
+
+        async function storeProgress(){
+            console.log('start')
+            let option = new URLSearchParams(window.location.search);
+            let OptionValue = option.get('time');
+            var targetTime = $('#time_selected').val();
+            var parts = targetTime.split(':');
+            var targetHours = parseInt(parts[0], 10);
+            var targetMinutes = parseInt(parts[1], 10);
+            var targetSeconds = parseInt(parts[2], 10);
+            var targetMilliseconds = ((targetHours * 60 * 60) + (targetMinutes * 60) + targetSeconds) *
+                1000;
+
+            var hours = targetHours;
+            var minutes = targetMinutes;
+            var seconds = targetSeconds;
+            var elapsedMilliseconds = 0;
+
+            var actual_hours = 0;
+            var actual_minutes = 0;
+            var actual_seconds = 0;
+
+            //Array for progress saving Starts
+            var selected_answer = [];
+            var selected_gusess_details = [];
+            var selected_flag_details = [];
+            var selected_skip_details = [];
+            //Array for progress saving Ends
+            var get_test_id = '';
+            const urlParams = new URLSearchParams(window.location.search);
+            get_test_id = urlParams.get('test_id');
+            elapsedMilliseconds += 1000;
+            actual_hours = Math.floor(elapsedMilliseconds / (60 * 60 * 1000));
+            actual_minutes = Math.floor((elapsedMilliseconds % (60 * 60 * 1000)) / (60 *
+                1000));
+            actual_seconds = Math.floor((elapsedMilliseconds % (60 * 1000)) / 1000);
+
+            if (elapsedMilliseconds < targetMilliseconds && OptionValue != 'untimed') {
+                var remainingMilliseconds = targetMilliseconds - elapsedMilliseconds;
+                hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
+                minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (60 *
+                    1000));
+                seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
+            } else if (OptionValue == 'untimed') {
+                var remainingMilliseconds = targetMilliseconds + elapsedMilliseconds;
+                hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
+                minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (60 *
+                    1000));
+                seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
+            } else {
+                clearInterval(timerInterval);
+                hours = 0;
+                minutes = 0;
+                seconds = 0;
+            }
+
+            var formattedHours = hours.toString().padStart(2, '0');
+            var formattedMinutes = minutes.toString().padStart(2, '0');
+            var formattedSeconds = seconds.toString().padStart(2, '0');
+
+            var formattedActualHours = actual_hours.toString().padStart(2, '0');
+            var formattedActualMinutes = actual_minutes.toString().padStart(2, '0');
+            var formattedActualSeconds = actual_seconds.toString().padStart(2, '0');
+            //Progress Saving Starts
+            let progress_index = jQuery('.next').attr('data-count');
+            var get_question_id = jQuery('#onload_question_id').val();
+
+            let selected_flag_val;
+            if ($(".flag").is(':checked')) {
+                selected_flag_val = 'yes';
+            } else {
+                selected_flag_val = 'no';
+            }
+
+            let selected_skip_val;
+            if ($(".skip").is(':checked')) {
+                selected_skip_val = 'yes';
+            } else {
+                selected_skip_val = 'no';
+            }
+
+            let selected_guess_val;
+            if ($(".guess").is(':checked')) {
+                selected_guess_val = 'yes';
+            } else {
+                selected_guess_val = 'no';
+            }
+
+            var get_section_id = jQuery('#section_id').val();
+            var get_question_type = jQuery('#get_question_type').val();
+            var get_practice_id = jQuery(this).attr('data-practice_test_id');
+
+            let question_ids = @json($total_questions);
+            var actual_time = jQuery('#actual_time').val();
+
+            if ($("input[name='example-radios-default']").is(':checked')) {
+                var getSelectedAnswer = $("input[name='example-radios-default']:checked")
+                    .val();
+                selected_answer[get_question_id] = getSelectedAnswer;
+            } else if ($("input[name='example-checkbox-default']").is(':checked')) {
+                var store_multi = '';
+                $('input[name="example-checkbox-default"]:checked').each(function() {
+                    store_multi += this.value + ',';
+                });
+                store_multi = store_multi.replace(/,\s*$/, "");
+                selected_answer[get_question_id] = store_multi;
+            } else if ($("input[name='example-textbox-default']")) {
+                store_multi = $("input[name='example-textbox-default']").val();
+                selected_answer[get_question_id] = store_multi;
+            } else {
+                selected_answer[get_question_id] = '-';
+            }
+
+            Array.prototype.associate = function(keys) {
+                var result = {};
+
+                this.forEach(function(el, i) {
+                    result[keys[i]] = el;
+                });
+                return result;
+            };
+
+            let answer_details = [];
+            for (let index = 0; index < question_ids.length; index++) {
+                if (selected_answer.hasOwnProperty(question_ids[index])) {
+                    answer_details[question_ids[index]] = selected_answer[question_ids[
+                        index]];
+                } else {
+                    answer_details[question_ids[index]] = '-';
+                }
+            }
+
+            answer_details = answer_details.filter(function(element, key) {
+                return element !== 'undefined';
+            });
+
+            answer_details = answer_details.associate(question_ids);
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                url: "{{ url('/user/test-progress/store') }}",
+                method: 'post',
+                data: {
+                    selected_answer: answer_details,
+                    selected_guess_val: selected_guess_val,
+                    selected_flag_val: selected_flag_val,
+                    selected_skip_val: selected_skip_val,
+                    get_section_id: get_section_id,
+                    get_practice_id: get_test_id,
+                    get_question_type: get_question_type,
+                    progress_index: progress_index,
+                    curr_question_id: get_question_id,
+                    actual_time: actual_time,
+                    time_left: formattedHours + ':' + formattedMinutes + ':' +
+                        formattedSeconds
+                },
+                success: function(result) {
+                    console.log('end')
+                    storedSelectedAnswers = result?.data?.selected_answer;
+                }
+            });
+            //Progress Saving Ends
         }
     </script>
 @endsection

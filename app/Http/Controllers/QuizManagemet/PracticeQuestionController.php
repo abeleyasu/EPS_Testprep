@@ -542,8 +542,8 @@ class PracticeQuestionController extends Controller
                     Score::create([
                         'section_id' => $practiceSection->id, 
                         'question_id' => $section['question_id'], 
-                        'actual_score' => $section['actual_score'], 
-                        'converted_score' => $section['converted_score'], 
+                        'actual_score' => 0, 
+                        'converted_score' => 0, 
                         'section_type' => $request->testSectionType, 
                         'test_id' => $request->get_test_id
                     ]);
@@ -556,8 +556,8 @@ class PracticeQuestionController extends Controller
                     Score::create([
                         'section_id' => $practiceSection->id, 
                         'question_id' => $section['question_id'], 
-                        'actual_score' => $section['actual_score'], 
-                        'converted_score' => $section['converted_score'], 
+                        'actual_score' => 0, 
+                        'converted_score' => 0, 
                         'section_type' => $request->testSectionType, 
                         'test_id' => $request->get_test_id
                     ]);
@@ -637,8 +637,8 @@ class PracticeQuestionController extends Controller
                         Score::create([
                             'section_id' => $practiceSection->id, 
                             'question_id' => $section['question_id'], 
-                            'actual_score' => $section['actual_score'], 
-                            'converted_score' => $section['converted_score'], 
+                            'actual_score' => 0, 
+                            'converted_score' => 0, 
                             'section_type' => $request->testSectionType, 
                             'test_id' => $request->get_test_id
                         ]);
@@ -672,8 +672,8 @@ class PracticeQuestionController extends Controller
                         Score::create([
                             'section_id' => $practiceSection->id, 
                             'question_id' => $section['question_id'], 
-                            'actual_score' => $section['actual_score'], 
-                            'converted_score' => $section['converted_score'], 
+                            'actual_score' => 0, 
+                            'converted_score' =>0, 
                             'section_type' => $request->testSectionType, 
                             'test_id' => $request->get_test_id
                         ]);
@@ -757,8 +757,8 @@ class PracticeQuestionController extends Controller
                         Score::create([
                             'section_id' => $practiceSection->id, 
                             'question_id' => $section['question_id'], 
-                            'actual_score' => $section['actual_score'], 
-                            'converted_score' => $section['converted_score'], 
+                            'actual_score' => 0, 
+                            'converted_score' => 0, 
                             'section_type' => $request->testSectionType, 
                             'test_id' => $request->get_test_id
                         ]);
@@ -792,8 +792,8 @@ class PracticeQuestionController extends Controller
                         Score::create([
                             'section_id' => $practiceSection->id, 
                             'question_id' => $section['question_id'], 
-                            'actual_score' => $section['actual_score'], 
-                            'converted_score' => $section['converted_score'], 
+                            'actual_score' => 0, 
+                            'converted_score' => 0, 
                             'section_type' => $request->testSectionType, 
                             'test_id' => $request->get_test_id
                         ]);
