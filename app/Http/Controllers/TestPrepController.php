@@ -3227,6 +3227,7 @@ class TestPrepController extends Controller
         // dump($sat_test);
         $sat_details_array = [];
         $count_right_question = [];
+        $right_question = [];
 
         foreach ($sat_test as $test) {
             $sat_details_array[$test->id]['test_id'] = $test->id;
@@ -3400,6 +3401,7 @@ class TestPrepController extends Controller
         // dump($sat_test);
         $sat_details_array = [];
         $count_right_question = [];
+        $right_question = [];
 
         foreach ($sat_test as $test) {
             $sat_details_array[$test->id]['test_id'] = $test->id;
