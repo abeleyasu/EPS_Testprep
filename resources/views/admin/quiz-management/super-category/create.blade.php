@@ -67,6 +67,8 @@
                                                         <option value="SAT">SAT</option>
                                                         <option value="PSAT">PSAT</option>
                                                         <option value="ACT">ACT</option>
+                                                        <option value="DSAT">Digital SAT</option>
+                                                        <option value="DPSAT">Digital PSAT</option>
                                                     </select>
                                                 </div>
                                                 @error('test_format')

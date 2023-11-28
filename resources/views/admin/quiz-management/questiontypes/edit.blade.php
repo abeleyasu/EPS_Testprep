@@ -67,6 +67,8 @@
                                                         <option value="SAT" @if ($getquestionDetails->format == 'SAT') selected @endif>SAT</option>
                                                         <option value="PSAT" @if ($getquestionDetails->format == 'PSAT') selected @endif>PSAT</option>
                                                         <option value="ACT" @if ($getquestionDetails->format == 'ACT') selected @endif>ACT</option>
+                                                        <option value="DSAT" @if ($getquestionDetails->format == 'DSAT') selected @endif>Digital SAT</option>
+                                                        <option value="DPSAT" @if ($getquestionDetails->format == 'DPSAT') selected @endif>Digital PSAT</option>
                                                     </select>
                                                 </div>
                                                 <div class="mb-2 col-md-12 mb-2 mt-2">

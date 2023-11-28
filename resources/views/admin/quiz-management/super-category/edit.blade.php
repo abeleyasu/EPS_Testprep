@@ -69,6 +69,8 @@
                                                         <option value="SAT" @if($category['format'] == 'SAT') selected  @endif >SAT</option>
                                                         <option value="PSAT" @if($category['format'] == 'PSAT') selected  @endif>PSAT</option>
                                                         <option value="ACT" @if($category['format'] == 'ACT') selected  @endif>ACT</option>
+                                                        <option value="DSAT" @if($category['format'] == 'DSAT') selected  @endif>Digital SAT</option>
+                                                        <option value="DPSAT" @if($category['format'] == 'DPSAT') selected  @endif>Digital PSAT</option>
                                                     </select>
                                                 </div>
                                                 @error('test_format')
