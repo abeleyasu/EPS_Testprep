@@ -3259,7 +3259,7 @@ class TestPrepController extends Controller
                                 if (str_replace(' ', '', $practice_question->answer) == str_replace(' ', '', $answer_data[$practice_question->id])) {
                                     array_push($right_question[$test->id][$section_detail->practice_test_type], $practice_question->id);
                                 }
-                            }
+                            } 
                         }
                     }
                 }
@@ -3330,7 +3330,7 @@ class TestPrepController extends Controller
             $mathSecIDs = [];
             $readSecIDs = [];
         }
-        // dd($right_question);
+        // dump($right_question);
         foreach ($sat_test as $test) {
             $sections_details = PracticeTestSection::where('testid', $test->id)->where('format', 'DSAT')->get();
             foreach ($sections_details as $section_detail) {
@@ -3367,7 +3367,7 @@ class TestPrepController extends Controller
                         $mathSection = 0;
                     }
                 }else{
-                    $readSection = 0;
+                    $mathSection = 0;
                 }
 
                 $eachReadScore = \DB::table('scores')
@@ -3378,7 +3378,7 @@ class TestPrepController extends Controller
                 // dump($eachReadScore);
                 if($eachReadScore) {
                     if($eachReadScore->converted_score) {
-                        // dump($eachReadScore->converted_score);
+                        // dump($eachReadScore->converted_score); 
                         $readSection = $eachReadScore->converted_score;
                     }else{
                         $readSection = 0;
@@ -3391,7 +3391,7 @@ class TestPrepController extends Controller
                 $sat_details_array[$test->id]["CompSectionsScore"] = $mathSection + $readSection;
             }
         }
-        // dd($sat_details_array);
+        // dump($sat_details_array);
         return $sat_details_array;
     }
 
@@ -3540,7 +3540,7 @@ class TestPrepController extends Controller
                         $mathSection = 0;
                     }
                 }else{
-                    $readSection = 0;
+                    $mathSection = 0;
                 }
 
                 $eachReadScore = \DB::table('scores')
