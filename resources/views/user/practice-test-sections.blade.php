@@ -83,7 +83,13 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="w-75">
                                     <h2 class="fs-base lh-base fw-medium text-muted mb-0">
-                                        This test has {{ $mainSectionsCount }} sections and
+                                        
+                                        @if($whichSection == 1)
+                                            This test has {{ $mainSectionsCount }} sections and
+                                        @else
+                                            This test has {{ count($testSectionsDetails) }} sections and
+                                        @endif
+                                        
                                         {{-- isset($total_all_section_question) ? $total_all_section_question : '' --}}
                                         @if($newTotal != 0)
                                             {{ $newTotal }}
@@ -247,11 +253,11 @@
                                                 {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
                                                 Section</h3>
                                             <div class="block-options">
-                                                <div class="timeline-event-time block-options-item fs-sm fw-semibold">
+                                                {{--<div class="timeline-event-time block-options-item fs-sm fw-semibold">
                                                     {{ isset($total_all_section_question) ? $total_all_section_question : '' }}
                                                     Questions
-                                                </div>
-                                                {{--
+                                                </div>--}}
+                                                
                                                 @if (isset($singletestSections['Sections_question']))
                                                     <div class="timeline-event-time block-options-item fs-sm fw-semibold">
                                                         {{ count($singletestSections['Sections_question']) }} Questions
@@ -261,7 +267,7 @@
                                                         0 Questions
                                                     </div>
                                                 @endif
-                                                --}}
+                                                
                                             </div>
                                         </div>
                                         <div class="block-content pb-3">
