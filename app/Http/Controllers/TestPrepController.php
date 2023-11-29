@@ -2480,12 +2480,13 @@ class TestPrepController extends Controller
         $current_sections = \DB::table('practice_test_sections')
             ->where('id', $sectionId)
             ->first();
-        
+        // dump($current_sections);
         // test section not found
         if($current_sections == null) {
             return redirect(url('user/practice-test-sections/' . $testId));
         }
 
+        $all_sections  = [];
         if($current_sections->practice_test_type == 'Reading_And_Writing'){
             $all_sections = \DB::table('practice_test_sections')
                 ->where('testid', $testId)
@@ -2498,8 +2499,10 @@ class TestPrepController extends Controller
                 ->whereIn('practice_test_type',['Math','Math_with_calculator','Math_no_calculator'])
                 ->pluck('id');
         }else{
-            // no such case for now.
-            $all_sections  = [];
+            $all_sections = \DB::table('practice_test_sections')
+                ->where('testid', $testId)
+                ->whereIn('practice_test_type',[$current_sections->practice_test_type])
+                ->pluck('id');
         }
         // dump($testId);
         // dd($all_sections);
