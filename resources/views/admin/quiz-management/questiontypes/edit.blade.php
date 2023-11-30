@@ -209,6 +209,16 @@
                     html += `<option value="${v}"  ${section_type == v ? 'selected' : ''}   >${v}</option>`;
                 });
             }
+
+            if($(this).val() == 'DSAT'){
+                html += `<option value="Reading_And_Writing" ${section_type == 'Reading_And_Writing' ? 'selected' : ''}>Reading And Writing</option>`;
+                html += `<option value="Math" ${section_type == 'Math' ? 'selected' : ''}>Math</option>`;
+                
+            } 
+            if($(this).val() == 'DPSAT'){
+                html += `<option value="Reading_And_Writing" ${section_type == 'Reading_And_Writing' ? 'selected' : ''}>Reading And Writing</option>`;
+                html += `<option value="Math" ${section_type == 'Math' ? 'selected' : ''}>Math</option>`;
+            }
             $('#section_type').append(html);
         });
 

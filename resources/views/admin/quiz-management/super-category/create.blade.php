@@ -119,6 +119,7 @@
         $('#section_type').html('');
         let sat_array = ['Reading','Writing','Math_no_calculator','Math_with_calculator'];
         let act_array = ['English','Math','Reading','Science'];
+        let digi_array = ['Reading_And_Writing','Math'];
         let html = ``;
         html += `<option value="">Select Section Type</option>`;
         if($(this).val() == 'SAT' || $(this).val() == 'PSAT'){
@@ -131,6 +132,15 @@
                 html += `<option value="${v}">${v}</option>`;
             });
         } 
+        if($(this).val() == 'DSAT'){
+            html += `<option value="Reading_And_Writing">Reading And Writing</option>`;
+            html += `<option value="Math">Math</option>`;
+            
+        } 
+        if($(this).val() == 'DPSAT'){
+            html += `<option value="Reading_And_Writing">Reading And Writing</option>`;
+            html += `<option value="Math">Math</option>`;
+        }
         $('#section_type').append(html);
     });
 </script>
