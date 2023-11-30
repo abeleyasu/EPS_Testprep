@@ -184,6 +184,16 @@
                     html += `<option value="${v}">${v}</option>`;
                 });
             } 
+
+            if($(this).val() == 'DSAT'){
+                html += `<option value="Reading_And_Writing">Reading And Writing</option>`;
+                html += `<option value="Math">Math</option>`;
+            } 
+            if($(this).val() == 'DPSAT'){
+                html += `<option value="Reading_And_Writing">Reading And Writing</option>`;
+                html += `<option value="Math">Math</option>`;
+            }
+
             $('#section_type').append(html);
         });
 
