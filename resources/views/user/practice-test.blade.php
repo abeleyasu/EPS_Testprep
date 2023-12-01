@@ -1992,7 +1992,7 @@
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 }
             });
-            const res = await jQuery.ajax({
+            return jQuery.ajax({
                 url: "{{ url('/user/test-progress/store') }}",
                 method: 'post',
                 data: {
@@ -2014,7 +2014,6 @@
                     storedSelectedAnswers = result?.data?.selected_answer;
                 }
             });
-            return res
             //Progress Saving Ends
         }
     </script>
