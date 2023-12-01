@@ -3890,8 +3890,8 @@ class TestPrepController extends Controller
             $query = PracticeQuestion::query()->select('practice_questions.*', "practice_tests.test_source as test_source");
             $query->where('practice_questions.format', $format)
                 ->where('practice_questions.diff_rating', $diff_rating->id)
-                ->where('practice_questions.selfMade', '0');
-            // ->where('practice_questions.test_source', '2');
+                ->where('practice_questions.selfMade', '0')
+                ->where('practice_questions.test_source', 2);
 
             if (!empty($diff_rating_value)) {
                 $query->whereIn("diff_rating", $diff_rating_value);

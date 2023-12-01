@@ -223,8 +223,18 @@
                             <input type="checkbox" class="guess" />
                             <span><i class="fa fa-fw fa-circle-question me-1"></i>Guess</span>
                         </label>
-
+                        {{--
                         @if ($testSection[0]->practice_test_type == 'Math')
+                            <button type="button"
+                                class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 calculator"><i
+                                    class="fa fa-fw fa-calculator me-1" style="color:black"></i>Calculator</button>
+                        @endif
+                            --}}
+                        @php
+                            $section = array("Math", "Math_with_calculator");
+                        @endphp
+
+                        @if ((in_array($testSection[0]->practice_test_type, $section)) || ($testSection[0]->show_calculator == 1 ))
                             <button type="button"
                                 class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 calculator"><i
                                     class="fa fa-fw fa-calculator me-1" style="color:black"></i>Calculator</button>
