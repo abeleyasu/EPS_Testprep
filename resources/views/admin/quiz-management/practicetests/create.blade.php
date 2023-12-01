@@ -728,6 +728,15 @@
                             </div>
                         </div>
 
+                        <div class="mb-2 show-calc-div row">
+                            <div class="col-md-1">
+                                <input type="checkbox" class="show-calc-box" name="add_show_calc" id="add_show_calc">
+                            </div>
+                            <div class="col-md-11 cal-show">
+                                <label class="form-label" style="font-size: 13px;" for="add_show_calc">Show Calculator</label>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -837,6 +846,16 @@
                                     type="number" id="edit100extendedsecond" min="0" max="59"
                                     step="1" class="form-control ms-1" placeholder="Enter Seconds"
                                     oninput="validateInput(this)" />
+                            </div>
+                        </div>
+
+                        <div class="mb-2 show-calc-div row">
+                            <div class="col-md-1">
+                                <input type="checkbox" style="font-size: 13px;" class="show-calc-box" name="edit_show_calc" id="edit_show_calc">
+                                
+                            </div>
+                            <div class="col-md-11 cal-show">
+                            <label class="form-label" style="font-size: 13px;">Show Calculator</label>
                             </div>
                         </div>
 
@@ -4823,6 +4842,7 @@
         });
 
         $('.add_section_modal_btn').click(function() {
+            $('#add_show_calc').prop('checked', false);
             $("input[name=required_number_of_correct_answers]").val("");
             whichModel = "section";
             $('#testSectiontitle').val('');
@@ -5371,6 +5391,12 @@
                 
                 questionOrder = 0;
                 questionCount = 1;
+
+                var showCalc = 0;
+                if ($('#add_show_calc').is(':checked')) {
+                    showCalc = 1;
+                }
+
                 // choiceMultInFourFill 
                 $.ajax({
                     data: {
@@ -5378,6 +5404,7 @@
                         'testSectionTitle': testSectionTitle,
                         'testSectionType': testSectionType,
                         'required_number_of_correct_answers': required_number_of_correct_answers,
+                        'show_calculator': showCalc,
                         'get_test_id': get_test_id,
                         // 'order': sectionOrder,
                         'order': newSectionOrder,
@@ -8313,8 +8340,17 @@
                     optionObj['PSAT'] = ['Reading', 'Writing', 'Math (no calculator)',
                         'Math (with calculator)'
                     ];
-                    optionObj['DSAT'] = ['Reading And Writing', 'Math'];
-                    optionObj['DPSAT'] = ['Reading And Writing', 'Math'];
+                    // optionObj['DSAT'] = ['Reading And Writing', 'Math','Easy Reading And Writing','Hard Reading And Writing'];
+                    // optionObj['DPSAT'] = ['Reading And Writing', 'Math'];
+                    optionObj['DSAT'] = ['Reading And Writing', 'Math','Easy Reading And Writing','Hard Reading And Writing','Math no calculator','Math with calculator'];
+                    optionObj['DPSAT'] = ['Reading And Writing', 'Math','Easy Reading And Writing','Hard Reading And Writing','Math no calculator','Math with calculator'];
+
+                    $('#edit_show_calc').prop('checked', false);
+                    if(res.sectionDetails.show_calculator == 1){    
+                        $('#edit_show_calc').prop('checked', true);
+                    }else{
+                        $('#edit_show_calc').prop('checked', false);
+                    }
 
                     let opt = '<option value="">Select Section Type</option>';
                     for (let i = 0; i < optionObj[res.sectionDetails.format].length; i++) {
@@ -8371,6 +8407,11 @@
             var hundredExtended = ("0" + hundredHour).slice(-2) + ":" + ("0" + hundredMinute).slice(-2) + ":" + (
                 "0" + hundredSecond).slice(-2);
 
+            var editShowCalc = 0;
+            if ($('#edit_show_calc').is(':checked')) {
+                editShowCalc = 1;
+            }
+
             var test_type = $('#format').val();
             if ((test_type == 'DSAT') || (test_type == 'DPSAT') ){
                 // this field is required - required_number_of_correct_answers
@@ -8409,6 +8450,7 @@
                     'fifty': fiftyExtended,
                     'hundred': hundredExtended,
                     'required_number_of_correct_answers': edit_required_number_of_correct_answers,
+                    'show_calculator': editShowCalc,
                     '_token': $('input[name="_token"]').val()
                 },
                 url: '{{ route('update_section') }}',

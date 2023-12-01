@@ -364,7 +364,10 @@ ul.answerOptionLsit li label input{
 input[type="time"]::-webkit-calendar-picker-indicator {
     display: none;
 }
-
+.cal-show{
+    margin-left: -30px;
+    margin-top: 1px; 
+}
 </style>
 @endsection
 @section('admin-content')
@@ -387,7 +390,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <div class="block-header block-header-default">
                             <h3 class="block-title">Edit Practice Tests</h3>
                         </div>
-                        <div class="block-content block-content-full">
+                        <div class="block-content block-content-full"> 
                             <!----------------->
 
 							<div class="container mt-5">
@@ -611,6 +614,15 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                             </div>
                                         </div>
 
+                                        <div class="mb-2 show-calc-div row">
+                                            <div class="col-md-1">
+                                                <input type="checkbox" class="show-calc-box" name="add_show_calc" id="add_show_calc">
+                                            </div>
+                                            <div class="col-md-11 cal-show">
+                                                <label class="form-label" style="font-size: 13px;" for="add_show_calc">Show Calculator</label>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -650,7 +662,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         </div> -->
 
                                         <div class="mb-2 row">
-                                            <div class="col-md-6 select-type">
+                                            <div class="col-md-6 select-type"> 
                                                 <label class="form-label" style="font-size: 13px;">Practice Test Section Type:<span
                                                         class="text-danger">*</span></label>
                                                 <select id="editTestSectionType" name="testSectionType" class="form-control js-select2 select">
@@ -701,6 +713,16 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                             <label class="form-label" style="font-size: 13px;">100% Extended Time</label>
                                             <div id="time-span" class="d-flex">
                                                 <input type="number" id="edit100extendedhour" step="1" class="form-control me-1" placeholder="Enter Hours"/><span style="font-weight: 700">:</span><input type="number" id="edit100extendedminute" min="0" max="59" step="1"  class="form-control ms-1 me-1" placeholder="Enter Minutes" oninput="validateInput(this)"/><span style="font-weight: 700">:</span><input type="number" id="edit100extendedsecond" min="0" max="59" step="1"  class="form-control ms-1" placeholder="Enter Seconds" oninput="validateInput(this)"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-2 show-calc-div row">
+                                            <div class="col-md-1">
+                                                <input type="checkbox" style="font-size: 13px;" class="show-calc-box" name="edit_show_calc" id="edit_show_calc">
+                                                
+                                            </div>
+                                            <div class="col-md-11 cal-show">
+                                            <label class="form-label" style="font-size: 13px;">Show Calculator</label>
                                             </div>
                                         </div>
 
@@ -771,7 +793,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 						<label class="form-label" style="font-size: 13px;">Update question to:</label>
 						<select id="practicetestid" name="testid" class="form-control">
 							@foreach($tests as $key=>$test)
-							<option value="{{$test->id}}" {{$practicetests->questionformat == $test->id ? 'selected': '';}}>{{$test->title}}</option>
+							<option value="{{$test->id}}" {{ $practicetests->questionformat == $test->id ? 'selected': '';}}>{{$test->title }}</option>
 							@endforeach
 						</select>
 					</div>
@@ -5417,6 +5439,13 @@ aria-hidden="true">
                 questionOrder = 0;
                 newSectionOrder++;
 
+                // $('#add_show_calc').prop('checked', true);
+                // $('#passage_number').prop('disabled', false);
+                var showCalc = 0;
+                if ($('#add_show_calc').is(':checked')) {
+                    showCalc = 1;
+                }
+
                 $.ajax({
                     data: {
                         'format': format,
@@ -5424,7 +5453,7 @@ aria-hidden="true">
                         'testSectionType': testSectionType,
                         'get_test_id': get_test_id,
                         'required_number_of_correct_answers': required_number_of_correct_answers,
-                        // 'order': sectionOrder,
+                        'show_calculator': showCalc,
                         'order': newSectionOrder,
                         'regular': regularTime,
                         'fifty': fiftyExtended,
@@ -7694,6 +7723,7 @@ Sortable.create(mainSectionContainer, {
 },);
 
 $('.add_section_modal_btn').click(function() {
+    $('#add_show_calc').prop('checked', false);
     $("input[name=required_number_of_correct_answers]").val("");
     var optionObj = [];
     var modelCount = $('.sectionTypesFull').length;
@@ -7888,8 +7918,17 @@ var test = Sortable.create(addListWithHandleQuestion, {
                     optionObj['ACT'] = ['English', 'Math', 'Reading', 'Science'];
                     optionObj['SAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
                     optionObj['PSAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
-                    optionObj['DSAT'] = ['Reading And Writing', 'Math'];
-                    optionObj['DPSAT'] = ['Reading And Writing', 'Math'];
+                    // optionObj['DSAT'] = ['Reading And Writing', 'Math'];
+                    optionObj['DSAT'] = ['Reading And Writing', 'Math','Easy Reading And Writing','Hard Reading And Writing','Math no calculator','Math with calculator'];
+                    optionObj['DPSAT'] = ['Reading And Writing', 'Math','Easy Reading And Writing','Hard Reading And Writing','Math no calculator','Math with calculator'];
+                    // optionObj['DPSAT'] = ['Reading And Writing', 'Math'];
+                
+                $('#edit_show_calc').prop('checked', false);
+                if(res.sectionDetails.show_calculator == 1){    
+                    $('#edit_show_calc').prop('checked', true);
+                }else{
+                    $('#edit_show_calc').prop('checked', false);
+                }
 
                 let opt = '<option value="">Select Section Type</option>';
                 for (let i = 0; i < optionObj[res.sectionDetails.format].length; i++) {
@@ -7925,7 +7964,7 @@ var test = Sortable.create(addListWithHandleQuestion, {
         $('#editSectionModal').modal('show');
     }
 
-    $('.save_edited_change').click(function(){
+    $('.save_edited_change').click(function() {
         let id = $('#currentSectionId').val();
         let testSectionTitle = $('#editTestSectionTitle').val();
         let testSectionType = $('#editTestSectionType').val();
@@ -7944,7 +7983,11 @@ var test = Sortable.create(addListWithHandleQuestion, {
         var regularTime = ("0" + rHour).slice(-2) + ":" + ("0" + rMinute).slice(-2) + ":" + ("0" + rSecond).slice(-2);
         var fiftyExtended = ("0" + fiftyHour).slice(-2) + ":" + ("0" + fiftyMinute).slice(-2) + ":" + ("0" + fiftySecond).slice(-2);
         var hundredExtended = ("0" + hundredHour).slice(-2) + ":" + ("0" + hundredMinute).slice(-2) + ":" + ("0" + hundredSecond).slice(-2);
-
+        
+        var editShowCalc = 0;
+        if ($('#edit_show_calc').is(':checked')) {
+            editShowCalc = 1;
+        }
         $.ajax({
             data: {
                 'sectionId': id ,
@@ -7954,6 +7997,7 @@ var test = Sortable.create(addListWithHandleQuestion, {
                 'fifty': fiftyExtended,
                 'hundred': hundredExtended,
                 'required_number_of_correct_answers': edit_required_number_of_correct_answers,
+                'show_calculator': editShowCalc,
                 '_token': $('input[name="_token"]').val()
             },
             url: '{{ route("update_section") }}',
