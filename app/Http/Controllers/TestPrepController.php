@@ -2393,8 +2393,8 @@ class TestPrepController extends Controller
         }
         $newTotal = $mathCount + $rwCount;
         
-        if($whichSection == 1){ 
-            if($rwCount != 0){
+        if($whichSection == 1) { 
+            if($rwCount != 0) {
                 $store_sections_details[$rwSectionID]['Sections'][0]['section_quest_count'] = $rwCount;
             } 
             if($mathCount != 0){
@@ -2405,6 +2405,9 @@ class TestPrepController extends Controller
         // dump($mathSectionCount);
         // dump($readingSectionCount);
         // dump($store_sections_details);
+        // dump($testSection);
+        // dump($testSections);
+        // dump($testSectionName);
         // dd($store_sections_details);
         return view('user.practice-test-sections', [
             'selected_test_id' => $id,

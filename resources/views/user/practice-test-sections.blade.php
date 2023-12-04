@@ -140,7 +140,7 @@
                                         class="btn btn-alt-primary fs-8  ms-2 start_all_section">
                                         <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
                                     </a>
-                                    <a href="{{ route('reset_test', ['id' => $testSections[0]->id]) . '?test_id=' . $testSections[0]->testid . '&type=all' }}"
+                                    <a href="{{ route('reset_test', ['id' => $testSection[0]->id]) . '?test_id=' . $testSection[0]->id . '&type=all' }}"
                                         style="white-space: nowrap" class="btn btn-alt-primary fs-8 mx-2">
                                         <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Reset Test
                                     </a>
