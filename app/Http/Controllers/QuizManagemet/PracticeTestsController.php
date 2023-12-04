@@ -45,7 +45,7 @@ class PracticeTestsController extends Controller
 	
 	public function index()
     {
-        $tests = PracticeTest::where('user_id', NUll)->orderBy('id', 'DESC')->get();
+        $tests = PracticeTest::where('test_source', '!=', 2)->orderBy('id', 'DESC')->get();
         $getQuestionTypes = PracticeTest::get();
         return view('admin.quiz-management.practicetests.index', compact('tests'));
     }
