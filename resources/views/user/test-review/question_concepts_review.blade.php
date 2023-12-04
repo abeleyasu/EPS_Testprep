@@ -2654,7 +2654,9 @@
                                                     @foreach ($categoryAndQuestionTypeSummaryData as $categoryAndQuestionTypeSummary)
                                                         @php
                                                             $category_arr = Helper::getCategoryNameByID($categoryAndQuestionTypeSummary['ct']);
+                                                            // dump($category_arr);
                                                         @endphp
+                                                        @if($category_arr)
                                                         <div
                                                             class="block block-rounded block-bordered overflow-hidden mb-1">
                                                             <div class="block-header block-header-tab justify-content-start"
@@ -3004,6 +3006,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        @endif
                                                     @endforeach
 
 

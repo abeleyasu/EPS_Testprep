@@ -147,7 +147,12 @@
                     <!-- Lessons -->
                     <div class="block block-rounded">
                         <div class="block-content fs-sm">
-                            <input type="hidden" id="onload_question_id" value="{{ $total_questions[0] }}">
+                            
+                        @if(isset($total_questions[0]))
+                            <input type="hidden" id="onload_question_id" value="{{  $total_questions[0] }}">
+                        @else
+                        <input type="hidden" id="onload_question_id" value="">
+                        @endif
                             <h5 class=" mb-2">
                                 PASSAGE I
                             </h5>
@@ -229,7 +234,7 @@
                                 class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 calculator"><i
                                     class="fa fa-fw fa-calculator me-1" style="color:black"></i>Calculator</button>
                         @endif
-                            --}}
+                        --}}
                         @php
                             $section = array("Math", "Math_with_calculator");
                         @endphp
