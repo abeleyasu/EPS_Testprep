@@ -2849,9 +2849,11 @@
                                                                                         $qtArray = array_combine($keys, $qtArray);
                                                                                     }
                                                                                 @endphp
+                                                                                
                                                                                 @foreach ($qtArray as $qtDataKey => $qtData)
                                                                                     @php
                                                                                         $question_arr = Helper::getQuestionNameByID($qtDataKey);
+                                                                                        //dd($question_arr);
                                                                                     @endphp
                                                                                     <div class="odd p-3 ps-4">
                                                                                         <div></div>
@@ -2867,14 +2869,20 @@
                                                                                                 data-bs-original-title="Question Type">QT</button>
                                                                                             <button type="button"
                                                                                                 data-bs-toggle="modal"
-                                                                                                data-question_desc="<?php $question_arr->question_type_description; ?>"
-                                                                                                data-question_title="<?php $question_arr->question_type_title; ?>"
-                                                                                                data-question_lesson="<?php $question_arr->question_type_lesson; ?>"
-                                                                                                data-question_strategies="<?php $question_arr->question_type_strategies; ?>"
-                                                                                                data-question_identification_methods="<?php $question_arr->question_type_identification_methods; ?>"
-                                                                                                data-question_identification_activity="<?php $question_arr->question_type_identification_activity; ?>"
+                                                                                                data-question_desc1="<?php //$question_arr->question_type_description ? $question_arr->question_type_description : ''; ?>"
+                                                                                                data-question_desc="<?php if(isset($question_arr->question_type_description))  { echo $question_arr->question_type_description; } ?>"
+                                                                                                data-question_title="<?php if(isset($question_arr->question_type_title))  { echo $question_arr->question_type_title; } ?>"
+                                                                                                data-question_lesson="<?php if(isset($question_arr->question_type_lesson))  { echo $question_arr->question_type_lesson; } ?>"
+                                                                                                data-question_strategies="<?php if(isset($question_arr->question_strategies))  { echo $question_arr->question_strategies; } ?>"
+                                                                                                data-question_identification_methods="<?php if(isset($question_arr->question_type_identification_methods))  { echo $question_arr->question_type_identification_methods; } ?>"
+                                                                                                data-question_type_identification_activity="<?php if(isset($question_arr->question_type_identification_activity))  { echo $question_arr->question_type_identification_activity; } ?>"
+                                                                                                data-question_title1="<?php //$question_arr->question_type_title; ?>"
+                                                                                                data-question_lesson1="<?php //$question_arr->question_type_lesson; ?>"
+                                                                                                data-question_strategies1="<?php //$question_arr->question_type_strategies; ?>"
+                                                                                                data-question_identification_methods1="<?php //$question_arr->question_type_identification_methods; ?>"
+                                                                                                data-question_identification_activity1="<?php //$question_arr->question_type_identification_activity; ?>"
                                                                                                 data-bs-target="#modal-block-large-cg1ct1_<?php echo $qtDataKey; ?>"
-                                                                                                class="btn btn-dark fs-xs fw-semibold me-1 mb-3">{{ $question_arr->question_type_title }}</button>
+                                                                                                class="btn btn-dark fs-xs fw-semibold me-1 mb-3"><?php if(isset($question_arr->question_type_title))  { echo $question_arr->question_type_title; } ?></button>
                                                                                             @php
                                                                                                 $incorrect = $qtData['incorrect'] ?? 0;
                                                                                                 $missed_qt = $qtData['missed'] ?? 0;
