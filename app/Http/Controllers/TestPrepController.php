@@ -3114,6 +3114,7 @@ class TestPrepController extends Controller
         // Data is not in cache, retrieve and process data
         $getAllPracticeTests = [];
         $getOfficialPracticeTests = [];
+
         $getCustomQuiz = $this->getCustomQuiz($user_id, $formats);
 
         foreach ($formats as $format) {
@@ -3121,13 +3122,20 @@ class TestPrepController extends Controller
             $getOfficialPracticeTests[$format] = $this->getPracticeTests($user_id, $format, 1);
         }
 
-        $getCustomQuiz = $this->getCustomQuiz($user_id, $formats);
+        // $getCustomQuiz = $this->getCustomQuiz($user_id, $formats);
 
-        $sat_custom_details = $this->getCustomDetails($getCustomQuiz['SAT'], $user_id);
-        $psat_custom_details = $this->getCustomDetails($getCustomQuiz['PSAT'], $user_id);
-        $act_custom_details = $this->getCustomDetails($getCustomQuiz['ACT'], $user_id);
-        $dsat_custom_details = $this->getCustomDetails($getCustomQuiz['DSAT'], $user_id);
-        $dpsat_custom_details = $this->getCustomDetails($getCustomQuiz['DPSAT'], $user_id);
+        // $sat_custom_details = $this->getCustomDetails($getCustomQuiz['SAT'], $user_id);
+        // $psat_custom_details = $this->getCustomDetails($getCustomQuiz['PSAT'], $user_id);
+        // $act_custom_details = $this->getCustomDetails($getCustomQuiz['ACT'], $user_id);
+        // $dsat_custom_details = $this->getCustomDetails($getCustomQuiz['DSAT'], $user_id);
+        // $dpsat_custom_details = $this->getCustomDetails($getCustomQuiz['DPSAT'], $user_id);
+
+        foreach ($formats as $quizType) {
+            $customDetails[$quizType] = $this->getCustomDetails($getCustomQuiz[$quizType], $user_id);
+
+            // Capture specific variables if needed
+            ${strtolower($quizType) . '_custom_details'} = $customDetails[$quizType];
+        }
 
         $helper = new Helper();
 
@@ -3192,7 +3200,7 @@ class TestPrepController extends Controller
         );
 
         // Cache the data for 2 minutes
-        Cache::put($cacheKey, $cachedData, now()->addMinutes(2));
+        Cache::put($cacheKey, $cachedData, now()->addMinutes(1));
 
         return view('student.test-home-page.test_home_page', $cachedData);
     }
