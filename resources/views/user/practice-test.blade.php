@@ -1818,7 +1818,7 @@
 
                         answer_details = answer_details.associate(question_ids);
 
-                        $.ajaxSetup({
+                        {{-- $.ajaxSetup({
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                             }
@@ -1848,7 +1848,7 @@
                                     clearInterval(timerInterval);
                                 }
                             }
-                        });
+                        }); --}}
                         //Progress Saving Ends
                     }, 1000);
                 }
@@ -1904,7 +1904,10 @@
                     1000));
                 seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
             } else {
-                clearInterval(timerInterval);
+                {{-- console.log(timerInterval)
+                if(timerInterval != undefined){
+                    clearInterval(timerInterval);
+                } --}}
                 hours = 0;
                 minutes = 0;
                 seconds = 0;
@@ -1997,6 +2000,9 @@
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 }
             });
+            console.log(JSON.stringify({
+                    selected_answer: answer_details,
+                }));
             return jQuery.ajax({
                 url: "{{ url('/user/test-progress/store') }}",
                 method: 'post',
