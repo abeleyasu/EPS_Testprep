@@ -107,9 +107,9 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                          height: 20px;
-                                                                                                          background-color: blue;
-                                                                                                          margin-right: 5px; */
+                                                                                                              height: 20px;
+                                                                                                              background-color: blue;
+                                                                                                              margin-right: 5px; */
         }
     </style>
 
@@ -147,12 +147,12 @@
                     <!-- Lessons -->
                     <div class="block block-rounded">
                         <div class="block-content fs-sm">
-                            
-                        @if(isset($total_questions[0]))
-                            <input type="hidden" id="onload_question_id" value="{{  $total_questions[0] }}">
-                        @else
-                        <input type="hidden" id="onload_question_id" value="">
-                        @endif
+
+                            @if (isset($total_questions[0]))
+                                <input type="hidden" id="onload_question_id" value="{{ $total_questions[0] }}">
+                            @else
+                                <input type="hidden" id="onload_question_id" value="">
+                            @endif
                             <h5 class=" mb-2">
                                 PASSAGE I
                             </h5>
@@ -236,10 +236,10 @@
                         @endif
                         --}}
                         @php
-                            $section = array("Math", "Math_with_calculator");
+                            $section = ['Math', 'Math_with_calculator'];
                         @endphp
 
-                        @if ((in_array($testSection[0]->practice_test_type, $section)) || ($testSection[0]->show_calculator == 1 ))
+                        @if (in_array($testSection[0]->practice_test_type, $section) || $testSection[0]->show_calculator == 1)
                             <button type="button"
                                 class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 calculator"><i
                                     class="fa fa-fw fa-calculator me-1" style="color:black"></i>Calculator</button>
@@ -690,6 +690,7 @@
                     // text: "Flag :- "+totalFlag+","+"Skip :- "+totalSkip+","+"Guess :- "+totalGuess,
                     text: "<div class='d-flex flex-wrap'>" + questionBoxes + "</div>",
                     type: "success",
+                   
                     showCancelButton: false,
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "Cancel",
@@ -786,7 +787,7 @@
                 }
             });
 
-            function confirm(flagTimeOut,submit = false) {
+            function confirm(flagTimeOut, submit = false) {
 
 
                 let sectionID = '{{ $section_id }}';
@@ -934,7 +935,7 @@
                 skip_detail = skip_detail.associate(question_ids);
                 if (window.location.href.indexOf("all") !== -1) {
                     var section_size = 'all';
-                }else{
+                } else {
                     var section_size = 'single';
                 }
 
@@ -980,16 +981,18 @@
                             var url = window.location.origin + result.redirect_url;
                             window.location.href = url;
                             return false;
-                        }else{
+                        } else {
 
                             if (result.break_time != 0) {
                                 let next_section_id = result.next_section_id;
-                                var url = window.location.origin + '/user/test-break/' + next_section_id+'?test_id='+get_test_id;
+                                var url = window.location.origin + '/user/test-break/' +
+                                    next_section_id + '?test_id=' + get_test_id;
                                 window.location.href = url;
                                 return false;
                             }
 
-                            var url = window.location.origin + '/user/practice-test-sections/' + get_test_id;
+                            var url = window.location.origin + '/user/practice-test-sections/' +
+                                get_test_id;
                             window.location.href = url;
                             return false;
                         }
@@ -1069,7 +1072,7 @@
                                     get_test_id;
                             }
                         }
-                        window.location.href = url;                       
+                        window.location.href = url;
                     }
                 });
             }
@@ -1855,7 +1858,7 @@
             });
         }
 
-        async function storeProgress(){
+        async function storeProgress() {
             console.log('start')
             let option = new URLSearchParams(window.location.search);
             let OptionValue = option.get('time');
