@@ -4046,112 +4046,203 @@ aria-hidden="true">
         }
 
         async function addNewTypes(ans_col, data, type, disp_option = '', super_cat_option = '', cat_type_option = '', question_type_option = '') {
-            let key = null;
-            // console.log('yes here');
-            if(type != 'null' && type == 'repet') {
-                key = parseInt(data);
-            } else {
-                key = $(data).attr(`${disp_option}data-id-${ans_col}`);
-                key = parseInt(key);
+    let key = null;
 
-                let super_category = $(`#${disp_option}edit_super_category_${ans_col}_${key - 1}`).val();
-                let category_type = $(`#${disp_option}edit_category_type_${ans_col}_${key - 1}`).val();
-                let question_type = $(`#${disp_option}edit_search-input_${ans_col}_${key - 1}`).val();
+    if (type !== 'null' && type === 'repet') {
+        key = parseInt(data);
+    } else {
+        key = parseInt($(data).attr(`${disp_option}data-id-${ans_col}`));
 
-                if(super_category == '') {
-                    toastr.error('Please select a Super Category!');
-                    return false;
-                }
+        const super_category = $(`#${disp_option}edit_super_category_${ans_col}_${key - 1}`).val();
+        const category_type = $(`#${disp_option}edit_category_type_${ans_col}_${key - 1}`).val();
+        const question_type = $(`#${disp_option}edit_search-input_${ans_col}_${key - 1}`).val();
 
-                if(category_type == '') {
-                    toastr.error('Please select a category type!');
-                    return false;
-                }
-
-                if(question_type == '') {
-                    toastr.error('Please select a question type!');
-                    return false;
-                }
-            }
-
-            let testType = $('#format').val();
-            if(super_cat_option == '') {
-                super_cat_option = await dropdown_lists(`/admin/getSuperCategory?testType=${testType}`);
-            }
-            if(cat_type_option == '') {
-                cat_type_option = await dropdown_lists(`/admin/getPracticeCategoryType?testType=${testType}`);
-            }
-            if(question_type_option == '') {
-                question_type_option = await dropdown_lists(`/admin/getPracticeQuestionType?testType=${testType}`);
-            }
-
-            let html = ``;
-                html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
-
-                html += `<div class="col-md-2 align-self-start">`;
-                html += `<input type="checkbox" name="${disp_option}edit_ct_checkbox_${ans_col}" id="${disp_option}edit_ct_checkbox_${ans_col}_${key}">`;
-                html += `</div>`;
-
-                html += `<div class="col-md-3 mb-2 me-2 rating-tag">`;
-                html += `<div class="d-flex align-items-center">`;
-                html += `<select class="js-select2 select superCategory" id="${disp_option}edit_super_category_${ans_col}_${key}" name="${disp_option}edit_super_category_${ans_col}" onchange="insertSuperCategory(this)" multiple>`;
-                // html += preGetSuperCategory;
-                html += super_cat_option;
-                html += `</select>`;
-                html += `</div>`;
-                html += `</div>`;
-
-                html += `<div class="mb-2 col-md-3 me-2 category-custom">`;
-                html += `<div class="d-flex align-items-center">`;
-                html += `<select class="js-select2 select categoryType" id="${disp_option}edit_category_type_${ans_col}_${key}" name="${disp_option}edit_category_type_${ans_col}" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;
-                // html += preGetPracticeCategoryType;
-                html += cat_type_option;
-                html += `</select>`;
-                html += `</div>`;
-                html += `</div>`;
-                html += `<div class="mb-2 col-md-3 add_question_type_select">`;
-                html += `<div class="d-flex align-items-center">`;
-                html += `<select class="js-select2 select questionType" id="${disp_option}edit_search-input_${ans_col}_${key}" name="${disp_option}edit_search-input_${ans_col}" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;
-                // html += preGetPracticeQuestionType;
-                html += question_type_option;
-                html += `</select>`;
-                html += `</div>`;
-                html += `</div>`;
-                html += `<div class="col-md-1 add-minus-icon">`;
-                html += `<button class="plus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>`;
-                html += `</div>`;
-                html += `</div>`;
-
-            $(`#${disp_option}addNewTypes_${ans_col}`).append(html);
-
-            $(`#${disp_option}edit_search-input_${ans_col}_${key}`).select2({
-                dropdownParent: $('#questionMultiModal'),
-                tags : true,
-                placeholder : "Select Question type",
-                maximumSelectionLength: 1
-            });
-
-            $(`#${disp_option}edit_super_category_${ans_col}_${key}`).select2({
-                dropdownParent: $('#questionMultiModal'),
-                tags : true,
-                placeholder : "Select Super Category",
-                maximumSelectionLength: 1
-            });
-
-            $(`#${disp_option}edit_category_type_${ans_col}_${key}`).select2({
-                dropdownParent: $('#questionMultiModal'),
-                tags : true,
-                placeholder : "Select Category type",
-                maximumSelectionLength: 1
-            });
-
-            if(type !== 'repet') {
-                $(data).attr(`${disp_option}data-id-${ans_col}`, key + 1);
-            } else {
-                var button = document.querySelector(`button[${disp_option}ans_col="${ans_col}"]`);
-                button.setAttribute(`${disp_option}data-id-${ans_col}`, key + 1);
-            }
+        if (!super_category || !category_type || !question_type) {
+            toastr.error('Please select Super Category, Category type, and Question type!');
+            return false;
         }
+    }
+
+    const testType = $('#format').val();
+
+    if (!super_cat_option) {
+        super_cat_option = await dropdown_lists(`/admin/getSuperCategory?testType=${testType}`);
+    }
+    if (!cat_type_option) {
+        cat_type_option = await dropdown_lists(`/admin/getPracticeCategoryType?testType=${testType}`);
+    }
+    if (!question_type_option) {
+        question_type_option = await dropdown_lists(`/admin/getPracticeQuestionType?testType=${testType}`);
+    }
+
+    const html = `<div class="d-flex input-field align-items-center removeNewTypes">
+        <div class="col-md-2 align-self-start">
+            <input type="checkbox" name="${disp_option}edit_ct_checkbox_${ans_col}" id="${disp_option}edit_ct_checkbox_${ans_col}_${key}">
+        </div>
+        <div class="col-md-3 mb-2 me-2 rating-tag">
+            <div class="d-flex align-items-center">
+                <select class="js-select2 select superCategory" id="${disp_option}edit_super_category_${ans_col}_${key}" name="${disp_option}edit_super_category_${ans_col}" onchange="insertSuperCategory(this)" multiple>
+                    ${super_cat_option}
+                </select>
+            </div>
+        </div>
+        <div class="mb-2 col-md-3 me-2 category-custom">
+            <div class="d-flex align-items-center">
+                <select class="js-select2 select categoryType" id="${disp_option}edit_category_type_${ans_col}_${key}" name="${disp_option}edit_category_type_${ans_col}" data-id="${key}" onchange="insertCategoryType(this)" multiple>
+                    ${cat_type_option}
+                </select>
+            </div>
+        </div>
+        <div class="mb-2 col-md-3 add_question_type_select">
+            <div class="d-flex align-items-center">
+                <select class="js-select2 select questionType" id="${disp_option}edit_search-input_${ans_col}_${key}" name="${disp_option}edit_search-input_${ans_col}" data-id="${key}" onchange="insertQuestionType(this)" multiple>
+                    ${question_type_option}
+                </select>
+            </div>
+        </div>
+        <div class="col-md-1 add-minus-icon">
+            <button class="plus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>
+        </div>
+    </div>`;
+
+    $(`#${disp_option}addNewTypes_${ans_col}`).append(html);
+
+    $(`#${disp_option}edit_search-input_${ans_col}_${key}`).select2({
+        dropdownParent: $('#questionMultiModal'),
+        tags: true,
+        placeholder: 'Select Question type',
+        maximumSelectionLength: 1
+    });
+
+    $(`#${disp_option}edit_super_category_${ans_col}_${key}`).select2({
+        dropdownParent: $('#questionMultiModal'),
+        tags: true,
+        placeholder: 'Select Super Category',
+        maximumSelectionLength: 1
+    });
+
+    $(`#${disp_option}edit_category_type_${ans_col}_${key}`).select2({
+        dropdownParent: $('#questionMultiModal'),
+        tags: true,
+        placeholder: 'Select Category type',
+        maximumSelectionLength: 1
+    });
+
+    if (type !== 'repet') {
+        $(data).attr(`${disp_option}data-id-${ans_col}`, key + 1);
+    } else {
+        $(`button[${disp_option}ans_col="${ans_col}"]`).attr(`${disp_option}data-id-${ans_col}`, key + 1);
+    }
+}
+
+
+        // async function addNewTypes(ans_col, data, type, disp_option = '', super_cat_option = '', cat_type_option = '', question_type_option = '') {
+        //     let key = null;
+        //     // console.log('yes here');
+        //     if(type != 'null' && type == 'repet') {
+        //         key = parseInt(data);
+        //     } else {
+        //         key = $(data).attr(`${disp_option}data-id-${ans_col}`);
+        //         key = parseInt(key);
+
+        //         let super_category = $(`#${disp_option}edit_super_category_${ans_col}_${key - 1}`).val();
+        //         let category_type = $(`#${disp_option}edit_category_type_${ans_col}_${key - 1}`).val();
+        //         let question_type = $(`#${disp_option}edit_search-input_${ans_col}_${key - 1}`).val();
+
+        //         if(super_category == '') {
+        //             toastr.error('Please select a Super Category!');
+        //             return false;
+        //         }
+
+        //         if(category_type == '') {
+        //             toastr.error('Please select a category type!');
+        //             return false;
+        //         }
+
+        //         if(question_type == '') {
+        //             toastr.error('Please select a question type!');
+        //             return false;
+        //         }
+        //     }
+
+        //     let testType = $('#format').val();
+        //     if(super_cat_option == '') {
+        //         super_cat_option = await dropdown_lists(`/admin/getSuperCategory?testType=${testType}`);
+        //     }
+        //     if(cat_type_option == '') {
+        //         cat_type_option = await dropdown_lists(`/admin/getPracticeCategoryType?testType=${testType}`);
+        //     }
+        //     if(question_type_option == '') {
+        //         question_type_option = await dropdown_lists(`/admin/getPracticeQuestionType?testType=${testType}`);
+        //     }
+
+        //     let html = ``;
+        //         html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
+
+        //         html += `<div class="col-md-2 align-self-start">`;
+        //         html += `<input type="checkbox" name="${disp_option}edit_ct_checkbox_${ans_col}" id="${disp_option}edit_ct_checkbox_${ans_col}_${key}">`;
+        //         html += `</div>`;
+
+        //         html += `<div class="col-md-3 mb-2 me-2 rating-tag">`;
+        //         html += `<div class="d-flex align-items-center">`;
+        //         html += `<select class="js-select2 select superCategory" id="${disp_option}edit_super_category_${ans_col}_${key}" name="${disp_option}edit_super_category_${ans_col}" onchange="insertSuperCategory(this)" multiple>`;
+        //         // html += preGetSuperCategory;
+        //         html += super_cat_option;
+        //         html += `</select>`;
+        //         html += `</div>`;
+        //         html += `</div>`;
+
+        //         html += `<div class="mb-2 col-md-3 me-2 category-custom">`;
+        //         html += `<div class="d-flex align-items-center">`;
+        //         html += `<select class="js-select2 select categoryType" id="${disp_option}edit_category_type_${ans_col}_${key}" name="${disp_option}edit_category_type_${ans_col}" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;
+        //         // html += preGetPracticeCategoryType;
+        //         html += cat_type_option;
+        //         html += `</select>`;
+        //         html += `</div>`;
+        //         html += `</div>`;
+        //         html += `<div class="mb-2 col-md-3 add_question_type_select">`;
+        //         html += `<div class="d-flex align-items-center">`;
+        //         html += `<select class="js-select2 select questionType" id="${disp_option}edit_search-input_${ans_col}_${key}" name="${disp_option}edit_search-input_${ans_col}" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;
+        //         // html += preGetPracticeQuestionType;
+        //         html += question_type_option;
+        //         html += `</select>`;
+        //         html += `</div>`;
+        //         html += `</div>`;
+        //         html += `<div class="col-md-1 add-minus-icon">`;
+        //         html += `<button class="plus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>`;
+        //         html += `</div>`;
+        //         html += `</div>`;
+
+        //     $(`#${disp_option}addNewTypes_${ans_col}`).append(html);
+
+        //     $(`#${disp_option}edit_search-input_${ans_col}_${key}`).select2({
+        //         dropdownParent: $('#questionMultiModal'),
+        //         tags : true,
+        //         placeholder : "Select Question type",
+        //         maximumSelectionLength: 1
+        //     });
+
+        //     $(`#${disp_option}edit_super_category_${ans_col}_${key}`).select2({
+        //         dropdownParent: $('#questionMultiModal'),
+        //         tags : true,
+        //         placeholder : "Select Super Category",
+        //         maximumSelectionLength: 1
+        //     });
+
+        //     $(`#${disp_option}edit_category_type_${ans_col}_${key}`).select2({
+        //         dropdownParent: $('#questionMultiModal'),
+        //         tags : true,
+        //         placeholder : "Select Category type",
+        //         maximumSelectionLength: 1
+        //     });
+
+        //     if(type !== 'repet') {
+        //         $(data).attr(`${disp_option}data-id-${ans_col}`, key + 1);
+        //     } else {
+        //         var button = document.querySelector(`button[${disp_option}ans_col="${ans_col}"]`);
+        //         button.setAttribute(`${disp_option}data-id-${ans_col}`, key + 1);
+        //     }
+        // }
         
         //new function for add category and question types
         async function addNewType(data, disp_option = '') {
@@ -6389,7 +6480,11 @@ function practQuestioEdit(id){
     is_edit = true;
     clearModel();
 
-    var test_format_type_val = jQuery('#format').val();
+    let loader = $('.preloader');
+
+    loader.show();
+
+    let test_format_type_val = jQuery('#format').val();
     $.ajax({
         data: {
             'format': test_format_type_val,
@@ -6456,11 +6551,11 @@ function practQuestioEdit(id){
                 },
                 url: '{{route("getPracticeQuestionById")}}',
                 method: 'post',
-                async: false,
+                async: true,
                 success: (res) => {
                     // console.log(res);
                     if(res.question.length>0){
-                        var result = res.question[0];
+                        let result = res.question[0];
                         // console.log(result);
                         // console.log(result.answer);
                         // document.cookie = "format = " + result.format;
@@ -6614,12 +6709,15 @@ function practQuestioEdit(id){
                             url: '{{route("getPracticePassage")}}',
                             method: 'post',
                             success: (passRes) => {
-                                var opt = '';
+                                let opt = '';
                                 $.each(passRes, function( key, val){
                                     opt +='<option value="'+val.id+'">'+val.title+'</option>';
                                 });
                                 $('#passagesType').html(opt);
                                 $("select[name=passagesType]").val(result.passages_id).trigger('change');
+                            },
+                            complete: function () {
+                                loader.hide(); 
                             }
                         });
                         getAnswerOption(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp, result.multiChoice, result.checkbox_values, result.super_category_values, result.category_type_values, result.question_type_values );
@@ -6634,6 +6732,7 @@ function practQuestioEdit(id){
         }
     });
 }
+
 
 async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp, multiChoice, checkbox_values, super_category_values, category_type_values, question_type_values){
     // console.log(answerOpt);

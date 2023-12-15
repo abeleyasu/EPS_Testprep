@@ -21,6 +21,8 @@ use App\Models\UserAnswers;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
+
 
 class PracticeQuestionController extends Controller
 {
@@ -490,13 +492,33 @@ class PracticeQuestionController extends Controller
 
     public function getPracticePassage(Request $request)
     {
-        $passages = Passage::where('type', $request->format)->get();
+        $format = $request->format;
+
+        // Define a cache key based on the format
+        $cacheKey = "passages_$format";
+    
+        // Attempt to retrieve data from cache
+        $passages = Cache::remember($cacheKey, $minutes = 10, function () use ($format) {
+            // Cache miss, fetch data from the database
+            return Passage::where('type', $format)->get();
+        });
+    
         return $passages;
     }
 
     public function getPracticeQuestionById(Request $request)
     {
-        $question = PracticeQuestion::where('id', $request->question_id)->get();
+        $questionId = $request->question_id;
+
+        // Define a cache key based on the question_id
+        $cacheKey = "question_$questionId";
+    
+        // Attempt to retrieve data from cache
+        $question = Cache::remember($cacheKey, $minutes = 2, function () use ($questionId) {
+            // Cache miss, fetch data from the database
+            return PracticeQuestion::where('id', $questionId)->get();
+        });
+    
         return response()->json(['question' => $question]);
     }
 
