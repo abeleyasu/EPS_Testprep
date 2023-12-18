@@ -5,6 +5,18 @@
 @section('user-content')
     <meta name="_token" content="{{ csrf_token() }}" />
     <style>
+        .sweet-alert {
+            width: 70% !important;
+            transform: translate(-50%, -50%);
+            margin-top: 0px !important;
+            margin-left: 0px !important;
+        }
+
+        .sweet-alert p {
+            height: 156px !important;
+            overflow-y: auto !important;
+        }
+
         .checkbox-button {
             appearance: none;
             background-color: #fff;
@@ -107,9 +119,9 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                              height: 20px;
-                                                                                                              background-color: blue;
-                                                                                                              margin-right: 5px; */
+                                                                                                                  height: 20px;
+                                                                                                                  background-color: blue;
+                                                                                                                  margin-right: 5px; */
         }
     </style>
 
@@ -690,7 +702,7 @@
                     // text: "Flag :- "+totalFlag+","+"Skip :- "+totalSkip+","+"Guess :- "+totalGuess,
                     text: "<div class='d-flex flex-wrap'>" + questionBoxes + "</div>",
                     type: "success",
-                   
+
                     showCancelButton: false,
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "Cancel",
@@ -2004,8 +2016,8 @@
                 }
             });
             console.log(JSON.stringify({
-                    selected_answer: answer_details,
-                }));
+                selected_answer: answer_details,
+            }));
             return jQuery.ajax({
                 url: "{{ url('/user/test-progress/store') }}",
                 method: 'post',
