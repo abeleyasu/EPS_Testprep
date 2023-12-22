@@ -7897,8 +7897,8 @@ Sortable.create(listWithHandleQuestion, {
                 url: '{{ route("questionOrder") }}',
                 method: 'post',
                 success: function(res){
-                    $('#sectionDisplay_'+section_id+' .firstRecord .singleQuest_'+new_question_id).remove();
-                    $('#sectionDisplay_'+section_id+' .firstRecord').append('<ul class="sectionList singleQuest_'+new_question_id+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+new_question_id+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+new_question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+new_question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                    // $('#sectionDisplay_'+section_id+' .firstRecord .singleQuest_'+new_question_id).remove();
+                    // $('#sectionDisplay_'+section_id+' .firstRecord').append('<ul class="sectionList singleQuest_'+new_question_id+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+new_question_id+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+new_question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+new_question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
                 }
             });
         });
@@ -7958,7 +7958,7 @@ var test = Sortable.create(addListWithHandleQuestion, {
                         url: '{{ route("questionOrder") }}',
                         method: 'post',
                         success: (res) => {
-                            $('.sectionTypesFull .firstRecord .singleQuest_'+res.question['id']+'').remove();
+                            // $('.sectionTypesFull .firstRecord .singleQuest_'+res.question['id']+'').remove();
                         }
                     });
                 });
