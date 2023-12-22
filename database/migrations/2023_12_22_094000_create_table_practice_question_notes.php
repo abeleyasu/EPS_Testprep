@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('table_practice_question_notes', function (Blueprint $table) {
+        Schema::create('practice_question_notes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('practice_question_id')->references('id')->on('practice_questions')->cascadeOnDelete();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_practice_question_notes');
+        Schema::dropIfExists('practice_question_notes');
     }
 };
