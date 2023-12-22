@@ -9,7 +9,7 @@ use App\Models\DiffRating;
 use App\Models\UserCalendar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\FacadesDB;
+use Illuminate\Support\Facades\DB;
 use App\Models\PracticeTest;
 use App\Models\PracticeTestSection;
 use App\Models\PracticeQuestion;
