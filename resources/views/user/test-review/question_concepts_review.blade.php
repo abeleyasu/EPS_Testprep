@@ -271,7 +271,7 @@
                                         textInfo.click(function() {
                                             var currentTextInfo = jQuery(this);
                                             var currentModal = currentTextInfo.next(
-                                            "div.modal"); // Find the modal associated with the clicked text-info
+                                                "div.modal"); // Find the modal associated with the clicked text-info
                                             var loader = jQuery("#loader");
                                             loader.show();
 
@@ -1782,11 +1782,19 @@
                                                                                                         class="block-content">
                                                                                                         Notes
                                                                                                     </div>
+                                                                                                    @php
+                                                                                                        $notes = \DB::table('practice_question_notes')
+                                                                                                            ->where('user_id', Auth::user()->id)
+                                                                                                            ->where('practice_question_id', $single_user_selected_answers['get_question_details'][0]->question_id)
+                                                                                                            ->select('notes')
+                                                                                                            ->first();
+                                                                                                        //    dump($notes);
+                                                                                                    @endphp
                                                                                                     <div
                                                                                                         class="block-content">
                                                                                                         <textarea class="form-control"
                                                                                                             onchange="handleNotesChange(this,{{ $single_user_selected_answers['get_question_details'][0]->question_id }})"
-                                                                                                            placeholder="Enter your notes here...">{{ $single_user_selected_answers['get_question_details'][0]->notes }}</textarea>
+                                                                                                            placeholder="Enter your notes here...">@if (isset($notes)){{ $notes->notes }}@endif</textarea>
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div

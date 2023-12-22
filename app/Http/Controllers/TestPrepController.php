@@ -16,6 +16,7 @@ use App\Models\PracticeQuestion;
 use App\Models\UserAnswers;
 use App\Models\Passage;
 use App\Models\PracticeCategoryType;
+use App\Models\PracticeQuestionNote;
 use App\Models\QuestionDetails;
 use App\Models\QuestionType;
 use App\Models\Score;
@@ -286,7 +287,7 @@ class TestPrepController extends Controller
                         'practice_questions.category_type_values as category_type_values',
                         'practice_questions.question_type_values as question_type_values',
                         'practice_questions.checkbox_values as checkbox_values',
-                        'practice_questions.notes',
+                        // 'practice_questions.notes',
                     )
                     ->where('practice_tests.id', $test_id)
                     ->orderBy('practice_questions.question_order', 'ASC')
@@ -403,7 +404,7 @@ class TestPrepController extends Controller
                         'practice_questions.category_type_values as category_type_values',
                         'practice_questions.question_type_values as question_type_values',
                         'practice_questions.checkbox_values as checkbox_values',
-                        'practice_questions.notes',
+                        // 'practice_questions.notes',
                     )
                     ->where('practice_test_sections.id', $id)
                     ->orderBy('practice_questions.question_order', 'ASC')
@@ -556,7 +557,7 @@ class TestPrepController extends Controller
                                         'practice_questions.passages_id',
                                         'practice_questions.tags',
                                         'passages.title',
-                                        'practice_questions.notes',
+                                        // 'practice_questions.notes',
                                         'passages.description',
                                         'practice_questions.category_type as category_type',
                                         'practice_questions.question_type_id as question_type_id',
@@ -622,7 +623,7 @@ class TestPrepController extends Controller
                                 'practice_questions.tags',
                                 'practice_questions.passages_id',
                                 'passages.title',
-                                'practice_questions.notes',
+                                // 'practice_questions.notes',
                                 'passages.description',
                                 'practice_questions.category_type as category_type',
                                 'practice_questions.question_type_id as question_type_id',
@@ -1163,7 +1164,9 @@ class TestPrepController extends Controller
         $questionId = $request->questionId ?? "";
 
         if (!empty($notes) && !empty($questionId)) {
-            $practiceQuestion = PracticeQuestion::findOrFail($questionId);
+            $practiceQuestion = new PracticeQuestionNote;
+            $practiceQuestion->practice_question_id = $questionId;
+            $practiceQuestion->user_id = Auth::user()->id;
             $practiceQuestion->notes = $notes;
             $practiceQuestion->save();
             return response()->json(['message' => 'success', 'data' => ['practiceQuestion' => $practiceQuestion]]);

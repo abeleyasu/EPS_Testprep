@@ -528,7 +528,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <button type="button"  data-id="{{ $testsection->id }}" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button>
                         <button type="button"  data-id="{{ $testsection->id }}" data-section_type="{{ $testsection->practice_test_type }}" data-test_id="{{ $testsection->testid }}" item-count="1" class="btn w-25 btn-alt-success {{ (in_array($testsection->format, ['DSAT','DPSAT'])) ? 'digi_add_score_btn ' : ' add_score_btn' }} " data-bs-dismiss="modal"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button>
                         <div class="part_order">
-                            <input type="number" readonly class="form-control" name="section_order" value="{{ $testsection->section_order }}" id="order_{{ $testsection->id }}"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderQuesDialog({{$testsection->id}})"><i class="fa-solid fa-check"></i></button>
+                            <input type="number" readonly class="form-control text-center" name="section_order" value="{{ $testsection->section_order }}" id="order_{{ $testsection->id }}"/><button type="button" class="input-group-text fw-bold" id="basic-addon2" onclick="openOrderQuesDialog({{$testsection->id}})" style="margin-left: 2%"><i class="fa-solid fa-check me-2"></i> Sort Questions</button>
                         </div>
 
                     </div>
@@ -2267,6 +2267,87 @@ input[type="time"]::-webkit-calendar-picker-indicator {
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="dragModal"
+
+     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Section list Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="listWithHandle" class="list-group">
+                    @foreach($testsections as $key=>$testsection)
+                        <div class="list-group-item">
+                            <span class="glyphicon glyphicon-move" aria-hidden="true">
+                            <i class="fa-solid fa-grip-vertical"></i>
+                            </span>
+                            <button class="btn btn-primary" value="{{ $testsection->id }}">{{ $testsection->id }} :- {{ $testsection->format }} {{ $testsection->practice_test_type }}</button>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveOrder()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+
+<div class="modal fade" id="dragModalQuestion"
+
+     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Question list Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="listWithHandleQuestion" class="list-group">
+                    @foreach($testsections as $key=>$testsection)
+                        @foreach($testsection->getPracticeQuestions as $practQuestion)
+                            <div class="list-group-item sectionsaprat_{{ $testsection->id }} quesBasedSecList questionaprat_{{ $practQuestion->id }}" data-section_id="{{ $testsection->id }}" data-order="{{ $practQuestion->question_order }}" data-id="{{ $practQuestion->id }}" style="display:none;">
+                                <span class="glyphicon question-glyphicon-move" aria-hidden="true">
+                                <i class="fa-solid fa-grip-vertical"></i>
+                                </span>
+                                <button class="btn btn-primary" value="{{ $practQuestion->id }}">{!! $practQuestion->title !!}</button>
+                            </div>
+                        @endforeach
+                    @endforeach
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="questionModal()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- modal for new addad section questions  --}}
+<div class="modal fade" id="addDragModalQuestion" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Question list Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="addListWithHandleQuestion" class="list-group">
+                    <!-- Your modal body content goes here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveQuestion()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 {{-- end score modal  --}}
 <!-- start add  multiple question -->
 {{-- start add question multi model  --}}
@@ -3730,88 +3811,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 </div>
 {{-- end modal  --}}
 
-<div class="modal fade" id="dragModal"
 
-     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" >Section list Order</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="listWithHandle" class="list-group">
-                    @foreach($testsections as $key=>$testsection)
-                        <div class="list-group-item">
-                            <span class="glyphicon glyphicon-move" aria-hidden="true">
-                            <i class="fa-solid fa-grip-vertical"></i>
-                            </span>
-                            <button class="btn btn-primary" value="{{ $testsection->id }}">{{ $testsection->id }} :- {{ $testsection->format }} {{ $testsection->practice_test_type }}</button>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="saveOrder()">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal -->
-
-<div class="modal fade" id="dragModalQuestion"
-
-     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" >Question list Order</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="listWithHandleQuestion" class="list-group">
-                    @foreach($testsections as $key=>$testsection)
-                        @foreach($testsection->getPracticeQuestions as $practQuestion)
-                            <div class="list-group-item sectionsaprat_{{ $testsection->id }} quesBasedSecList questionaprat_{{ $practQuestion->id }}" data-section_id="{{ $testsection->id }}" data-order="{{ $practQuestion->question_order }}" data-id="{{ $practQuestion->id }}" style="display:none;">
-                                <span class="glyphicon question-glyphicon-move" aria-hidden="true">
-                                <i class="fa-solid fa-grip-vertical"></i>
-                                </span>
-                                <button class="btn btn-primary" value="{{ $practQuestion->id }}">{!! $practQuestion->title !!}</button>
-                            </div>
-                        @endforeach
-                    @endforeach
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="questionModal()">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- modal for new addad section questions  --}}
-<div class="modal fade" id="addDragModalQuestion" tabindex="-1" aria-labelledby="staticBackdropLabel"
-aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Question list Order</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div id="addListWithHandleQuestion" class="list-group">
-
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary" onclick="saveQuestion()">Save changes</button>
-        </div>
-    </div>
-</div>
-</div>
 
 @endsection
 
@@ -7792,7 +7793,11 @@ function openOrderQuesDialog (secId) {
 
     $('.quesBasedSecList').hide();
     $('.sectionsaprat_'+secId).show();
-    myQuestionModal.show();
+
+    // Open the modal
+    $('#dragModalQuestion').modal('show');
+    // myQuestionModal.show();
+
 }
 function questionModal() {
     //$('#sectionAddId').val(0);
@@ -7892,8 +7897,8 @@ Sortable.create(listWithHandleQuestion, {
                 url: '{{ route("questionOrder") }}',
                 method: 'post',
                 success: function(res){
-                //     $('#sectionDisplay_'+section_id+' .firstRecord .singleQuest_'+new_question_id).remove();
-                //     $('#sectionDisplay_'+section_id+' .firstRecord').append('<ul class="sectionList singleQuest_'+new_question_id+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+new_question_id+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+new_question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+new_question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                    $('#sectionDisplay_'+section_id+' .firstRecord .singleQuest_'+new_question_id).remove();
+                    $('#sectionDisplay_'+section_id+' .firstRecord').append('<ul class="sectionList singleQuest_'+new_question_id+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+new_question_id+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+new_question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+new_question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
                 }
             });
         });
@@ -7953,7 +7958,7 @@ var test = Sortable.create(addListWithHandleQuestion, {
                         url: '{{ route("questionOrder") }}',
                         method: 'post',
                         success: (res) => {
-                            // $('.sectionTypesFull .firstRecord .singleQuest_'+res.question['id']+'').remove();
+                            $('.sectionTypesFull .firstRecord .singleQuest_'+res.question['id']+'').remove();
                         }
                     });
                 });
