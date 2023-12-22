@@ -9,7 +9,7 @@ use App\Models\DiffRating;
 use App\Models\UserCalendar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\FacadesDB;
 use App\Models\PracticeTest;
 use App\Models\PracticeTestSection;
 use App\Models\PracticeQuestion;
@@ -2216,7 +2216,7 @@ class TestPrepController extends Controller
                                 }
                             }
 
-                            $eachScore = \DB::table('scores')
+                            $eachScore = DB::table('scores')
                                 ->whereIn('section_id', $rwIdsArr)
                                 ->where('test_id', $id)
                                 ->where('actual_score', $newRwScore)
@@ -2246,7 +2246,7 @@ class TestPrepController extends Controller
                             // calculate Score for math.
                             // if(count($count_right_question[$key]) != 0) {
                             //     foreach($count_right_question[$key] as $questions){
-                            //         $eachScore = \DB::table('scores')
+                            //         $eachScore = DB::table('scores')
                             //                         ->where('section_id',$key)
                             //                         ->where('question_id',$questions)
                             //                         ->where('test_id', $id)
@@ -2265,7 +2265,7 @@ class TestPrepController extends Controller
                                 }
                             }
 
-                            $eachMathScore = \DB::table('scores')
+                            $eachMathScore = DB::table('scores')
                                 ->whereIn('section_id', $mathIdsArr)
                                 ->where('test_id', $id)
                                 ->where('actual_score', $newMathScore)
@@ -2486,7 +2486,7 @@ class TestPrepController extends Controller
 
     public function resetSection($testId, $sectionId)
     {
-        $current_sections = \DB::table('practice_test_sections')
+        $current_sections = DB::table('practice_test_sections')
             ->where('id', $sectionId)
             ->first();
         // dump($current_sections);
@@ -2497,17 +2497,17 @@ class TestPrepController extends Controller
 
         $all_sections  = [];
         if ($current_sections->practice_test_type == 'Reading_And_Writing') {
-            $all_sections = \DB::table('practice_test_sections')
+            $all_sections = DB::table('practice_test_sections')
                 ->where('testid', $testId)
                 ->whereIn('practice_test_type', ['Reading_And_Writing', 'Easy_Reading_And_Writing', 'Hard_Reading_And_Writing'])
                 ->pluck('id');
         } elseif ($current_sections->practice_test_type == 'Math') {
-            $all_sections = \DB::table('practice_test_sections')
+            $all_sections = DB::table('practice_test_sections')
                 ->where('testid', $testId)
                 ->whereIn('practice_test_type', ['Math', 'Math_with_calculator', 'Math_no_calculator'])
                 ->pluck('id');
         } else {
-            $all_sections = \DB::table('practice_test_sections')
+            $all_sections = DB::table('practice_test_sections')
                 ->where('testid', $testId)
                 ->whereIn('practice_test_type', [$current_sections->practice_test_type])
                 ->pluck('id');
@@ -3526,7 +3526,7 @@ class TestPrepController extends Controller
         }, $section_types);
 
         $eachScore = array_map(function ($section_ids, $section_type, $mathScoreCount) {
-            return \DB::table('scores')
+            return DB::table('scores')
                 ->whereIn('section_id', $section_ids)
                 ->where('actual_score', $mathScoreCount)
                 ->first('converted_score');
@@ -3536,8 +3536,8 @@ class TestPrepController extends Controller
             return $eachScore ? $eachScore->converted_score : 0;
         }, $eachScore, $mathScoreCount);
 
-        $mathSection = $score[0];
-        $readSection = $score[1];
+        $mathSection = isset($score[0]) ? $score[0] : 0;
+        $readSection = isset($score[1]) ? $score[1] : 0;
 
         foreach ($sat_test as $test) {
             $sat_details_array[$test->id]["MathSectionsScore"] = $mathSection;
@@ -3654,7 +3654,7 @@ class TestPrepController extends Controller
                 $actual_time = $answers->actual_time ?? '';
                 $sat_details_array[$test->id][$section_detail['practice_test_type'] . "_actual_time"] = $actual_time;
 
-                $eachMathScore = \DB::table('scores')
+                $eachMathScore = DB::table('scores')
                     ->whereIn('section_id', $right_question[$test->id]['mathSecIDs1'])
                     ->where('test_id', $test->id)
                     ->where('actual_score', $right_question[$test->id]['MathScoreCount'])
@@ -3662,7 +3662,7 @@ class TestPrepController extends Controller
 
                 $mathSection = $eachMathScore->converted_score ?? 0;
 
-                $eachReadScore = \DB::table('scores')
+                $eachReadScore = DB::table('scores')
                     ->whereIn('section_id', $right_question[$test->id]['readSecIDs1'])
                     ->where('test_id', $test->id)
                     ->where('actual_score', $right_question[$test->id]['ReadScoreCount'])
