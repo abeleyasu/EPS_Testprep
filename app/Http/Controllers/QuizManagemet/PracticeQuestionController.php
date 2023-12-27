@@ -1007,6 +1007,7 @@ class PracticeQuestionController extends Controller
     {
         if (isset($_GET['testType']) && !empty($_GET['testType'])) {
             $super_categories = SuperCategory::where('format', $_GET['testType'])->get();
+            // dd($super_categories);
         } else {
             $super_categories = SuperCategory::get();
         }

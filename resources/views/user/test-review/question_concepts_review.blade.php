@@ -80,7 +80,7 @@
                 </div>
                 {{-- Pick a Review Option --}}
                 {{-- END Pick a Review Option --}}
-                <div class="container position-fixed">
+                {{-- <div class="container position-fixed">
                     <div class="row">
                         <div class="col-md-6">
                         </div>
@@ -93,6 +93,9 @@
                             </div>
                         </div>
                     </div>
+                </div> --}}
+                <div class="position-fixed" style="bottom: 20px; right: 20px; z-index: 1000;">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#modal-test_type_selection" class="btn btn-primary fs-xs fw-semibold generate_custom_quiz_two">Generate Custom Quiz</button>
                 </div>
             </div>
             <div class="mt-3">

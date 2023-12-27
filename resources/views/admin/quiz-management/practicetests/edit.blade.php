@@ -462,7 +462,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 							<ul class="sectionListtype">
 								<li>Type: &nbsp;<strong>{{ $testsection->format }}</strong></li>
 								<li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_{{$testsection->id}}"><strong>{{ $testsection->section_title }}</strong>
-								<input type="hidden" name="selectedSecTxt" value="{{ ($testsection->practice_test_type == 'Math') ? 'Math_no_calculator' : $testsection->practice_test_type }}" class="selectedSecTxt selectedSection_{{$testsection->id}}" >
+								<input type="hidden" name="selectedSecTxt" value="{{ ($testsection->format == 'DSAT' || $testsection->format == 'DPSAT') && ($testsection->practice_test_type == 'Math') ? 'Math_no_calculator' : $testsection->practice_test_type }}" class="selectedSecTxt selectedSection_{{$testsection->id}}" >
                                 <input type="hidden" name="selectedQuesType" value="{{ $testsection->practice_test_type }}" class="selectedQuesType" >
                                 </span>
 								</li>
@@ -5566,8 +5566,12 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 // sectionOrder = currentModelId = key;
                                 sectionOrder = currentModelId = newSectionOrder;
                                 // sectionOrder++;
-
-                                if ((testSectionType == 'Math') && (key == 0) ) {
+                                // console.log(format);
+                                // console.log(testSectionType);
+                                // console.log(key);
+                                if((format == 'ACT' && testSectionType == 'Math') && (key == 0)){
+                                    testSectionType = 'Math';
+                                }else if ((testSectionType == 'Math') && (key == 0) ) {
                                     testSectionType = 'Math_no_calculator';
                                 }else if ((testSectionType == 'Math') && (key == 1) ) {
                                     testSectionType = 'Math_no_calculator';
@@ -5592,7 +5596,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                     '" ></span></li><li><p class="mb-0 d-flex">Order:</p>&nbsp;<input type="number" readonly class="form-control" name="order" value="'+
                                     newSectionOrder + '" id="order_' +
                                     res +
-                                    '"/><button type="button" class="input-group-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="' +
+                                    '"/><button type="button" class="input-group-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check me-2"></i> Sort Questions</button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="' +
                                     res +
                                     '" data-bs-toggle="tooltip" onclick="editSection(this)" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="' +
                                     res + '" data-section_type="' + testSectionType +
@@ -6722,12 +6726,13 @@ function practQuestioEdit(id){
                             }
                         });
                         getAnswerOption(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp, result.multiChoice, result.checkbox_values, result.super_category_values, result.category_type_values, result.question_type_values );
-                    }
                     // setTimeout(() => {
                         $('#questionMultiModal').modal('show');
                     // }, 1000);
                     $(`.editMultipleChoice option[value="${parseInt(result.multiChoice)}"]`).prop('selected', true);
                     $(".editMultipleChoice").trigger("change");
+                    }
+                   
                 }
             });
         }
@@ -7389,8 +7394,8 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
             var questionAnsComb =
             {
                 English:'choiceOneInFourPass',
-                // Math:'choiceOneInFive',
-                Math:'choiceMultInFourFill',
+                Math:'choiceOneInFive',
+                //Math:'choiceMultInFourFill',
                 Reading:'choiceOneInFourPass',
                 Reading_And_Writing:'choiceOneInFourPass',
                 Easy_Reading_And_Writing:'choiceOneInFourPass',
