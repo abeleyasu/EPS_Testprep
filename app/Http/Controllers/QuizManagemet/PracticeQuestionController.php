@@ -1222,7 +1222,7 @@ class PracticeQuestionController extends Controller
         $numberOfQuestions = 0;
         $allScores = Score::where(['test_id' => $test_id])->get();
         // dump($allScores);
-        $practice_test_sections = \DB::table('practice_test_sections')
+        $practice_test_sections = DB::table('practice_test_sections')
                                         ->where(['testid' => $test_id])
                                         ->where('practice_test_type','LIKE', '%'.$section_name.'%')
                                         ->get();
