@@ -3817,7 +3817,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 @endsection
 
 @section('admin-script')
-    <script async defer src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
     <script src="{{ asset('js/tagify.min.js') }}"></script>
     <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
