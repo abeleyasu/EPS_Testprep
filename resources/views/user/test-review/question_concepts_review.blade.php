@@ -94,7 +94,7 @@
                         </div>
                     </div>
                 </div> --}}
-                <div class="position-fixed" style="bottom: 20px; right: 20px; z-index: 1000;">
+                <div class="position-fixed" style="top: 10rem; right: 20px; z-index: 1000;">
                     <button type="button" data-bs-toggle="modal" data-bs-target="#modal-test_type_selection" class="btn btn-primary fs-xs fw-semibold generate_custom_quiz_two">Generate Custom Quiz</button>
                 </div>
             </div>
@@ -1898,7 +1898,7 @@
                                                                                         $category_type_arr = $newcategory_type_arr;
                                                                                     @endphp
                                                                                     @foreach ($category_type_arr as $key => $category_type)
-                                                                                        :
+                                                                                     
                                                                                         @for ($i = 0; $i < count($category_type); $i++)
                                                                                             <tr
                                                                                                 class="odd {{ $question_id }}">
@@ -2328,7 +2328,7 @@
                                                                                                 </td>
                                                                                             </tr>
                                                                                         @endfor
-                                                                                    @endforeach;
+                                                                                    @endforeach
                                                                                 @else
                                                                                     @foreach ($category_type_arr as $key => $category_type)
                                                                                         @for ($i = 0; $i < count($category_type); $i++)
