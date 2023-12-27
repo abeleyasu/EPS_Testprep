@@ -5437,11 +5437,13 @@
                                 sectionOrder = currentModelId = newSectionOrder;
                                 // sectionOrder++;
 
-                                if ((testSectionType == 'Math') && (key == 0) ) {
+                                if((format == 'ACT' && testSectionType == 'Math') && (key == 0)){
+                                    testSectionType = 'Math';
+                                }else if ((testSectionType == 'Math') && (key == 0) ) {
                                     testSectionType = 'Math_no_calculator';
                                 }else if ((testSectionType == 'Math') && (key == 1) ) {
                                     testSectionType = 'Math_no_calculator';
-                                }else if((testSectionType == 'Math') && (key == 2)){
+                                }else if((testSectionType == 'Math') && (key == 2)) {
                                     testSectionType = 'Math_with_calculator';
                                 }else{
                                     // nothing, it'll be same.
@@ -7435,8 +7437,8 @@
         function getAnswerOption(answerOpt, format) {
             var questionAnsComb = {
                 English: 'choiceOneInFourPass',
-                Math: 'choiceMultInFourFill',
-                // Math: 'choiceOneInFive',
+                // Math: 'choiceMultInFourFill',
+                Math: 'choiceOneInFive',
                 Reading: 'choiceOneInFourPass',
                 Reading_And_Writing: 'choiceOneInFourPass',
                 Reading_And_Writing:'choiceOneInFourPass',

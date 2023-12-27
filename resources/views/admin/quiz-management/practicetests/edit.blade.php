@@ -3817,7 +3817,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 @endsection
 
 @section('admin-script')
-    <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
+    <script async defer src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
     <script src="{{ asset('js/tagify.min.js') }}"></script>
     <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
@@ -5611,7 +5611,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                     res +
                                     '"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openQuestionDialog(' +
                                     
-                                    res + ')"><i class="fa-solid fa-check"></i></button></div></div></div>');
+                                    res + ')"><i class="fa-solid fa-check me-2"></i> Sort Questions</button></div></div></div>');
 
                                 /*
                                     '"/><button type="button" class="input-group-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection" data-id="'+res+'" onclick="editSection(this)" data-bs-toggle="tooltip" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-section_type="'+testSectionType+'" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
