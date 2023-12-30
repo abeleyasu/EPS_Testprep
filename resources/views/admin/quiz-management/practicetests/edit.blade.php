@@ -3823,6 +3823,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script src="{{ asset('js/admin/course.js') }}"></script>
+    
     <script>
         var questionCount = $('.sectionList').length + 1;
         var questionOrder = 0;
@@ -6728,7 +6729,7 @@ function practQuestioEdit(id){
                         getAnswerOption(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp, result.multiChoice, result.checkbox_values, result.super_category_values, result.category_type_values, result.question_type_values );
                     // setTimeout(() => {
                         $('#questionMultiModal').modal('show');
-                    // }, 1000);
+                    // }, 2000);
                     $(`.editMultipleChoice option[value="${parseInt(result.multiChoice)}"]`).prop('selected', true);
                     $(".editMultipleChoice").trigger("change");
                     }
@@ -6740,458 +6741,759 @@ function practQuestioEdit(id){
 }
 
 
-async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp, multiChoice, checkbox_values, super_category_values, category_type_values, question_type_values){
+async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp, multiChoice, checkbox_values, super_category_values, category_type_values, question_type_values) {
     // console.log(answerOpt);
     // console.log(selectedOpt);
     // console.log(multiChoice);
     answer_exp = JSON.parse(answer_exp);
-        if(answerOpt == 'choiceOneInFour_Odd'){
-            $('#editSelectedAnswerType').val('choiceOneInFour_Odd');
-            $('.choiceOneInFour_Odd').show();
-            $('.choiceOneInFour_Even').hide();
-            $('.choiceOneInFive_Odd').hide();
-            $('.choiceOneInFive_Even').hide();
-            $('.choiceOneInFourPass_Odd').hide();
-            $('.choiceOneInFourPass_Even').hide();
-            $('.choiceMultInFourFill').hide();
-        	var optObj = ['a','b','c','d'];
-            var jsonConvert = [];
-            if(isJson(answer_content)){
-                jsonConvert = $.parseJSON(answer_content);
+    if (answerOpt == "choiceOneInFour_Odd") {
+        $("#editSelectedAnswerType").val("choiceOneInFour_Odd");
+        $(".choiceOneInFour_Odd").show();
+        $(".choiceOneInFour_Even").hide();
+        $(".choiceOneInFive_Odd").hide();
+        $(".choiceOneInFive_Even").hide();
+        $(".choiceOneInFourPass_Odd").hide();
+        $(".choiceOneInFourPass_Even").hide();
+        $(".choiceMultInFourFill").hide();
+        var optObj = ["a", "b", "c", "d"];
+        var jsonConvert = [];
+        if (isJson(answer_content)) {
+            jsonConvert = $.parseJSON(answer_content);
+        }
+        var selHml = "";
+        for (var i = 1; i <= optObj.length; i++) {
+            var arrIndex = Number(i) - 1;
+            var editInd = Number(i) + 1;
+            if (optObj[arrIndex] == selectedOpt) {
+                $(".choiceOneInFour_Odd ul li.choiceOneInFour_OddAnswer_" + arrIndex + ' input[type="radio"] ').prop("checked", true);
             }
-        	var selHml='';
-        	for(var i=1; i<= optObj.length; i++){
-                var arrIndex = Number(i)-1;
-                var editInd = Number(i)+1;
-        		if(optObj[arrIndex] == selectedOpt){
-        		  $('.choiceOneInFour_Odd ul li.choiceOneInFour_OddAnswer_'+arrIndex+' input[type="radio"] ').prop("checked", true);
-                }
-                if(jsonConvert.length>0){
-                    var anwserInd = Number(i)-1;
-                    var dynIds = 'editChoiceOneInFour_OddAnswer_'+i;
-                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
-                }
-        	}
-            if(answer_exp && answer_exp.length != null) {
+            if (jsonConvert.length > 0) {
+                var anwserInd = Number(i) - 1;
+                var dynIds = "editChoiceOneInFour_OddAnswer_" + i;
+                CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
+            }
+        }
+        // if(answer_exp && answer_exp.length != null) {
+        //     for (let index = 0; index < answer_exp.length; index++) {
+        //         let count = index + 1;
+        //         const answer_id = `editchoiceOneInFour_Odd_explanation_answer_${count}`;
+        //         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+        //     }
+        // }
+
+        if (answer_exp && answer_exp.length > 0) {
+            const replaceAndLoadContent = async (answer_id, content) => {
+                return new Promise((resolve) => {
+                    // Replace CKEditor instance asynchronously
+                    CKEDITOR.replace(answer_id, {
+                        on: {
+                            instanceReady: function (event) {
+                                // Simulate loading equations with a delay (adjust the delay as needed)
+                                setTimeout(() => {
+                                    // Set CKEditor content
+                                    event.editor.setData(content);
+                                    resolve();
+                                }, 200);
+                            },
+                        },
+                    });
+                });
+            };
+
+            // Replace CKEditor instances dynamically
+            const replaceEditors = async () => {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
                     const answer_id = `editchoiceOneInFour_Odd_explanation_answer_${count}`;
-                    CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+
+                    // Check if CKEditor instance already exists
+                    if (CKEDITOR.instances[answer_id]) {
+                        // Destroy the existing instance before replacing
+                        CKEDITOR.instances[answer_id].destroy();
+                    }
+
+                    await replaceAndLoadContent(answer_id, answer_exp[index]);
                 }
+            };
+
+            // Execute the asynchronous replacement
+            replaceEditors();
+        }
+    }
+
+    // new
+    if (answerOpt == "choiceOneInFour_Even") {
+        $("#editSelectedAnswerType").val("choiceOneInFour_Even");
+        $(".choiceOneInFour_Odd").hide();
+        $(".choiceOneInFour_Even").show();
+        $(".choiceOneInFive_Odd").hide();
+        $(".choiceOneInFive_Even").hide();
+        $(".choiceOneInFourPass_Odd").hide();
+        $(".choiceOneInFourPass_Even").hide();
+        $(".choiceMultInFourFill").hide();
+        var optObj = ["f", "g", "h", "j"];
+        var jsonConvert = [];
+        if (isJson(answer_content)) {
+            jsonConvert = $.parseJSON(answer_content);
+        }
+        var selHml = "";
+        for (var i = 1; i <= optObj.length; i++) {
+            var arrIndex = Number(i) - 1;
+            var editInd = Number(i) + 1;
+            if (optObj[arrIndex] == selectedOpt) {
+                $(".choiceOneInFour_Even ul li.choiceOneInFour_EvenAnswer_" + arrIndex + ' input[type="radio"] ').prop("checked", true);
+            }
+            if (jsonConvert.length > 0) {
+                var anwserInd = Number(i) - 1;
+                var dynIds = "editChoiceOneInFour_EvenAnswer_" + i;
+                CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
             }
         }
+        // if(answer_exp && answer_exp.length != null) {
+        //     for (let index = 0; index < answer_exp.length; index++) {
+        //         let count = index + 1;
+        //         const answer_id = `editchoiceOneInFour_Even_explanation_answer_${count}`;
+        //         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+        //     }
+        // }
 
-        // new
-        if(answerOpt == 'choiceOneInFour_Even'){
-            $('#editSelectedAnswerType').val('choiceOneInFour_Even');
-            $('.choiceOneInFour_Odd').hide();
-            $('.choiceOneInFour_Even').show();
-            $('.choiceOneInFive_Odd').hide();
-            $('.choiceOneInFive_Even').hide();
-            $('.choiceOneInFourPass_Odd').hide();
-            $('.choiceOneInFourPass_Even').hide();
-            $('.choiceMultInFourFill').hide();
-        	var optObj = ['f','g','h','j'];
-            var jsonConvert = [];
-            if(isJson(answer_content)){
-                jsonConvert = $.parseJSON(answer_content);
-            }
-        	var selHml='';
-        	for(var i=1; i<= optObj.length; i++){
-                var arrIndex = Number(i)-1;
-                var editInd = Number(i)+1;
-        		if(optObj[arrIndex] == selectedOpt){
-        		  $('.choiceOneInFour_Even ul li.choiceOneInFour_EvenAnswer_'+arrIndex+' input[type="radio"] ').prop("checked", true);
-                }
-                if(jsonConvert.length>0){
-                    var anwserInd = Number(i)-1;
-                    var dynIds = 'editChoiceOneInFour_EvenAnswer_'+i;
-                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
-                }
-        	}
-            if(answer_exp && answer_exp.length != null) {
+        if (answer_exp && answer_exp.length > 0) {
+            const replaceAndLoadContent = async (answer_id, content) => {
+                return new Promise((resolve) => {
+                    // Replace CKEditor instance asynchronously
+                    CKEDITOR.replace(answer_id, {
+                        on: {
+                            instanceReady: function (event) {
+                                // Simulate loading equations with a delay (adjust the delay as needed)
+                                setTimeout(() => {
+                                    // Set CKEditor content
+                                    event.editor.setData(content);
+                                    resolve();
+                                }, 200);
+                            },
+                        },
+                    });
+                });
+            };
+
+            // Replace CKEditor instances dynamically
+            const replaceEditors = async () => {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
                     const answer_id = `editchoiceOneInFour_Even_explanation_answer_${count}`;
-                    CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+
+                    // Check if CKEditor instance already exists
+                    if (CKEDITOR.instances[answer_id]) {
+                        // Destroy the existing instance before replacing
+                        CKEDITOR.instances[answer_id].destroy();
+                    }
+
+                    await replaceAndLoadContent(answer_id, answer_exp[index]);
                 }
+            };
+
+            // Execute the asynchronous replacement
+            replaceEditors();
+        }
+    }
+
+    if (answerOpt == "choiceOneInFive_Odd") {
+        $("#editSelectedAnswerType").val("choiceOneInFive_Odd");
+        $(".choiceOneInFour_Odd").hide();
+        $(".choiceOneInFour_Even").hide();
+        $(".choiceOneInFive_Odd").show();
+        $(".choiceOneInFive_Even").hide();
+        $(".choiceOneInFourPass_Odd").hide();
+        $(".choiceOneInFourPass_Even").hide();
+        $(".choiceMultInFourFill").hide();
+        var optObj = ["a", "b", "c", "d", "e"];
+        var selHml = "";
+        var jsonConvert = [];
+        if (isJson(answer_content)) {
+            jsonConvert = $.parseJSON(answer_content);
+        }
+        for (var i = 1; i <= optObj.length; i++) {
+            var arrIndex = Number(i) - 1;
+            var editInd = Number(i) + 1;
+            if (optObj[arrIndex] == selectedOpt) {
+                $(".choiceOneInFive_Odd ul li.choiceOneInFive_OddAnswer_" + arrIndex + ' input[type="radio"] ').prop("checked", true);
+            }
+            if (jsonConvert.length > 0) {
+                var anwserInd = Number(i) - 1;
+                var dynIds = "editChoiceOneInFive_OddAnswer_" + i;
+                CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
             }
         }
+        // Load explanations only if answer_exp is present
+        if (answer_exp && answer_exp.length > 0) {
+            const replaceAndLoadContent = async (answer_id, content) => {
+                return new Promise((resolve) => {
+                    // Replace CKEditor instance asynchronously
+                    CKEDITOR.replace(answer_id, {
+                        on: {
+                            instanceReady: function (event) {
+                                // Simulate loading equations with a delay (adjust the delay as needed)
+                                setTimeout(() => {
+                                    // Set CKEditor content
+                                    event.editor.setData(content);
+                                    resolve();
+                                }, 200);
+                            },
+                        },
+                    });
+                });
+            };
 
-        if(answerOpt =='choiceOneInFive_Odd'){
-            $('#editSelectedAnswerType').val('choiceOneInFive_Odd');
-            $('.choiceOneInFour_Odd').hide();
-            $('.choiceOneInFour_Even').hide();
-            $('.choiceOneInFive_Odd').show();
-            $('.choiceOneInFive_Even').hide();
-            $('.choiceOneInFourPass_Odd').hide();
-            $('.choiceOneInFourPass_Even').hide();
-            $('.choiceMultInFourFill').hide();
-        	var optObj = ['a','b','c','d','e'];
-        	var selHml='';
-            var jsonConvert = [];
-            if(isJson(answer_content)){
-                jsonConvert = $.parseJSON(answer_content);
-            }
-        	for(var i=1; i<= optObj.length; i++){
-                var arrIndex = Number(i)-1;
-                var editInd = Number(i)+1;
-        		if(optObj[arrIndex] == selectedOpt){
-        			$('.choiceOneInFive_Odd ul li.choiceOneInFive_OddAnswer_'+arrIndex+' input[type="radio"] ').prop("checked", true);
-        		}
-                if(jsonConvert.length>0){
-                    var anwserInd = Number(i)-1;
-                    var dynIds = 'editChoiceOneInFive_OddAnswer_'+i;
-                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
-                }
-        	}
-            if(answer_exp && answer_exp.length != null) {
+            // Replace CKEditor instances dynamically
+            const replaceEditors = async () => {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
                     const answer_id = `editchoiceOneInFive_Odd_explanation_answer_${count}`;
-                    CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+
+                    // Check if CKEditor instance already exists
+                    if (CKEDITOR.instances[answer_id]) {
+                        // Destroy the existing instance before replacing
+                        CKEDITOR.instances[answer_id].destroy();
+                    }
+
+                    await replaceAndLoadContent(answer_id, answer_exp[index]);
                 }
+            };
+
+            // Execute the asynchronous replacement
+            replaceEditors();
+        }
+    }
+
+    //new
+    if (answerOpt == "choiceOneInFive_Even") {
+        $("#editSelectedAnswerType").val("choiceOneInFive_Even");
+        $(".choiceOneInFour_Odd").hide();
+        $(".choiceOneInFour_Even").hide();
+        $(".choiceOneInFive_Odd").hide();
+        $(".choiceOneInFive_Even").show();
+        $(".choiceOneInFourPass_Odd").hide();
+        $(".choiceOneInFourPass_Even").hide();
+        $(".choiceMultInFourFill").hide();
+        var optObj = ["f", "g", "h", "j", "k"];
+        var selHml = "";
+        var jsonConvert = [];
+        if (isJson(answer_content)) {
+            jsonConvert = $.parseJSON(answer_content);
+        }
+        for (var i = 1; i <= optObj.length; i++) {
+            var arrIndex = Number(i) - 1;
+            var editInd = Number(i) + 1;
+            if (optObj[arrIndex] == selectedOpt) {
+                $(".choiceOneInFive_Even ul li.choiceOneInFive_EvenAnswer_" + arrIndex + ' input[type="radio"] ').prop("checked", true);
+            }
+            if (jsonConvert.length > 0) {
+                var anwserInd = Number(i) - 1;
+                var dynIds = "editChoiceOneInFive_EvenAnswer_" + i;
+                CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
             }
         }
-        //new
-        if(answerOpt =='choiceOneInFive_Even'){
-            $('#editSelectedAnswerType').val('choiceOneInFive_Even');
-            $('.choiceOneInFour_Odd').hide();
-            $('.choiceOneInFour_Even').hide();
-            $('.choiceOneInFive_Odd').hide();
-            $('.choiceOneInFive_Even').show();
-            $('.choiceOneInFourPass_Odd').hide();
-            $('.choiceOneInFourPass_Even').hide();
-            $('.choiceMultInFourFill').hide();
-        	var optObj = ['f','g','h','j','k'];
-        	var selHml='';
-            var jsonConvert = [];
-            if(isJson(answer_content)){
-                jsonConvert = $.parseJSON(answer_content);
-            }
-        	for(var i=1; i<= optObj.length; i++){
-                var arrIndex = Number(i)-1;
-                var editInd = Number(i)+1;
-        		if(optObj[arrIndex] == selectedOpt){
-                    $('.choiceOneInFive_Even ul li.choiceOneInFive_EvenAnswer_'+arrIndex+' input[type="radio"] ').prop("checked", true);
-        		}
-                if(jsonConvert.length>0){
-                    var anwserInd = Number(i)-1;
-                    var dynIds = 'editChoiceOneInFive_EvenAnswer_'+i;
-                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
-                }
-        	}
-            if(answer_exp && answer_exp.length != null) {
+        // Load explanations only if answer_exp is present
+        if (answer_exp && answer_exp.length > 0) {
+            const replaceAndLoadContent = async (answer_id, content) => {
+                return new Promise((resolve) => {
+                    // Replace CKEditor instance asynchronously
+                    CKEDITOR.replace(answer_id, {
+                        on: {
+                            instanceReady: function (event) {
+                                // Simulate loading equations with a delay (adjust the delay as needed)
+                                setTimeout(() => {
+                                    // Set CKEditor content
+                                    event.editor.setData(content);
+                                    resolve();
+                                }, 200);
+                            },
+                        },
+                    });
+                });
+            };
+
+            // Replace CKEditor instances dynamically
+            const replaceEditors = async () => {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
                     const answer_id = `editchoiceOneInFive_Even_explanation_answer_${count}`;
-                    CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+
+                    // Check if CKEditor instance already exists
+                    if (CKEDITOR.instances[answer_id]) {
+                        // Destroy the existing instance before replacing
+                        CKEDITOR.instances[answer_id].destroy();
+                    }
+
+                    await replaceAndLoadContent(answer_id, answer_exp[index]);
                 }
-            }
+            };
+
+            // Execute the asynchronous replacement
+            replaceEditors();
+        }
+    }
+
+    if (answerOpt == "choiceOneInFourPass_Odd") {
+        $("#editSelectedAnswerType").val("choiceOneInFourPass_Odd");
+        $(".choiceOneInFour_Odd").hide();
+        $(".choiceOneInFour_Even").hide();
+        $(".choiceOneInFive_Odd").hide();
+        $(".choiceOneInFive_Even").hide();
+        $(".choiceOneInFourPass_Odd").show();
+        $(".choiceOneInFourPass_Even").hide();
+        $(".choiceMultInFourFill").hide();
+        var optObj = ["a", "b", "c", "d"];
+        var selHml = "";
+        var jsonConvert = [];
+        if (isJson(answer_content)) {
+            jsonConvert = $.parseJSON(answer_content);
         }
 
-        if(answerOpt =='choiceOneInFourPass_Odd'){
-            $('#editSelectedAnswerType').val('choiceOneInFourPass_Odd');
-            $('.choiceOneInFour_Odd').hide();
-            $('.choiceOneInFour_Even').hide();
-            $('.choiceOneInFive_Odd').hide();
-            $('.choiceOneInFive_Even').hide();
-            $('.choiceOneInFourPass_Odd').show();
-            $('.choiceOneInFourPass_Even').hide();
-            $('.choiceMultInFourFill').hide();
-        	var optObj = ['a','b','c','d'];
-        	var selHml='';
-            var jsonConvert = [];
-            if(isJson(answer_content)){
-                jsonConvert = $.parseJSON(answer_content);
+        for (var i = 1; i <= optObj.length; i++) {
+            var arrIndex = Number(i) - 1;
+            var editInd = Number(i) + 1;
+            if (optObj[arrIndex] == selectedOpt) {
+                $(".choiceOneInFourPass_Odd ul li.choiceOneInFourPass_OddAnswer_" + arrIndex + ' input[type="radio"]').prop("checked", true);
             }
+            if (jsonConvert.length > 0) {
+                var anwserInd = Number(i) - 1;
+                var dynIds = "editChoiceOneInFourPass_OddAnswer_" + i;
+                CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
+            }
+        }
+        // if(answer_exp && answer_exp.length != null) {
+        //     for (let index = 0; index < answer_exp.length; index++) {
+        //         let count = index + 1;
+        //         const answer_id = `editchoiceOneInFourPass_Odd_explanation_answer_${count}`;
+        //         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+        //     }
+        // }
 
-        	for(var i=1; i<= optObj.length; i++){
-                var arrIndex = Number(i)-1;
-                var editInd = Number(i)+1;
-        		if(optObj[arrIndex] == selectedOpt){
-        			$('.choiceOneInFourPass_Odd ul li.choiceOneInFourPass_OddAnswer_'+arrIndex+' input[type="radio"]').prop("checked", true);
-        		}
-                if(jsonConvert.length>0){
-                    var anwserInd = Number(i)-1;
-                    var dynIds = 'editChoiceOneInFourPass_OddAnswer_'+i;
-                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
-                }
-        	}
-            if(answer_exp && answer_exp.length != null) {
+        // Load explanations only if answer_exp is present
+        if (answer_exp && answer_exp.length > 0) {
+            const replaceAndLoadContent = async (answer_id, content) => {
+                return new Promise((resolve) => {
+                    // Replace CKEditor instance asynchronously
+                    CKEDITOR.replace(answer_id, {
+                        on: {
+                            instanceReady: function (event) {
+                                // Simulate loading equations with a delay (adjust the delay as needed)
+                                setTimeout(() => {
+                                    // Set CKEditor content
+                                    event.editor.setData(content);
+                                    resolve();
+                                }, 200);
+                            },
+                        },
+                    });
+                });
+            };
+
+            // Replace CKEditor instances dynamically
+            const replaceEditors = async () => {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
                     const answer_id = `editchoiceOneInFourPass_Odd_explanation_answer_${count}`;
-                    CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+
+                    // Check if CKEditor instance already exists
+                    if (CKEDITOR.instances[answer_id]) {
+                        // Destroy the existing instance before replacing
+                        CKEDITOR.instances[answer_id].destroy();
+                    }
+
+                    await replaceAndLoadContent(answer_id, answer_exp[index]);
                 }
-            }
+            };
+
+            // Execute the asynchronous replacement
+            replaceEditors();
+        }
+    }
+
+    // new
+    if (answerOpt == "choiceOneInFourPass_Even") {
+        $("#editSelectedAnswerType").val("choiceOneInFourPass_Even");
+        $(".choiceOneInFour_Odd").hide();
+        $(".choiceOneInFour_Even").hide();
+        $(".choiceOneInFive_Odd").hide();
+        $(".choiceOneInFive_Even").hide();
+        $(".choiceOneInFourPass_Odd").hide();
+        $(".choiceOneInFourPass_Even").show();
+        $(".choiceMultInFourFill").hide();
+        var optObj = ["f", "g", "h", "j"];
+        var selHml = "";
+        var jsonConvert = [];
+        if (isJson(answer_content)) {
+            jsonConvert = $.parseJSON(answer_content);
         }
 
-        // new
-        if(answerOpt =='choiceOneInFourPass_Even'){
-            $('#editSelectedAnswerType').val('choiceOneInFourPass_Even');
-            $('.choiceOneInFour_Odd').hide();
-            $('.choiceOneInFour_Even').hide();
-            $('.choiceOneInFive_Odd').hide();
-            $('.choiceOneInFive_Even').hide();
-            $('.choiceOneInFourPass_Odd').hide();
-            $('.choiceOneInFourPass_Even').show();
-            $('.choiceMultInFourFill').hide();
-        	var optObj = ['f','g','h','j'];
-        	var selHml='';
-            var jsonConvert = [];
-            if(isJson(answer_content)){
-                jsonConvert = $.parseJSON(answer_content);
+        for (var i = 1; i <= optObj.length; i++) {
+            var arrIndex = Number(i) - 1;
+            var editInd = Number(i) + 1;
+            if (optObj[arrIndex] == selectedOpt) {
+                $(".choiceOneInFourPass_Even ul li.choiceOneInFourPass_EvenAnswer_" + arrIndex + ' input[type="radio"]').prop("checked", true);
             }
+            if (jsonConvert.length > 0) {
+                var anwserInd = Number(i) - 1;
+                var dynIds = "editChoiceOneInFourPass_EvenAnswer_" + i;
+                CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
+            }
+        }
+        // if(answer_exp && answer_exp.length != null) {
+        //     for (let index = 0; index < answer_exp.length; index++) {
+        //         let count = index + 1;
+        //         const answer_id = `editchoiceOneInFourPass_Even_explanation_answer_${count}`;
+        //         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+        //     }
+        // }
 
-        	for(var i=1; i<= optObj.length; i++){
-                var arrIndex = Number(i)-1;
-                var editInd = Number(i)+1;
-        		if(optObj[arrIndex] == selectedOpt){
-        			$('.choiceOneInFourPass_Even ul li.choiceOneInFourPass_EvenAnswer_'+arrIndex+' input[type="radio"]').prop("checked", true);
-        		}
-                if(jsonConvert.length>0){
-                    var anwserInd = Number(i)-1;
-                    var dynIds = 'editChoiceOneInFourPass_EvenAnswer_'+i;
-                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
-                }
-        	}
-            if(answer_exp && answer_exp.length != null) {
+        if (answer_exp && answer_exp.length > 0) {
+            const replaceAndLoadContent = async (answer_id, content) => {
+                return new Promise((resolve) => {
+                    // Replace CKEditor instance asynchronously
+                    CKEDITOR.replace(answer_id, {
+                        on: {
+                            instanceReady: function (event) {
+                                // Simulate loading equations with a delay (adjust the delay as needed)
+                                setTimeout(() => {
+                                    // Set CKEditor content
+                                    event.editor.setData(content);
+                                    resolve();
+                                }, 200);
+                            },
+                        },
+                    });
+                });
+            };
+
+            // Replace CKEditor instances dynamically
+            const replaceEditors = async () => {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
                     const answer_id = `editchoiceOneInFourPass_Even_explanation_answer_${count}`;
-                    CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+
+                    // Check if CKEditor instance already exists
+                    if (CKEDITOR.instances[answer_id]) {
+                        // Destroy the existing instance before replacing
+                        CKEDITOR.instances[answer_id].destroy();
+                    }
+
+                    await replaceAndLoadContent(answer_id, answer_exp[index]);
                 }
-            }
+            };
+
+            // Execute the asynchronous replacement
+            replaceEditors();
+        }
+    }
+
+    if (answerOpt == "choiceMultInFourFill") {
+        $("#editSelectedAnswerType").val("choiceMultInFourFill");
+        $(".choiceOneInFour_Odd").hide();
+        $(".choiceOneInFour_Even").hide();
+        $(".choiceOneInFive_Odd").hide();
+        $(".choiceOneInFive_Even").hide();
+        $(".choiceOneInFourPass_Odd").hide();
+        $(".choiceOneInFourPass_Even").hide();
+        $(".choiceMultInFourFill").show();
+
+        var optObj = ["a", "b", "c", "d"];
+
+        if (selectedOpt) {
+            selectedOpt = selectedOpt;
+        } else {
+            selectedOpt = "a";
+        }
+        // console.log(selectedOpt);
+        var trimStr = selectedOpt.replace(/ /g, "");
+        var multiChecked = trimStr.split(",");
+
+        var selHml = "";
+        var jsonConvert = [];
+
+        if (answer_content != null && isJson(answer_content)) {
+            jsonConvert = $.parseJSON(answer_content);
         }
 
-        if(answerOpt == 'choiceMultInFourFill'){
-            $('#editSelectedAnswerType').val('choiceMultInFourFill');
-            $('.choiceOneInFour_Odd').hide();
-            $('.choiceOneInFour_Even').hide();
-            $('.choiceOneInFive_Odd').hide();
-            $('.choiceOneInFive_Even').hide();
-            $('.choiceOneInFourPass_Odd').hide();
-            $('.choiceOneInFourPass_Even').hide();
-            $('.choiceMultInFourFill').show();
-        	
-            var optObj = ['a','b','c','d'];
-            
-            if(selectedOpt) {
-                selectedOpt = selectedOpt;
-            }else{
-                selectedOpt = 'a';
-            }
-            // console.log(selectedOpt);
-            var trimStr = selectedOpt.replace(/ /g,'');
-            var multiChecked = trimStr.split(",");
-        	
-        	var selHml='';
-            var jsonConvert = [];
-
-            if(answer_content != null && isJson(answer_content)){
-                jsonConvert = $.parseJSON(answer_content);
-            }
-
-            var fillHtl = '<input type="text" name="choiceMultInFourFill_fill[]" value="">';
-            // console.log(multiChecked);
-            if(multiChoice == 1){
-                // console.log('here multicheked 1');
-                for(var i=1; i<= optObj.length; i++) {
-                    var arrIndex = Number(i)-1;
-                    var editInd = Number(i)+1;
-                    if(multiChecked.includes(optObj[arrIndex])){
-                        // console.log(selectedOpt);
-                        $('.choiceMultInFourFill .withOutFillOpt ul li.choiceMultInFourFillwithOutFillOpt_'+arrIndex+' input[type="checkbox"][value="'+optObj[arrIndex]+'"]').prop("checked", true);
-
-                    }
-                    if(jsonConvert.length>0){
-                        var anwserInd = Number(i)-1;
-                        var dynIds = 'editChoiceMultInFourFillAnswer_'+i;
-                        CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
-                    }
+        var fillHtl = '<input type="text" name="choiceMultInFourFill_fill[]" value="">';
+        // console.log(multiChecked);
+        if (multiChoice == 1) {
+            // console.log('here multicheked 1');
+            for (var i = 1; i <= optObj.length; i++) {
+                var arrIndex = Number(i) - 1;
+                var editInd = Number(i) + 1;
+                if (multiChecked.includes(optObj[arrIndex])) {
+                    // console.log(selectedOpt);
+                    $(".choiceMultInFourFill .withOutFillOpt ul li.choiceMultInFourFillwithOutFillOpt_" + arrIndex + ' input[type="checkbox"][value="' + optObj[arrIndex] + '"]').prop("checked", true);
                 }
+                if (jsonConvert.length > 0) {
+                    var anwserInd = Number(i) - 1;
+                    var dynIds = "editChoiceMultInFourFillAnswer_" + i;
+                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
+                }
+            }
 
-                if(answer_exp && answer_exp.length != null) {
+            // if(answer_exp && answer_exp.length != null) {
+            //     for (let index = 0; index < answer_exp.length; index++) {
+            //         let count = index + 1;
+            //         const answer_id = `editchoiceMultInFourFill_explanation_answer_${count}`;
+            //         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+            //     }
+            // }
+
+            if (answer_exp && answer_exp.length > 0) {
+                const replaceAndLoadContent = async (answer_id, content) => {
+                    return new Promise((resolve) => {
+                        // Replace CKEditor instance asynchronously
+                        CKEDITOR.replace(answer_id, {
+                            on: {
+                                instanceReady: function (event) {
+                                    // Simulate loading equations with a delay (adjust the delay as needed)
+                                    setTimeout(() => {
+                                        // Set CKEditor content
+                                        event.editor.setData(content);
+                                        resolve();
+                                    }, 200);
+                                },
+                            },
+                        });
+                    });
+                };
+
+                // Replace CKEditor instances dynamically
+                const replaceEditors = async () => {
                     for (let index = 0; index < answer_exp.length; index++) {
                         let count = index + 1;
                         const answer_id = `editchoiceMultInFourFill_explanation_answer_${count}`;
-                        CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+
+                        // Check if CKEditor instance already exists
+                        if (CKEDITOR.instances[answer_id]) {
+                            // Destroy the existing instance before replacing
+                            CKEDITOR.instances[answer_id].destroy();
+                        }
+
+                        await replaceAndLoadContent(answer_id, answer_exp[index]);
                     }
+                };
+
+                // Execute the asynchronous replacement
+                replaceEditors();
+            }
+        } else {
+            // console.log('here multicheked else');
+            for (var i = 1; i <= optObj.length; i++) {
+                var arrIndex = Number(i) - 1;
+                var editInd = Number(i) + 1;
+                if (selectedOpt == optObj[arrIndex]) {
+                    // console.log(selectedOpt);
+                    $(".choiceMultInFourFill .withOutFillOptChoice ul li.choiceMultInFourFillwithOutFillOptChoice_" + arrIndex + ' input[type="radio"]').prop("checked", true);
                 }
-
-            }else{
-                // console.log('here multicheked else');
-                for(var i=1; i<= optObj.length; i++){
-                    var arrIndex = Number(i)-1;
-                    var editInd = Number(i)+1;
-                    if(selectedOpt == optObj[arrIndex]){
-                        // console.log(selectedOpt);
-                        $('.choiceMultInFourFill .withOutFillOptChoice ul li.choiceMultInFourFillwithOutFillOptChoice_'+arrIndex+' input[type="radio"]').prop("checked", true);
-
-                    }
-                    if(jsonConvert.length>0){
-                        var anwserInd = Number(i)-1;
-                        var dynIds = 'editChoiceMultiChoiceInFourFill_'+i;
-                        CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
-                    }
+                if (jsonConvert.length > 0) {
+                    var anwserInd = Number(i) - 1;
+                    var dynIds = "editChoiceMultiChoiceInFourFill_" + i;
+                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
                 }
+            }
 
-                if(answer_exp && answer_exp.length != null) {
+            // if(answer_exp && answer_exp.length != null) {
+            //     for (let index = 0; index < answer_exp.length; index++) {
+            //         let count = index + 1;
+            //         const answer_id = `editchoiceMultiChoiceInFourFill_explanation_answer_${count}`;
+            //         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+            //     }
+            // }
+
+            if (answer_exp && answer_exp.length > 0) {
+                const replaceAndLoadContent = async (answer_id, content) => {
+                    return new Promise((resolve) => {
+                        // Replace CKEditor instance asynchronously
+                        CKEDITOR.replace(answer_id, {
+                            on: {
+                                instanceReady: function (event) {
+                                    // Simulate loading equations with a delay (adjust the delay as needed)
+                                    setTimeout(() => {
+                                        // Set CKEditor content
+                                        event.editor.setData(content);
+                                        resolve();
+                                    }, 200);
+                                },
+                            },
+                        });
+                    });
+                };
+
+                // Replace CKEditor instances dynamically
+                const replaceEditors = async () => {
                     for (let index = 0; index < answer_exp.length; index++) {
                         let count = index + 1;
                         const answer_id = `editchoiceMultiChoiceInFourFill_explanation_answer_${count}`;
-                        CKEDITOR.instances[answer_id].setData(answer_exp[index]);
+
+                        // Check if CKEditor instance already exists
+                        if (CKEDITOR.instances[answer_id]) {
+                            // Destroy the existing instance before replacing
+                            CKEDITOR.instances[answer_id].destroy();
+                        }
+
+                        await replaceAndLoadContent(answer_id, answer_exp[index]);
                     }
-                }
+                };
+
+                // Execute the asynchronous replacement
+                replaceEditors();
             }
-
-        	var arrFillType = ['number','decimal','fraction'];
-        	var optType = '';
-
-        	for(var j=0; j<arrFillType.length; j++){
-        		if(arrFillType[j] == arrFillType){
-        			optType +='<option value="'+arrFillType[j]+'" selected="selected">'+arrFillType[j].toUpperCase()+'</option>';
-        		} else {
-        			optType +='<option value="'+arrFillType[j]+'">'+arrFillType[j].toUpperCase()+'</option>';
-        		}
-        	}
-
-        	var fillDiv ='';
-        	var fillTypeDiv ='none';
-
-        	if(fill != null && fill !='' && fill != 'N/A'){
-                var objFill = fill.split(',');
-
-                if(typeof objFill !== 'undefined' && objFill.length !== 0){
-                    fillHtl = '';
-                    for(var j=0; j<objFill.length; j++){
-                        fillHtl += '<input type="text" name="choiceMultInFourFill_fill[]" value="'+objFill[j]+'">';
-                    }
-                }
-        		$('.withOutFillOpt').hide();
-                $('.withOutFillOptChoice').hide();
-                $('.withFillOpt').show();
-        	} else{
-                if(multiChoice == 1){
-                    $('.withOutFillOpt').show();
-                    $('.withOutFillOptChoice').hide();
-                    $('.withFillOpt').hide();
-                } else{
-                    $('.editMultipleChoice').val(3);
-                    $('.withOutFillOpt').hide();
-                    $('.withOutFillOptChoice').show();
-                    $('.withFillOpt').hide();
-                }
-            }
-            // console.log('here at last');
-            var seletedLayout = '<div class="mb-2"><label class="form-label" style="font-size: 13px;">Fill Type:</label><select name="choiceMultInFourFill_filltype"  class="form-control choiceMultInFourFill_filltype">'+optType+'</select> </div><div class="mb-2"> <label class="form-label" style="font-size: 13px;">Fill:</label> <label class="form-label editExtraFillOption" style="font-size: 13px;">'+fillHtl+'</label><label class="form-label" style="font-size: 13px;"><a href="javascript:;" onClick="editMoreFillOption();" class="switchMulti">Add More Options</a></label></div>';
-            
-            // let checkbox_values_Arr = JSON.parse(checkbox_values);
-            // let super_category_values_Arr = JSON.parse(super_category_values);
-            // let category_type_values_Arr = JSON.parse(category_type_values);
-            // let question_type_values_Arr = JSON.parse(question_type_values);
-
-            // var test_format_type_val = jQuery('#format').val();
-            // preGetPracticeCategoryType = await dropdown_lists(`/admin/getPracticeCategoryType?testType=${test_format_type_val}`);
-            // preGetPracticeQuestionType = await dropdown_lists(`/admin/getPracticeQuestionType?testType=${test_format_type_val}`);
-            // preGetSuperCategory = await dropdown_lists(`/admin/getSuperCategory?testType=${test_format_type_val}`);
-
-            // for (let key in super_category_values_Arr) {
-            //     if (super_category_values_Arr.hasOwnProperty(key)) {
-            //         seletedLayout += '<div class="input-container" id="fc_addNewTypes_A">';
-
-            //         for (let index = 0; index < super_category_values_Arr[key].length; index++) {
-            //             seletedLayout += '<div class="d-flex input-field align-items-center">';
-            //                 seletedLayout += '<div class="col-md-1"><label class="form-label" for="fc_edit_ct_checkbox_A">&ensp;</label><input type="checkbox" name="fc_edit_ct_checkbox_A" id="fc_edit_ct_checkbox_A_'+key+'"></div>';
-
-            //                 seletedLayout += '<div class="col-md-3 mb-2 me-2 rating-tag"><label class="form-label" for="superCategory">Super Category<span class="text-danger">*</span></label><div class="d-flex align-items-center"><select class="switchMulti superCategory" id="fc_edit_super_category_A_'+key+'" name="fc_edit_super_category_A" style="width: 100%"><option value="">Select Super Category</option>'+preGetSuperCategory+'</select></div><span class="text-danger" id="fc_superCategoryError_A"></span></div>';
-
-            //                 seletedLayout += '<div class="col-md-3 mb-2 me-2 category-custom"><label for="category_type" class="form-label">Category Type<span class="text-danger">*</span></label><div class="d-flex align-items-center"><select class="switchMulti categoryType" id="fc_edit_category_type_A_'+key+'" name="fc_edit_category_type_A" style="width: 100%"><option value="">Select Category Type</option>'+preGetPracticeCategoryType+'</select></div><span class="text-danger" id="fc_categoryTypeError_A"></span></div>';
-
-            //                 seletedLayout += '<div class="mb-2 col-md-3 add_question_type_select"><label for="search-input" class="form-label">Question Type<span class="text-danger">*</span></label><div class="d-flex align-items-center"><select class="switchMulti questionType" id="fc_edit_search-input_A_'+key+'" name="fc_edit_search-input_A" style="width: 100%"><option value="">Select Question Type</option>'+preGetPracticeQuestionType+'</select></div><span class="text-danger" id="fc_questionTypeError_A"></span></div>';
-
-            //                 seletedLayout += '<div class="col-md-2 add-position">';
-            //                 if(index == 0) {
-            //                     // seletedLayout += '<button class="plus-button" fc_ans_col="A" fc_data-id-A="1" onclick="addNewTypes("A", this,"null", "fc_")"><i class="fa-solid fa-plus"></i></button>';
-            //                 } else {
-            //                     // seletedLayout += '<button class="plus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>';
-            //                 }
-            //                 seletedLayout += '</div>';
-            //             seletedLayout += '</div>';
-            //         }
-            //         seletedLayout += '</div>';
-            //     }
-            // }
-
-            $('.withFillOptmb-2').html(seletedLayout);
-
-            // re initlize here.
-            $('#fc_edit_super_category_A_0').select2({
-                dropdownParent: $('#questionMultiModal'),
-                tags: true,
-                placeholder : "Select Super Category",
-                maximumSelectionLength: 1
-            });
-
-            $('#fc_edit_category_type_A_0').select2({
-                dropdownParent: $('#questionMultiModal'),
-                tags: true,
-                placeholder : "Select Category type",
-                maximumSelectionLength: 1
-            });
-
-            $('#fc_edit_search-input_A_0').select2({
-                dropdownParent: $('#questionMultiModal'),
-                tags: true,
-                placeholder : "Select Question type",
-                maximumSelectionLength: 1
-            });
-
-            // for (let key in checkbox_values_Arr) {
-            //     if (checkbox_values_Arr.hasOwnProperty(key)) {
-            //         $(checkbox_values_Arr[key]).each((i,v) => {
-            //             console.log(`#fc_edit_ct_checkbox_${key}_${i}`);
-            //             // $(`#fc_edit_ct_checkbox_${key}_${i}`).prop('checked', v==1);
-            //         });
-            //     }
-            // }
-
-
-            // //For super category
-            // for (let key in super_category_values_Arr) {
-            //     if (super_category_values_Arr.hasOwnProperty(key)) {
-            //         $(super_category_values_Arr[key]).each((i,v) => {
-            //             console.log(`#fc_edit_super_category_${key}_${i}`);
-            //             $(`#fc_edit_super_category_${key}_${i}`).val(v);
-            //             // $(`#$fc_edit_super_category_${key}_${i}`).trigger('change');
-            //         });
-            //     }
-            // }
-
-            // //For Category type
-            // for (let key in category_type_values_Arr) {
-            //     if (category_type_values_Arr.hasOwnProperty(key)) {
-            //         $(category_type_values_Arr[key]).each((i,v) => {
-            //             console.log(`#fc_edit_category_type_${key}_${i}`);
-            //             $(`#fc_edit_category_type_${key}_${i}`).val(v);
-            //             // $(`#fc_edit_category_type_${key}_${i}`).trigger('change');
-            //         });
-            //     }
-            // }
-
-            // //For Question Type
-            // for (let key in question_type_values_Arr) {
-            //     if (question_type_values_Arr.hasOwnProperty(key)) {
-            //         $(question_type_values_Arr[key]).each((i,v) => {
-            //             $(`#fc_edit_search-input_${key}_${i}`).val(v);
-            //             $(`#fc_edit_search-input_${key}_${i}`).trigger('change');
-            //         });
-            //     }
-            // }
         }
 
+        var arrFillType = ["number", "decimal", "fraction"];
+        var optType = "";
+
+        for (var j = 0; j < arrFillType.length; j++) {
+            if (arrFillType[j] == arrFillType) {
+                optType += '<option value="' + arrFillType[j] + '" selected="selected">' + arrFillType[j].toUpperCase() + "</option>";
+            } else {
+                optType += '<option value="' + arrFillType[j] + '">' + arrFillType[j].toUpperCase() + "</option>";
+            }
+        }
+
+        var fillDiv = "";
+        var fillTypeDiv = "none";
+
+        if (fill != null && fill != "" && fill != "N/A") {
+            var objFill = fill.split(",");
+
+            if (typeof objFill !== "undefined" && objFill.length !== 0) {
+                fillHtl = "";
+                for (var j = 0; j < objFill.length; j++) {
+                    fillHtl += '<input type="text" name="choiceMultInFourFill_fill[]" value="' + objFill[j] + '">';
+                }
+            }
+            $(".withOutFillOpt").hide();
+            $(".withOutFillOptChoice").hide();
+            $(".withFillOpt").show();
+        } else {
+            if (multiChoice == 1) {
+                $(".withOutFillOpt").show();
+                $(".withOutFillOptChoice").hide();
+                $(".withFillOpt").hide();
+            } else {
+                $(".editMultipleChoice").val(3);
+                $(".withOutFillOpt").hide();
+                $(".withOutFillOptChoice").show();
+                $(".withFillOpt").hide();
+            }
+        }
+        // console.log('here at last');
+        var seletedLayout =
+            '<div class="mb-2"><label class="form-label" style="font-size: 13px;">Fill Type:</label><select name="choiceMultInFourFill_filltype"  class="form-control choiceMultInFourFill_filltype">' +
+            optType +
+            '</select> </div><div class="mb-2"> <label class="form-label" style="font-size: 13px;">Fill:</label> <label class="form-label editExtraFillOption" style="font-size: 13px;">' +
+            fillHtl +
+            '</label><label class="form-label" style="font-size: 13px;"><a href="javascript:;" onClick="editMoreFillOption();" class="switchMulti">Add More Options</a></label></div>';
+
+        // let checkbox_values_Arr = JSON.parse(checkbox_values);
+        // let super_category_values_Arr = JSON.parse(super_category_values);
+        // let category_type_values_Arr = JSON.parse(category_type_values);
+        // let question_type_values_Arr = JSON.parse(question_type_values);
+
+        // var test_format_type_val = jQuery('#format').val();
+        // preGetPracticeCategoryType = await dropdown_lists(`/admin/getPracticeCategoryType?testType=${test_format_type_val}`);
+        // preGetPracticeQuestionType = await dropdown_lists(`/admin/getPracticeQuestionType?testType=${test_format_type_val}`);
+        // preGetSuperCategory = await dropdown_lists(`/admin/getSuperCategory?testType=${test_format_type_val}`);
+
+        // for (let key in super_category_values_Arr) {
+        //     if (super_category_values_Arr.hasOwnProperty(key)) {
+        //         seletedLayout += '<div class="input-container" id="fc_addNewTypes_A">';
+
+        //         for (let index = 0; index < super_category_values_Arr[key].length; index++) {
+        //             seletedLayout += '<div class="d-flex input-field align-items-center">';
+        //                 seletedLayout += '<div class="col-md-1"><label class="form-label" for="fc_edit_ct_checkbox_A">&ensp;</label><input type="checkbox" name="fc_edit_ct_checkbox_A" id="fc_edit_ct_checkbox_A_'+key+'"></div>';
+
+        //                 seletedLayout += '<div class="col-md-3 mb-2 me-2 rating-tag"><label class="form-label" for="superCategory">Super Category<span class="text-danger">*</span></label><div class="d-flex align-items-center"><select class="switchMulti superCategory" id="fc_edit_super_category_A_'+key+'" name="fc_edit_super_category_A" style="width: 100%"><option value="">Select Super Category</option>'+preGetSuperCategory+'</select></div><span class="text-danger" id="fc_superCategoryError_A"></span></div>';
+
+        //                 seletedLayout += '<div class="col-md-3 mb-2 me-2 category-custom"><label for="category_type" class="form-label">Category Type<span class="text-danger">*</span></label><div class="d-flex align-items-center"><select class="switchMulti categoryType" id="fc_edit_category_type_A_'+key+'" name="fc_edit_category_type_A" style="width: 100%"><option value="">Select Category Type</option>'+preGetPracticeCategoryType+'</select></div><span class="text-danger" id="fc_categoryTypeError_A"></span></div>';
+
+        //                 seletedLayout += '<div class="mb-2 col-md-3 add_question_type_select"><label for="search-input" class="form-label">Question Type<span class="text-danger">*</span></label><div class="d-flex align-items-center"><select class="switchMulti questionType" id="fc_edit_search-input_A_'+key+'" name="fc_edit_search-input_A" style="width: 100%"><option value="">Select Question Type</option>'+preGetPracticeQuestionType+'</select></div><span class="text-danger" id="fc_questionTypeError_A"></span></div>';
+
+        //                 seletedLayout += '<div class="col-md-2 add-position">';
+        //                 if(index == 0) {
+        //                     // seletedLayout += '<button class="plus-button" fc_ans_col="A" fc_data-id-A="1" onclick="addNewTypes("A", this,"null", "fc_")"><i class="fa-solid fa-plus"></i></button>';
+        //                 } else {
+        //                     // seletedLayout += '<button class="plus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>';
+        //                 }
+        //                 seletedLayout += '</div>';
+        //             seletedLayout += '</div>';
+        //         }
+        //         seletedLayout += '</div>';
+        //     }
+        // }
+
+        $(".withFillOptmb-2").html(seletedLayout);
+
+        // re initlize here.
+        $("#fc_edit_super_category_A_0").select2({
+            dropdownParent: $("#questionMultiModal"),
+            tags: true,
+            placeholder: "Select Super Category",
+            maximumSelectionLength: 1,
+        });
+
+        $("#fc_edit_category_type_A_0").select2({
+            dropdownParent: $("#questionMultiModal"),
+            tags: true,
+            placeholder: "Select Category type",
+            maximumSelectionLength: 1,
+        });
+
+        $("#fc_edit_search-input_A_0").select2({
+            dropdownParent: $("#questionMultiModal"),
+            tags: true,
+            placeholder: "Select Question type",
+            maximumSelectionLength: 1,
+        });
+
+        // for (let key in checkbox_values_Arr) {
+        //     if (checkbox_values_Arr.hasOwnProperty(key)) {
+        //         $(checkbox_values_Arr[key]).each((i,v) => {
+        //             console.log(`#fc_edit_ct_checkbox_${key}_${i}`);
+        //             // $(`#fc_edit_ct_checkbox_${key}_${i}`).prop('checked', v==1);
+        //         });
+        //     }
+        // }
+
+        // //For super category
+        // for (let key in super_category_values_Arr) {
+        //     if (super_category_values_Arr.hasOwnProperty(key)) {
+        //         $(super_category_values_Arr[key]).each((i,v) => {
+        //             console.log(`#fc_edit_super_category_${key}_${i}`);
+        //             $(`#fc_edit_super_category_${key}_${i}`).val(v);
+        //             // $(`#$fc_edit_super_category_${key}_${i}`).trigger('change');
+        //         });
+        //     }
+        // }
+
+        // //For Category type
+        // for (let key in category_type_values_Arr) {
+        //     if (category_type_values_Arr.hasOwnProperty(key)) {
+        //         $(category_type_values_Arr[key]).each((i,v) => {
+        //             console.log(`#fc_edit_category_type_${key}_${i}`);
+        //             $(`#fc_edit_category_type_${key}_${i}`).val(v);
+        //             // $(`#fc_edit_category_type_${key}_${i}`).trigger('change');
+        //         });
+        //     }
+        // }
+
+        // //For Question Type
+        // for (let key in question_type_values_Arr) {
+        //     if (question_type_values_Arr.hasOwnProperty(key)) {
+        //         $(question_type_values_Arr[key]).each((i,v) => {
+        //             $(`#fc_edit_search-input_${key}_${i}`).val(v);
+        //             $(`#fc_edit_search-input_${key}_${i}`).trigger('change');
+        //         });
+        //     }
+        // }
     }
+}
+
     function setEmptyValue(qType){
 		CKEDITOR.instances['js-ckeditor-addQue'].setData('');
 		/*CKEDITOR.instances['js-ckeditor-passquestion'].setData('');*/
