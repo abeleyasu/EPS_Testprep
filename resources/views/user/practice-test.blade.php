@@ -119,9 +119,9 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                                  height: 20px;
-                                                                                                                  background-color: blue;
-                                                                                                                  margin-right: 5px; */
+                                                                                                                      height: 20px;
+                                                                                                                      background-color: blue;
+                                                                                                                      margin-right: 5px; */
         }
     </style>
 
@@ -768,6 +768,7 @@
 
             jQuery(".submit_section_btn").click(async function() {
                 await storeProgress();
+                await new Promise(resolve => setTimeout(resolve, 100));
                 if (jQuery('.next').prop('disabled') == false) {
                     var timeisover = jQuery('#timeisover').val();
                     if (timeisover == 1) {

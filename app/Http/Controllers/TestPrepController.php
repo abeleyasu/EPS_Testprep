@@ -1297,7 +1297,7 @@ class TestPrepController extends Controller
             $testProgress->save();
             $existingRecord = $testProgress;
         }
-
+        dump($existingRecord);
         return response()->json(['message' => 'success', 'data' => [
             'selected_answer' => json_decode($existingRecord->selected_answer, true)
         ]]);
