@@ -4552,20 +4552,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
         //new
         $('.preloader').css('display', 'block');
-        $('textarea').each(function() {
-            let textAreaId = $(this).attr('id');
-            CKEDITOR.replace(textAreaId, {
-                extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-                allowedContent: true,
-                on: {
-                instanceReady: function(event) {
-                    if (textAreaId === $('textarea:last').attr('id')) {
-                        $('.preloader').css('display', 'none');
-                    }
+        function loadCKEditor(textAreaId, isLastTextarea) {
+    CKEDITOR.replace(textAreaId, {
+        extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        allowedContent: true,
+        on: {
+            instanceReady: function (event) {
+                if (isLastTextarea) {
+                    $('.preloader').css('display', 'none');
                 }
-                }
-            });
-        });
+            }
+        }
+    });
+}
+
+$('textarea').each(function (index) {
+    let textAreaId = $(this).attr('id');
+    let isLastTextarea = index === $('textarea').length - 1;
+
+    // Use setTimeout to make the loading asynchronous
+    setTimeout(function () {
+        loadCKEditor(textAreaId, isLastTextarea);
+    }, 0);
+});
 
         jQuery(document).on('change', '.sectionOrder', function(){
             var section_id = $('.add_question_modal_multi').attr("data-id");
@@ -6729,7 +6738,7 @@ function practQuestioEdit(id){
                         getAnswerOption(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp, result.multiChoice, result.checkbox_values, result.super_category_values, result.category_type_values, result.question_type_values );
                     // setTimeout(() => {
                         $('#questionMultiModal').modal('show');
-                    // }, 2000);
+                    // }, 15000);
                     $(`.editMultipleChoice option[value="${parseInt(result.multiChoice)}"]`).prop('selected', true);
                     $(".editMultipleChoice").trigger("change");
                     }
@@ -6793,7 +6802,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                                     // Set CKEditor content
                                     event.editor.setData(content);
                                     resolve();
-                                }, 200);
+                                }, 1500);
                             },
                         },
                     });
@@ -6869,7 +6878,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                                     // Set CKEditor content
                                     event.editor.setData(content);
                                     resolve();
-                                }, 200);
+                                }, 1500);
                             },
                         },
                     });
@@ -6937,7 +6946,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                                     // Set CKEditor content
                                     event.editor.setData(content);
                                     resolve();
-                                }, 200);
+                                }, 1500);
                             },
                         },
                     });
@@ -7006,7 +7015,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                                     // Set CKEditor content
                                     event.editor.setData(content);
                                     resolve();
-                                }, 200);
+                                }, 1500);
                             },
                         },
                     });
@@ -7083,7 +7092,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                                     // Set CKEditor content
                                     event.editor.setData(content);
                                     resolve();
-                                }, 200);
+                                }, 1500);
                             },
                         },
                     });
@@ -7160,7 +7169,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                                     // Set CKEditor content
                                     event.editor.setData(content);
                                     resolve();
-                                }, 200);
+                                }, 1500);
                             },
                         },
                     });
@@ -7254,7 +7263,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                                         // Set CKEditor content
                                         event.editor.setData(content);
                                         resolve();
-                                    }, 200);
+                                    }, 1500);
                                 },
                             },
                         });
@@ -7316,7 +7325,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                                         // Set CKEditor content
                                         event.editor.setData(content);
                                         resolve();
-                                    }, 200);
+                                    }, 1500);
                                 },
                             },
                         });
