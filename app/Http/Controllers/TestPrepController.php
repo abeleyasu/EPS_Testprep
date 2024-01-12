@@ -1330,6 +1330,16 @@ class TestPrepController extends Controller
         $get_question_type = $request->get_question_type;
         $get_practice_id = $request->get_practice_id;
         $actual_time = $request->actual_time;
+        $user_actual_time = $request->user_actual_time;
+        $user_actual_score = $request->user_actual_score;
+
+        if ($user_actual_time  &&  $user_actual_score == null) {
+            return response()->json(
+                [
+                    'error' => '1',
+                ]
+            );
+        }
 
         if (isset($get_question_type) && !empty($get_question_type) && $get_question_type == 'single') {
             $get_question_title = DB::table('practice_tests')
@@ -1375,6 +1385,8 @@ class TestPrepController extends Controller
                 $userAnswers->skip = json_encode($filtered_skip);
                 $userAnswers->test_id = $get_practice_id;
                 $userAnswers->actual_time = $actual_time;
+                $userAnswers->user_actual_score = $user_actual_score;
+                $userAnswers->user_actual_time = $user_actual_time;
                 $userAnswers->save();
             }
         } else if (isset($get_question_type) && !empty($get_question_type) && $get_question_type == 'all') {
@@ -1444,6 +1456,8 @@ class TestPrepController extends Controller
                         $userAnswers->skip = json_encode($values['skip']);
                         $userAnswers->test_id = $get_practice_id;
                         $userAnswers->actual_time = $actual_time;
+                        $userAnswers->user_actual_score = $user_actual_score;
+                        $userAnswers->user_actual_time = $user_actual_time;
                         $userAnswers->save();
                     }
                 }
@@ -1792,6 +1806,137 @@ class TestPrepController extends Controller
         return response()->json(['success' => '0', 'questions' => $testSectionQuestions, 'total_question' => $get_total_question, 'get_offset' => $get_offset, 'set_next_offset' => $set_next_offset, 'set_prev_offset' => $set_prev_offset, 'practice_test_id' => $practice_test_id]);
     }
 
+    public function get_official_questions(Request $request)
+    {
+        // dd($request);
+        $practice_test_id = '';
+        $current_user_id = Auth::id();
+        $question = PracticeQuestion::select('id', 'practice_test_sections_id', 'passages_id')
+            ->where('practice_test_sections_id', $request->section_id)
+            ->get();
+        // dd($question);
+        if ($request->question_type == 'all') {
+            $practice_test_id = $request->section_id;
+            $set_completed_section_id = DB::table('user_answers')
+                ->select('user_answers.section_id')
+                ->where('user_answers.user_id', $current_user_id)
+                ->where('user_answers.test_id', $practice_test_id)
+                ->pluck('user_answers.section_id')
+                ->toArray();
+
+
+            // $get_offset = $request->get_offset;
+            // if (is_null($question->passages_id)) {
+            $get_total_question = DB::table('practice_questions')
+                ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+                ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
+                ->select('practice_questions.title as question_title', 'practice_questions.type as practice_type', 'practice_questions.answer as question_answer', 'practice_questions.answer_content as question_answer_options', 'practice_questions.multiChoice as is_multiple_choice', 'practice_questions.question_order', 'practice_questions.tags', 'practice_tests.*', 'practice_test_sections.*')
+                ->where('practice_tests.id', $practice_test_id)
+                ->whereNotIn('practice_test_sections.id', $set_completed_section_id)
+                ->get();
+
+            $total_question = DB::table('practice_questions')
+                ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+                ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
+                ->select('practice_questions.title as question_title', 'practice_questions.type as practice_type', 'practice_questions.answer as question_answer', 'practice_questions.answer_content as question_answer_options', 'practice_questions.multiChoice as is_multiple_choice', 'practice_questions.question_order', 'practice_questions.tags', 'practice_tests.*', 'practice_test_sections.*')
+                ->where('practice_tests.id', $practice_test_id)
+                ->whereNotIn('practice_test_sections.id', $set_completed_section_id)
+                ->count();
+
+            //     $testSectionQuestions = DB::table('practice_questions')
+            //         ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+            //         ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
+            //         ->select('practice_questions.id as question_id', 'practice_questions.title as question_title', 'practice_questions.type as practice_type', 'practice_questions.answer as question_answer', 'practice_questions.answer_content as question_answer_options', 'practice_questions.multiChoice as is_multiple_choice', 'practice_questions.question_order', 'practice_questions.tags', 'practice_tests.*', 'practice_test_sections.*')
+            //         ->where('practice_questions.id', $request->question_id)
+            //         ->where('practice_tests.id', $practice_test_id)
+            //         ->whereNotIn('practice_test_sections.id', $set_completed_section_id)
+            //         ->orderBy('question_order', 'ASC')
+            //         ->limit(1)->get();
+            // } else {
+            //     $get_total_question = DB::table('practice_questions')
+            //         ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+            //         ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
+            //         ->select('practice_questions.title as question_title', 'practice_questions.type as practice_type', 'practice_questions.answer as question_answer', 'practice_questions.answer_content as question_answer_options', 'practice_questions.multiChoice as is_multiple_choice', 'practice_questions.question_order', 'practice_questions.tags', 'practice_tests.*', 'practice_test_sections.*')
+            //         ->where('practice_tests.id', $practice_test_id)
+            //         ->whereNotIn('practice_test_sections.id', $set_completed_section_id)
+            //         ->count();
+
+            //     $testSectionQuestions = DB::table('practice_questions')
+            //         ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
+            //         ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+            //         ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
+            //         ->select('practice_questions.id as question_id', 'practice_questions.title as question_title', 'practice_questions.type as practice_type', 'practice_questions.answer as question_answer', 'practice_questions.answer_content as question_answer_options', 'practice_questions.multiChoice as is_multiple_choice', 'practice_questions.question_order', 'practice_questions.passages_id', 'practice_questions.tags', 'passages.title as passage_title', 'passages.description as passage_description', 'passages.type as passage_type', 'practice_tests.*', 'practice_test_sections.*')
+            //         ->where('practice_questions.id', $request->question_id)
+            //         ->where('practice_tests.id', $practice_test_id)
+            //         ->whereNotIn('practice_test_sections.id', $set_completed_section_id)
+            //         ->orderBy('question_order', 'ASC')
+            //         ->limit(1)->get();
+            // }
+
+            if ($get_total_question->isEmpty()) {
+                $get_total_question = 0;
+            }
+
+            // if ($get_offset >= $get_total_question) {
+            //     $set_next_offset = $get_offset;
+            //     $set_prev_offset = $get_offset - 1;
+            // } else {
+            //     $set_next_offset = $get_offset + 1;
+            //     $set_prev_offset = $get_offset - 1;
+            // }
+        } else if ($request->question_type == 'single') {
+
+            $get_section_details = DB::table('practice_test_sections')
+                ->select('practice_test_sections.testid')
+                ->where('practice_test_sections.id', $request->section_id)->first();
+            // dd($get_section_details);
+            $practice_test_id = $get_section_details->testid;
+            $get_offset = $request->get_offset;
+
+            // if (is_null($question->passages_id)) {
+            //     $get_total_question  = DB::table('practice_questions')
+            //         ->select('practice_questions.title as question_title', 'practice_questions.type as practice_type', 'practice_questions.answer as question_answer', 'practice_questions.answer_content as question_answer_options', 'practice_questions.multiChoice as is_multiple_choice', 'practice_questions.question_order', 'practice_questions.tags')
+            //         ->where('practice_questions.practice_test_sections_id', $request->section_id)->get();
+
+            //     $testSectionQuestions = DB::table('practice_questions')
+            //         ->select('practice_questions.id as question_id', 'practice_questions.title as question_title', 'practice_questions.type as practice_type', 'practice_questions.answer as question_answer', 'practice_questions.answer_content as question_answer_options', 'practice_questions.multiChoice as is_multiple_choice', 'practice_questions.question_order', 'practice_questions.tags')
+            //         // ->where('practice_questions.practice_test_sections_id', $request->section_id)
+            //         ->where('practice_questions.id', $request->question_id)
+            //         ->orderBy('question_order', 'ASC')
+            //         ->get();
+            // } else {
+            $get_total_question  = DB::table('practice_questions')
+                ->select('practice_questions.title as question_title', 'practice_questions.type as practice_type', 'practice_questions.answer as question_answer', 'practice_questions.answer_content as question_answer_options', 'practice_questions.multiChoice as is_multiple_choice', 'practice_questions.question_order', 'practice_questions.passages_id', 'practice_questions.id')
+                ->where('practice_questions.practice_test_sections_id', $request->section_id)->get();
+
+            $total_question  = DB::table('practice_questions')
+                ->select('practice_questions.title as question_title', 'practice_questions.type as practice_type', 'practice_questions.answer as question_answer', 'practice_questions.answer_content as question_answer_options', 'practice_questions.multiChoice as is_multiple_choice', 'practice_questions.question_order', 'practice_questions.passages_id', 'practice_questions.id')
+                ->where('practice_questions.practice_test_sections_id', $request->section_id)->count();
+            // $testSectionQuestions = DB::table('practice_questions')
+            //     ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
+            //     ->select('practice_questions.id as question_id', 'practice_questions.title as question_title', 'practice_questions.type as practice_type', 'practice_questions.answer as question_answer', 'practice_questions.answer_content as question_answer_options', 'practice_questions.multiChoice as is_multiple_choice', 'practice_questions.question_order', 'practice_questions.passages_id', 'practice_questions.tags', 'passages.title as passage_title', 'passages.description as passage_description', 'passages.type as passage_type')
+            //     // ->where('practice_questions.practice_test_sections_id', $request->section_id)
+            //     ->where('practice_questions.id', $request->question_id)
+            //     ->orderBy('question_order', 'ASC')
+            //     ->get();
+            // dd( $get_total_question);
+            // }
+            if ($get_total_question->isEmpty()) {
+                $get_total_question = 0;
+            }
+
+            // if ($get_offset >= $get_total_question) {
+            //     $set_next_offset = $get_offset;
+            //     $set_prev_offset = $get_offset - 1;
+            // } else {
+            //     $set_next_offset = $get_offset + 1;
+            //     $set_prev_offset = $get_offset - 1;
+            // }
+        }
+        // return response()->json(['success' => '0', 'questions' => $testSectionQuestions, 'total_question' => $get_total_question, 'get_offset' => $get_offset, 'set_next_offset' => $set_next_offset, 'set_prev_offset' => $set_prev_offset, 'practice_test_id' => $practice_test_id]);
+        return response()->json(['success' => '0', 'questions' => $get_total_question, 'total_question' => $total_question, 'practice_test_id' => $practice_test_id]);
+    }
+
     public function startAllSections(Request $request)
     {
         // reset all the setion first.
@@ -1876,6 +2021,75 @@ class TestPrepController extends Controller
         );
     }
 
+    public function singleOfficeSection(Request $request, $id)
+    {
+        $testSection = DB::table('practice_test_sections')
+            ->where('practice_test_sections.id', $id)
+            ->get();
+
+        // if (strpos($request->getRequestUri(), 'all') !== false) {
+        //     if( in_array($testSection[0]->practice_test_type, ['Math' ,'Reading_And_Writing'])){
+        //         // reset all the setion first.
+        //         UserAnswers::where('user_id', Auth::id())->where('test_id', $request->test_id)->delete();
+        //         $current_user_id = Auth::id();
+        //         $existingRecord = TestProgress::where('test_id', $request->test_id)
+        //             ->where('user_id', $current_user_id)
+        //             ->delete();
+        //     }    
+        // }
+
+        $set_offset = 0;
+        $test_id = $request->test_id ?? '';
+        $testSection = DB::table('practice_test_sections')
+            ->where('practice_test_sections.id', $id)
+            ->get();
+
+        $total_questions = PracticeQuestion::where('practice_test_sections_id', $id)
+            ->orderBy('question_order', 'ASC')
+            ->pluck('id')
+            ->toArray();
+        $testQuestion = DB::table('practice_tests')
+            ->where('id', $test_id)
+            ->first();
+
+        $isSubmitted = 0;
+        if (!empty($test_id)) {
+            $testProgress = TestProgress::where(
+                [
+                    "test_id" => $test_id,
+                    "section_id" => $id,
+                    "user_id" => Auth::user()->id
+                ]
+            )->first();
+            // dump($testProgress);
+            if (!empty($testProgress)) {
+                $isSubmitted = $testProgress->is_submit;
+                $testProgress->question_id = json_encode($total_questions);
+                $testProgress->save();
+            }
+        }
+
+        // update this part.
+        if ($isSubmitted == 1) {
+            return redirect()->route('single_test', $test_id);
+            // return back();
+            // $url = route('single_review',['test' => $testQuestion->title ,'id' => $id]). '?test_id=' . $test_id . '&type=single';
+            // return redirect($url);
+        }
+        // dd($isSubmitted);
+        return view(
+            'user.official_practice_test',
+            [
+                'section_id' => $id,
+                'set_offset' => $set_offset,
+                'question_type' => 'single',
+                'total_questions' => $total_questions,
+                'testSection' => $testSection,
+                'isSubmitted' => $isSubmitted
+            ]
+        );
+    }
+
     public function testBreak(Request $request, $id)
     {
 
@@ -1916,7 +2130,6 @@ class TestPrepController extends Controller
     public function singleTest(Request $request, $id)
     {
         $practice_test = PracticeTest::where('id', $id)->first();
-
         if (!$practice_test) {
             return redirect(route('test_home_page'))->with('error', 'Test not found');
         }
@@ -2439,6 +2652,7 @@ class TestPrepController extends Controller
             'rwCount' => $rwCount,
             'totalAttempetdQuestions' => $totalAttempetdQuestions,
             'totalNonAttempetdQuestions' => $totalNonAttempetdQuestions,
+            'practice_test' => $practice_test,
             'total_all_section_question' => isset($total_all_section_question) ? $total_all_section_question : '0'
         ]);
     }
