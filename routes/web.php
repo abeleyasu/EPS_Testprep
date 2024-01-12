@@ -518,6 +518,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::view('/practice-test', 'user.practice-test')->name('practicetest');
             Route::get('/start-all-sections/{sec_id}/{str}/{id}', [TestPrepController::class, 'startAllSections'])->name('startAllSections');
             Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
+            Route::get('/official-practice-test/{id}', [TestPrepController::class, 'singleOfficeSection'])->name('official_single_section');
             Route::get('/practice-test/all/{id}', [TestPrepController::class, 'allSection'])->name('all_section');
         });
         Route::view('/practice-test-sections', 'user.practice-test-sections');
@@ -527,6 +528,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         });
 
         Route::post('/get_section_questions/post', [TestPrepController::class, 'get_questions']);
+        Route::post('/get_official_section_questions/post', [TestPrepController::class, 'get_official_questions']);
 
         Route::post('/set_user_question_answer/post', [TestPrepController::class, 'set_answers']);
         Route::post('/test-progress/store', [TestPrepController::class, 'test_progress_store']);
@@ -573,9 +575,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::post('/', 'sendReferralNotification')->name('send-notification');
             });
         });
-
     });
-    
+
     Route::controller(GoogleController::class)->group(function () {
         Route::get('auth/google', 'google')->name('google');
         Route::get('auth/google/callback', 'googleCallback')->name('googleCallback');
