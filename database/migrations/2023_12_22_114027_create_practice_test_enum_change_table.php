@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('practice_tests', function (Blueprint $table) {
-            $table->enum('format', ['ACT', 'SAT', 'PSAT', 'DSAT', 'DPSAT'])->change();
+            // $table->enum('format', ['ACT', 'SAT', 'PSAT', 'DSAT', 'DPSAT'])->change();
         });
     }
 

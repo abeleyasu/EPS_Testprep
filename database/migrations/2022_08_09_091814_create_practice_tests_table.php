@@ -18,7 +18,7 @@ return new class extends Migration
             Schema::create('practice_tests', function (Blueprint $table) {
                 $table->id();
                 $table->string('title');
-                $table->enum('format', ['ACT', 'SAT', 'PSAT'])->comment('ACT=ACT Practice Test,SAT=SAT Practice Test,PSAT=PSAT Practice Test')->default('ACT');
+                $table->enum('format', ['ACT', 'SAT', 'PSAT', 'DSAT', 'DPSAT'])->comment('ACT=ACT Practice Test,SAT=SAT Practice Test,PSAT=PSAT Practice Test')->default('ACT');
                 $table->integer('test_source')->nullable()->default(0)->comment('0=>college_prep_system_test, 1=>official_released_test, 2=>self made test');
                 $table->text('description')->nullable();
                 $table->string('tags')->nullable();

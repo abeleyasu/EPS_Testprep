@@ -8,7 +8,7 @@
         <div class="bg-black-10">
             <div class="content content-full text-center">
                 <br>
-                <h1 class="h2 text-white mb-0">Initial College List</h1>
+                <h1 class="h2 text-white mb-0">College Search</h1>
                 <br>
             </div>
         </div>

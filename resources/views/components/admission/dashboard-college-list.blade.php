@@ -2,15 +2,15 @@
 
     @if (count($college_list_deadline) > 0)
         @foreach ($college_list_deadline as $key => $deadline)
-            <div class="col-12" id="{{$deadline['college_deadline']['id']}}">
-                <div
-                    class="block block-bordered shadow py-3 px-2 gap-1 d-flex flex-column align-items-center @if (!$deadline['college_information']['regular_admission_deadline']) @endif">
+            <div class="col-12" style="height : 271px!important; "  id="{{$deadline['college_deadline']['id']}}">
+                <div style="min-height:100%!important;  "
+                    class="block block-bordered shadow py-3 px-2 gap-1 d-flex flex-column align-items-center  @if (!$deadline['college_information']['regular_admission_deadline']) @endif">
                     @if ($deadline['college_information']['college_icon'])
                         <img class="college-image"
                             src="{{ asset('college_icon/' . $deadline['college_information']['college_icon']) }}"
                             alt="">
                     @else
-                        <img class="college-image" src="{{ asset('static-image/no-image.jpg') }}" alt="">
+                        <img class="college-image" src="{{ asset('static-image/college-logo.png') }}" alt="">
                     @endif
                     <div class="fs-sm fw-semibold text-muted text-uppercase">Choice #{{ $key + 1 }}</div>
                     <a class="text-dark text-center">{{ $deadline['college_name'] }}</a>
@@ -31,12 +31,12 @@
         @endforeach
     @endif
     @php
-        $total_element = count($college_list_deadline) == 0 ? 1 : 3;
+        $total_element = count($college_list_deadline) == 0 ? 1 : 1;
     @endphp
     @for ($i = 0; $i < $total_element; $i++)
-        <div class="col-12">
-            <div class="block block-bordered shadow py-3 px-2 gap-1 d-flex flex-column align-items-center box-height">
-                <img class="college-image" src="{{ asset('static-image/no-image.jpg') }}" alt="">
+        <div class="col-12" style="height:271px!important" >
+            <div class="block block-bordered shadow py-3 px-2 gap-1 d-flex flex-column align-items-center box-height" style="height : 100%;" >
+                <img class="college-image" src="{{ asset('static-image/college-logo.png') }}" alt="">
                 <div class="fs-sm fw-semibold text-muted text-uppercase">Choice
                     #{{ count($college_list_deadline) + $i + 1 }}</div>
                 <a href="{{ route('admin-dashboard.initialCollegeList.step1') }}" class="btn btn-alt-success btn-sm">Add
