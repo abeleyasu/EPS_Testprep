@@ -8,6 +8,7 @@
         <h2 class="home-content-title text-center wow fadeInUp" data-wow-delay="200ms">
           <div>College Prep System</div>
           <div>Your Roadmap to College</div>
+          <div class="test hidden"></div>
         </h2>
         <a data-fancybox="" href="{{ asset('static-video/video.mp4') }}">
           <div class="play-icon">
