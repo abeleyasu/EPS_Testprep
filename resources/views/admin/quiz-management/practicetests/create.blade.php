@@ -36,12 +36,12 @@
         }
 
         /* #addNewTypes .select2-container--default,.add_question_type_select .select2-container--default,.removeNewTypes .select2-container--default,.add_question_type_select .select2-container--default {
-                                                                                                                                                            width: 305px !important;
-                                                                                                                                                        }
-                                                                                                                                                        .removeNewTypes .select2-search__field,.add_question_type_select .select2-search__field,#addNewTypes .select2-search__field,.add_question_type_select .select2-search__field{
-                                                                                                                                                            height: 22px;
-                                                                                                                                                            margin: 6px 10px 0;
-                                                                                                                                                        } */
+                                                                                                                                                                        width: 305px !important;
+                                                                                                                                                                    }
+                                                                                                                                                                    .removeNewTypes .select2-search__field,.add_question_type_select .select2-search__field,#addNewTypes .select2-search__field,.add_question_type_select .select2-search__field{
+                                                                                                                                                                        height: 22px;
+                                                                                                                                                                        margin: 6px 10px 0;
+                                                                                                                                                                    } */
         button {
             background-color: #4CAF50;
             color: #ffffff;
@@ -287,8 +287,8 @@
         }
 
         /* .input-container {
-                                                                                                                                                            margin-bottom: 10px;
-                                                                                                                                                        } */
+                                                                                                                                                                        margin-bottom: 10px;
+                                                                                                                                                                    } */
 
 
 
@@ -434,8 +434,8 @@
         }
 
         /* .rating-tag .select2-container--default .select2-selection--multiple{
-                                                                                                                                                            padding: 5px !important;
-                                                                                                                                                        } */
+                                                                                                                                                                        padding: 5px !important;
+                                                                                                                                                                    } */
         .type-check[type="checkbox"] {
             width: 30px;
             height: 30px;
@@ -606,7 +606,7 @@
                                                         Section</button>
                                                 </div>
                                             </div>
-                                            
+
                                             <div style="overflow:auto;" id="nextprevious">
                                                 <div style="float:right;">
                                                     <a href="javascript:;" class="btn btn-sm btn-primary" id="prevBtn"
@@ -654,22 +654,20 @@
                             <div class="col-md-6">
                                 <label class="form-label" style="font-size: 13px;">Practice Test Section Type:<span
                                         class="text-danger">*</span></label>
-                                <select id="testSectionType" name="testSectionType" class="form-control js-select2 select"
-                                    onchange="addClassScore(this)">
+                                <select id="testSectionType" name="testSectionType"
+                                    class="form-control js-select2 select" onchange="addClassScore(this)">
 
                                 </select>
                             </div>
                             <div class="col-md-6 for_digital_only">
-                                <label class="form-label" style="font-size: 13px;">Required Number Of Correct Answers:<span
-                                        class="text-danger">*</span></label>
-                                <input id="required_number_of_correct_answers" 
-                                    name="required_number_of_correct_answers" 
+                                <label class="form-label" style="font-size: 13px;">Required Number Of Correct
+                                    Answers:<span class="text-danger">*</span></label>
+                                <input id="required_number_of_correct_answers" name="required_number_of_correct_answers"
                                     class="form-control" type="number"
-                                    
-                                    placeholder="Enter Required Number Of Correct Answers" >
+                                    placeholder="Enter Required Number Of Correct Answers">
                             </div>
                         </div>
-                        
+
                         {{-- <div class="mb-2">
                             <label class="form-label" style="font-size: 13px;">Regular Time</label>
                             <input type="time" id="regular_time" name="regular_time" step="1" class="form-control">
@@ -727,13 +725,25 @@
                                     oninput="validateInput(this)" />
                             </div>
                         </div>
-
+                        <div class="col-md-12 for_digital_only easy_section_determiner" style="display: none">
+                            <label class="form-label" style="font-size: 13px;">Easy Section Determiner:<span
+                                    class="text-danger">*</span></label>
+                            <input id="easy_section_determiner" name="easy_section_determiner" class="form-control"
+                                placeholder="Enter Easy Section Determiner">
+                        </div>
+                        <div class="col-md-12 mt-3 mb-3 for_digital_only hard_section_determiner" style="display: none">
+                            <label class="form-label" style="font-size: 13px;">Hard Section Determiner:<span
+                                    class="text-danger">*</span></label>
+                            <input id="hard_section_determiner" name="hard_section_determiner" class="form-control"
+                                placeholder="Enter Hard Section Determiner">
+                        </div>
                         <div class="mb-2 show-calc-div row">
                             <div class="col-md-1">
                                 <input type="checkbox" class="show-calc-box" name="add_show_calc" id="add_show_calc">
                             </div>
                             <div class="col-md-11 cal-show">
-                                <label class="form-label" style="font-size: 13px;" for="add_show_calc">Show Calculator</label>
+                                <label class="form-label" style="font-size: 13px;" for="add_show_calc">Show
+                                    Calculator</label>
                             </div>
                         </div>
 
@@ -780,16 +790,15 @@
                                 </select>
                             </div>
                             <div class="col-md-6 for_digital_only">
-                                <label class="form-label" style="font-size: 13px;">Required Number Of Correct Answers:<span
-                                        class="text-danger">*</span></label>
-                                <input id="edit_required_number_of_correct_answers" 
-                                    name="required_number_of_correct_answers" 
-                                    class="form-control" type="number"
-                                    placeholder="Enter Required Number Of Correct Answers" >
+                                <label class="form-label" style="font-size: 13px;">Required Number Of Correct
+                                    Answers:<span class="text-danger">*</span></label>
+                                <input id="edit_required_number_of_correct_answers"
+                                    name="required_number_of_correct_answers" class="form-control" type="number"
+                                    placeholder="Enter Required Number Of Correct Answers">
                             </div>
                         </div>
 
-                        
+
 
                         {{-- <div class="mb-2">
                             <label class="form-label" style="font-size: 13px;">Regular Time</label>
@@ -848,14 +857,27 @@
                                     oninput="validateInput(this)" />
                             </div>
                         </div>
-
+                        <div class="col-md-12 for_digital_only edit_easy_section_determiner" style="display: none">
+                            <label class="form-label" style="font-size: 13px;">Easy Section Determiner:<span
+                                    class="text-danger">*</span></label>
+                            <input id="edit_easy_section_determiner" name="easy_section_determiner" class="form-control"
+                                placeholder="Enter Easy Section Determiner">
+                        </div>
+                        <div class="col-md-12 mt-3 mb-3 for_digital_only edit_hard_section_determiner"
+                            style="display: none">
+                            <label class="form-label" style="font-size: 13px;">Hard Section Determiner:<span
+                                    class="text-danger">*</span></label>
+                            <input id="edit_hard_section_determiner" name="hard_section_determiner" class="form-control"
+                                placeholder="Enter Hard Section Determiner">
+                        </div>
                         <div class="mb-2 show-calc-div row">
                             <div class="col-md-1">
-                                <input type="checkbox" style="font-size: 13px;" class="show-calc-box" name="edit_show_calc" id="edit_show_calc">
-                                
+                                <input type="checkbox" style="font-size: 13px;" class="show-calc-box"
+                                    name="edit_show_calc" id="edit_show_calc">
+
                             </div>
                             <div class="col-md-11 cal-show">
-                            <label class="form-label" style="font-size: 13px;">Show Calculator</label>
+                                <label class="form-label" style="font-size: 13px;">Show Calculator</label>
                             </div>
                         </div>
 
@@ -920,7 +942,7 @@
                                 <div class="mb-2 rating-tag ">
                                     <label class="form-label" for="tags">Question Tags<span
                                             class="text-danger">*</span></label>
-                                            
+
                                     <div class="d-flex align-items-center">
                                         <select class="js-select2 select questionTag" id="question_tags_create"
                                             name="question_tags_create" onchange="insertQuestionTag(this)" multiple>
@@ -936,14 +958,11 @@
                                 <div class="mb-2 ">
                                     <label class="form-label" for="diff-value">Diff Value<span
                                             class="text-danger">*</span></label>
-                                            
+
                                     <div class="d-flex align-items-center">
-                                        <input class="form-control"
-                                               placeholder="Diff Value" 
-                                               min="1" max="100" type="number" 
-                                               oninput="validateInput(this)"
-                                               required
-                                               id="diffValue" name="diff_value">
+                                        <input class="form-control" placeholder="Diff Value" min="1"
+                                            max="100" type="number" oninput="validateInput(this)" required
+                                            id="diffValue" name="diff_value">
                                     </div>
                                     <span class="text-danger" id="diffValueError"></span>
                                 </div>
@@ -952,14 +971,11 @@
                                 <div class="mb-2 rating-tag ">
                                     <label class="form-label" for="disc-value">Disc Value<span
                                             class="text-danger">*</span></label>
-                                            
+
                                     <div class="d-flex align-items-center">
-                                        <input class="form-control"
-                                                 placeholder="Disc Value" 
-                                                 min="1" max="100" type="number" 
-                                                 oninput="validateInput(this)"
-                                                 required
-                                                 type="number" id="discValue" name="disc_value">
+                                        <input class="form-control" placeholder="Disc Value" min="1"
+                                            max="100" type="number" oninput="validateInput(this)" required
+                                            type="number" id="discValue" name="disc_value">
                                     </div>
                                     <span class="text-danger" id="discValueError"></span>
                                 </div>
@@ -1052,16 +1068,19 @@
                                                 <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" oninput="validateInput(this)"
-                                                            
-                                                            id="oneInFourOdd_add_guessing_value_A" name="oneInFourOdd_add_guessing_value_A">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFourOdd_add_guessing_value_A"
+                                                                name="oneInFourOdd_add_guessing_value_A">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFourOdd_add_guessing_valueE_A"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFourOdd_add_guessing_valueE_A"></span>
+                                                </div>
                                             </div>
                                         </div>
                                         @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', [
@@ -1078,28 +1097,29 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li>
-                                        
+
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label" style="font-size: 13px;"><span>B: </span><input
-                                                    type="radio" value="b" name="choiceOneInFour"></label>
+                                                        type="radio" value="b" name="choiceOneInFour"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" 
-                                                                placeholder="Guessing Value" 
-                                                                min="1" max="100" type="number" 
-                                                                oninput="validateInput(this)"
-                                                                required
-                                                                id="oneInFourOdd_add_guessing_value_B" name="oneInFourOdd_add_guessing_value_B">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFourOdd_add_guessing_value_B"
+                                                                name="oneInFourOdd_add_guessing_value_B">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFourOdd_add_guessing_valueE_B"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFourOdd_add_guessing_valueE_B"></span>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -1117,27 +1137,29 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li>
-                                        
+
                                         <div class="row">
                                             <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>C:</span><input
-                                                type="radio" value="c" name="choiceOneInFour"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>C:</span><input
+                                                        type="radio" value="c" name="choiceOneInFour"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number add_guessing_value" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                            id="oneInFourOdd_add_guessing_value_C" name="oneInFourOdd_add_guessing_value_C">
+                                                            <input class="form-control" placeholder="Guessing Value"
+                                                                min="1" max="100"
+                                                                type="number add_guessing_value"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFourOdd_add_guessing_value_C"
+                                                                name="oneInFourOdd_add_guessing_value_C">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFourOdd_add_guessing_valueE_C"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFourOdd_add_guessing_valueE_C"></span>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -1155,27 +1177,29 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li>
-                                        
+
                                         <div class="row">
                                             <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>D:</span><input
-                                                type="radio" value="d" name="choiceOneInFour"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>D:</span><input
+                                                        type="radio" value="d" name="choiceOneInFour"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                             min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                            id="oneInFourOdd_add_guessing_value_D" name="oneInFourOdd_add_guessing_value_D">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFourOdd_add_guessing_value_D"
+                                                                name="oneInFourOdd_add_guessing_value_D">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFourOdd_add_guessing_valueE_D"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFourOdd_add_guessing_valueE_D"></span>
+                                                </div>
                                             </div>
                                         </div>
                                         @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', [
@@ -1199,27 +1223,29 @@
                                     id="questionType" value="choiceOneInFour_Even">
                                 <ul class="answerOptionLsit">
                                     <li>
-                                        
+
                                         <div class="row">
                                             <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>F: </span><input
-                                                type="radio" value="f" name="choiceOneInFour"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>F: </span><input
+                                                        type="radio" value="f" name="choiceOneInFour"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required  
-                                                            id="oneInFourEven_add_guessing_value_F" name="oneInFourEven_add_guessing_value_F">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFourEven_add_guessing_value_F"
+                                                                name="oneInFourEven_add_guessing_value_F">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="guessinoneInFourEven_add_guessing_valueE_Fg_valueError"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="guessinoneInFourEven_add_guessing_valueE_Fg_valueError"></span>
+                                                </div>
                                             </div>
                                         </div>
                                         @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', [
@@ -1238,27 +1264,29 @@
                                     <li>
                                         <div class="row">
                                             <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>G: </span><input
-                                                type="radio" value="g" name="choiceOneInFour"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>G: </span><input
+                                                        type="radio" value="g" name="choiceOneInFour"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2 rating-tag ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                            id="oneInFourEven_add_guessing_value_G" name="oneInFourEven_add_guessing_value_G">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFourEven_add_guessing_value_G"
+                                                                name="oneInFourEven_add_guessing_value_G">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFourEven_add_guessing_valueE_G"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFourEven_add_guessing_valueE_G"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
                                         @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', [
                                             'ans_choices' => 'G',
                                             'disp_section' => 'oneInFourEven_',
@@ -1276,23 +1304,25 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label" style="font-size: 13px;"><span>H:</span><input
-                                                type="radio" value="h" name="choiceOneInFour"></label>
+                                                        type="radio" value="h" name="choiceOneInFour"></label>
                                             </div>
                                             <div class="col-md-8">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required  
-                                                            id="oneInFourEven_add_guessing_value_H" name="oneInFourEven_add_guessing_value_H">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFourEven_add_guessing_value_H"
+                                                                name="oneInFourEven_add_guessing_value_H">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFourEven_add_guessing_valueE_H"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFourEven_add_guessing_valueE_H"></span>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -1313,34 +1343,36 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label" style="font-size: 13px;"><span>J: </span><input
-                                                type="radio" value="j" name="choiceOneInFour">
+                                                        type="radio" value="j" name="choiceOneInFour">
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                            id="oneInFourEven_add_guessing_value_J" name="oneInFourEven_add_guessing_value_J">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFourEven_add_guessing_value_J"
+                                                                name="oneInFourEven_add_guessing_value_J">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFourEven_add_guessing_valueE_J"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFourEven_add_guessing_valueE_J"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
 
-                                            @include(
-                                                'admin.quiz-management.practicetests.add-sc-ct-qt-block',
-                                                ['ans_choices' => 'J', 'disp_section' => 'oneInFourEven_']
-                                            )
 
-                                            <textarea id="choiceOneInFour_EvenAnswer_4" name="choiceOneInFourAnswer_4"
-                                                class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', [
+                                            'ans_choices' => 'J',
+                                            'disp_section' => 'oneInFourEven_',
+                                        ])
+
+                                        <textarea id="choiceOneInFour_EvenAnswer_4" name="choiceOneInFourAnswer_4"
+                                            class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer J</label>
@@ -1357,26 +1389,28 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label" style="font-size: 13px;"><span>A: </span><input
-                                                type="radio" value="a" name="choiceOneInFive"></label>
+                                                        type="radio" value="a" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required  
-                                                            id="oneInFiveOdd_add_guessing_value_A" name="oneInFiveOdd_add_guessing_value_A">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFiveOdd_add_guessing_value_A"
+                                                                name="oneInFiveOdd_add_guessing_value_A">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_A"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFiveOdd_add_guessing_valueE_A"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', [
                                             'ans_choices' => 'A',
@@ -1395,31 +1429,36 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label" style="font-size: 13px;"><span>B:</span><input
-                                                type="radio" value="b" name="choiceOneInFive"></label>
+                                                        type="radio" value="b" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required  
-                                                            id="oneInFiveOdd_add_guessing_value_B" name="oneInFiveOdd_add_guessing_value_B">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFiveOdd_add_guessing_value_B"
+                                                                name="oneInFiveOdd_add_guessing_value_B">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_B"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFiveOdd_add_guessing_valueE_B"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
 
-                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', [
-                                            'ans_choices' => 'B',
-                                            'disp_section' => 'oneInFiveOdd_',
-                                        ])
+
+                                        @include(
+                                            'admin.quiz-management.practicetests.add-sc-ct-qt-block',
+                                            [
+                                                'ans_choices' => 'B',
+                                                'disp_section' => 'oneInFiveOdd_',
+                                            ]
+                                        )
 
                                         <textarea id="choiceOneInFive_Odd_Answer_2" name="choiceOneInFiveAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
@@ -1433,23 +1472,25 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label" style="font-size: 13px;"><span>C: </span><input
-                                                type="radio" value="c" name="choiceOneInFive"></label>
+                                                        type="radio" value="c" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required  
-                                                            id="oneInFiveOdd_add_guessing_value_C" name="oneInFiveOdd_add_guessing_value_C">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFiveOdd_add_guessing_value_C"
+                                                                name="oneInFiveOdd_add_guessing_value_C">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_C"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFiveOdd_add_guessing_valueE_C"></span>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -1470,23 +1511,25 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label" style="font-size: 13px;"><span>D: </span><input
-                                                type="radio" value="d" name="choiceOneInFive"></label>
+                                                        type="radio" value="d" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required  
-                                                            id="oneInFiveOdd_add_guessing_value_D" name="oneInFiveOdd_add_guessing_value_D">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFiveOdd_add_guessing_value_D"
+                                                                name="oneInFiveOdd_add_guessing_value_D">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_D"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFiveOdd_add_guessing_valueE_D"></span>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -1507,26 +1550,28 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label" style="font-size: 13px;"><span>E: </span><input
-                                                type="radio" value="e" name="choiceOneInFive"></label>
+                                                        type="radio" value="e" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required  
-                                                            id="oneInFiveOdd_add_guessing_value_E" name="oneInFiveOdd_add_guessing_value_E">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFiveOdd_add_guessing_value_E"
+                                                                name="oneInFiveOdd_add_guessing_value_E">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFiveOdd_add_guessing_valueE_E"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFiveOdd_add_guessing_valueE_E"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -1551,27 +1596,30 @@
                                     <li>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>F: </span><input
-                                                type="radio" value="f" name="choiceOneInFive"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>F:
+                                                    </span><input type="radio" value="f"
+                                                        name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                            id="oneInFiveEven_add_guessing_value_F" name="oneInFiveEven_add_guessing_value_F">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFiveEven_add_guessing_value_F"
+                                                                name="oneInFiveEven_add_guessing_value_F">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_F"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFiveEven_add_guessing_valueE_F"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -1590,26 +1638,28 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label" style="font-size: 13px;"><span>G:</span><input
-                                                type="radio" value="g" name="choiceOneInFive"></label>
+                                                        type="radio" value="g" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required  
-                                                            id="oneInFiveEven_add_guessing_value_G" name="oneInFiveEven_add_guessing_value_G">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFiveEven_add_guessing_value_G"
+                                                                name="oneInFiveEven_add_guessing_value_G">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_G"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFiveEven_add_guessing_valueE_G"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -1627,27 +1677,30 @@
                                     <li>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>H: </span><input
-                                                type="radio" value="h" name="choiceOneInFive"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>H:
+                                                    </span><input type="radio" value="h"
+                                                        name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                             id="oneInFiveEven_add_guessing_value_H" name="oneInFiveEven_add_guessing_value_H">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFiveEven_add_guessing_value_H"
+                                                                name="oneInFiveEven_add_guessing_value_H">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_H"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFiveEven_add_guessing_valueE_H"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -1665,28 +1718,30 @@
                                     <li>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>J: </span><input
-                                                type="radio" value="j" name="choiceOneInFive"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>J:
+                                                    </span><input type="radio" value="j"
+                                                        name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" 
-                                                            placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                             id="oneInFiveEven_add_guessing_value_J" name="oneInFiveEven_add_guessing_value_J">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFiveEven_add_guessing_value_J"
+                                                                name="oneInFiveEven_add_guessing_value_J">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_J"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFiveEven_add_guessing_valueE_J"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -1704,27 +1759,30 @@
                                     <li>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>K: </span><input
-                                                type="radio" value="k" name="choiceOneInFive"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>K:
+                                                    </span><input type="radio" value="k"
+                                                        name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                            id="oneInFiveEven_add_guessing_value_K" name="oneInFiveEven_add_guessing_value_K">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFiveEven_add_guessing_value_K"
+                                                                name="oneInFiveEven_add_guessing_value_K">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFiveEven_add_guessing_valueE_K"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFiveEven_add_guessing_valueE_K"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -1748,27 +1806,28 @@
                                     <li>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>A: </span><input
-                                                type="radio" value="a" name="choiceOneInFourPass"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>A:
+                                                    </span><input type="radio" value="a"
+                                                        name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                            id="add_guessing_value_A" name="add_guessing_value_A">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="add_guessing_value_A" name="add_guessing_value_A">
                                                         </div>
                                                     </label>
                                                     <span class="text-danger" id="add_guessing_valueE_A"></span>
-                                                </div>  
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -1786,27 +1845,28 @@
                                     <li>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>B: </span><input
-                                                type="radio" value="b" name="choiceOneInFourPass"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>B:
+                                                    </span><input type="radio" value="b"
+                                                        name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                            id="add_guessing_value_B" name="add_guessing_value_B">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="add_guessing_value_B" name="add_guessing_value_B">
                                                         </div>
                                                     </label>
                                                     <span class="text-danger" id="add_guessing_valueE_B"></span>
-                                                </div>  
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -1824,27 +1884,28 @@
                                     <li>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>C: </span><input
-                                                type="radio" value="c" name="choiceOneInFourPass"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>C:
+                                                    </span><input type="radio" value="c"
+                                                        name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required  
-                                                            id="add_guessing_value_C" name="add_guessing_value_C">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="add_guessing_value_C" name="add_guessing_value_C">
                                                         </div>
                                                     </label>
                                                     <span class="text-danger" id="add_guessing_valueE_C"></span>
-                                                </div>  
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -1863,26 +1924,27 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label" style="font-size: 13px;"><span>D: </span>
-                                                <input type="radio" value="d" name="choiceOneInFourPass"></label>
+                                                    <input type="radio" value="d"
+                                                        name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                            id="add_guessing_value_D" name="add_guessing_value_D">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="add_guessing_value_D" name="add_guessing_value_D">
                                                         </div>
                                                     </label>
                                                     <span class="text-danger" id="add_guessing_valueE_D"></span>
-                                                </div>  
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -1907,27 +1969,30 @@
                                     <li>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>F: </span><input
-                                                type="radio" value="f" name="choiceOneInFourPass"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>F:
+                                                    </span><input type="radio" value="f"
+                                                        name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                            id="oneInFourPassEven_add_guessing_value_F" name="oneInFourPassEven_add_guessing_value_F">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFourPassEven_add_guessing_value_F"
+                                                                name="oneInFourPassEven_add_guessing_value_F">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFourPassEven_add_guessing_valueE_F"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFourPassEven_add_guessing_valueE_F"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -1945,24 +2010,27 @@
                                     <li>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>G: </span><input
-                                                type="radio" value="g" name="choiceOneInFourPass"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>G:
+                                                    </span><input type="radio" value="g"
+                                                        name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                            id="oneInFourPassEven_add_guessing_value_G" name="oneInFourPassEven_add_guessing_value_G">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFourPassEven_add_guessing_value_G"
+                                                                name="oneInFourPassEven_add_guessing_value_G">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFourPassEven_add_guessing_valueE_G"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFourPassEven_add_guessing_valueE_G"></span>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -1982,27 +2050,30 @@
                                     <li>
                                         <div class="row">
                                             <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>H: </span><input
-                                                type="radio" value="h" name="choiceOneInFourPass"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>H:
+                                                    </span><input type="radio" value="h"
+                                                        name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required  
-                                                            id="oneInFourPassEven_add_guessing_value_H" name="oneInFourPassEven_add_guessing_value_H">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFourPassEven_add_guessing_value_H"
+                                                                name="oneInFourPassEven_add_guessing_value_H">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFourPassEven_add_guessing_valueE_H"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFourPassEven_add_guessing_valueE_H"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -2020,27 +2091,30 @@
                                     <li>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>J: </span><input
-                                                type="radio" value="j" name="choiceOneInFourPass"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>J:
+                                                    </span><input type="radio" value="j"
+                                                        name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
-                                                            
+
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                            min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required  
-                                                            id="oneInFourPassEven_add_guessing_value_J" name="oneInFourPassEven_add_guessing_value_J">
+                                                            <input class="form-control add_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" required
+                                                                id="oneInFourPassEven_add_guessing_value_J"
+                                                                name="oneInFourPassEven_add_guessing_value_J">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFourPassEven_add_guessing_valueE_J"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFourPassEven_add_guessing_valueE_J"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
                                         @include(
                                             'admin.quiz-management.practicetests.add-sc-ct-qt-block',
                                             ['ans_choices' => 'J', 'disp_section' => 'oneInFourPassEven_']
@@ -2077,27 +2151,30 @@
                                         <li>
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>A: </span> <input
-                                                    type="checkbox" value="a" name="choiceMultInFourFill[]"></label>
+                                                    <label class="form-label" style="font-size: 13px;"><span>A: </span>
+                                                        <input type="checkbox" value="a"
+                                                            name="choiceMultInFourFill[]"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2  ">
-                                                        <label class="form-label" for="guessing-value">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
+                                                        <label class="form-label" for="guessing-value">Guessing
+                                                            Value<span class="text-danger">*</span>
+
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                                min="1" max="100" type="number" 
-                                                                oninput="validateInput(this)"
-                                                                required  
-                                                                id="cb_choiceMultInFourFill_add_guessing_value_A" name="cb_choiceMultInFourFill_add_guessing_value_A">
+                                                                <input class="form-control add_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)" required
+                                                                    id="cb_choiceMultInFourFill_add_guessing_value_A"
+                                                                    name="cb_choiceMultInFourFill_add_guessing_value_A">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="cb_choiceMultInFourFill_add_guessing_valueE_A"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="cb_choiceMultInFourFill_add_guessing_valueE_A"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
 
                                             @include(
                                                 'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -2118,24 +2195,27 @@
                                         <li>
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <label class="form-label" style="font-size: 13px;"><span>B: </span><input
-                                                    type="checkbox" value="b" name="choiceMultInFourFill[]"></label>
+                                                    <label class="form-label" style="font-size: 13px;"><span>B:
+                                                        </span><input type="checkbox" value="b"
+                                                            name="choiceMultInFourFill[]"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2 ">
-                                                        <label class="form-label" for="guessing-value">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
+                                                        <label class="form-label" for="guessing-value">Guessing
+                                                            Value<span class="text-danger">*</span>
+
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                                min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required  
-                                                                id="cb_choiceMultInFourFill_add_guessing_value_B" name="cb_choiceMultInFourFill_add_guessing_value_B">
+                                                                <input class="form-control add_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)" required
+                                                                    id="cb_choiceMultInFourFill_add_guessing_value_B"
+                                                                    name="cb_choiceMultInFourFill_add_guessing_value_B">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="cb_choiceMultInFourFill_add_guessing_valueE_B"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="cb_choiceMultInFourFill_add_guessing_valueE_B"></span>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -2158,27 +2238,30 @@
                                         <li>
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <label class="form-label" style="font-size: 13px;"><span>C: </span><input
-                                                    type="checkbox" value="c" name="choiceMultInFourFill[]"></label>
+                                                    <label class="form-label" style="font-size: 13px;"><span>C:
+                                                        </span><input type="checkbox" value="c"
+                                                            name="choiceMultInFourFill[]"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2 ">
-                                                        <label class="form-label" for="guessing-value">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
+                                                        <label class="form-label" for="guessing-value">Guessing
+                                                            Value<span class="text-danger">*</span>
+
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                                min="1" max="100" type="number" 
-                                                                oninput="validateInput(this)"
-                                                                required  
-                                                                id="cb_choiceMultInFourFill_add_guessing_value_C" name="cb_choiceMultInFourFill_add_guessing_value_C">
+                                                                <input class="form-control add_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)" required
+                                                                    id="cb_choiceMultInFourFill_add_guessing_value_C"
+                                                                    name="cb_choiceMultInFourFill_add_guessing_value_C">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="cb_choiceMultInFourFill_add_guessing_valueE_C"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="cb_choiceMultInFourFill_add_guessing_valueE_C"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
 
                                             @include(
                                                 'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -2199,27 +2282,30 @@
                                         <li>
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <label class="form-label" style="font-size: 13px;"><span>D:</span><input
-                                                    type="checkbox" value="d" name="choiceMultInFourFill[]"></label>
+                                                    <label class="form-label"
+                                                        style="font-size: 13px;"><span>D:</span><input type="checkbox"
+                                                            value="d" name="choiceMultInFourFill[]"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2  ">
-                                                        <label class="form-label" for="guessing-value">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
+                                                        <label class="form-label" for="guessing-value">Guessing
+                                                            Value<span class="text-danger">*</span>
+
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                                min="1" max="100" type="number" 
-                                                                oninput="validateInput(this)"
-                                                                required  
-                                                                id="cb_choiceMultInFourFill_add_guessing_value_D" name="cb_choiceMultInFourFill_add_guessing_value_D">
+                                                                <input class="form-control add_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)" required
+                                                                    id="cb_choiceMultInFourFill_add_guessing_value_D"
+                                                                    name="cb_choiceMultInFourFill_add_guessing_value_D">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="cb_choiceMultInFourFill_add_guessing_valueE_D"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="cb_choiceMultInFourFill_add_guessing_valueE_D"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
 
                                             @include(
                                                 'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -2244,28 +2330,30 @@
                                         <li>
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <label class="form-label" style="font-size: 13px;"><span>A: </span> <input
-                                                    type="radio" value="a"
-                                                    name="choiceMultiChoiceInFourFill"></label>
+                                                    <label class="form-label" style="font-size: 13px;"><span>A: </span>
+                                                        <input type="radio" value="a"
+                                                            name="choiceMultiChoiceInFourFill"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2 ">
-                                                        <label class="form-label" for="guessing-value">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
+                                                        <label class="form-label" for="guessing-value">Guessing
+                                                            Value<span class="text-danger">*</span>
+
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                                min="1" max="100" type="number" 
-                                                                oninput="validateInput(this)"
-                                                                required  
-                                                                id="choiceMultInFourFill_add_guessing_value_A" name="choiceMultInFourFill_add_guessing_value_A">
+                                                                <input class="form-control add_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)" required
+                                                                    id="choiceMultInFourFill_add_guessing_value_A"
+                                                                    name="choiceMultInFourFill_add_guessing_value_A">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="choiceMultInFourFill_add_guessing_valueE_A"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="choiceMultInFourFill_add_guessing_valueE_A"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
 
                                             @include(
                                                 'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -2284,28 +2372,30 @@
                                         <li>
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <label class="form-label" style="font-size: 13px;"><span>B: </span><input
-                                                    type="radio" value="b"
-                                                    name="choiceMultiChoiceInFourFill"></label>
+                                                    <label class="form-label" style="font-size: 13px;"><span>B:
+                                                        </span><input type="radio" value="b"
+                                                            name="choiceMultiChoiceInFourFill"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2  ">
-                                                        <label class="form-label" for="guessing-value">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
+                                                        <label class="form-label" for="guessing-value">Guessing
+                                                            Value<span class="text-danger">*</span>
+
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                                min="1" max="100" type="number" 
-                                                                oninput="validateInput(this)"
-                                                                required 
-                                                                id="choiceMultInFourFill_add_guessing_value_B" name="choiceMultInFourFill_add_guessing_value_B">
+                                                                <input class="form-control add_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)" required
+                                                                    id="choiceMultInFourFill_add_guessing_value_B"
+                                                                    name="choiceMultInFourFill_add_guessing_value_B">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="choiceMultInFourFill_add_guessing_valueE_B"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="choiceMultInFourFill_add_guessing_valueE_B"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
 
                                             @include(
                                                 'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -2324,28 +2414,30 @@
                                         <li>
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <label class="form-label" style="font-size: 13px;"><span>C: </span><input
-                                                    type="radio" value="c"
-                                                    name="choiceMultiChoiceInFourFill"></label>
+                                                    <label class="form-label" style="font-size: 13px;"><span>C:
+                                                        </span><input type="radio" value="c"
+                                                            name="choiceMultiChoiceInFourFill"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2  ">
-                                                        <label class="form-label" for="guessing-value">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
+                                                        <label class="form-label" for="guessing-value">Guessing
+                                                            Value<span class="text-danger">*</span>
+
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                                min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                                id="choiceMultInFourFill_add_guessing_value_C" name="choiceMultInFourFill_add_guessing_value_C">
+                                                                <input class="form-control add_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)" required
+                                                                    id="choiceMultInFourFill_add_guessing_value_C"
+                                                                    name="choiceMultInFourFill_add_guessing_value_C">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="choiceMultInFourFill_add_guessing_valueE_C"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="choiceMultInFourFill_add_guessing_valueE_C"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
 
                                             @include(
                                                 'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -2364,28 +2456,30 @@
                                         <li>
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <label class="form-label" style="font-size: 13px;"><span>D:</span><input
-                                                    type="radio" value="d"
-                                                    name="choiceMultiChoiceInFourFill"></label>
+                                                    <label class="form-label"
+                                                        style="font-size: 13px;"><span>D:</span><input type="radio"
+                                                            value="d" name="choiceMultiChoiceInFourFill"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2 ">
-                                                        <label class="form-label " for="guessing-value">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
+                                                        <label class="form-label " for="guessing-value">Guessing
+                                                            Value<span class="text-danger">*</span>
+
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control add_guessing_value" placeholder="Guessing Value" 
-                                                                min="1" max="100" type="number" 
-                                                            oninput="validateInput(this)"
-                                                            required 
-                                                                id="choiceMultInFourFill_add_guessing_value_D" name="choiceMultInFourFill_add_guessing_value_D">
+                                                                <input class="form-control add_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)" required
+                                                                    id="choiceMultInFourFill_add_guessing_value_D"
+                                                                    name="choiceMultInFourFill_add_guessing_value_D">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="choiceMultInFourFill_add_guessing_valueE_D"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="choiceMultInFourFill_add_guessing_valueE_D"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
 
                                             @include(
                                                 'admin.quiz-management.practicetests.add-sc-ct-qt-block',
@@ -2542,14 +2636,11 @@
                                 <div class="mb-2 ">
                                     <label class="form-label" for="diffValue">Diff Value<span
                                             class="text-danger">*</span></label>
-                                            
+
                                     <div class="d-flex align-items-center">
-                                        <input class="form-control"
-                                                placeholder="Diff Value" 
-                                                min="1" max="100" type="number" 
-                                                oninput="validateInput(this)"
-                                                required
-                                                id="diffValueEdit" name="diff_value_edit">
+                                        <input class="form-control" placeholder="Diff Value" min="1"
+                                            max="100" type="number" oninput="validateInput(this)" required
+                                            id="diffValueEdit" name="diff_value_edit">
                                     </div>
                                     <span class="text-danger" id="diffValueError"></span>
                                 </div>
@@ -2558,14 +2649,11 @@
                                 <div class="mb-2 rating-tag ">
                                     <label class="form-label" for="discValue">Disc Value<span
                                             class="text-danger">*</span></label>
-                                            
+
                                     <div class="d-flex align-items-center">
-                                        <input class="form-control"
-                                                    placeholder="Disc Value" 
-                                                    min="1" max="100" type="number" 
-                                                    oninput="validateInput(this)"
-                                                    required
-                                                    type="number" id="discValueEdit" name="disc_value_edit">
+                                        <input class="form-control" placeholder="Disc Value" min="1"
+                                            max="100" type="number" oninput="validateInput(this)" required
+                                            type="number" id="discValueEdit" name="disc_value_edit">
                                     </div>
                                     <span class="text-danger" id="discValueError"></span>
                                 </div>
@@ -2652,28 +2740,31 @@
                                     value="choiceOneInFour_Odd">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFour_OddAnswer_0">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>A: </span><input
-                                                type="radio" value="a" name="choiceOneInFour"></label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>A:
+                                                    </span><input type="radio" value="a"
+                                                        name="choiceOneInFour"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
+
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFourOdd_edit_guessing_value_A"
+                                                                name="oneInFourOdd_edit_guessing_value_A">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFourOdd_edit_guessing_valueE_A"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
-                                                        
-                                                        id="oneInFourOdd_edit_guessing_value_A" name="oneInFourOdd_edit_guessing_value_A">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFourOdd_edit_guessing_valueE_A"></span>
-                                            </div>  
-                                        </div>
-                                    </div>
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2689,28 +2780,31 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFour_OddAnswer_1">
-                                    <div class="row">  
+                                        <div class="row">
 
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input
-                                                type="radio" value="b" name="choiceOneInFour"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value"
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
-                                                         
-                                                        id="oneInFourOdd_edit_guessing_value_B" name="oneInFourOdd_edit_guessing_value_B">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFourOdd_edit_guessing_valueE_B"></span>
-                                            </div>  
-                                        </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>B:
+                                                    </span><input type="radio" value="b"
+                                                        name="choiceOneInFour"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
+
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFourOdd_edit_guessing_value_B"
+                                                                name="oneInFourOdd_edit_guessing_value_B">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFourOdd_edit_guessing_valueE_B"></span>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         @include(
@@ -2727,31 +2821,33 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFour_OddAnswer_2">
-                                    <div class="row">  
+                                        <div class="row">
 
 
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>C:</span><input
-                                                type="radio" value="c" name="choiceOneInFour"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value"
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>C:</span><input
+                                                        type="radio" value="c" name="choiceOneInFour"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFourOdd_edit_guessing_value_C" name="oneInFourOdd_edit_guessing_value_C">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFourOdd_edit_guessing_valueE_C"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFourOdd_edit_guessing_value_C"
+                                                                name="oneInFourOdd_edit_guessing_value_C">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFourOdd_edit_guessing_valueE_C"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2767,31 +2863,33 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFour_OddAnswer_3">
-                                    <div class="row">  
+                                        <div class="row">
 
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>D: </span>
-                                                <input type="radio" value="d" name="choiceOneInFour">
-                                            </label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value"
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
-
-                                                        id="oneInFourOdd_edit_guessing_value_D" name="oneInFourOdd_edit_guessing_value_D">
-                                                    </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>D: </span>
+                                                    <input type="radio" value="d" name="choiceOneInFour">
                                                 </label>
-                                                <span class="text-danger" id="oneInFourOdd_edit_guessing_valueE_D"></span>
-                                            </div>  
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
+
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFourOdd_edit_guessing_value_D"
+                                                                name="oneInFourOdd_edit_guessing_value_D">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFourOdd_edit_guessing_valueE_D"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2815,30 +2913,33 @@
                                     value="choiceOneInFour_Even">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFour_EvenAnswer_0">
-                                    <div class="row">  
+                                        <div class="row">
 
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>F: </span><input
-                                                type="radio" value="f" name="choiceOneInFour"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>F:
+                                                    </span><input type="radio" value="f"
+                                                        name="choiceOneInFour"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFourEven_edit_guessing_value_F" name="oneInFourEven_edit_guessing_value_F">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFourEven_edit_guessing_valueE_F"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFourEven_edit_guessing_value_F"
+                                                                name="oneInFourEven_edit_guessing_value_F">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFourEven_edit_guessing_valueE_F"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
                                             ['ans_choices' => 'F', 'disp_section' => 'oneInFourEven_']
@@ -2853,28 +2954,31 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFour_EvenAnswer_1">
-                                    <div class="row">  
+                                        <div class="row">
 
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>G: </span><input
-                                                type="radio" value="g" name="choiceOneInFour"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>G:
+                                                    </span><input type="radio" value="g"
+                                                        name="choiceOneInFour"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFourEven_edit_guessing_value_G" name="oneInFourEven_edit_guessing_value_G">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFourEven_edit_guessing_valueE_G"></span>
-                                            </div>  
-                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFourEven_edit_guessing_value_G"
+                                                                name="oneInFourEven_edit_guessing_value_G">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFourEven_edit_guessing_valueE_G"></span>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         @include(
@@ -2891,30 +2995,32 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFour_EvenAnswer_2">
-                                    <div class="row">  
+                                        <div class="row">
 
-                                        <div class="col-md-4">
-                                        <label class="form-label" style="font-size: 13px;"><span>H:</span><input
-                                                type="radio" value="h" name="choiceOneInFour"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>H:</span><input
+                                                        type="radio" value="h" name="choiceOneInFour"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFourEven_edit_guessing_value_H" name="oneInFourEven_edit_guessing_value_H">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFourEven_edit_guessing_valueE_H"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFourEven_edit_guessing_value_H"
+                                                                name="oneInFourEven_edit_guessing_value_H">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFourEven_edit_guessing_valueE_H"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2930,30 +3036,33 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFour_EvenAnswer_3">
-                                    <div class="row">  
+                                        <div class="row">
 
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>J: </span><input
-                                                type="radio" value="j" name="choiceOneInFour"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>J:
+                                                    </span><input type="radio" value="j"
+                                                        name="choiceOneInFour"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFourEven_edit_guessing_value_J" name="oneInFourEven_edit_guessing_value_J">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFourEven_edit_guessing_valueE_J"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFourEven_edit_guessing_value_J"
+                                                                name="oneInFourEven_edit_guessing_value_J">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFourEven_edit_guessing_valueE_J"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2976,28 +3085,31 @@
                                     value="choiceOneInFive_Odd">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFive_OddAnswer_0">
-                                    <div class="row">  
+                                        <div class="row">
 
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>A: </span><input
-                                                type="radio" value="a" name="choiceOneInFive"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>A:
+                                                    </span><input type="radio" value="a"
+                                                        name="choiceOneInFive"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFiveOdd_edit_guessing_value_A" name="oneInFiveOdd_edit_guessing_value_A">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_A"></span>
-                                            </div>  
-                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFiveOdd_edit_guessing_value_A"
+                                                                name="oneInFiveOdd_edit_guessing_value_A">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFiveOdd_edit_guessing_valueE_A"></span>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         @include(
@@ -3014,30 +3126,33 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_OddAnswer_1">
-                                    <div class="row">  
+                                        <div class="row">
 
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input
-                                                type="radio" value="b" name="choiceOneInFive"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>B:
+                                                    </span><input type="radio" value="b"
+                                                        name="choiceOneInFive"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFiveOdd_edit_guessing_value_B" name="oneInFiveOdd_edit_guessing_value_B">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_B"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFiveOdd_edit_guessing_value_B"
+                                                                name="oneInFiveOdd_edit_guessing_value_B">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFiveOdd_edit_guessing_valueE_B"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3053,28 +3168,30 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_OddAnswer_2">
-                                    <div class="row">  
+                                        <div class="row">
 
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>C:</span><input
-                                                type="radio" value="c" name="choiceOneInFive"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>C:</span><input
+                                                        type="radio" value="c" name="choiceOneInFive"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFiveOdd_edit_guessing_value_C" name="oneInFiveOdd_edit_guessing_value_C">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_C"></span>
-                                            </div>  
-                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFiveOdd_edit_guessing_value_C"
+                                                                name="oneInFiveOdd_edit_guessing_value_C">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFiveOdd_edit_guessing_valueE_C"></span>
+                                                </div>
+                                            </div>
                                         </div>
 
 
@@ -3092,30 +3209,33 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_OddAnswer_3">
-                                    <div class="row">  
+                                        <div class="row">
 
-                                        <div class="col-md-4">
-                                        <label class="form-label" style="font-size: 13px;"><span>D: </span><input
-                                                type="radio" value="d" name="choiceOneInFive"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>D:
+                                                    </span><input type="radio" value="d"
+                                                        name="choiceOneInFive"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFiveOdd_edit_guessing_value_D" name="oneInFiveOdd_edit_guessing_value_D">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_D"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFiveOdd_edit_guessing_value_D"
+                                                                name="oneInFiveOdd_edit_guessing_value_D">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFiveOdd_edit_guessing_valueE_D"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3131,28 +3251,31 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_OddAnswer_4">
-                                    <div class="row">  
+                                        <div class="row">
 
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>E: </span><input
-                                                type="radio" value="e" name="choiceOneInFive"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>E:
+                                                    </span><input type="radio" value="e"
+                                                        name="choiceOneInFive"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFiveOdd_edit_guessing_value_E" name="oneInFiveOdd_edit_guessing_value_E">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFiveOdd_edit_guessing_valueE_E"></span>
-                                            </div>  
-                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFiveOdd_edit_guessing_value_E"
+                                                                name="oneInFiveOdd_edit_guessing_value_E">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFiveOdd_edit_guessing_valueE_E"></span>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         @include(
@@ -3177,30 +3300,33 @@
                                     value="choiceOneInFive_Even">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFive_EvenAnswer_0">
-                                    <div class="row">  
+                                        <div class="row">
 
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>F: </span><input
-                                                type="radio" value="f" name="choiceOneInFive"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>F:
+                                                    </span><input type="radio" value="f"
+                                                        name="choiceOneInFive"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFiveEven_edit_guessing_value_F" name="oneInFiveEven_edit_guessing_value_F">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_F"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFiveEven_edit_guessing_value_F"
+                                                                name="oneInFiveEven_edit_guessing_value_F">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFiveEven_edit_guessing_valueE_F"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3216,30 +3342,33 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_EvenAnswer_1">
-                                        <div class="row">  
+                                        <div class="row">
 
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>G: </span><input
-                                                type="radio" value="g" name="choiceOneInFive"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>G:
+                                                    </span><input type="radio" value="g"
+                                                        name="choiceOneInFive"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFiveEven_edit_guessing_value_G" name="oneInFiveEven_edit_guessing_value_G">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_G"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFiveEven_edit_guessing_value_G"
+                                                                name="oneInFiveEven_edit_guessing_value_G">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFiveEven_edit_guessing_valueE_G"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3255,30 +3384,31 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_EvenAnswer_2">
-                                    <div class="row">  
+                                        <div class="row">
 
 
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>H:</span><input
-                                                type="radio" value="h" name="choiceOneInFive"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>H:</span><input
+                                                        type="radio" value="h" name="choiceOneInFive"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFiveEven_edit_guessing_value_H" name="oneInFiveEven_edit_guessing_value_H">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_H"></span>
-                                            </div>  
-                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFiveEven_edit_guessing_value_H"
+                                                                name="oneInFiveEven_edit_guessing_value_H">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFiveEven_edit_guessing_valueE_H"></span>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         @include(
@@ -3295,29 +3425,32 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_EvenAnswer_3">
-                                        <div class="row">  
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>J: </span><input
-                                                type="radio" value="j" name="choiceOneInFive"></label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>J:
+                                                    </span><input type="radio" value="j"
+                                                        name="choiceOneInFive"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
+
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFiveEven_edit_guessing_value_J"
+                                                                name="oneInFiveEven_edit_guessing_value_J">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFiveEven_edit_guessing_valueE_J"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
-                                                        
-                                                        id="oneInFiveEven_edit_guessing_value_J" name="oneInFiveEven_edit_guessing_value_J">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_J"></span>
-                                            </div>  
-                                        </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3333,29 +3466,32 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_EvenAnswer_4">
-                                        <div class="row">  
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>K: </span><input
-                                                type="radio" value="k" name="choiceOneInFive"></label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>K:
+                                                    </span><input type="radio" value="k"
+                                                        name="choiceOneInFive"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
+
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFiveEven_edit_guessing_value_K"
+                                                                name="oneInFiveEven_edit_guessing_value_K">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFiveEven_edit_guessing_valueE_K"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
-                                                        
-                                                        id="oneInFiveEven_edit_guessing_value_K" name="oneInFiveEven_edit_guessing_value_K">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFiveEven_edit_guessing_valueE_K"></span>
-                                            </div>  
-                                        </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3378,29 +3514,30 @@
                                     value="choiceOneInFourPass_Odd">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFourPass_OddAnswer_0">
-                                        <div class="row">  
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>A: </span><input
-                                                type="radio" value="a" name="choiceOneInFourPass"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>A:
+                                                    </span><input type="radio" value="a"
+                                                        name="choiceOneInFourPass"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="edit_guessing_value_A" name="edit_guessing_value_A">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="edit_guessing_valueE_A"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" id="edit_guessing_value_A"
+                                                                name="edit_guessing_value_A">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger" id="edit_guessing_valueE_A"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3416,29 +3553,30 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFourPass_OddAnswer_1">
-                                        <div class="row">     
-                                        <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input
-                                                type="radio" value="b" name="choiceOneInFourPass"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>B:
+                                                    </span><input type="radio" value="b"
+                                                        name="choiceOneInFourPass"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="edit_guessing_value_B" name="edit_guessing_value_B">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="edit_guessing_valueE_B"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" id="edit_guessing_value_B"
+                                                                name="edit_guessing_value_B">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger" id="edit_guessing_valueE_B"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3454,29 +3592,30 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFourPass_OddAnswer_2">
-                                    <div class="row">      
-                                    <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>C: </span><input
-                                                type="radio" value="c" name="choiceOneInFourPass"></label>  
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>C:
+                                                    </span><input type="radio" value="c"
+                                                        name="choiceOneInFourPass"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="edit_guessing_value_C" name="edit_guessing_value_C">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="edit_guessing_valueE_C"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" id="edit_guessing_value_C"
+                                                                name="edit_guessing_value_C">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger" id="edit_guessing_valueE_C"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3492,29 +3631,30 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFourPass_OddAnswer_3">
-                                    <div class="row">        
-                                    <div class="col-md-4">
-                                        <label class="form-label" style="font-size: 13px;"><span>D: </span><input
-                                                type="radio" value="d" name="choiceOneInFourPass"></label>  
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>D:
+                                                    </span><input type="radio" value="d"
+                                                        name="choiceOneInFourPass"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="edit_guessing_value_D" name="edit_guessing_value_D">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="edit_guessing_valueE_D"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)" id="edit_guessing_value_D"
+                                                                name="edit_guessing_value_D">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger" id="edit_guessing_valueE_D"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3538,29 +3678,32 @@
                                     value="choiceOneInFourPass_Even">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFourPass_EvenAnswer_0">
-                                    <div class="row">    
-                                    <div class="col-md-4">
-                                        <label class="form-label" style="font-size: 13px;"><span>F: </span><input
-                                                type="radio" value="f" name="choiceOneInFourPass"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>F:
+                                                    </span><input type="radio" value="f"
+                                                        name="choiceOneInFourPass"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFourPassEven_edit_guessing_value_F" name="oneInFourPassEven_edit_guessing_value_F">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFourPassEven_edit_guessing_valueE_F"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFourPassEven_edit_guessing_value_F"
+                                                                name="oneInFourPassEven_edit_guessing_value_F">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFourPassEven_edit_guessing_valueE_F"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3578,27 +3721,30 @@
                                     <li class="choiceOneInFourPass_EvenAnswer_1">
                                         <div class="row">
                                             <div class="col-md-4">
-                                            <label class="form-label" style="font-size: 13px;"><span>G: </span><input
-                                                    type="radio" value="g" name="choiceOneInFourPass"></label>
+                                                <label class="form-label" style="font-size: 13px;"><span>G:
+                                                    </span><input type="radio" value="g"
+                                                        name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
                                                 <div class="mb-2 ">
-                                                    <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                            class="text-danger">*</span>
-                                                            
-                                                        <div class="d-flex align-items-center">
-                                                            <input class="form-control edit_guessing_value" 
-                                                            placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                            id="oneInFourPassEven_edit_guessing_value_G" name="oneInFourPassEven_edit_guessing_value_G">
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFourPassEven_edit_guessing_value_G"
+                                                                name="oneInFourPassEven_edit_guessing_value_G">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="oneInFourPassEven_edit_guessing_valueE_G"></span>
-                                                </div>  
+                                                    <span class="text-danger"
+                                                        id="oneInFourPassEven_edit_guessing_valueE_G"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3614,29 +3760,32 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFourPass_EvenAnswer_2">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                        <label class="form-label" style="font-size: 13px;"><span>H: </span><input
-                                                type="radio" value="h" name="choiceOneInFourPass"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>H:
+                                                    </span><input type="radio" value="h"
+                                                        name="choiceOneInFourPass"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFourPassEven_edit_guessing_value_H" name="oneInFourPassEven_edit_guessing_value_H">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFourPassEven_edit_guessing_valueE_H"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFourPassEven_edit_guessing_value_H"
+                                                                name="oneInFourPassEven_edit_guessing_value_H">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFourPassEven_edit_guessing_valueE_H"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3652,29 +3801,32 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFourPass_EvenAnswer_3 ">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                        <label class="form-label" style="font-size: 13px;"><span>J: </span><input
-                                                type="radio" value="j" name="choiceOneInFourPass"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control edit_guessing_value" 
-                                                        placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>J:
+                                                    </span><input type="radio" value="j"
+                                                        name="choiceOneInFourPass"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing
+                                                        Value<span class="text-danger">*</span>
 
-                                                        id="oneInFourPassEven_edit_guessing_value_J" name="oneInFourPassEven_edit_guessing_value_J">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="oneInFourPassEven_edit_guessing_valueE_J"></span>
-                                            </div>  
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control edit_guessing_value"
+                                                                placeholder="Guessing Value" min="1"
+                                                                max="100" type="number"
+                                                                oninput="validateInput(this)"
+                                                                id="oneInFourPassEven_edit_guessing_value_J"
+                                                                name="oneInFourPassEven_edit_guessing_value_J">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger"
+                                                        id="oneInFourPassEven_edit_guessing_valueE_J"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3704,36 +3856,38 @@
                                         <option value="2">Fill Choice</option>
                                     </select>
                                     <!--<a href="javascript:;" onClick="editMultiChoice(1);" class="switchMulti">Multi Choice</a>
-                                                                                                                                                                                </label>
-                                                                                                                                                                                <label class="form-label" style="font-size: 13px;">
-                                                                                                                                                                                    <a href="javascript:;" onClick="editMultiChoice(2);" class="switchMulti">Fill Choice</a>-->
+                                                                                                                                                                                            </label>
+                                                                                                                                                                                            <label class="form-label" style="font-size: 13px;">
+                                                                                                                                                                                                <a href="javascript:;" onClick="editMultiChoice(2);" class="switchMulti">Fill Choice</a>-->
                                 </label>
 
                                 <div class="multi_field withOutFillOpt" style="display: none">
                                     <ul class="answerOptionLsit">
                                         <li class="choiceMultInFourFillwithOutFillOptAnswer_0">
-                                            
+
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>A: </span> <input
-                                                    type="checkbox" value="a"
-                                                    name="choiceMultInFourFill[]"></label>
+                                                    <label class="form-label" style="font-size: 13px;"><span>A: </span>
+                                                        <input type="checkbox" value="a"
+                                                            name="choiceMultInFourFill[]"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2 ">
-                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
-                                                            <div class="d-flex align-items-center">
-                                                                <input class="form-control edit_guessing_value" 
-                                                                placeholder="Guessing Value" 
-                                                                min="1" max="100" type="number" oninput="validateInput(this)"
+                                                        <label class="form-label" for="guessingValueError">Guessing
+                                                            Value<span class="text-danger">*</span>
 
-                                                                id="cb_choiceMultInFourFill_edit_guessing_value_A" name="cb_choiceMultInFourFill_edit_guessing_value_A">
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-control edit_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)"
+                                                                    id="cb_choiceMultInFourFill_edit_guessing_value_A"
+                                                                    name="cb_choiceMultInFourFill_edit_guessing_value_A">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="cb_choiceMultInFourFill_edit_guessing_valueE_A"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="cb_choiceMultInFourFill_edit_guessing_valueE_A"></span>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -3757,28 +3911,30 @@
 
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <label class="form-label" style="font-size: 13px;"><span>B: </span><input
-                                                    type="checkbox" value="b"
-                                                    name="choiceMultInFourFill[]"></label>
+                                                    <label class="form-label" style="font-size: 13px;"><span>B:
+                                                        </span><input type="checkbox" value="b"
+                                                            name="choiceMultInFourFill[]"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2 ">
-                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
-                                                            <div class="d-flex align-items-center">
-                                                                <input class="form-control edit_guessing_value" 
-                                                                placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                                        <label class="form-label" for="guessingValueError">Guessing
+                                                            Value<span class="text-danger">*</span>
 
-                                                                id="cb_choiceMultInFourFill_edit_guessing_value_B" name="cb_choiceMultInFourFill_edit_guessing_value_B">
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-control edit_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)"
+                                                                    id="cb_choiceMultInFourFill_edit_guessing_value_B"
+                                                                    name="cb_choiceMultInFourFill_edit_guessing_value_B">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="cb_choiceMultInFourFill_edit_guessing_valueE_B"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="cb_choiceMultInFourFill_edit_guessing_valueE_B"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
                                                 [
@@ -3798,26 +3954,30 @@
                                         <li class="choiceMultInFourFillwithOutFillOptAnswer_2">
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <label class="form-label" style="font-size: 13px;"><span>C: </span><input
-                                                    type="checkbox" value="c"
-                                                    name="choiceMultInFourFill[]"></label>
+                                                    <label class="form-label" style="font-size: 13px;"><span>C:
+                                                        </span><input type="checkbox" value="c"
+                                                            name="choiceMultInFourFill[]"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2 ">
-                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
+                                                        <label class="form-label" for="guessingValueError">Guessing
+                                                            Value<span class="text-danger">*</span>
+
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control edit_guessing_value" 
-                                                                placeholder="Guessing Value" min="1" max="100" type="number" oninput="validateInput(this)"
-                                                                id="cb_choiceMultInFourFill_edit_guessing_value_C" name="cb_choiceMultInFourFill_edit_guessing_value_C">
+                                                                <input class="form-control edit_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)"
+                                                                    id="cb_choiceMultInFourFill_edit_guessing_value_C"
+                                                                    name="cb_choiceMultInFourFill_edit_guessing_value_C">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="cb_choiceMultInFourFill_edit_guessing_valueE_C"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="cb_choiceMultInFourFill_edit_guessing_valueE_C"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
 
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3836,30 +3996,32 @@
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptAnswer_3">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>D:</span><input
-                                                    type="checkbox" value="d"
-                                                    name="choiceMultInFourFill[]"></label>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="form-label"
+                                                        style="font-size: 13px;"><span>D:</span><input type="checkbox"
+                                                            value="d" name="choiceMultInFourFill[]"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2 ">
-                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
+                                                        <label class="form-label" for="guessingValueError">Guessing
+                                                            Value<span class="text-danger">*</span>
+
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control edit_guessing_value" 
-                                                                placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
-                                                                
-                                                                id="cb_choiceMultInFourFill_edit_guessing_value_D" name="cb_choiceMultInFourFill_edit_guessing_value_D">
+                                                                <input class="form-control edit_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)"
+                                                                    id="cb_choiceMultInFourFill_edit_guessing_value_D"
+                                                                    name="cb_choiceMultInFourFill_edit_guessing_value_D">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="cb_choiceMultInFourFill_edit_guessing_valueE_D"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="cb_choiceMultInFourFill_edit_guessing_valueE_D"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
 
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3885,28 +4047,30 @@
                                         <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_0">
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <label class="form-label" style="font-size: 13px;"><span>A: </span> <input
-                                                    type="radio" value="a"
-                                                    name="editChoiceMultiChoiceInFourFill"></label>
+                                                    <label class="form-label" style="font-size: 13px;"><span>A: </span>
+                                                        <input type="radio" value="a"
+                                                            name="editChoiceMultiChoiceInFourFill"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2 ">
-                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
+                                                        <label class="form-label" for="guessingValueError">Guessing
+                                                            Value<span class="text-danger">*</span>
+
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control edit_guessing_value" 
-                                                                placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
-                                                                
-                                                                id="choiceMultInFourFill_edit_guessing_value_A" name="choiceMultInFourFill_edit_guessing_value_A">
+                                                                <input class="form-control edit_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)"
+                                                                    id="choiceMultInFourFill_edit_guessing_value_A"
+                                                                    name="choiceMultInFourFill_edit_guessing_value_A">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="choiceMultInFourFill_edit_guessing_valueE_A"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="choiceMultInFourFill_edit_guessing_valueE_A"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
                                                 ['ans_choices' => 'A', 'disp_section' => 'choiceMultInFourFill_']
@@ -3924,28 +4088,30 @@
                                         <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_1">
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <label class="form-label" style="font-size: 13px;"><span>B: </span><input
-                                                    type="radio" value="b"
-                                                    name="editChoiceMultiChoiceInFourFill"></label>
+                                                    <label class="form-label" style="font-size: 13px;"><span>B:
+                                                        </span><input type="radio" value="b"
+                                                            name="editChoiceMultiChoiceInFourFill"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2 ">
-                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
-                                                            <div class="d-flex align-items-center">
-                                                                <input class="form-control edit_guessing_value" 
-                                                                placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                                        <label class="form-label" for="guessingValueError">Guessing
+                                                            Value<span class="text-danger">*</span>
 
-                                                                id="choiceMultInFourFill_edit_guessing_value_B" name="choiceMultInFourFill_edit_guessing_value_B">
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-control edit_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)"
+                                                                    id="choiceMultInFourFill_edit_guessing_value_B"
+                                                                    name="choiceMultInFourFill_edit_guessing_value_B">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="choiceMultInFourFill_edit_guessing_valueE_B"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="choiceMultInFourFill_edit_guessing_valueE_B"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
 
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3962,27 +4128,29 @@
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_2">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>C: </span><input
-                                                    type="radio" value="c"
-                                                    name="editChoiceMultiChoiceInFourFill"></label>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="form-label" style="font-size: 13px;"><span>C:
+                                                        </span><input type="radio" value="c"
+                                                            name="editChoiceMultiChoiceInFourFill"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2 ">
-                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
-                                                            <div class="d-flex align-items-center">
-                                                                <input class="form-control edit_guessing_value" 
-                                                                placeholder="Guessing Value"
-                                                                min="1" max="100" type="number" oninput="validateInput(this)"
+                                                        <label class="form-label" for="guessingValueError">Guessing
+                                                            Value<span class="text-danger">*</span>
 
-                                                                id="choiceMultInFourFill_edit_guessing_value_C" name="choiceMultInFourFill_edit_guessing_value_C">
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-control edit_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)"
+                                                                    id="choiceMultInFourFill_edit_guessing_value_C"
+                                                                    name="choiceMultInFourFill_edit_guessing_value_C">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="choiceMultInFourFill_edit_guessing_valueE_C"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="choiceMultInFourFill_edit_guessing_valueE_C"></span>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -4001,30 +4169,33 @@
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_3">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <label class="form-label" style="font-size: 13px;"><span>D:</span><input
-                                                    type="radio" value="d"
-                                                    name="editChoiceMultiChoiceInFourFill"></label>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="form-label"
+                                                        style="font-size: 13px;"><span>D:</span><input type="radio"
+                                                            value="d"
+                                                            name="editChoiceMultiChoiceInFourFill"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
                                                     <div class="mb-2 ">
-                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                                class="text-danger">*</span>
-                                                                
-                                                            <div class="d-flex align-items-center">
-                                                                <input class="form-control edit_guessing_value" 
-                                                                placeholder="Guessing Value" 
-                                                        min="1" max="100" type="number" oninput="validateInput(this)"
+                                                        <label class="form-label" for="guessingValueError">Guessing
+                                                            Value<span class="text-danger">*</span>
 
-                                                                id="choiceMultInFourFill_edit_guessing_value_D" name="choiceMultInFourFill_edit_guessing_value_D">
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-control edit_guessing_value"
+                                                                    placeholder="Guessing Value" min="1"
+                                                                    max="100" type="number"
+                                                                    oninput="validateInput(this)"
+                                                                    id="choiceMultInFourFill_edit_guessing_value_D"
+                                                                    name="choiceMultInFourFill_edit_guessing_value_D">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="choiceMultInFourFill_edit_guessing_valueE_D"></span>
-                                                    </div>  
+                                                        <span class="text-danger"
+                                                            id="choiceMultInFourFill_edit_guessing_valueE_D"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
+
 
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -4044,24 +4215,25 @@
                                 </div>
                                 <div class="fill_field withFillOpt " style="display:none">
                                     <div class="withFillOptmb-2">
-                                    <div class="mb-2">
-                                        <label class="form-label" style="font-size: 13px;">Fill Type:</label><select
-                                            name="addChoiceMultInFourFill_filltype"
-                                            class="form-control addChoiceMultInFourFill_filltype">
-                                            <option value="">Select Type</option>
-                                            <option value="number">Number</option>
-                                            <option value="decimal">Decimal</option>
-                                            <option value="fraction">Fraction</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-2"><label class="form-label"
-                                            style="font-size: 13px;">Fill:</label><input type="text"
-                                            name="addChoiceMultInFourFill_fill[]"><label
-                                            class="form-label extraFillOption" style="font-size: 13px;"></label><label
-                                            class="form-label" style="font-size: 13px;"><a href="javascript:;"
-                                                onClick="addMoreFillOption();" class="switchMulti">Add More
-                                                Options</a></label>
-                                    </div>
+                                        <div class="mb-2">
+                                            <label class="form-label" style="font-size: 13px;">Fill Type:</label><select
+                                                name="addChoiceMultInFourFill_filltype"
+                                                class="form-control addChoiceMultInFourFill_filltype">
+                                                <option value="">Select Type</option>
+                                                <option value="number">Number</option>
+                                                <option value="decimal">Decimal</option>
+                                                <option value="fraction">Fraction</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-2"><label class="form-label"
+                                                style="font-size: 13px;">Fill:</label><input type="text"
+                                                name="addChoiceMultInFourFill_fill[]"><label
+                                                class="form-label extraFillOption"
+                                                style="font-size: 13px;"></label><label class="form-label"
+                                                style="font-size: 13px;"><a href="javascript:;"
+                                                    onClick="addMoreFillOption();" class="switchMulti">Add More
+                                                    Options</a></label>
+                                        </div>
                                     </div>
 
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', [
@@ -4153,7 +4325,7 @@
 
         $('.for_digital_only').hide();
 
-        $("#passageRequired_1").click(function() { 
+        $("#passageRequired_1").click(function() {
             if ($(this).is(":checked")) {
                 $("#passage_number").prop("disabled", false);
                 $("select[name='passagesType']").prop("disabled", false);
@@ -4327,8 +4499,8 @@
                 key = parseInt(key);
 
                 let super_category = $(`#${disp_option}edit_super_category_${ans_col}_${key - 1}`).val();
-                let category_type  = $(`#${disp_option}edit_category_type_${ans_col}_${key - 1}`).val();
-                let question_type  = $(`#${disp_option}edit_search-input_${ans_col}_${key - 1}`).val();
+                let category_type = $(`#${disp_option}edit_category_type_${ans_col}_${key - 1}`).val();
+                let question_type = $(`#${disp_option}edit_search-input_${ans_col}_${key - 1}`).val();
 
                 if (super_category == '') {
                     toastr.error('Please select a Super Category!');
@@ -4791,7 +4963,7 @@
             keyboard: false
         });
 
-        var allowedContent = true; 
+        var allowedContent = true;
 
         $('.preloader').css('display', 'block');
         $('textarea').each(function() {
@@ -4842,6 +5014,17 @@
         });
 
         $('.add_section_modal_btn').click(function() {
+            var format = $('#format').val();
+            var test_source = $('#source option:selected').val();
+            if (test_source == "1" && (format == 'DSAT' || format == "DPSAT")) {
+                $('#hard_section_determiner').val('');
+                $('#easy_section_determiner').val('');
+                $('.hard_section_determiner').show();
+                $('.easy_section_determiner').show();
+            } else {
+                $('.hard_section_determiner').hide();
+                $('.easy_section_determiner').hide();
+            }
             $('#add_show_calc').prop('checked', false);
             $("input[name=required_number_of_correct_answers]").val("");
             whichModel = "section";
@@ -4903,7 +5086,7 @@
 
             $(".superCategory").val("");
             $(".superCategory").trigger("change");
-            
+
             $(".categoryType").val("");
             $(".categoryType").trigger("change");
 
@@ -4918,50 +5101,50 @@
 
             $("#fc_add_search-input_A_0").val("");
             $("#fc_add_search-input_A_0").trigger("change");
-            
+
             $('#fc_super_category_create_A_0').select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags: true,
-                placeholder : "Select Super Category",
+                placeholder: "Select Super Category",
                 maximumSelectionLength: 1
             });
 
             $('#fc_add_category_type_A_0').select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags: true,
-                placeholder : "Select Category type",
+                placeholder: "Select Category type",
                 maximumSelectionLength: 1
             });
 
             $('#fc_add_search-input_A_0').select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags: true,
-                placeholder : "Select Question type",
+                placeholder: "Select Question type",
                 maximumSelectionLength: 1
             });
 
             $('#fc_super_category_create_A_0').select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags: true,
-                placeholder : "Select Super Category",
+                placeholder: "Select Super Category",
                 maximumSelectionLength: 1
             });
 
             $('#fc_add_category_type_A_0').select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags: true,
-                placeholder : "Select Category type",
+                placeholder: "Select Category type",
                 maximumSelectionLength: 1
             });
 
             $('#fc_add_search-input_A_0').select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags: true,
-                placeholder : "Select Question type",
+                placeholder: "Select Question type",
                 maximumSelectionLength: 1
             });
-            
-            
+
+
 
             $(".editMultipleChoice").trigger("change");
         }
@@ -4993,9 +5176,9 @@
             clearError();
             // console.log('yes');
             $(".getFilterChoice").val('').trigger('change');
-            $("input[name=diff_value]"). val("");
-            $("input[name=disc_value]"). val("");
-            $("input[name=guessing_value]"). val("");
+            $("input[name=diff_value]").val("");
+            $("input[name=disc_value]").val("");
+            $("input[name=guessing_value]").val("");
             $('.add_guessing_value').val('');
 
             $('#passageRequired_1').prop('checked', true);
@@ -5034,7 +5217,7 @@
             $('#questionMultiModal').modal('show');
             // clearModel();
 
-            
+
         });
 
         // $(document).on('click','.add_score_btn',function(){
@@ -5063,14 +5246,14 @@
         }
 
         // for DSAT, DPSAT
-        $(document).on('click','.digi_add_score_btn', function(){
+        $(document).on('click', '.digi_add_score_btn', function() {
             let test_id = $(this).attr('data-test_id');
             let section_type = $(this).attr('data-section_type');
             console.log(section_type);
             console.log(test_id);
             $.ajax({
                 type: 'POST',
-                url: '{{route("digi_check_score")}}',
+                url: '{{ route('digi_check_score') }}',
                 data: {
                     test_id: test_id,
                     section_type: section_type,
@@ -5090,8 +5273,8 @@
         //new
         $(document).on('click', '.add_score_btn', function() {
             $('.table_body').empty();
-            $("input[name=actualScore]"). val("");
-            $("input[name=convertedScore]"). val("");
+            $("input[name=actualScore]").val("");
+            $("input[name=convertedScore]").val("");
             let section_id = $(this).attr('data-id');
             let section_types = $(this).attr('data-section_type');
             let test_ids = $(this).attr('data-test_id');
@@ -5158,8 +5341,8 @@
                             }
                         }
                     }
-                    $("input[name=actualScore]"). val("");
-                        $("input[name=convertedScore]"). val("");
+                    $("input[name=actualScore]").val("");
+                    $("input[name=convertedScore]").val("");
                 },
                 error: function(xhr, status, error) {
 
@@ -5301,12 +5484,12 @@
         };
 
         // valudation test for all the number validation.
-        function testWholeNumber(number){
+        function testWholeNumber(number) {
             var regex = /^[0-9]+$/;
             if (number.trim() === "") {
                 return false;
             } else if (regex.test(number)) {
-               return true;
+                return true;
             } else {
                 return false;
             }
@@ -5329,7 +5512,7 @@
             var fiftyExtended = ("0" + fiftyHour).slice(-2) + ":" + ("0" + fiftyMinute).slice(-2) + ":" + ("0" +
                 fiftySecond).slice(-2);
             var hundredExtended = ("0" + hundredHour).slice(-2) + ":" + ("0" + hundredMinute).slice(-2) + ":" + (
-                "0" + hundredSecond).slice(-2); 
+                "0" + hundredSecond).slice(-2);
 
             var whichModel = $(this).parent().find('.whichModel').val();
             let scoreClass = $(this).attr('data-class');
@@ -5359,19 +5542,24 @@
             var question_type = $('#format').val();
             if (whichModel == 'section') {
                 var test_type = $('#format').val();
-                if ((test_type == 'DSAT') || (test_type == 'DPSAT') ) {
+                if ((test_type == 'DSAT') || (test_type == 'DPSAT')) {
+                    var easy_section_determiner = jQuery('#easy_section_determiner').val();
+                    var hard_section_determiner = jQuery('#hard_section_determiner').val();
                     // this field is required - required_number_of_correct_answers
                     var numberOfCorrectAnswers = $('#required_number_of_correct_answers').val();
-                    if (format == '' || testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0' || numberOfCorrectAnswers == '') {                   
+                    if (format == '' || testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0' ||
+                        numberOfCorrectAnswers == '') {
                         $('#sectionModal .validError').text('Below fields are required!');
                         return false;
                     }
 
-                    if(testWholeNumber(numberOfCorrectAnswers) == false) {
+                    if (testWholeNumber(numberOfCorrectAnswers) == false) {
                         $('#sectionModal .validError').text('Only whole numbers are allowed.');
                         return false;
                     }
-                }else{
+
+                    
+                } else {
                     if (format == '' || testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0') {
                         $('#sectionModal .validError').text('Below fields are required!');
                         return false;
@@ -5379,16 +5567,17 @@
                         $('#sectionModal .validError').text('');
                     }
                 }
-                
+
                 var get_test_id = jQuery('#get_question_id').val();
+
                 var required_number_of_correct_answers = jQuery('#required_number_of_correct_answers').val();
                 $('#sectionModal').modal('hide');
                 $('#questionMultiModal').modal('hide');
-                
+
                 var sectionSelectedTxt = testSectionType.replaceAll('_', ' ');
                 sectionOrder++;
                 newSectionOrder++;
-                
+
                 questionOrder = 0;
                 questionCount = 1;
 
@@ -5412,48 +5601,53 @@
                         'fifty': fiftyExtended,
                         'hundred': hundredExtended,
                         'question_type': question_type,
+                        'easy_section_determiner': easy_section_determiner,
+                        'hard_section_determiner': hard_section_determiner,
                         '_token': $('input[name="_token"]').val()
                     },
                     url: '{{ route('addPracticeTestSection') }}',
                     method: 'post',
                     success: (result) => {
                         // console.log(result);
-                        $.each(result, function (i, v) {
-                            $.each(v, function (key, value) {
+                        $.each(result, function(i, v) {
+                            $.each(v, function(key, value) {
                                 // console.log(value);
                                 let res = value['id'];
                                 newSectionOrder = value['order'];
 
                                 let testFormatType = $('#format').val();
-                                var myarray = ['DSAT','DPSAT'];
+                                var myarray = ['DSAT', 'DPSAT'];
                                 var add_score_button_class = 'add_score_btn';
-                                if(jQuery.inArray(testFormatType, myarray) != -1) {
+                                if (jQuery.inArray(testFormatType, myarray) != -1) {
                                     add_score_button_class = 'digi_add_score_btn';
                                 }
-                                
+
                                 let section = value['section'];
                                 section = section.replaceAll('_', ' ');
                                 // sectionOrder = currentModelId = key;
                                 sectionOrder = currentModelId = newSectionOrder;
                                 // sectionOrder++;
 
-                                if((format == 'ACT' && testSectionType == 'Math') && (key == 0)){
+                                if ((format == 'ACT' && testSectionType == 'Math') && (
+                                        key == 0)) {
                                     testSectionType = 'Math';
-                                }else if ((testSectionType == 'Math') && (key == 0) ) {
+                                } else if ((testSectionType == 'Math') && (key == 0)) {
                                     testSectionType = 'Math_no_calculator';
-                                }else if ((testSectionType == 'Math') && (key == 1) ) {
+                                } else if ((testSectionType == 'Math') && (key == 1)) {
                                     testSectionType = 'Math_no_calculator';
-                                }else if((testSectionType == 'Math') && (key == 2)) {
+                                } else if ((testSectionType == 'Math') && (key == 2)) {
                                     testSectionType = 'Math_with_calculator';
-                                }else{
+                                } else {
                                     // nothing, it'll be same.
                                 }
 
                                 let ScoreClass =
-                                `${testSectionType == 'Math_no_calculator' || testSectionType == 'Math_with_calculator' ? scoreClass : '' }`;
+                                    `${testSectionType == 'Math_no_calculator' || testSectionType == 'Math_with_calculator' ? scoreClass : '' }`;
                                 $('.sectionContainerList').append(
-                                    '<div class="sectionTypesFull ' + scoreClass + ' section_' + res +
-                                    '" data-id=' + res + ' id="sectionDisplay_' + currentModelId +
+                                    '<div class="sectionTypesFull ' + scoreClass +
+                                    ' section_' + res +
+                                    '" data-id=' + res + ' id="sectionDisplay_' +
+                                    currentModelId +
                                     '" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>' +
                                     format +
                                     '</strong></li><li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_' +
@@ -5461,7 +5655,8 @@
                                     capitalizeFirstLetter(section) +
                                     '</strong><input type="hidden" name="selectedSecTxt" value="' +
                                     testSectionType +
-                                    '" class="selectedSecTxt selectedSection_' + res +
+                                    '" class="selectedSecTxt selectedSection_' +
+                                    res +
                                     '" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="' +
                                     // sectionOrder + '" id="order_' +
                                     newSectionOrder + '" id="order_' +
@@ -5469,34 +5664,43 @@
                                     '"/><button type="button" class="input-field-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="' +
                                     res +
                                     '" data-bs-toggle="tooltip" onclick="editSection(this)" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="' +
-                                    res + '" data-section_type="' + testSectionType +
+                                    res + '" data-section_type="' +
+                                    testSectionType +
                                     '" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
                                     res +
                                     '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 ordermain"><button type="button" data-id="' +
                                     currentModelId +
                                     '" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><button type="button" data-id="' +
-                                    res + '" data-section_type="' + testSectionType + '" data-test_id="' +
+                                    res + '" data-section_type="' +
+                                    testSectionType + '" data-test_id="' +
                                     get_test_id +
-                                    '" class="btn w-25 btn-alt-success '+add_score_button_class+'"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="'+newSectionOrder+'" id="order_' +
+                                    '" class="btn w-25 btn-alt-success ' +
+                                    add_score_button_class +
+                                    '"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="' +
+                                    newSectionOrder + '" id="order_' +
                                     res +
                                     '"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openQuestionDialog(' +
-                                    res + ')"><i class="fa-solid fa-check"></i></button></div></div></div>');
+                                    res +
+                                    ')"><i class="fa-solid fa-check"></i></button></div></div></div>'
+                                );
 
                                 $('.addQuestion').val('');
                                 $('.validError').text('');
                                 $('.sectionAddId').val(res);
 
-                                $('#listWithHandle').append('<div class="list-group-item">\n' +
+                                $('#listWithHandle').append(
+                                    '<div class="list-group-item">\n' +
                                     '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
                                     '<i class="fa-solid fa-grip-vertical"></i>\n' +
                                     '</span>\n' +
-                                    '<button class="btn btn-primary" value="' + res + '">' + res + ':- ' +
+                                    '<button class="btn btn-primary" value="' +
+                                    res + '">' + res + ':- ' +
                                     format + ' ' + testSectionType + '</button>\n' +
                                     '</div>');
-                                    
+
                             });
                         });
-                        
+
                         /*
                         let ScoreClass =
                             `${testSectionType == 'Math_no_calculator' || testSectionType == 'Math_with_calculator' ? scoreClass : '' }`;
@@ -5656,7 +5860,8 @@
                 //For Guessing Values
                 const addGuessingValue = {};
                 ans_choices.forEach(ans_choice => {
-                    const selectElements = $(`input[name="${disp_section}add_guessing_value_${ans_choice}"]`);
+                    const selectElements = $(
+                        `input[name="${disp_section}add_guessing_value_${ans_choice}"]`);
                     const values = selectElements.map(function() {
                         const add_guessing_value = $(this).val();
                         return (add_guessing_value !== '') ? add_guessing_value : null;
@@ -5664,7 +5869,7 @@
                     addGuessingValue[ans_choice] = values;
                 });
                 // console.log(addGuessingValue);
-                
+
                 var pass = $('select[name="passagesType"] :selected').text();
                 var passNumber = $('#questionMultiModal .passNumber').val();
                 var passagesType = $('.passagesType').val();
@@ -5672,8 +5877,8 @@
                 // getFilterChoice editMultipleChoice
                 var ifFillChoice = $('.getFilterChoice').val();
 
-                var questTypeArr = ['ACT','SAT','PSAT'];
-                if((jQuery.inArray(format, questTypeArr) != -1) || (ifFillChoice == 2)) {
+                var questTypeArr = ['ACT', 'SAT', 'PSAT'];
+                if ((jQuery.inArray(format, questTypeArr) != -1) || (ifFillChoice == 2)) {
 
                     if ($('#passageRequired_1').is(':checked')) {
                         if (
@@ -5697,9 +5902,10 @@
                                 );
                             })
                         ) {
-                            $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                            $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' :
+                                '');
                             $('#js-ckeditor-addQue').focus();
-                            
+
                             // $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
                             // $('#addTag').focus();
 
@@ -5723,15 +5929,18 @@
                                 // const get_addGuessingValue = addGuessingValue[choice];
 
                                 $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(
-                                    super_category_values.length == 0 ? 'Super Category is required!' : '');
+                                    super_category_values.length == 0 ? 'Super Category is required!' :
+                                    '');
                                 $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
-                                    get_category_type_values.length == 0 ? 'Category type is required!' : ''
+                                    get_category_type_values.length == 0 ?
+                                    'Category type is required!' : ''
                                 );
                                 $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(
-                                    get_question_type_values.length == 0 ? 'Question type is required!' : ''
+                                    get_question_type_values.length == 0 ?
+                                    'Question type is required!' : ''
                                 );
                                 // $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
-                                
+
                             });
 
                             return false;
@@ -5770,7 +5979,8 @@
                                 );
                             })
                         ) {
-                            $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                            $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' :
+                                '');
                             $('#js-ckeditor-addQue').focus();
                             $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
                             $('#addTag').focus();
@@ -5788,12 +5998,15 @@
                                 // const get_addGuessingValue = addGuessingValue[choice];
 
                                 $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(
-                                    super_category_values.length == 0 ? 'Super Category is required!' : '');
+                                    super_category_values.length == 0 ? 'Super Category is required!' :
+                                    '');
                                 $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
-                                    get_category_type_values.length == 0 ? 'Category type is required!' : ''
+                                    get_category_type_values.length == 0 ?
+                                    'Category type is required!' : ''
                                 );
                                 $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(
-                                    get_question_type_values.length == 0 ? 'Question type is required!' : ''
+                                    get_question_type_values.length == 0 ?
+                                    'Question type is required!' : ''
                                 );
                                 // $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
 
@@ -5805,12 +6018,12 @@
                             $('#questionMultiModal #tagError').text('');
 
                             ans_choices.forEach(choice => {
-                                emptyError('questionMultiModal', disp_section, choice); 
+                                emptyError('questionMultiModal', disp_section, choice);
                                 // $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
                             });
                         }
                     }
-                }else{
+                } else {
                     if ($('#passageRequired_1').is(':checked')) {
                         if (
                             question == '' ||
@@ -5830,17 +6043,20 @@
                                 return (
                                     super_category_values.length === 0 ||
                                     get_category_type_values.length === 0 ||
-                                    get_addGuessingValue.length === 0 || 
+                                    get_addGuessingValue.length === 0 ||
                                     get_question_type_values.length === 0
                                 );
                             })
                         ) {
-                            $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                            $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' :
+                                '');
                             $('#js-ckeditor-addQue').focus();
 
-                            $('#questionMultiModal #diffValueError').text(diffValue == '' ? 'Diff value is required!' : '');
+                            $('#questionMultiModal #diffValueError').text(diffValue == '' ?
+                                'Diff value is required!' : '');
                             $('#diffValue').focus();
-                            $('#questionMultiModal #discValueError').text(discValue == '' ? 'Disc value is required!' : '');
+                            $('#questionMultiModal #discValueError').text(discValue == '' ?
+                                'Disc value is required!' : '');
                             $('#discValue').focus();
 
                             $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
@@ -5860,15 +6076,20 @@
                                 const get_addGuessingValue = addGuessingValue[choice];
 
                                 $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(
-                                    super_category_values.length == 0 ? 'Super Category is required!' : '');
+                                    super_category_values.length == 0 ? 'Super Category is required!' :
+                                    '');
                                 $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
-                                    get_category_type_values.length == 0 ? 'Category type is required!' : ''
+                                    get_category_type_values.length == 0 ?
+                                    'Category type is required!' : ''
                                 );
                                 $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(
-                                    get_question_type_values.length == 0 ? 'Question type is required!' : ''
+                                    get_question_type_values.length == 0 ?
+                                    'Question type is required!' : ''
                                 );
-                                $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
-                                
+                                $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(
+                                    get_addGuessingValue.length == 0 ? 'Guessing Value is required!' :
+                                    '');
+
                             });
 
                             return false;
@@ -5887,7 +6108,8 @@
 
                             ans_choices.forEach(choice => {
                                 emptyError('questionMultiModal', disp_section, choice);
-                                $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
+                                $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(
+                                    '');
                             });
                         }
                     } else {
@@ -5911,14 +6133,17 @@
                                 );
                             })
                         ) {
-                            $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                            $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' :
+                                '');
                             $('#js-ckeditor-addQue').focus();
                             $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
                             $('#addTag').focus();
 
-                            $('#questionMultiModal #diffValueError').text(diffValue == '' ? 'Diff value is required!' : '');
+                            $('#questionMultiModal #diffValueError').text(diffValue == '' ?
+                                'Diff value is required!' : '');
                             $('#diffValue').focus();
-                            $('#questionMultiModal #discValueError').text(discValue == '' ? 'Disc value is required!' : '');
+                            $('#questionMultiModal #discValueError').text(discValue == '' ?
+                                'Disc value is required!' : '');
                             $('#discValue').focus();
 
                             ans_choices.forEach(choice => {
@@ -5928,14 +6153,19 @@
                                 const get_addGuessingValue = addGuessingValue[choice];
 
                                 $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(
-                                    super_category_values.length == 0 ? 'Super Category is required!' : '');
+                                    super_category_values.length == 0 ? 'Super Category is required!' :
+                                    '');
                                 $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
-                                    get_category_type_values.length == 0 ? 'Category type is required!' : ''
+                                    get_category_type_values.length == 0 ?
+                                    'Category type is required!' : ''
                                 );
                                 $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(
-                                    get_question_type_values.length == 0 ? 'Question type is required!' : ''
+                                    get_question_type_values.length == 0 ?
+                                    'Question type is required!' : ''
                                 );
-                                $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(get_addGuessingValue.length == 0 ? 'Guessing Value is required!' : '');
+                                $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(
+                                    get_addGuessingValue.length == 0 ? 'Guessing Value is required!' :
+                                    '');
 
                             });
 
@@ -5948,8 +6178,9 @@
                             $('#questionMultiModal #discValueError').text('');
 
                             ans_choices.forEach(choice => {
-                                emptyError('questionMultiModal', disp_section, choice); 
-                                $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text('');
+                                emptyError('questionMultiModal', disp_section, choice);
+                                $(`#questionMultiModal #${disp_section}add_guessing_valueE_${choice}`).text(
+                                    '');
                             });
                         }
                     }
@@ -6123,7 +6354,7 @@
                             '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
                             '<i class="fa-solid fa-grip-vertical"></i>\n' +
                             '</span>\n' +
-                            '<button class="btn btn-primary" value="' + res.question_id + '">' + 
+                            '<button class="btn btn-primary" value="' + res.question_id + '">' +
                             question + '</button>\n' +
                             '</div>');
                         MathJax.Hub.Queue(["Typeset", MathJax.Hub, 'p']);
@@ -6311,13 +6542,14 @@
                                 let guessing_value_arr = JSON.parse(result.guessing_value);
                                 for (let key in guessing_value_arr) {
                                     if (guessing_value_arr.hasOwnProperty(key)) {
-                                        $(guessing_value_arr[key]).each((i,v) => {
-                                            $(`#${disp_section}edit_guessing_value_${key}`).val(v);
+                                        $(guessing_value_arr[key]).each((i, v) => {
+                                            $(`#${disp_section}edit_guessing_value_${key}`)
+                                                .val(v);
                                         });
                                     }
                                 }
-                            
-                                
+
+
                                 $('#diffValueEdit').val(result.diff_value);
                                 $('#discValueEdit').val(result.disc_value);
 
@@ -6372,8 +6604,9 @@
                                 //For guessing value
                                 for (let key in checkbox_values_Arr) {
                                     if (checkbox_values_Arr.hasOwnProperty(key)) {
-                                        $(checkbox_values_Arr[key]).each((i,v) => {
-                                            $(`#${disp_section}edit_ct_checkbox_${key}_${i}`).prop('checked', v==1);
+                                        $(checkbox_values_Arr[key]).each((i, v) => {
+                                            $(`#${disp_section}edit_ct_checkbox_${key}_${i}`)
+                                                .prop('checked', v == 1);
                                         });
                                     }
                                 }
@@ -6470,7 +6703,7 @@
                 $('.choiceOneInFive_Even').hide();
                 $('.choiceOneInFourPass_Odd').hide();
                 $('.choiceOneInFourPass_Even').hide();
-                $('.choiceMultInFourFill').hide(); 
+                $('.choiceMultInFourFill').hide();
 
                 var optObj = ['a', 'b', 'c', 'd'];
                 var jsonConvert = [];
@@ -6814,21 +7047,21 @@
                 $('#fc_edit_super_category_A_0').select2({
                     dropdownParent: $('#editQuestionMultiModal'),
                     tags: true,
-                    placeholder : "Select Super Category",
+                    placeholder: "Select Super Category",
                     maximumSelectionLength: 1
                 });
 
                 $('#fc_edit_category_type_A_0').select2({
                     dropdownParent: $('#editQuestionMultiModal'),
                     tags: true,
-                    placeholder : "Select Category type",
+                    placeholder: "Select Category type",
                     maximumSelectionLength: 1
                 });
 
                 $('#fc_edit_search-input_A_0').select2({
                     dropdownParent: $('#editQuestionMultiModal'),
                     tags: true,
-                    placeholder : "Select Question type",
+                    placeholder: "Select Question type",
                     maximumSelectionLength: 1
                 });
             }
@@ -6854,7 +7087,7 @@
             // console.log('questionType>>'+questionType);
 
             var diffValue = $('#diffValueEdit').val();
-            var discValue =  $('#discValueEdit').val();
+            var discValue = $('#discValueEdit').val();
 
             multiChoice = $('.editMultipleChoice option:selected').val();
 
@@ -6968,8 +7201,8 @@
             var testSectionType = $('#testSectionTypeRead').val();
 
             var ifFillChoice = $('.editMultipleChoice').val();
-            var questTypeArr = ['ACT','SAT','PSAT'];
-            if((jQuery.inArray(format, questTypeArr) != -1) || (ifFillChoice == 2)) {
+            var questTypeArr = ['ACT', 'SAT', 'PSAT'];
+            if ((jQuery.inArray(format, questTypeArr) != -1) || (ifFillChoice == 2)) {
                 if ($('#passageRequired_2').is(':checked')) {
                     // console.log('checked 1');
                     if (
@@ -6994,7 +7227,8 @@
                         })
                     ) {
                         // console.log('checked 2');
-                        $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                        $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' :
+                            '');
                         $('#js-ckeditor-edit-addQue').focus();
                         $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
                         $('#questionTag').focus();
@@ -7015,13 +7249,15 @@
                                 !super_category_values || super_category_values.length == 0 ?
                                 'Super Category is required!' : '');
                             $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
-                                get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                                get_category_type_values.length == 0 ? 'Category type is required!' : ''
+                            );
                             $(`#editQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(
-                                get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                                get_question_type_values.length == 0 ? 'Question type is required!' : ''
+                            );
 
                             // $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(
                             //     get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
-                        
+
                         });
 
                         return false;
@@ -7033,12 +7269,15 @@
                         $('#editQuestionMultiModal #passageTypeError').text('');
 
                         ans_choices.forEach(ans_choice => {
-                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text(
-                                '');
-                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text(
-                                '');
-                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text(
-                                '');
+                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`)
+                                .text(
+                                    '');
+                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`)
+                                .text(
+                                    '');
+                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`)
+                                .text(
+                                    '');
                             // $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
                         });
                     }
@@ -7062,7 +7301,8 @@
                             );
                         })
                     ) {
-                        $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                        $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' :
+                            '');
                         $('#js-ckeditor-edit-addQue').focus();
                         $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
                         $('#questionTag').focus();
@@ -7077,13 +7317,15 @@
                                 !super_category_values || super_category_values.length == 0 ?
                                 'Super Category is required!' : '');
                             $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
-                                get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                                get_category_type_values.length == 0 ? 'Category type is required!' : ''
+                            );
                             $(`#editQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(
-                                get_question_type_values.length == 0 ? 'Question type is required!' : '');
-                            
+                                get_question_type_values.length == 0 ? 'Question type is required!' : ''
+                            );
+
                             // $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(
                             //     get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
-                            
+
                         });
                         return false;
                     } else {
@@ -7093,17 +7335,20 @@
                         $('#editQuestionMultiModal #tagError').text('');
 
                         ans_choices.forEach(ans_choice => {
-                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text(
-                                '');
-                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text(
-                                '');
-                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text(
-                                '');
+                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`)
+                                .text(
+                                    '');
+                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`)
+                                .text(
+                                    '');
+                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`)
+                                .text(
+                                    '');
                             // $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
                         });
                     }
                 }
-            }else{
+            } else {
                 if ($('#passageRequired_2').is(':checked')) {
                     // console.log('checked 1 not fill choice');
                     if (
@@ -7129,7 +7374,8 @@
                             );
                         })
                     ) {
-                        $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                        $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' :
+                            '');
                         $('#js-ckeditor-edit-addQue').focus();
                         $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
                         $('#questionTag').focus();
@@ -7140,9 +7386,11 @@
                             'Passage Type is required!' : '');
                         $('#edit_passage_type').focus();
 
-                        $('#editQuestionMultiModal #diffValueError').text(diffValue == '' ? 'Diff value is required!' : '');
+                        $('#editQuestionMultiModal #diffValueError').text(diffValue == '' ?
+                            'Diff value is required!' : '');
                         $('#diffValueEdit').focus();
-                        $('#editQuestionMultiModal #discValueError').text(discValue == '' ? 'Disc value is required!' : '');
+                        $('#editQuestionMultiModal #discValueError').text(discValue == '' ?
+                            'Disc value is required!' : '');
                         $('#discValueEdit').focus();
 
                         ans_choices.forEach(choice => {
@@ -7155,13 +7403,16 @@
                                 !super_category_values || super_category_values.length == 0 ?
                                 'Super Category is required!' : '');
                             $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
-                                get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                                get_category_type_values.length == 0 ? 'Category type is required!' : ''
+                            );
                             $(`#editQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(
-                                get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                                get_question_type_values.length == 0 ? 'Question type is required!' : ''
+                            );
 
-                            $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(
-                                get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
-                        
+                            $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`)
+                                .text(
+                                    get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
+
                         });
 
                         return false;
@@ -7175,13 +7426,17 @@
                         $('#editQuestionMultiModal #discValueError').text('');
 
                         ans_choices.forEach(ans_choice => {
-                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text(
-                                '');
-                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text(
-                                '');
-                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text(
-                                '');
-                            $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
+                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`)
+                                .text(
+                                    '');
+                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`)
+                                .text(
+                                    '');
+                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`)
+                                .text(
+                                    '');
+                            $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`)
+                                .text('');
                         });
                     }
                 } else {
@@ -7205,14 +7460,17 @@
                             );
                         })
                     ) {
-                        $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                        $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' :
+                            '');
                         $('#js-ckeditor-edit-addQue').focus();
                         $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
                         $('#questionTag').focus();
 
-                        $('#editQuestionMultiModal #diffValueError').text(diffValue == '' ? 'Diff value is required!' : '');
+                        $('#editQuestionMultiModal #diffValueError').text(diffValue == '' ?
+                            'Diff value is required!' : '');
                         $('#diffValueEdit').focus();
-                        $('#editQuestionMultiModal #discValueError').text(discValue == '' ? 'Disc value is required!' : '');
+                        $('#editQuestionMultiModal #discValueError').text(discValue == '' ?
+                            'Disc value is required!' : '');
                         $('#discValueEdit').focus();
 
                         ans_choices.forEach(choice => {
@@ -7225,13 +7483,16 @@
                                 !super_category_values || super_category_values.length == 0 ?
                                 'Super Category is required!' : '');
                             $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(
-                                get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                                get_category_type_values.length == 0 ? 'Category type is required!' : ''
+                            );
                             $(`#editQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(
-                                get_question_type_values.length == 0 ? 'Question type is required!' : '');
-                            
-                            $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`).text(
-                                get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
-                            
+                                get_question_type_values.length == 0 ? 'Question type is required!' : ''
+                            );
+
+                            $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${choice}`)
+                                .text(
+                                    get_guessingValue.length == 0 ? 'Guessing Value is required!' : '');
+
                         });
                         return false;
                     } else {
@@ -7242,13 +7503,17 @@
                         $('#editQuestionMultiModal #discValueError').text('');
 
                         ans_choices.forEach(ans_choice => {
-                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text(
-                                '');
-                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text(
-                                '');
-                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text(
-                                '');
-                            $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`).text('');
+                            $(`#editQuestionMultiModal #${disp_section}superCategoryError_${ans_choice}`)
+                                .text(
+                                    '');
+                            $(`#editQuestionMultiModal #${disp_section}categoryTypeError_${ans_choice}`)
+                                .text(
+                                    '');
+                            $(`#editQuestionMultiModal #${disp_section}questionTypeError_${ans_choice}`)
+                                .text(
+                                    '');
+                            $(`#editQuestionMultiModal #${disp_section}edit_guessing_valueE_${ans_choice}`)
+                                .text('');
                         });
                     }
                 }
@@ -7359,7 +7624,7 @@
             var disc_value = $('#disc_value_edit').val();
 
             var diffValue = $('#diffValueEdit').val();
-            var discValue =  $('#discValueEdit').val();
+            var discValue = $('#discValueEdit').val();
 
             $.ajax({
                 data: {
@@ -7441,9 +7706,9 @@
                 Math: 'choiceOneInFive',
                 Reading: 'choiceOneInFourPass',
                 Reading_And_Writing: 'choiceOneInFourPass',
-                Reading_And_Writing:'choiceOneInFourPass',
-                Easy_Reading_And_Writing:'choiceOneInFourPass',
-                Hard_Reading_And_Writing:'choiceOneInFourPass',
+                Reading_And_Writing: 'choiceOneInFourPass',
+                Easy_Reading_And_Writing: 'choiceOneInFourPass',
+                Hard_Reading_And_Writing: 'choiceOneInFourPass',
                 Writing: 'choiceOneInFourPass',
                 Science: 'choiceOneInFour',
                 Math_no_calculator: 'choiceMultInFourFill',
@@ -7605,11 +7870,11 @@
             const products = jQuery('select[name="products[]"]').val();
 
             var test_type = $('#format').val();
-            if (test_type == 'DSAT'){
+            if (test_type == 'DSAT') {
                 $('.for_digital_only').show();
-            }else if(test_type == 'DPSAT'){
+            } else if (test_type == 'DPSAT') {
                 $('.for_digital_only').show();
-            }else{
+            } else {
                 $('.for_digital_only').hide();
             }
 
@@ -7654,7 +7919,8 @@
 
                                 let super_option = ``;
                                 $.each(res.super, function(i, v) {
-                                    super_option += `<option value=${v['id']}>${v['title']}</option>`;
+                                    super_option +=
+                                        `<option value=${v['id']}>${v['title']}</option>`;
                                 });
 
 
@@ -7671,11 +7937,15 @@
                                         `<option value=${v['id']}>${v['question_type_title']}</option>`;
                                 });
 
-                                const disp_sections = ['', 'oneInFiveOdd_', 'oneInFiveEven_', 'oneInFourOdd_',
-                                    'oneInFourEven_', 'oneInFourPassEven_', 'choiceMultInFourFill_',
+                                const disp_sections = ['', 'oneInFiveOdd_', 'oneInFiveEven_',
+                                    'oneInFourOdd_',
+                                    'oneInFourEven_', 'oneInFourPassEven_',
+                                    'choiceMultInFourFill_',
                                     'cb_choiceMultInFourFill_'
                                 ]
-                                const ans_choices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K'];
+                                const ans_choices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J',
+                                    'K'
+                                ];
                                 disp_sections.forEach(disp_section => {
                                     ans_choices.forEach(ans_choice => {
                                         $(`select[name="${disp_section}add_category_type_${ans_choice}"`)
@@ -7705,7 +7975,8 @@
 
                                 $('select[name="fc_super_category_create_A"').append(super_option);
                                 $('select[name="fc_add_category_type_A"').append(category_option);
-                                $('select[name="fc_add_search-input_A"').append(questionType_option);
+                                $('select[name="fc_add_search-input_A"').append(
+                                    questionType_option);
 
                                 $('select[name="fc_edit_super_category_A"').html('');
                                 $('select[name="fc_edit_category_type_A"').html('');
@@ -7713,7 +7984,8 @@
 
                                 $(`select[name="fc_edit_super_category_A"`).append(super_option);
                                 $(`select[name="fc_edit_category_type_A"`).append(category_option);
-                                $(`select[name="fc_edit_search-input_A"`).append(questionType_option);
+                                $(`select[name="fc_edit_search-input_A"`).append(
+                                    questionType_option);
                             }
                         });
 
@@ -8344,13 +8616,17 @@
                     ];
                     // optionObj['DSAT'] = ['Reading And Writing', 'Math','Easy Reading And Writing','Hard Reading And Writing'];
                     // optionObj['DPSAT'] = ['Reading And Writing', 'Math'];
-                    optionObj['DSAT'] = ['Reading And Writing', 'Math','Easy Reading And Writing','Hard Reading And Writing','Math no calculator','Math with calculator'];
-                    optionObj['DPSAT'] = ['Reading And Writing', 'Math','Easy Reading And Writing','Hard Reading And Writing','Math no calculator','Math with calculator'];
+                    optionObj['DSAT'] = ['Reading And Writing', 'Math', 'Easy Reading And Writing',
+                        'Hard Reading And Writing', 'Math no calculator', 'Math with calculator'
+                    ];
+                    optionObj['DPSAT'] = ['Reading And Writing', 'Math', 'Easy Reading And Writing',
+                        'Hard Reading And Writing', 'Math no calculator', 'Math with calculator'
+                    ];
 
                     $('#edit_show_calc').prop('checked', false);
-                    if(res.sectionDetails.show_calculator == 1){    
+                    if (res.sectionDetails.show_calculator == 1) {
                         $('#edit_show_calc').prop('checked', true);
-                    }else{
+                    } else {
                         $('#edit_show_calc').prop('checked', false);
                     }
 
@@ -8369,11 +8645,35 @@
                     let regularTime = res.sectionDetails.regular_time.split(':');
                     let fiftyTime = res.sectionDetails.fifty_per_extended.split(':');
                     let hundredTime = res.sectionDetails.hundred_per_extended.split(':');
-                    
-                    $('#edit_required_number_of_correct_answers').val(res.sectionDetails.required_number_of_correct_answers);
+
+                    var source = $('#source option:selected').val();
+                    $('#edit_required_number_of_correct_answers').val(res.sectionDetails
+                        .required_number_of_correct_answers);
                     $('#edit_regular_hour').val(regularTime[0]);
                     $('#edit_regular_minute').val(regularTime[1]);
                     $('#edit_regular_second').val(regularTime[2]);
+
+                    if (source == '1' && (res.sectionDetails.practice_test_type == 'Reading_And_Writing' || res.sectionDetails.practice_test_type == 'Math')) {
+                        $('.edit_easy_section_determiner').hide();
+                        $('.edit_hard_section_determiner').hide();
+                    }
+
+                    if (source == '1' && (res.sectionDetails.practice_test_type == 'Easy_Reading_And_Writing' || res
+                        .sectionDetails.practice_test_type == 'Math_with_calculator')) {
+                        $('.edit_easy_section_determiner').show();
+                        $('#edit_easy_section_determiner').val(res.sectionDetails.easy_section_determiner);
+                        $('.edit_hard_section_determiner').hide();
+                        $('#edit_hard_section_determiner').val(res.sectionDetails.hard_section_determiner);
+
+                    }
+
+                    if (source == '1' && (res.sectionDetails.practice_test_type == 'Hard_Reading_And_Writing' || res
+                        .sectionDetails.practice_test_type == 'Math_no_calculator')) {
+                        $('.edit_easy_section_determiner').hide();
+                        $('#edit_easy_section_determiner').val(res.sectionDetails.easy_section_determiner);
+                        $('.edit_hard_section_determiner').show();
+                        $('#edit_hard_section_determiner').val(res.sectionDetails.hard_section_determiner);
+                    }
 
                     $('#edit50extendedhour').val(fiftyTime[0]);
                     $('#edit50extendedminute').val(fiftyTime[1]);
@@ -8415,19 +8715,23 @@
             }
 
             var test_type = $('#format').val();
-            if ((test_type == 'DSAT') || (test_type == 'DPSAT') ){
+            
+            if ((test_type == 'DSAT') || (test_type == 'DPSAT')) {
                 // this field is required - required_number_of_correct_answers
                 var numberOfCorrectAnswers = $('#edit_required_number_of_correct_answers').val();
-                if (testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0' || numberOfCorrectAnswers == '') {                   
+                if (testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0' ||
+                    numberOfCorrectAnswers == '') {
                     $('#editSectionModal .validError').text('Below fields are required!');
                     return false;
                 }
 
-                if(testWholeNumber(numberOfCorrectAnswers) == false) {
+                if (testWholeNumber(numberOfCorrectAnswers) == false) {
                     $('#editSectionModal .validError').text('Only whole numbers are allowed.');
                     return false;
                 }
-            }else{
+                var editEasySection = $('#edit_easy_section_determiner').val();
+                var editHardSection = $('#edit_hard_section_determiner').val();
+            } else {
                 if (testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0') {
                     $('#editSectionModal .validError').text('Below fields are required!');
                     return false;
@@ -8453,6 +8757,8 @@
                     'hundred': hundredExtended,
                     'required_number_of_correct_answers': edit_required_number_of_correct_answers,
                     'show_calculator': editShowCalc,
+                    'editEasySection': editEasySection,
+                    'editHardSection': editHardSection,
                     '_token': $('input[name="_token"]').val()
                 },
                 url: '{{ route('update_section') }}',
@@ -8471,16 +8777,16 @@
         function validateInput(input) {
 
             var value = parseInt(input.value);
-                value = Math.round(value);
+            value = Math.round(value);
             if (value < 0) {
-                value = Math.abs( value );
+                value = Math.abs(value);
                 input.value = input.min;
-            }else if (value == 0) {
-                value = Math.abs( value );
+            } else if (value == 0) {
+                value = Math.abs(value);
                 input.value = input.min;
-            }else if (value > parseInt(input.max)) {
+            } else if (value > parseInt(input.max)) {
                 input.value = input.max;
-            }else{
+            } else {
                 input.value = value;
             }
         }

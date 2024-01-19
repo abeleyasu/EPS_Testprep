@@ -587,7 +587,7 @@ class PracticeQuestionController extends Controller
                 }
             }
         }
-
+// dd($request);
         // Automatically generate two more sections when Type of question is Digital SAT/PSAT.
         if ($request->question_type == 'DSAT') {
             if ($request->testSectionType == 'Reading_And_Writing') {
@@ -596,6 +596,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2A (Easy) - Reading & Writing';
                 $practiceSection->practice_test_type = 'Easy_Reading_And_Writing';
                 $practiceSection->testid = $request->get_test_id;
+                $practiceSection->easy_section_determiner = $request->easy_section_determiner;
                 $practiceSection->section_order = $request->order+1;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
@@ -617,6 +618,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2B (Hard) - Reading & Writing';
                 $practiceSection->practice_test_type = 'Hard_Reading_And_Writing';
                 $practiceSection->testid = $request->get_test_id;
+                $practiceSection->hard_section_determiner = $request->hard_section_determiner;
                 $practiceSection->section_order = $request->order+2;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
@@ -639,6 +641,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2A (Easy) - Math';
                 $practiceSection->practice_test_type = 'Math_with_calculator';
                 $practiceSection->testid = $request->get_test_id;
+                $practiceSection->easy_section_determiner = $request->easy_section_determiner;
                 $practiceSection->section_order = $request->order+1;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
@@ -676,6 +679,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2B (Hard) - Math';
                 $practiceSection->practice_test_type = 'Math_no_calculator';
                 $practiceSection->testid = $request->get_test_id;
+                $practiceSection->hard_section_determiner = $request->hard_section_determiner;
                 $practiceSection->section_order = $request->order+2;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
@@ -720,6 +724,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2A (Easy) - Reading & Writing';
                 $practiceSection->practice_test_type = 'Easy_Reading_And_Writing';
                 $practiceSection->testid = $request->get_test_id;
+                $practiceSection->easy_section_determiner = $request->easy_section_determiner;
                 $practiceSection->section_order = $request->order+1;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
@@ -741,6 +746,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2B (Hard) - Reading & Writing';
                 $practiceSection->practice_test_type = 'Hard_Reading_And_Writing';
                 $practiceSection->testid = $request->get_test_id;
+                $practiceSection->hard_section_determiner = $request->hard_section_determiner;
                 $practiceSection->section_order = $request->order+2;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
@@ -763,6 +769,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2A (Easy) - Math';
                 $practiceSection->practice_test_type = 'Math_with_calculator';
                 $practiceSection->testid = $request->get_test_id;
+                $practiceSection->easy_section_determiner = $request->easy_section_determiner;
                 $practiceSection->section_order = $request->order+1;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
@@ -800,6 +807,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2B (Hard) - Math';
                 $practiceSection->practice_test_type = 'Math_no_calculator';
                 $practiceSection->testid = $request->get_test_id;
+                $practiceSection->hard_section_determiner = $request->hard_section_determiner;
                 $practiceSection->section_order = $request->order+2;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
@@ -1107,7 +1115,9 @@ class PracticeQuestionController extends Controller
             "fifty_per_extended" => $request->fifty,
             "required_number_of_correct_answers" => $request->required_number_of_correct_answers,
             "show_calculator" => $request->show_calculator,
-            "hundred_per_extended" => $request->hundred
+            "hundred_per_extended" => $request->hundred,
+            'easy_section_determiner' => $request->editEasySection,
+            'hard_section_determiner' => $request->editHardSection,
         ]);
 
         $updatedSection = PracticeTestSection::where('id', $request->sectionId)->first();
