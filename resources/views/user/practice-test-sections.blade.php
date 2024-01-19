@@ -10,6 +10,24 @@
             });
         });
 
+        $(document).ready(function() {
+            let easyRemove = $('.easy-remove').val();
+            if (easyRemove == 1) {
+                $('#easy-id').hide();
+            } else {
+                $('#easy-id').show();
+
+            }
+
+            let mathRemove = $('.math-remove').val();
+            if (mathRemove == 1) {
+                $('#math-id').hide();
+            } else {
+                $('#math-id').show();
+
+            }
+        })
+
         $('input[type="checkbox"]').click(function(e) {
             e.stopPropagation()
         })
@@ -31,6 +49,15 @@
                 `${url}/user/official-practice-test/${section_id}?test_id=${test_id}&time=${option}`);
         });
 
+        $(document).on('click', '.official_module_start_section', function() {
+            let section_id = $(this).attr('data-section_id');
+            let test_id = $(this).attr('data-test_id');
+            let option = $('#timingOption').val();
+            let url = $('#site_url').val();
+            $('.official_module_start_section').attr('href',
+                `${url}/user/official-practice-test-module-2/${id}?test_id=${test_id}&time=${option}`);
+        });
+
         $(document).on('click', '.start_all_section', function() {
             let sectionArrayJson = $('#sectionArrayJsonId').val();
             var sectionArray = JSON.parse(sectionArrayJson);
@@ -47,6 +74,7 @@
                 let option = $('#timingOption').val();
                 let url = $('#site_url').val();
                 var testSource = $(this).attr('data-test-source');
+                console.log(testSource);
                 // $('.start_all_section').attr('href',`${url}/user/practice-test/all/${test_id}?time=${option}`);
                 if (testSource != 1) {
                     $('.start_all_section').attr('href',
@@ -55,7 +83,8 @@
                 } else {
                     $('.start_all_section').attr('href',
                         `${url}/user/official-practice-test/${section_id}?test_id=${test_id}&time=${option}&section=all&sections=${remainingSectionArrayJson}`
-                    );                }
+                    );
+                }
                 // $('.start_all_section').attr('href',`${url}/user/practice-test/all/${section_id}?time=${option}`);
             }
 
@@ -100,10 +129,18 @@
                                     <h2 class="fs-base lh-base fw-medium text-muted mb-0">
 
                                         @if ($whichSection == 1)
-                                            This test has {{ $mainSectionsCount }} sections and
+                                            @if ($testSection[0]->format == 'DSAT' || $testSection[0]->format == 'DPSAT')
+                                                @if ($testSection[0]->test_source == 1)
+                                                    This test has 4 sections
+                                                @endif
+                                            @else
+                                                This test has {{ $mainSectionsCount }} sections and
+                                            @endif
                                         @else
                                             This test has {{ count($testSectionsDetails) }} sections and
                                         @endif
+
+
 
                                         {{-- isset($total_all_section_question) ? $total_all_section_question : '' --}}
                                         @if ($newTotal != 0)
@@ -126,8 +163,21 @@
                                         <option value="untimed">Untimed</option>
                                     </select>
                                 @endif
-
-                                @if (isset($testSections[0]->testid) && $firstSectionId != 0)
+                                {{-- @php
+                                    dd($testSection[0]);
+                                @endphp --}}
+                                @if ($testSection[0]->test_source == 1 && ($testSection[0]->format == 'DSAT' || $testSection[0]->format == 'DPSAT'))
+                                    <a href="{{ route('all_section', ['id' => $selected_test_id]) }}"
+                                        style="white-space: nowrap" data-test_id="{{ $selected_test_id }}"
+                                        class="btn btn-alt-primary fs-8  ms-2 start_all_section"
+                                        data-test-source="{{ $testSection[0]->test_source }}">
+                                        <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
+                                    </a>
+                                    <a href="{{ route('reset_test', ['id' => $testSection[0]->id]) . '?test_id=' . $testSection[0]->id . '&type=all' }}"
+                                        style="white-space: nowrap" class="btn btn-alt-primary fs-8 mx-2">
+                                        <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Reset Test
+                                    </a>
+                                @elseif (isset($testSections[0]->testid) && $firstSectionId != 0)
                                     @php
                                         $str = 'test_id=' . $testSections[0]->testid . '&time=regular&section=all&sections=' . htmlspecialchars(json_encode($sectionIdsArray), JSON_NUMERIC_CHECK);
                                     @endphp
@@ -151,10 +201,13 @@
                                             <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Reset Test
                                         </a>
                                     --}}
+                                    {{-- @php
+                                        dd($testSection[0]->test_source);
+                                    @endphp --}}
                                     <a href="{{ route('all_section', ['id' => $selected_test_id]) }}"
                                         style="white-space: nowrap" data-test_id="{{ $selected_test_id }}"
                                         class="btn btn-alt-primary fs-8  ms-2 start_all_section"
-                                        data-test-source="{{  $testSection[0]->test_source }}">
+                                        data-test-source="{{ $testSection[0]->test_source }}">
                                         <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
                                     </a>
                                     <a href="{{ route('reset_test', ['id' => $testSection[0]->id]) . '?test_id=' . $testSection[0]->id . '&type=all' }}"
@@ -255,7 +308,9 @@
                         // dump($score);
 
                     @endphp
+
                     @foreach ($testSectionsDetails as $singletestSections)
+
 
                         @if (in_array($singletestSections['Sections'][0]['format'], ['ACT', 'SAT', 'PSAT']))
                             @if (isset($singletestSections['Sections_question']))
@@ -328,11 +383,11 @@
                                                                 style="padding: 5px 20px fs-5"
                                                                 class="btn btn-alt-secondary text-primary official_start_section"
                                                                 data-section_id="{{ $singletestSections['Sections'][0]['id'] }}"
-                                                                data-test_id="{{ $current_section_id }}">
+                                                                data-test_id="{{ $current_section_id }}"
+                                                                title="Take, time, and grade an official paper practice test.">
                                                                 {{-- Start {{str_replace(['_'],[' '], $singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
                                                                 <i class="fa-solid fa-circle-check"
-                                                                    style='margin-right:5px'></i> Start / Grade
-                                                                Section
+                                                                    style='margin-right:5px'></i> Start Proctored Section
                                                             </a>
                                                         @else
                                                             <a href="{{ route('single_section', ['id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id }}"
@@ -363,47 +418,507 @@
                                 </li>
                             @endif
                         @elseif(in_array($singletestSections['Sections'][0]['format'], ['DSAT', 'DPSAT']))
-                            @if (isset($singletestSections['Sections_question']))
-                                @if (isset($singletestSections['check_if_section_completed']) &&
-                                        $singletestSections['check_if_section_completed'][0] == 'yes')
-                                    @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Math', 'Reading_And_Writing']))
-                                        <!-- REVIEW SECTION -->
-                                        <li class="timeline-event">
-                                            <div class="timeline-event-icon bg-success">
-                                                <i class="fa-solid fa-{{ ++$count }}"></i>
-                                            </div>
-                                            <div class="timeline-event-block block">
-                                                <div class="block-header block-header-default">
-                                                    <h3 class="block-title">
-                                                        {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
-                                                        Section</h3>
-                                                    <div class="block-options">
-                                                        <div
-                                                            class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                            {{-- isset($singletestSections['Sections'][0]['yesSectionCount']) ? $singletestSections['Sections'][0]['yesSectionCount'] : '0' --}}
-                                                            {{ isset($singletestSections['Sections'][0]['section_quest_count']) ? $singletestSections['Sections'][0]['section_quest_count'] : '0' }}
+                            <!-- Official Test -->
+                            @if ($practice_test->test_source == 1)
+                                @php
+                                    if ($singletestSections['Sections'][0]['practice_test_type'] == 'Math') {
+                                        $id = $singletestSections['Sections'][0]['id'];
+                                    } elseif ($singletestSections['Sections'][0]['practice_test_type'] == 'Reading_And_Writing') {
+                                        $id = $singletestSections['Sections'][0]['id'];
+                                    }
+                                    if ($singletestSections['Sections'][0]['practice_test_type'] == 'Easy_Reading_And_Writing') {
+                                        $readingAndWritingId = $singletestSections['Sections'][0]['id'];
+                                        $checkReading = \DB::table('user_answers')
+                                            ->where('section_id', $readingAndWritingId)
+                                            ->exists();
+                                        // dd($readingAndWritingId);
+                                    } elseif ($singletestSections['Sections'][0]['practice_test_type'] == 'Hard_Reading_And_Writing') {
+                                        $readingAndWritingId = $singletestSections['Sections'][0]['id'];
+                                        $checkReading = \DB::table('user_answers')
+                                            ->where('section_id', $readingAndWritingId)
+                                            ->exists();
+                                    }
+                                    if ($singletestSections['Sections'][0]['practice_test_type'] == 'Math_no_calculator') {
+                                        $mathId = $singletestSections['Sections'][0]['id'];
+                                        $checkMath = \DB::table('user_answers')
+                                            ->where('section_id', $mathId)
+                                            ->exists();
+                                    } elseif ($singletestSections['Sections'][0]['practice_test_type'] == 'Math_with_calculator') {
+                                        $mathId = $singletestSections['Sections'][0]['id'];
+                                        $checkMath = \DB::table('user_answers')
+                                            ->where('section_id', $mathId)
+                                            ->exists();
+                                    }
+                                    // if (isset($checkReading)) {
+                                    //     dump($checkReading);
+                                    // }
+                                    // if (isset($checkMath)) {
+                                    //     dump($checkMath);
+                                    // }
+                                @endphp
 
-                                                            Questions
+                                @if (isset($checkReading))
+                                    @if ($checkReading == true)
+                                        <input type="hidden" class="easy-remove" value="1" />
+                                    @endif
+                                @endif
+                                @if (isset($checkMath))
+                                    @if ($checkMath == true)
+                                        <input type="hidden" class="math-remove" value="1" />
+                                    @endif
+                                @endif
+                                @if (isset($singletestSections['Sections_question']))
+                                    @if (isset($singletestSections['check_if_section_completed']) &&
+                                            $singletestSections['check_if_section_completed'][0] == 'yes')
+                                        @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Math', 'Reading_And_Writing']))
+                                            <!-- REVIEW SECTION -->
+                                            @php
+                                                // dump($singletestSections[0]);
+                                            @endphp
+                                            <li class="timeline-event">
+                                                <div class="timeline-event-icon bg-success">
+                                                    <i class="fa-solid fa-{{ ++$count }}"></i>
+                                                </div>
+                                                <div class="timeline-event-block block">
+                                                    <div class="block-header block-header-default">
+                                                        <h3 class="block-title">
+                                                            {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
+                                                            Module 1 Section</h3>
+                                                        <div class="block-options">
+                                                            <div
+                                                                class="timeline-event-time block-options-item fs-sm fw-semibold">
+                                                                {{-- isset($singletestSections['Sections'][0]['yesSectionCount']) ? $singletestSections['Sections'][0]['yesSectionCount'] : '0' --}}
+                                                                {{ isset($singletestSections['Sections_question'][0]) ? count($singletestSections['Sections_question']) : '0' }}
+
+                                                                Questions
+                                                            </div>
+
                                                         </div>
+                                                    </div>
+                                                    <div class="block-content pb-3">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                Start
+                                                                {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
+                                                                Module 1 Section Questions
 
+                                                            </div>
+                                                            <div>
+
+                                                                {{-- <a href="#" style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 1">
+                                                                    {{ $singletestSections['Sections'][0]['newScore'] }}
+                                                                </a> --}}
+
+
+                                                                <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&type=single' }}"
+                                                                    style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 2">
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i>
+                                                                    Review Module 1 Section
+                                                                </a>
+
+                                                                {{-- {!! $singletestSections['Sections'][0]['reviewUrls'] !!} --}}
+
+                                                                {{-- new  --}}
+                                                                {{-- <a href="{{ route('reset_section', ['testId' => $singletestSections['Sections'][0]['testid'], 'id' => $singletestSections['Sections'][0]['id']]) }}"
+                                                                    style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 3">
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i>
+                                                                    Reset --}}
+                                                                {{-- Review {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                                                                {{-- </a> --}}
+                                                                <a href="{{ route('reset_section', ['testId' => $singletestSections['Sections'][0]['testid'], 'id' => $singletestSections['Sections'][0]['id']]) }}"
+                                                                    style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 6">
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i>
+                                                                    Reset
+                                                                    {{-- Review {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                                                                </a>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="block-content pb-3">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <div>
-                                                            Start
-                                                            {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
-                                                            Section Questions
+                                            </li>
+                                        @endif
+                                        @if (in_array($singletestSections['Sections'][0]['practice_test_type'], [
+                                                'Hard_Reading_And_Writing',
+                                                'Easy_Reading_And_Writing',
+                                            ]))
+                                            <li class="timeline-event">
+                                                <div class="timeline-event-icon bg-success">
+                                                    <i class="fa-solid fa-{{ ++$count }}"></i>
+                                                </div>
+                                                @php
+                                                    $modifiedString = str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']);
+                                                    $modifiedStrings = str_replace(['calculator', 'Easy', 'with', 'no', 'Hard'], '', $modifiedString);
+                                                @endphp
+                                                <div class="timeline-event-block block">
+                                                    <div class="block-header block-header-default">
+                                                        <h3 class="block-title">
+                                                            {{ $modifiedStrings }}
+                                                            Module 2 Section</h3>
+                                                        <div class="block-options">
+                                                            <div
+                                                                class="timeline-event-time block-options-item fs-sm fw-semibold">
+                                                                {{-- isset($singletestSections['Sections'][0]['yesSectionCount']) ? $singletestSections['Sections'][0]['yesSectionCount'] : '0' --}}
+                                                                {{ isset($singletestSections['Sections_question']) ? count($singletestSections['Sections_question']) : '0' }}
+
+                                                                Questions
+                                                            </div>
 
                                                         </div>
-                                                        <div>
+                                                    </div>
+                                                    <div class="block-content pb-3">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                Start
+                                                                {{ $modifiedStrings }}
+                                                                Module 2 Section Questions
 
-                                                            <a href="#" style='padding: 5px 20px fs-5'
-                                                                class="btn btn-alt-success text-success 1">
-                                                                {{ $singletestSections['Sections'][0]['newScore'] }}
-                                                            </a>
+                                                            </div>
+                                                            <div>
 
-                                                            {{--                                                        
+                                                                {{-- <a href="#" style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 1">
+                                                                    {{ $singletestSections['Sections'][0]['newScore'] }}
+                                                                </a> --}}
+
+
+                                                                <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&type=single' }}"
+                                                                    style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 2">
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i>
+                                                                    Review Module 2 Section
+                                                                </a>
+
+                                                                {{-- {!! $singletestSections['Sections'][0]['reviewUrls'] !!} --}}
+
+                                                                {{-- new  --}}
+                                                                {{-- <a href="{{ route('reset_section', ['testId' => $singletestSections['Sections'][0]['testid'], 'id' => $singletestSections['Sections'][0]['id']]) }}"
+                                                                    style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 3">
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i>
+                                                                    Reset --}}
+                                                                {{-- Review {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                                                                {{-- </a> --}}
+                                                                <a href="{{ route('reset_section', ['testId' => $singletestSections['Sections'][0]['testid'], 'id' => $singletestSections['Sections'][0]['id']]) }}"
+                                                                    style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 6">
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i>
+                                                                    Reset
+                                                                    {{-- Review {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endif
+                                        @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Math_no_calculator', 'Math_with_calculator']))
+                                            <li class="timeline-event">
+                                                <div class="timeline-event-icon bg-success">
+                                                    <i class="fa-solid fa-{{ ++$count }}"></i>
+                                                </div>
+                                                @php
+                                                    $modifiedString = str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']);
+                                                    $modifiedStrings = str_replace(['calculator', 'Easy', 'with', 'no', 'Hard'], '', $modifiedString);
+                                                @endphp
+                                                <div class="timeline-event-block block">
+                                                    <div class="block-header block-header-default">
+                                                        <h3 class="block-title">
+                                                            {{ $modifiedStrings }}
+                                                            Module 2 Section</h3>
+                                                        <div class="block-options">
+                                                            <div
+                                                                class="timeline-event-time block-options-item fs-sm fw-semibold">
+                                                                {{-- isset($singletestSections['Sections'][0]['yesSectionCount']) ? $singletestSections['Sections'][0]['yesSectionCount'] : '0' --}}
+                                                                {{ isset($singletestSections['Sections_question']) ? count($singletestSections['Sections_question']) : '0' }}
+
+                                                                Questions
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="block-content pb-3">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                Start
+                                                                {{ $modifiedStrings }}
+                                                                Module 2 Section Questions
+
+                                                            </div>
+                                                            <div>
+
+                                                                {{-- <a href="#" style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 1">
+                                                                    {{ $singletestSections['Sections'][0]['newScore'] }}
+                                                                </a> --}}
+
+
+                                                                <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&type=single' }}"
+                                                                    style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 2">
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i>
+                                                                    Review Module 2 Section
+                                                                </a>
+
+                                                                {{-- {!! $singletestSections['Sections'][0]['reviewUrls'] !!} --}}
+
+                                                                {{-- new  --}}
+                                                                {{-- <a href="{{ route('reset_section', ['testId' => $singletestSections['Sections'][0]['testid'], 'id' => $singletestSections['Sections'][0]['id']]) }}"
+                                                                    style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 3">
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i>
+                                                                    Reset --}}
+                                                                {{-- Review {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                                                                {{-- </a> --}}
+                                                                <a href="{{ route('reset_section', ['testId' => $singletestSections['Sections'][0]['testid'], 'id' => $singletestSections['Sections'][0]['id']]) }}"
+                                                                    style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 6">
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i>
+                                                                    Reset
+                                                                    {{-- Review {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endif
+                                    @endif
+                                @endif
+
+                                @if (isset($singletestSections['Sections_question']))
+                                    @if (isset($singletestSections['check_if_section_completed']) &&
+                                            $singletestSections['check_if_section_completed'][0] == 'no')
+                                        {{-- @php
+                                            dump($singletestSections);
+                                        @endphp --}}
+                                        @if (in_array($singletestSections['Sections'][0]['practice_test_type'], [
+                                                'Reading_And_Writing',
+                                                'Math',
+                                                // 'Easy_Reading_And_Writing',
+                                                // 'Hard_Reading_And_Writing',
+                                            ]))
+                                            @php
+                                                $id = $singletestSections['Sections'][0]['id'];
+                                            @endphp
+                                            <!-- START SECTION -->
+                                            <li class="timeline-event">
+                                                <div class="timeline-event-icon bg-success">
+                                                    <i class="fa-solid fa-{{ ++$count }}"></i>
+                                                </div>
+                                                <div class="timeline-event-block block">
+                                                    <div class="block-header block-header-default">
+                                                        <h3 class="block-title">
+                                                            {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
+                                                            Module 1
+                                                            Section
+                                                        </h3>
+
+                                                        <div class="block-options">
+                                                            <div
+                                                                class="timeline-event-time block-options-item fs-sm fw-semibold">
+                                                                {{-- isset($singletestSections['Sections'][0]['noSectionCount']) ? $singletestSections['Sections'][0]['noSectionCount'] : '0' --}}
+                                                                {{ isset($singletestSections['Sections_question']) ? count($singletestSections['Sections_question']) : '0' }}
+                                                                Questions
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="block-content pb-3">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                Start
+                                                                {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
+                                                                Module 1 Section Questions
+
+                                                            </div>
+                                                            <div>
+                                                                <a href="{{ route('official_single_section', ['id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id }}"
+                                                                    style="padding: 5px 20px fs-5"
+                                                                    class="btn btn-alt-secondary text-primary official_start_section"
+                                                                    data-section_id="{{ $singletestSections['Sections'][0]['id'] }}"
+                                                                    data-test_id="{{ $current_section_id }}"  title="Take, time, and grade an official paper practice test.">
+                                                                    {{-- Start {{str_replace(['_'],[' '], $singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i> Start Proctored Section
+                                                                </a>
+                                                                @php
+                                                                    array_push($sectionArray, (int) $singletestSections['Sections'][0]['id']);
+                                                                @endphp
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endif
+                                        @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Easy_Reading_And_Writing']))
+                                            <li class="timeline-event" id="easy-id">
+                                                <div class="timeline-event-icon bg-success">
+                                                    <i class="fa-solid fa-{{ ++$count }}"></i>
+                                                </div>
+                                                @php
+                                                    $modifiedString = str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']);
+                                                    $modifiedStrings = str_replace(['calculator', 'Easy', 'with', 'no', 'Hard'], '', $modifiedString);
+                                                @endphp
+                                                <div class="timeline-event-block block">
+                                                    <div class="block-header block-header-default">
+                                                        <h3 class="block-title">
+                                                            {{ $modifiedStrings }}
+                                                            Module 2
+                                                            Section
+                                                        </h3>
+
+                                                        <div class="block-options">
+                                                            <div
+                                                                class="timeline-event-time block-options-item fs-sm fw-semibold">
+                                                                {{-- isset($singletestSections['Sections'][0]['noSectionCount']) ? $singletestSections['Sections'][0]['noSectionCount'] : '0' --}}
+                                                                {{ isset($singletestSections['Sections_question']) ? count($singletestSections['Sections_question']) : '0' }}
+                                                                Questions
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="block-content pb-3">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                Start
+                                                                {{ $modifiedStrings }}
+                                                                Module 2
+                                                                Section Questions
+
+                                                            </div>
+                                                            <div>
+                                                                <a href="{{ route('official_module_single_section', ['id' => $id]) . '?test_id=' . $current_section_id }}"
+                                                                    style="padding: 5px 20px fs-5"
+                                                                    class="btn btn-alt-secondary text-primary official_module_start_section"
+                                                                    data-section_id="{{ $singletestSections['Sections'][0]['id'] }}"
+                                                                    data-test_id="{{ $current_section_id }}"  title="Take, time, and grade an official paper practice test.">
+                                                                    {{-- Start {{str_replace(['_'],[' '], $singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i> Start Proctored
+                                                                    Section
+                                                                </a>
+                                                                @php
+                                                                    array_push($sectionArray, (int) $singletestSections['Sections'][0]['id']);
+                                                                @endphp
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endif
+                                        @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Math_with_calculator']))
+                                            <li class="timeline-event" id="math-id">
+                                                <div class="timeline-event-icon bg-success">
+                                                    <i class="fa-solid fa-{{ ++$count }}"></i>
+                                                </div>
+                                                @php
+                                                    $modifiedString = str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']);
+                                                    $modifiedStrings = str_replace(['calculator', 'Easy', 'with', 'no', 'Hard'], '', $modifiedString);
+                                                @endphp
+                                                <div class="timeline-event-block block">
+                                                    <div class="block-header block-header-default">
+                                                        <h3 class="block-title">
+                                                            {{ $modifiedStrings }}
+                                                            Module 2
+                                                            Section
+                                                        </h3>
+
+                                                        <div class="block-options">
+                                                            <div
+                                                                class="timeline-event-time block-options-item fs-sm fw-semibold">
+                                                                {{-- isset($singletestSections['Sections'][0]['noSectionCount']) ? $singletestSections['Sections'][0]['noSectionCount'] : '0' --}}
+                                                                {{ isset($singletestSections['Sections_question']) ? count($singletestSections['Sections_question']) : '0' }}
+                                                                Questions
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="block-content pb-3">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                Start
+                                                                {{ $modifiedStrings }}
+                                                                Module 2
+                                                                Section Questions
+
+                                                            </div>
+                                                            <div>
+                                                                <a href="{{ route('official_module_single_section', ['id' => $id]) . '?test_id=' . $current_section_id }}"
+                                                                    style="padding: 5px 20px fs-5"
+                                                                    class="btn btn-alt-secondary text-primary official_module_start_section"
+                                                                    data-section_id="{{ $singletestSections['Sections'][0]['id'] }}"
+                                                                    data-test_id="{{ $current_section_id }}"  title="Take, time, and grade an official paper practice test.">
+                                                                    {{-- Start {{str_replace(['_'],[' '], $singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i> Start Proctored
+                                                                    Section
+                                                                </a>
+                                                                @php
+                                                                    array_push($sectionArray, (int) $singletestSections['Sections'][0]['id']);
+                                                                @endphp
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endif
+                                    @endif
+                                @endif
+                            @else
+                                @if (isset($singletestSections['Sections_question']))
+                                    @if (isset($singletestSections['check_if_section_completed']) &&
+                                            $singletestSections['check_if_section_completed'][0] == 'yes')
+                                        @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Math', 'Reading_And_Writing']))
+                                            <!-- REVIEW SECTION -->
+                                            <li class="timeline-event">
+                                                <div class="timeline-event-icon bg-success">
+                                                    <i class="fa-solid fa-{{ ++$count }}"></i>
+                                                </div>
+                                                <div class="timeline-event-block block">
+                                                    <div class="block-header block-header-default">
+                                                        <h3 class="block-title">
+                                                            {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
+                                                            Section</h3>
+                                                        <div class="block-options">
+                                                            <div
+                                                                class="timeline-event-time block-options-item fs-sm fw-semibold">
+                                                                {{-- isset($singletestSections['Sections'][0]['yesSectionCount']) ? $singletestSections['Sections'][0]['yesSectionCount'] : '0' --}}
+                                                                {{ isset($singletestSections['Sections'][0]['section_quest_count']) ? $singletestSections['Sections'][0]['section_quest_count'] : '0' }}
+
+                                                                Questions
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="block-content pb-3">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                Start
+                                                                {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
+                                                                Section Questions
+
+                                                            </div>
+                                                            <div>
+
+                                                                <a href="#" style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 1">
+                                                                    {{ $singletestSections['Sections'][0]['newScore'] }}
+                                                                </a>
+
+                                                                {{--                                                        
                                                         <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&type=single' }}"
                                                             style='padding: 5px 20px fs-5'
                                                             class="btn btn-alt-success text-success 2">
@@ -411,77 +926,78 @@
                                                             Review Section
                                                         </a>
                                                             --}}
-                                                            {!! $singletestSections['Sections'][0]['reviewUrls'] !!}
+                                                                {!! $singletestSections['Sections'][0]['reviewUrls'] !!}
 
-                                                            {{-- new  --}}
-                                                            <a href="{{ route('reset_section', ['testId' => $singletestSections['Sections'][0]['testid'], 'id' => $singletestSections['Sections'][0]['id']]) }}"
-                                                                style='padding: 5px 20px fs-5'
-                                                                class="btn btn-alt-success text-success 3">
-                                                                <i class="fa-solid fa-circle-check"
-                                                                    style='margin-right:5px'></i>
-                                                                Reset
-                                                                {{-- Review {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
-                                                            </a>
+                                                                {{-- new  --}}
+                                                                <a href="{{ route('reset_section', ['testId' => $singletestSections['Sections'][0]['testid'], 'id' => $singletestSections['Sections'][0]['id']]) }}"
+                                                                    style='padding: 5px 20px fs-5'
+                                                                    class="btn btn-alt-success text-success 3">
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i>
+                                                                    Reset
+                                                                    {{-- Review {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </li>
+                                            </li>
+                                        @endif
                                     @endif
                                 @endif
-                            @endif
 
-                            @if (isset($singletestSections['Sections_question']))
-                                @if (isset($singletestSections['check_if_section_completed']) &&
-                                        $singletestSections['check_if_section_completed'][0] == 'no')
-                                    @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Math', 'Reading_And_Writing']))
-                                        <!-- START SECTION -->
-                                        <li class="timeline-event">
-                                            <div class="timeline-event-icon bg-success">
-                                                <i class="fa-solid fa-{{ ++$count }}"></i>
-                                            </div>
-                                            <div class="timeline-event-block block">
-                                                <div class="block-header block-header-default">
-                                                    <h3 class="block-title">
-                                                        {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
-                                                        Section</h3>
-                                                    <div class="block-options">
-                                                        <div
-                                                            class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                            {{-- isset($singletestSections['Sections'][0]['noSectionCount']) ? $singletestSections['Sections'][0]['noSectionCount'] : '0' --}}
-                                                            {{ isset($singletestSections['Sections'][0]['section_quest_count']) ? $singletestSections['Sections'][0]['section_quest_count'] : '0' }}
-                                                            Questions
-                                                        </div>
-
-                                                    </div>
+                                @if (isset($singletestSections['Sections_question']))
+                                    @if (isset($singletestSections['check_if_section_completed']) &&
+                                            $singletestSections['check_if_section_completed'][0] == 'no')
+                                        @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Math', 'Reading_And_Writing']))
+                                            <!-- START SECTION -->
+                                            <li class="timeline-event">
+                                                <div class="timeline-event-icon bg-success">
+                                                    <i class="fa-solid fa-{{ ++$count }}"></i>
                                                 </div>
-                                                <div class="block-content pb-3">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <div>
-                                                            Start
+                                                <div class="timeline-event-block block">
+                                                    <div class="block-header block-header-default">
+                                                        <h3 class="block-title">
                                                             {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
-                                                            Section Questions
+                                                            Section</h3>
+                                                        <div class="block-options">
+                                                            <div
+                                                                class="timeline-event-time block-options-item fs-sm fw-semibold">
+                                                                {{-- isset($singletestSections['Sections'][0]['noSectionCount']) ? $singletestSections['Sections'][0]['noSectionCount'] : '0' --}}
+                                                                {{ isset($singletestSections['Sections'][0]['section_quest_count']) ? $singletestSections['Sections'][0]['section_quest_count'] : '0' }}
+                                                                Questions
+                                                            </div>
 
                                                         </div>
-                                                        <div>
-                                                            <a href="{{ route('single_section', ['id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id }}"
-                                                                style="padding: 5px 20px fs-5"
-                                                                class="btn btn-alt-secondary text-primary start_section"
-                                                                data-section_id="{{ $singletestSections['Sections'][0]['id'] }}"
-                                                                data-test_id="{{ $current_section_id }}">
-                                                                {{-- Start {{str_replace(['_'],[' '], $singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
-                                                                <i class="fa-solid fa-circle-check"
-                                                                    style='margin-right:5px'></i> Start
-                                                                Section
-                                                            </a>
-                                                            @php
-                                                                array_push($sectionArray, (int) $singletestSections['Sections'][0]['id']);
-                                                            @endphp
+                                                    </div>
+                                                    <div class="block-content pb-3">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                Start
+                                                                {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
+                                                                Section Questions
+
+                                                            </div>
+                                                            <div>
+                                                                <a href="{{ route('single_section', ['id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id }}"
+                                                                    style="padding: 5px 20px fs-5"
+                                                                    class="btn btn-alt-secondary text-primary start_section"
+                                                                    data-section_id="{{ $singletestSections['Sections'][0]['id'] }}"
+                                                                    data-test_id="{{ $current_section_id }}">
+                                                                    {{-- Start {{str_replace(['_'],[' '], $singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                                                                    <i class="fa-solid fa-circle-check"
+                                                                        style='margin-right:5px'></i> Start
+                                                                    Section
+                                                                </a>
+                                                                @php
+                                                                    array_push($sectionArray, (int) $singletestSections['Sections'][0]['id']);
+                                                                @endphp
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </li>
+                                            </li>
+                                        @endif
                                     @endif
                                 @endif
                             @endif

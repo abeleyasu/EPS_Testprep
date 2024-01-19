@@ -519,6 +519,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::get('/start-all-sections/{sec_id}/{str}/{id}', [TestPrepController::class, 'startAllSections'])->name('startAllSections');
             Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
             Route::get('/official-practice-test/{id}', [TestPrepController::class, 'singleOfficeSection'])->name('official_single_section');
+            Route::get('/official-practice-test-module-2/{id}', [TestPrepController::class, 'singleModuleOfficeSection'])->name('official_module_single_section');
+            Route::get('/get-official-test', [TestPrepController::class, 'getQuestionSection'])->name('get_official_tests');
             Route::get('/practice-test/all/{id}', [TestPrepController::class, 'allSection'])->name('all_section');
         });
         Route::view('/practice-test-sections', 'user.practice-test-sections');
