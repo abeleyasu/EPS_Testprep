@@ -8,6 +8,11 @@
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        .fa-circle-arrow-right {
+            font-size: 22px;
+            color: #87ceeb;
+        }
+
         .ques {
             border: 1px solid black;
             padding: 10px 16px;
@@ -134,12 +139,46 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                      height: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                      background-color: blue;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                      margin-right: 5px; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  height: 20px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  background-color: blue;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  margin-right: 5px; */
         }
     </style>
+    @php
+        $testSections = \DB::table('practice_test_sections')
+            ->where('practice_test_sections.testid', $test_id)
+            ->get();
+// dd($testSections);
+        $test = \DB::table('practice_tests')
+            ->where('id', $test_id)
+            ->first();
+        // dd($test);
+        $getTestSection = $testSections->where('id', $section_id)->first();
+        // dd($testSections);
+        if ($getTestSection->practice_test_type == 'Hard_Reading_And_Writing' || $getTestSection->practice_test_type == 'Easy_Reading_And_Writing') {
+            $mareSections = $testSections->whereIn('practice_test_type', ['Easy_Reading_And_Writing', 'Hard_Reading_And_Writing']);
+            // dd($mareSections);
+        } elseif ($getTestSection->practice_test_type == 'Math_no_calculator' || $getTestSection->practice_test_type == 'Math_with_calculator') {
+            $mareSections = $testSections->whereIn('practice_test_type', ['Math_no_calculator', 'Math_with_calculator']);
+            // dd($mareSections);
+        } else {
+        }
 
+        //Check the boxes
+        $getSection = $testSection[0];
+        // dd($getSection);
+        if ($getTestSection->practice_test_type == 'Easy_Reading_And_Writing') {
+            $easyCheckBox = 'yes';
+        } elseif ($getTestSection->practice_test_type == 'Hard_Reading_And_Writing') {
+            $hardCheckBox = 'yes';
+        }
+
+        if ($getTestSection->practice_test_type == 'Math_with_calculator') {
+            $easyCheckBox = 'yes';
+        } elseif ($getTestSection->practice_test_type == 'Math_no_calculator') {
+            $hardCheckBox = 'yes';
+        }
+    @endphp
     <!-- Main Container -->
     <main id="main-container">
         <div class="bg-body-light">
@@ -153,6 +192,11 @@
                             $test_name = \DB::table('practice_tests')
                                 ->where('id', $testSection[0]->testid)
                                 ->value('title');
+
+                            // dd($getTestSection);
+                         $modifiedString = str_replace(['_'], [' '], $getTestSection->practice_test_type);
+                         $modifiedStrings = str_replace(['calculator', 'Easy', 'with', 'no', 'Hard'], '', $modifiedString);
+                                          
                         @endphp
                         <li class="breadcrumb-item" aria-current="page">
                             <a class="link-fx"
@@ -161,7 +205,10 @@
                             {{-- {{ isset($testSection[0]->section_title) ? $testSection[0]->section_title : '' }} {{ isset($testSection[0]->title) ? $testSection[0]->title : '' }} {{ isset($testSection[0]->id) ? '#'. $testSection[0]->id : '' }} --}}
                         </li>
                         <li class="breadcrumb-item" aria-current="page">
-                            <a class="link-fx" href="">{{ $test_name }}</a>
+                            <a class="link-fx" href="javascript:void(0)">{{ $test_name }}</a>
+                        </li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            <a class="link-fx" href="javascript:void(0)">{{ $modifiedStrings }}</a>
                         </li>
                     </ol>
                 </nav>
@@ -173,6 +220,12 @@
         <input type="hidden" id="get_offset" value="{{ $set_offset }}">
         <input type="hidden" id="get_question_type" value="{{ $question_type }}">
         <input type="hidden" id="time_selected" value="">
+        @if (isset($easyCheckBox))
+            <input type="hidden" id="easyCheckBox" value="{{ $easyCheckBox }}">
+        @endif
+        @if (isset($hardCheckBox))
+            <input type="hidden" id="hardCheckBox" value="{{ $hardCheckBox }}">
+        @endif
         <!-- Page Content -->
         <div class="content content-boxed content-height">
             <div class="row">
@@ -214,7 +267,7 @@
 
                             <div class="row">
                                 <div class="col-md-2">
-                                    <h5>skip: <span style="color:skyblue;font-size:21px"><i
+                                    <h5>skip: <span style="color:#87ceeb;font-size:21px"><i
                                                 class="fa-solid fa-circle-arrow-right"></i></span></h5>
                                 </div>
                                 <div class="col-md-2">
@@ -223,13 +276,59 @@
 
                                 </div>
                                 <div class="col-md-2">
-                                    <h5>flag: <span style="color:red;font-size:21px"><i class="fa-solid fa-flag"></i></span>
+                                    <h5>flag: <span style="color:#ff0000;font-size:21px"><i
+                                                class="fa-solid fa-flag"></i></span>
                                     </h5>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                @if (($test->format == 'DSAT' || $test->format == 'DPSAT') && ($getTestSection->practice_test_type == 'Hard_Reading_And_Writing' || $getTestSection->practice_test_type == 'Easy_Reading_And_Writing' || $getTestSection->practice_test_type == 'Math_no_calculator' || $getTestSection->practice_test_type == 'Math_with_calculator'))
+                    <div class="col-xl-12 mb-3"
+                        style="border: 1px dashed black;
+                padding: 21px;
+                text-align: center;">
+                        <h5>Select Delimiter</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <label class="form-check-label" for="easy">
+                                        @php
+                                            $easyDelimiter = $mareSections->where('easy_section_determiner', '!=', null);
+                                        @endphp
+                                        @if ($easyDelimiter)
+                                            @foreach ($easyDelimiter as $easyDe)
+                                                <input class="form-check-input" type="radio" name="easy_hard"
+                                                    id="easy" data-id={{ $easyDe->id }}>
+                                                {{ $easyDe->easy_section_determiner }}
+                                            @endforeach
+                                        @endif
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-check">
+                                    <label class="form-check-label" for="hard">
+                                        @php
+                                            $hardDelimiter = $mareSections->where('hard_section_determiner', '!=', null);
+                                        @endphp
+                                        @if ($hardDelimiter)
+                                            @foreach ($hardDelimiter as $hardDe)
+                                                <input class="form-check-input" type="radio" name="easy_hard"
+                                                    id="hard" data-id={{ $hardDe->id }}>
+
+                                                {{ $hardDe->hard_section_determiner }}
+                                            @endforeach
+                                        @endif
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                @endif
                 <div class="col-xl-12" id="set_question_data">
 
                     <!-- Question -->
@@ -247,10 +346,11 @@
                 <div class="col-xl-12 d-flex gap-3 justify-content-end mb-2">
                     <div class="mb-2">
                         <input type="text" class="form-control form-control-md " id="user_actual_score"
-                            name="user_actual_score" placeholder="Enter your Actual Score">
+                            name="user_actual_score" placeholder="Enter your Actual Score"
+                            onkeydown="return /[a-z]/i.test(event.key)">
                     </div>
                     <div class="mb-2">
-                        <input type="text" class="form-control form-control-md" id="user_actual_time"
+                        <input type="time" class="form-control form-control-md" id="user_actual_time"
                             name="user_actual_time" placeholder="Enter your Actual Time">
                     </div>
                 </div>
@@ -369,6 +469,67 @@
             $('#exampleModal').modal('show');
         });
 
+        $(document).ready(function() {
+            let easyCheckBox = $('#easyCheckBox').val();
+            let hardCheckBox = $('#hardCheckBox').val();
+            if (easyCheckBox == 'yes') {
+                $('#easy').prop("checked", true);
+            }
+
+            if (hardCheckBox == 'yes') {
+                $('#hard').prop("checked", true);
+            }
+
+            let test_id = {{ $test_id }};
+            $('#easy').on('change', function() {
+                if ($(this).is(':checked')) {
+                    let sectionId = $(this).data('id');
+
+                    jQuery.ajax({
+                        url: "{{ route('get_official_tests') }}",
+                        method: 'get',
+                        data: {
+                            'sectionId': sectionId,
+                            'test_id': test_id,
+                        },
+                        success: function(result) {
+                            console.log(result);
+                            window.location.href = '/user/official-practice-test/' + result.data
+                                .section_id + '?test_id=' + result.data.test_id +
+                                '&time=regular';
+
+                        }
+                    });
+
+                } else {
+                    alert('is unchecked');
+                }
+            });
+
+            $('#hard').on('change', function() {
+                if ($(this).is(':checked')) {
+                    let sectionId = $(this).data('id');
+
+                    jQuery.ajax({
+                        url: "{{ route('get_official_tests') }}",
+                        method: 'get',
+                        data: {
+                            'sectionId': sectionId,
+                            'test_id': test_id,
+                        },
+                        success: function(result) {
+                            console.log(result);
+                            window.location.href = '/user/official-practice-test/' + result.data
+                                .section_id + '?test_id=' + result.data.test_id +
+                                '&time=regular';
+
+                        }
+                    });
+                } else {
+                    alert('is unchecked');
+                }
+            });
+        });
 
         jQuery(document).ready(function() {
 
@@ -791,17 +952,34 @@
                     case 'skip':
                         selectedDetails = selected_skip_details;
                         mainSectionClass = 'main_skip_section-' + questionId;
-                        $('.arrow-' + questionId).css('color', '#ea580c');
+                        let colorArrow = $('.arrow-' + questionId);
+                        // console.log(colorArrow.css('color'))
+                        if (colorArrow.css('color') === "rgb(135, 206, 235)") {
+                            colorArrow.css('color', 'green');
+                        } else {
+                            colorArrow.css("color", "#87ceeb");
+                        }
                         break;
                     case 'guess':
                         selectedDetails = selected_gusess_details;
                         mainSectionClass = 'main_guess_section-' + questionId;
-                        $('.ques-' + questionId).css('color', '#ea580c');
+                        let quesColor = $('.ques-' + questionId);
+                        if (quesColor.css('color') === "rgb(128, 128, 128)") {
+                            quesColor.css('color', 'green');
+                        } else {
+                            quesColor.css("color", "#808080");
+                        }
                         break;
                     case 'flag':
                         selectedDetails = selected_flag_details;
                         mainSectionClass = 'main_flag_section-' + questionId;
-                        $('.flag-' + questionId).css('color', '#bb0000b5');
+                        let flagColor = $('.flagy-' + questionId);
+                        console.log(flagColor.css('color'))
+                        if (flagColor.css('color') === "rgb(255, 0, 0)") {
+                            flagColor.css('color', 'green');
+                        } else {
+                            flagColor.css("color", "#ff0000");
+                        }
                         break;
                         // Add more cases if needed
                 }
@@ -812,7 +990,7 @@
                     selectedDetails[questionId] = 'yes';
                 } else {
                     $('.' + mainSectionClass).css("color", bgColor);
-                    $('.' + mainSectionClass).css("background-color", "white");
+                    $('.' + mainSectionClass).css("background-color", "transparent");
                     selectedDetails[questionId] = 'no';
                 }
 
@@ -825,14 +1003,14 @@
                     }
                 });
             }
-            $('#user_actual_time').on('blur', function() {
-                var input = $(this).val();
-                if (!/^$|^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/.test(input)) {
-                    alert('Please enter a valid time in the format HH:MM:SS.');
-                    $(this).val('');
-                    return false;
-                }
-            });
+            // $('#user_actual_time').on('blur', function() {
+            //     var input = $(this).val();
+            //     if (!/^$|^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/.test(input)) {
+            //         alert('Please enter a valid time in the format HH:MM:SS.');
+            //         $(this).val('');
+            //         return false;
+            //     }
+            // });
 
 
 
@@ -878,10 +1056,10 @@
                 let userActualScore = $('#user_actual_score').val();
                 let userActualTime = $('#user_actual_time').val();
 
-                if (userActualScore == '' && userActualTime == '') {
-                    alert('Please enter valid values for Actual Score and Actual Time fields.');
-                    return false;
-                }
+                // if (userActualScore == '' && userActualTime == '') {
+                //     alert('Please enter valid values for Actual Score and Actual Time fields.');
+                //     return false;
+                // }
 
 
                 let sectionID = '{{ $section_id }}';
@@ -1695,8 +1873,7 @@
                             set_questions_options += `   <label
                             class="fw-semibold me-1 checkbox-button main_skip_section-${value.id}">
                             <input type="checkbox" class="skip-${value.id}" />
-                            <i class="fa-solid fa-circle-arrow-right arrow-${value.id}" style="font-size: 22px;
-    color: skyblue;"></i>                        
+                            <i class="fa-solid fa-circle-arrow-right arrow-${value.id}"></i>                        
                             </label>
                         <label
                             class="fw-semibold me-1 checkbox-button main_guess_section-${value.id}">
@@ -1708,8 +1885,8 @@
                             <label
                             class="fw-semibold me-1 checkbox-button main_flag_section-${value.id}">
                             <input type="checkbox" class="flag-${value.id}" />
-                            <i class="fa fa-fw fa-flag flag-${value.id} me-1" style="font-size: 22px;
-    color: red;"></i>
+                            <i class="fa fa-fw fa-flag flagy-${value.id} me-1" style="font-size: 22px;
+    color: #ff0000;"></i>
                         </label></div> </div>`;
 
 

@@ -136,6 +136,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
         Route::group(['prefix' => 'course-management'], function () {
             Route::resource('courses', CoursesController::class);
+            Route::get('/courses/{course}/detail', [CoursesController::class, 'show'])->name('courses.detail');
             Route::post('courses/{course}/courseupdate', [CoursesController::class, 'course_update'])->name('courses.courseupdate');
             Route::resource('courseslist', CourseController::class);
             // Route::post('courseslist', CourseController::class);
@@ -326,7 +327,6 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
         Route::group(['middleware' => ['subscription_valid:access-courses']], function () {
             Route::get('/courses', [MilestoneController::class, 'studentIndex'])->name('courses.index');
-            Route::get('/courses/{course}/detail', [CoursesController::class, 'show'])->name('courses.detail');
             Route::get('/courses/{course}/milestone', [CoursesController::class, 'UserCourseDetail'])->name('courses.milestone');
             Route::get('/milestone/{milestone}/detail', [MilestoneController::class, 'show'])->name('milestone.detail');
             Route::get('/modules/{module}/detail', [ModuleController::class, 'show'])->name('modules.detail');
@@ -519,6 +519,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::get('/start-all-sections/{sec_id}/{str}/{id}', [TestPrepController::class, 'startAllSections'])->name('startAllSections');
             Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
             Route::get('/official-practice-test/{id}', [TestPrepController::class, 'singleOfficeSection'])->name('official_single_section');
+            Route::get('/official-practice-test-module-2/{id}', [TestPrepController::class, 'singleModuleOfficeSection'])->name('official_module_single_section');
+            Route::get('/get-official-test', [TestPrepController::class, 'getQuestionSection'])->name('get_official_tests');
             Route::get('/practice-test/all/{id}', [TestPrepController::class, 'allSection'])->name('all_section');
         });
         Route::view('/practice-test-sections', 'user.practice-test-sections');

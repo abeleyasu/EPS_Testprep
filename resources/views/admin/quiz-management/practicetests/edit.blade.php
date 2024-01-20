@@ -613,7 +613,18 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                 <input type="number" id="100extendedhour" step="1" class="form-control me-1" placeholder="Enter Hours"/><span style="font-weight: 700">:</span><input type="number" id="100extendedminute" min="0" max="59" step="1"  class="form-control ms-1 me-1" placeholder="Enter Minutes" oninput="validateInput(this)"/><span style="font-weight: 700">:</span><input type="number" id="100extendedsecond" min="0" max="59" step="1"  class="form-control ms-1" placeholder="Enter Seconds" oninput="validateInput(this)"/>
                                             </div>
                                         </div>
-
+                                        <div class="col-md-12 for_digital_only easy_section_determiner" style="display: none">
+                                            <label class="form-label" style="font-size: 13px;">Easy Section Determiner:<span
+                                                    class="text-danger">*</span></label>
+                                            <input id="easy_section_determiner" name="easy_section_determiner" class="form-control"
+                                                placeholder="Enter Easy Section Determiner">
+                                        </div>
+                                        <div class="col-md-12 mt-3 mb-3 for_digital_only hard_section_determiner" style="display: none">
+                                            <label class="form-label" style="font-size: 13px;">Hard Section Determiner:<span
+                                                    class="text-danger">*</span></label>
+                                            <input id="hard_section_determiner" name="hard_section_determiner" class="form-control"
+                                                placeholder="Enter Hard Section Determiner">
+                                        </div>
                                         <div class="mb-2 show-calc-div row">
                                             <div class="col-md-1">
                                                 <input type="checkbox" class="show-calc-box" name="add_show_calc" id="add_show_calc">
@@ -715,7 +726,19 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                 <input type="number" id="edit100extendedhour" step="1" class="form-control me-1" placeholder="Enter Hours"/><span style="font-weight: 700">:</span><input type="number" id="edit100extendedminute" min="0" max="59" step="1"  class="form-control ms-1 me-1" placeholder="Enter Minutes" oninput="validateInput(this)"/><span style="font-weight: 700">:</span><input type="number" id="edit100extendedsecond" min="0" max="59" step="1"  class="form-control ms-1" placeholder="Enter Seconds" oninput="validateInput(this)"/>
                                             </div>
                                         </div>
-
+                                        <div class="col-md-12 for_digital_only edit_easy_section_determiner" style="display: none">
+                                            <label class="form-label" style="font-size: 13px;">Easy Section Determiner:<span
+                                                    class="text-danger">*</span></label>
+                                            <input id="edit_easy_section_determiner" name="easy_section_determiner" class="form-control"
+                                                placeholder="Enter Easy Section Determiner">
+                                        </div>
+                                        <div class="col-md-12 mt-3 mb-3 for_digital_only edit_hard_section_determiner"
+                                            style="display: none">
+                                            <label class="form-label" style="font-size: 13px;">Hard Section Determiner:<span
+                                                    class="text-danger">*</span></label>
+                                            <input id="edit_hard_section_determiner" name="hard_section_determiner" class="form-control"
+                                                placeholder="Enter Hard Section Determiner">
+                                        </div>
                                         <div class="mb-2 show-calc-div row">
                                             <div class="col-md-1">
                                                 <input type="checkbox" style="font-size: 13px;" class="show-calc-box" name="edit_show_calc" id="edit_show_calc">
@@ -5524,6 +5547,9 @@ $('textarea').each(function (index) {
                 add_score_button_class = 'digi_add_score_btn';
             }
 
+            var easy_section_determiner = jQuery('#easy_section_determiner').val();
+                    var hard_section_determiner = jQuery('#hard_section_determiner').val();
+
             if (whichModel == 'section') {
                 if (format == '' || testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0') {
                     $('#sectionModal .validError').text('Below fields are required!');
@@ -5561,6 +5587,8 @@ $('textarea').each(function (index) {
                         'fifty': fiftyExtended,
                         'hundred': hundredExtended,
                         'question_type': question_type,
+                        'easy_section_determiner': easy_section_determiner,
+                        'hard_section_determiner': hard_section_determiner,
                         '_token': $('input[name="_token"]').val()
                     },
                     url: "{{ route('addPracticeTestSection') }}",
@@ -8143,6 +8171,17 @@ Sortable.create(mainSectionContainer, {
 },);
 
 $('.add_section_modal_btn').click(function() {
+     var format = $('#format').val();
+            var test_source = $('#source option:selected').val();
+            if (test_source == "1" && (format == 'DSAT' || format == "DPSAT")) {
+                $('#hard_section_determiner').val('');
+                $('#easy_section_determiner').val('');
+                $('.hard_section_determiner').show();
+                $('.easy_section_determiner').show();
+            } else {
+                $('.hard_section_determiner').hide();
+                $('.easy_section_determiner').hide();
+            }
     $('#add_show_calc').prop('checked', false);
     $("input[name=required_number_of_correct_answers]").val("");
     var optionObj = [];
@@ -8364,6 +8403,29 @@ var test = Sortable.create(addListWithHandleQuestion, {
                 let regularTime = res.sectionDetails.regular_time.split(':');
                 let fiftyTime = res.sectionDetails.fifty_per_extended.split(':');
                 let hundredTime = res.sectionDetails.hundred_per_extended.split(':');
+                var source = $('#source option:selected').val();
+
+                if (source == '1' && (res.sectionDetails.practice_test_type == 'Reading_And_Writing' || res.sectionDetails.practice_test_type == 'Math')) {
+                        $('.edit_easy_section_determiner').hide();
+                        $('.edit_hard_section_determiner').hide();
+                    }
+
+                    if (source == '1' && (res.sectionDetails.practice_test_type == 'Easy_Reading_And_Writing' || res
+                        .sectionDetails.practice_test_type == 'Math_with_calculator')) {
+                        $('.edit_easy_section_determiner').show();
+                        $('#edit_easy_section_determiner').val(res.sectionDetails.easy_section_determiner);
+                        $('.edit_hard_section_determiner').hide();
+                        $('#edit_hard_section_determiner').val(res.sectionDetails.hard_section_determiner);
+
+                    }
+
+                    if (source == '1' && (res.sectionDetails.practice_test_type == 'Hard_Reading_And_Writing' || res
+                        .sectionDetails.practice_test_type == 'Math_no_calculator')) {
+                        $('.edit_easy_section_determiner').hide();
+                        $('#edit_easy_section_determiner').val(res.sectionDetails.easy_section_determiner);
+                        $('.edit_hard_section_determiner').show();
+                        $('#edit_hard_section_determiner').val(res.sectionDetails.hard_section_determiner);
+                    }
 
                 $('#edit_regular_hour').val(regularTime[0]);
                 $('#edit_regular_minute').val(regularTime[1]);
@@ -8374,7 +8436,7 @@ var test = Sortable.create(addListWithHandleQuestion, {
                 $('#edit50extendedsecond').val(fiftyTime[2]);
                 $('#edit_required_number_of_correct_answers').val(res.sectionDetails.required_number_of_correct_answers);
 
-                required_number_of_correct_answers
+                // required_number_of_correct_answers
 
                 $('#edit100extendedhour').val(hundredTime[0]);
                 $('#edit100extendedminute').val(hundredTime[1]);
@@ -8408,6 +8470,9 @@ var test = Sortable.create(addListWithHandleQuestion, {
         if ($('#edit_show_calc').is(':checked')) {
             editShowCalc = 1;
         }
+
+        var editEasySection = $('#edit_easy_section_determiner').val();
+                var editHardSection = $('#edit_hard_section_determiner').val();
         $.ajax({
             data: {
                 'sectionId': id ,
@@ -8418,6 +8483,8 @@ var test = Sortable.create(addListWithHandleQuestion, {
                 'hundred': hundredExtended,
                 'required_number_of_correct_answers': edit_required_number_of_correct_answers,
                 'show_calculator': editShowCalc,
+                 'editEasySection': editEasySection,
+                    'editHardSection': editHardSection,
                 '_token': $('input[name="_token"]').val()
             },
             url: '{{ route("update_section") }}',
