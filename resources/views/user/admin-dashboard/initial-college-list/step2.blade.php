@@ -3,6 +3,15 @@
 @section('title', 'Initial College List : CPS')
 
 @section('user-content')
+@php 
+$current_user_state_code = (
+    DB::table('states')
+->select('id', 'state_code')
+->where('id', '=' , Auth::user()
+->state_id)
+->first() 
+)
+@endphp
 <main id="main-container">
     <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
         <div class="bg-black-10">
@@ -144,7 +153,30 @@
                                                         N/A
                                                     @endif
                                                 </p>
-                                                <p><b>Average Annual Cost:</b> 
+                                                @php
+                                                 $costOfAttendanceStr = "Cost of Attendance"   
+                                                @endphp
+                                                @switch($college['school.ownership'])
+                                                    @case(1)
+                                                        @if($college['school.state'] == $current_user_state_code )
+                                                            @php
+                                                                $costOfAttendanceStr .= "(In-State)"
+                                                            @endphp
+                                                        
+                                                        @else
+                                                            @php
+                                                                $costOfAttendanceStr .= "(Out-of-State)"
+                                                            @endphp
+                                                        
+                                                        @endif
+                                                    @break
+                                                    @case(2)
+                                                        @php
+                                                            $costOfAttendanceStr .= ""
+                                                        @endphp
+                                                    @break
+                                                @endswitch
+                                                <p><b>{{ $costOfAttendanceStr }}:</b> 
                                                     @if($college['latest.cost.avg_net_price.overall'])
                                                         {{ '$' . number_format($college['latest.cost.avg_net_price.overall'] / 1000, 0) . 'k' }}
                                                     @else
@@ -339,19 +371,19 @@
                                                     <div>ROOM AND BOARD</div>
                                                     <small><span id="c-room-and-board"></span></small>
                                                 </div>
-                                                <div class="block-title mb-2">
+                                                {{-- <div class="block-title mb-2">
                                                     <div>AVERAGE PERCENT OF NEED MET</div>
                                                     <small><span id="c-average-percent-of-need-met"></span></small>
                                                 </div>
                                                 <div class="block-title mb-2">
                                                     <div>AVERAGE FRESHMAN AWARD</div>
                                                     <small><span id="c-average-freshman-award"></span></small>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                {{-- <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-bs-toggle="collapse" data-bs-target="#cost" aria-expanded="true" aria-controls="cost">
                                         <a class="text-white fw-600 collapsed"><i class="fa-solid fa-comments-dollar me-2"></i>Cost</a>
                                     </div>
@@ -388,7 +420,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+                                 --}}
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                                         <a class=" text-white fw-600 collapsed"><i class="fa-solid fa-comments-dollar me-2"></i> Fields of Study</a>
@@ -596,20 +628,89 @@
                                                     <div class="block block-rounded block-link-shadow">
                                                         <h2 class="block-title">Test Scores</h2>
                                                         <p id="test-score-content"><span class="test-score-college-name"></span> has an acceptance rate of <span id="test-score-acceptance-rate-percentage"></span>. <span class="test-score-college-name"></span> considers admission test scores (SAT/ACT) during the application process, but does not require them. Students who were admitted to <span class="test-score-college-name"></span> and enrolled typically had admission test scores in these ranges.</p>
-                                                        <div class="mb-2 exam-detail">
+                                                        <div class="block-title mb-2">
+                                                            <div>AVERAGE ACCEPTED GPA</div>
+                                                            <small id="c-avg-accepted-gpa-2"></small>
+                                                        </div>
+                                                        <div class="block-title mb-2">
+                                                            <div>SAT Math</div>
+                                                            <div><small>Average SAT Math</small></div>
+                                                            <small id="c-avg-sat-math-2"></small>
+                                                            <div><small>Range of middle 50%</small></div>
+                                                            <small id="avg-sat-middle-2"></small>
+                                                        </div>
+                                                        
+                                                        <div class="block-title mb-2">
+                                                            <div>SAT Reading/Writing</div>
+                                                            <div><small>Average SAT Reading/Writing</small></div>
+                                                            <small id="c-avg-sat-reading-weiting-2"></small>
+                                                            <div><small>Range of middle 50%</small></div>
+                                                            <small id="avg-sat-reading-writing-middle-2"></small>
+                                                        </div>
+            
+                                                        <div class="block-title mb-2">
+                                                            <div>ACT Composite</div>
+                                                            <div><small>Average ACT Composite</small></div>
+                                                            <small id="c-avg-act-composite-2"></small>
+                                                            <div><small>Range of middle 50%</small></div>
+                                                            <small id="avg-act-composite-middle-2"></small>
+                                                        </div>
+                                                        {{-- <div class="mb-2 exam-detail">
                                                             <h2 class="block-title">SAT</h2>
                                                             <div>CRITICAL READING: <span id="sat-critical-reading">530-620</span></div>
                                                             <div>Math: <span id="sat-math-score">580-620</span></div>
                                                         </div>
                                                         <div class="mb-2 exam-detail">
                                                             <h2 class="block-title">ACT: <span id="act-score">530-620</span></h2>
-                                                        </div>
+                                                        </div> --}}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                    <div class="block-header block-header-tab" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEleven" aria-expanded="true" aria-controls="collapseEleven">
+                                        <a class=" text-white fw-600 collapsed"><i class="fa-solid fa-comments-dollar me-2"></i>Campus Life</a>
+                                    </div>
+                                    <div id="collapseEleven" class="collapse" aria-labelledby="headingOne" data-bs-parent=".accordionExample">
+                                        <div class="college-content-wrapper college-content">
+                                            <div class="block block-rounded block-bordered">
+                                                <div class="block-content">
+                                                    <div class="block block-rounded block-link-shadow">
+                                                        <h2 class="block-title">1. Athletic Division</h2>
+                                                        <div id="test-info-acceptance-rate"></div>
+                                                    </div>
+                                                    <div class="block block-rounded block-link-shadow">
+                                                        <h2 class="block-title">2. Greek Life (Sororities & Fraternities)</h2>
+                                                        <div id="test-info-acceptance-rate"></div>
+                                                    </div>
+                                                    <div class="block block-rounded block-link-shadow">
+                                                        <h2 class="block-title">3. % in sororities</h2>
+                                                        <div id="test-info-acceptance-rate"></div>
+                                                    </div>
+                                                    <div class="block block-rounded block-link-shadow">
+                                                        <h2 class="block-title">4. % in Fraternities</h2>
+                                                        <div id="test-info-acceptance-rate"></div>
+                                                    </div>
+                                                    <div class="block block-rounded block-link-shadow">
+                                                        <h2 class="block-title">5. Nearest Metropolitan Area </h2>
+                                                        <div id="test-info-acceptance-rate"></div>
+                                                    </div>
+                                                    <div class="block block-rounded block-link-shadow">
+                                                        <h2 class="block-title">6. Freshman Housing Guarantee </h2>
+                                                        <div id="test-info-acceptance-rate"></div>
+                                                    </div>
+                                                    <div class="block block-rounded block-link-shadow">
+                                                        <h2 class="block-title">7. Students in College Housing</h2>
+                                                        <div id="test-info-acceptance-rate"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -842,6 +943,13 @@
                     $('#sat-critical-reading').html('N/A')
                     $('#avg-sat-reading-writing-middle').html('-')
                 }
+                if (firstcriticalreading && secondcriticalreading) {
+                    $('#sat-critical-reading').html(`${firstcriticalreading}-${secondcriticalreading}`)
+                    $('#avg-sat-reading-writing-middle-2').html(`${firstcriticalreading}-${secondcriticalreading} (200 to 800)`)
+                } else {
+                    $('#sat-critical-reading').html('N/A')
+                    $('#avg-sat-reading-writing-middle-2').html('-')
+                }
 
                 const firstMathreading = data.latest.admissions.sat_scores['25th_percentile'].math
                 const secondMathreading = data.latest.admissions.sat_scores['75th_percentile'].math
@@ -851,6 +959,11 @@
                 } else {
                     $('#avg-sat-middle').html('-')
                 }
+                if (firstMathreading && secondMathreading) {
+                    $('#avg-sat-middle-2').html(`${firstMathreading}-${secondMathreading} (200 to 800)`)
+                } else {
+                    $('#avg-sat-middle-2').html('-')
+                }
                 
                 const firstactscore = data.latest.admissions.act_scores['25th_percentile'].cumulative
                 const secondactscore = data.latest.admissions.act_scores['75th_percentile'].cumulative
@@ -858,6 +971,7 @@
                 if (firstactscore && secondactscore) {
                     $('#act-score').html(`${firstactscore}-${secondactscore}`)
                     $('#avg-act-composite-middle').html(`${firstactscore}-${secondactscore} (0 to 36)`)
+                    $('#avg-act-composite-middle-2').html(`${firstactscore}-${secondactscore} (0 to 36)`)
                 } else {
                     $('#act-score').html('N/A')
                     $('#avg-act-composite-middle').html('-')
@@ -904,9 +1018,13 @@
                 }
 
                 $('#c-avg-accepted-gpa').html((data.latest.college_info.gpa_average && data.latest.college_info.gpa_average !== '0' ? data.latest.college_info.gpa_average : '-'))
+                $('#c-avg-accepted-gpa-2').html((data.latest.college_info.gpa_average && data.latest.college_info.gpa_average !== '0' ? data.latest.college_info.gpa_average : '-'))
                 $('#c-avg-sat-math').html((data.latest.college_info.sat_math_average && data.latest.college_info.sat_math_average !== '0' ? data.latest.college_info.sat_math_average : '-'))
+                $('#c-avg-sat-math-2').html((data.latest.college_info.sat_math_average && data.latest.college_info.sat_math_average !== '0' ? data.latest.college_info.sat_math_average : '-'))
                 $('#c-avg-sat-reading-weiting').html((data.latest.college_info.sat_reading_writing_average && data.latest.college_info.sat_reading_writing_average !== '0' ? data.latest.college_info.sat_reading_writing_average : '-'))
+                $('#c-avg-sat-reading-weiting-2').html((data.latest.college_info.sat_reading_writing_average && data.latest.college_info.sat_reading_writing_average !== '0' ? data.latest.college_info.sat_reading_writing_average : '-'))
                 $('#c-avg-act-composite').html((data.latest.college_info.act_composite_average && data.latest.college_info.act_composite_average !== '0' ? data.latest.college_info.act_composite_average : '-'))
+                $('#c-avg-act-composite-2').html((data.latest.college_info.act_composite_average && data.latest.college_info.act_composite_average !== '0' ? data.latest.college_info.act_composite_average : '-'))
 
                 $('#c-cost-of-attendamce').html((data.latest.college_info.cost_of_attendance && data.latest.college_info.cost_of_attendance !== '0' ? '$'+data.latest.college_info.cost_of_attendance : '-'))
                 $('#c-tution-and-fees').html((data.latest.college_info.tution_and_fess && data.latest.college_info.tution_and_fess !== '0' ? '$'+data.latest.college_info.tution_and_fess : '-'))
@@ -914,6 +1032,8 @@
                 $('#c-average-percent-of-need-met').html((data.latest.college_info.average_percent_of_need_met && data.latest.college_info.average_percent_of_need_met !== '0' ? data.latest.college_info.average_percent_of_need_met+ '%' : '-'))
                 $('#c-average-freshman-award').html((data.latest.college_info.average_freshman_award && data.latest.college_info.average_freshman_award !== '0' ? '$'+data.latest.college_info.average_freshman_award : '-'))
 
+                console.log("HAyE")
+                console.log(data)
                 $('#c-entrance-difficulty').html((data.latest.college_info.entrance_difficulty ? data.latest.college_info.entrance_difficulty : '-'))
                 $('#c-early-action-offered').html((data.latest.college_info.early_action_offerd === 1 ? 'Yes' : 'No'))
                 $('#c-early-decision-offerd').html((data.latest.college_info.early_decision_offerd === 1 ? 'Yes' : 'No'))
@@ -925,7 +1045,7 @@
                 $('#info-ownership').html(ownership)
                 $('#info-campus').html(campus)
                 $('#info-size').html(size)
-                $('#college-url').attr('href', '//'+data.school.school_url)
+                $('#college-url').attr('href', data.latest.college_info.school_url ? '//' + data.latest.college_info.school_url : '//'+data.school.school_url)
                 $('#avg-anual-cost').html('$' + avganualcosr)
                 const gmapKey = "{{ env('GOOGLE_MAP_KEY') }}"
                 const url = "https://www.google.com/maps/embed/v1/place?key="+gmapKey+"&q=" + data.school.name + "," + data.school.city +

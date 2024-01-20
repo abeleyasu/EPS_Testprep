@@ -486,6 +486,8 @@ class InititalCollegeListController extends Controller
         $data = Http::get($api);
         $data = json_decode($data->body());
         if (count($data->results) > 0) {
+            error_log('DATA VALUE');
+            error_log(json_encode($data));
             $data = $data->results[0];
             $college_info = CollegeInformation::where('college_id', $data->id)->first();
             if ($college_info) {

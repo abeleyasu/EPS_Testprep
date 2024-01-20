@@ -161,6 +161,14 @@
           </div>
 
           <div class="mb-4">
+            <label class="from-label">Website URL:</label>
+            <input type="text" class="form-control {{$errors->has('school_url') ? 'is-invalid' : ''}}" name="school_url" value="{{ old('school_url') ? old('school_url') : $info->school_url }}"/>
+            @error('school_url')
+              <div class="invalid-feedback">{{$message}}</div>
+            @enderror
+          </div>
+
+          <div class="mb-4">
             <label class="from-label">Description:</label>
             <textarea class="form-control" id="js-ckeditor-desc" name="description" rows="4" placeholder="College Description" autocomplete="__away">
               {{ old('description') ? old('description') : $info->description }}
@@ -169,6 +177,8 @@
               <div class="invalid-feedback">{{$message}}</div>
             @enderror
           </div>
+
+
 
           <div class="row mb-4">
             <div class="col-md-6 col-xl-5">
