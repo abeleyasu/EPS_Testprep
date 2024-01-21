@@ -154,31 +154,46 @@ $current_user_state_code = (
                                                     @endif
                                                 </p>
                                                 @php
-                                                 $costOfAttendanceStr = "Cost of Attendance"   
+                                                    $costOfAttendanceStr = "Cost of Attendance";
+                                                    $total_cost = '';
+                                                    $college_info =   $college['college_info'];
+                                                    $fees_ft_d =  $college_info->FEES_FT_D ? (int) $college_info->FEES_FT_D : 0;
+                                                    $books_res_d = $college_info->BOOKS_RES_D ? (int) $college_info->BOOKS_RES_D : 0;
+                                                    $transport_res_d = $college_info->TRANSPORT_RES_D ? (int) $college_info->TRANSPORT_RES_D : 0;
+                                                    $total_cost = $fees_ft_d + $books_res_d + $transport_res_d;
                                                 @endphp
                                                 @switch($college['school.ownership'])
                                                     @case(1)
                                                         @if($college['school.state'] == $current_user_state_code )
                                                             @php
-                                                                $costOfAttendanceStr .= "(In-State)"
+                                                                $costOfAttendanceStr .= "(In-State)";
+                                                                $tuit_state_ft_d  = $college_info->TUIT_STATE_FT_D ? (int) $college_info->TUIT_STATE_FT_D  : 0;
+                                                                $total_cost += $tuit_state_ft_d;
                                                             @endphp
                                                         
                                                         @else
                                                             @php
-                                                                $costOfAttendanceStr .= "(Out-of-State)"
+                                                                $costOfAttendanceStr .= "(Out-of-State)";
+                                                                $tuit_nres_ft_d = $college_info->TUIT_NRES_FT_D ? (int) $college_info->TUIT_NRES_FT_D  : 0;
+                                                                $total_cost += $tuit_nres_ft_d;
+
                                                             @endphp
                                                         
                                                         @endif
                                                     @break
                                                     @case(2)
                                                         @php
-                                                            $costOfAttendanceStr .= ""
+                                                            $costOfAttendanceStr .= "";
+                                                            $tuit_overall_ft_d = $college_info->TUIT_OVERALL_FT_D ? (int) $college_info->TUIT_OVERALL_FT_D : 0;
+                                                            $total_cost += $tuit_overall_ft_d;
+
                                                         @endphp
                                                     @break
                                                 @endswitch
                                                 <p><b>{{ $costOfAttendanceStr }}:</b> 
                                                     @if($college['latest.cost.avg_net_price.overall'])
-                                                        {{ '$' . number_format($college['latest.cost.avg_net_price.overall'] / 1000, 0) . 'k' }}
+                                                        {{ '$' . $total_cost }}
+                                                        {{-- {{ '$' . number_format($college['latest.cost.avg_net_price.overall'] / 1000, 0) . 'k' }} --}}
                                                     @else
                                                         N/A
                                                     @endif

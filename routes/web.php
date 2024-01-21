@@ -119,6 +119,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                     Route::get('/', 'index')->name('index');
                     Route::get('/edit/{id}', 'editView')->name('edit');
                     Route::post('/edit', 'update')->name('update');
+                    Route::post('/import_csv', 'import_csv')->name('import_csv');
+                    Route::post('/import_ug_expense_asgns', 'import_ug_expense_asgns')->name('import_ug_expense_asgns');
                 });
             });
         });

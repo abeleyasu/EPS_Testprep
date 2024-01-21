@@ -38,6 +38,13 @@ class CollegeInformation extends Model
         'sat_composite_score',
         'description',
         'college_icon',
+        'petersons_id',
+        'TUIT_STATE_FT_D',
+        'TUIT_NRES_FT_D',
+        'TUIT_OVERALL_FT_D',
+        'FEES_FT_D',
+        'BOOKS_RES_D',
+        'TRANSPORT_RES_D'
     ];
 
     protected $hidden = [

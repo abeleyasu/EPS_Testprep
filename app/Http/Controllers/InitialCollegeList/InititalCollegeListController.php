@@ -68,6 +68,13 @@ class InititalCollegeListController extends Controller
             'query' => $request->query(),
         ]);
 
+
+        foreach($data['data'] as $key => &$value){
+            $response = CollegeInformation::where('college_id', $value["id"])->first();
+            $value["college_info"] = $response;
+
+        }
+
         return view('user.admin-dashboard.initial-college-list.step2', [
             'college_id' => $college->id,
             'college_data' => $data['data'],

@@ -12,18 +12,19 @@ class CollegeInformationController extends Controller
     {
         $user = Auth::user();
 
-        if($user->role == 1) {   
+        if ($user->role == 1) {
             $college_list = CollegeInformation::all();
         } else {
-            $colleges_list = CollegeInformation::whereNull('user_id')->orWhere('user_id' , Auth::id())->get();
+            $colleges_list = CollegeInformation::whereNull('user_id')->orWhere('user_id', Auth::id())->get();
         }
         return response()->json(['success' => true, 'dropdown_list' => $colleges_list]);
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         if ($request->ajax()) {
             $limit = isset($request->length) ? $request->length : 10;
-            $search =  isset($request->search['value']) ? $request->search['value'] : ""; 
+            $search =  isset($request->search['value']) ? $request->search['value'] : "";
             $start = isset($request->start) ? $request->start : 0;
 
             $college_details = CollegeInformation::orderBy('name');
@@ -48,7 +49,7 @@ class CollegeInformationController extends Controller
                     'name' => $college_detail['name'],
                     'city' => $college_detail['city'],
                     'state' => $college_detail['state'],
-                    'action' =>  '<a href="'. route('admin.admission-management.college-information.edit', ['id' => $college_detail['id']]) .'" class="btn btn-sm btn-primary"><i class="fa fa-pencil-alt"></i></a>',
+                    'action' =>  '<a href="' . route('admin.admission-management.college-information.edit', ['id' => $college_detail['id']]) . '" class="btn btn-sm btn-primary"><i class="fa fa-pencil-alt"></i></a>',
                 ];
             }
 
@@ -65,18 +66,106 @@ class CollegeInformationController extends Controller
         }
     }
 
-    public function editView($id) {
+
+    public function import_csv(Request $request)
+    {
+        $file = $request->file('csv_file');
+        $fileContents = file($file->getPathname());
+
+        $index = -1;
+        foreach ($fileContents as $line) {
+            $index++;
+            if ($index == 0) continue;
+            $data = str_getcsv($line);
+            $collegeInfo = CollegeInformation::where('name', $data[2])
+                ->where('state', $data[10])
+                ->first();
+            if ($collegeInfo) {
+                $new_data = [
+                    'petersons_id' => $data[1],
+                ];
+                $collegeInfo->update($new_data);
+            }
+        }
+
+        return redirect()->back()->with('success', 'CSV file imported successfully.');
+    }
+    public function import_ug_expense_asgns(Request $request)
+    {
+        // $indeces_of_data = array(7, 9, );
+        // Get indices
+        $column_names = array(
+            'TUIT_STATE_FT_D' => -1, 
+            'FEES_FT_D' => -1, 
+            'BOOKS_RES_D' => -1, 
+            'TRANSPORT_RES_D' => -1, 
+            'TUIT_NRES_FT_D' => -1, 
+            'TUIT_OVERALL_FT_D' => -1 
+        );
+        $file = $request->file('ug_expense_asgns');
+        $fileContents = file($file->getPathname());
+
+        $index = -1;
+        foreach ($fileContents as $line) {
+            $index++;
+            $data = str_getcsv($line);
+            
+            // Storing the indeces of Required Columns
+            if ($index == 0) {
+                $j = 0;
+                foreach($data as $column_name) {
+                    if(array_key_exists($column_name , $column_names)){
+                        $column_names[$column_name] = $j;
+                    }
+                    // if(in_array($column_name, $column_names )){
+                    //     array_push($indeces_of_columns, $j);
+                    // }
+                    $j++;
+                }
+                continue;
+            }
+
+
+            $new_data = array();
+            
+            // Insert Data from CSV into new_data associative array if the cell is not empty
+            // foreach($indeces_of_columns as $column_index) {
+            //     if(!empty($data[$column_index])){
+            //         $new_data[$column_names[$i]] = $data[$column_index];
+            //     }
+            //     $i++;
+            // }
+            $i = 0;
+            foreach($column_names as $column_name => $column_name_index){
+                if(!empty($data[$column_name_index])){
+                    $new_data[$column_name] = $data[$column_name_index];
+                }
+                $i++;
+            }
+            $collegeInfo = CollegeInformation::where('petersons_id', $data[2])
+                ->first();
+            if ($collegeInfo) {
+                $collegeInfo->update($new_data);
+            }
+        }
+
+        return redirect()->back()->with('success', 'CSV file imported successfully.');
+    }
+
+    public function editView($id)
+    {
         $college_detail = CollegeInformation::find($id);
         if ($college_detail) {
             // dd($college_detail);
             return view('admin.college-information.edit', [
                 'info' => $college_detail,
             ]);
-        } 
+        }
         return redirect()->route('admin.admission-management.college-information.index');
     }
 
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         $rules = [
             'entrance_difficulty' => 'required',
             'gpa_average' => 'required',
@@ -121,7 +210,7 @@ class CollegeInformationController extends Controller
         $request->validate($rules, $customMessages);
         $data = collect($request->all())->except(['_token', 'id'])->toArray();
         if (isset($data['college_icon'])) {
-            $image = time().'.'.$data['college_icon']->extension();
+            $image = time() . '.' . $data['college_icon']->extension();
             $request->college_icon->move(public_path('college_icon'), $image);
             $data['college_icon'] = $image;
         } else {

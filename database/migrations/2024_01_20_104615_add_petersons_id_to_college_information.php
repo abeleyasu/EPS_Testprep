@@ -6,15 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::table('college_information', function (Blueprint $table) {
-            $table->string('school_url')->nullable()->after('college_icon');
+            // Add the new column
+            $table->string('petersons_id')->nullable();
         });
     }
 
@@ -26,7 +22,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('college_information', function (Blueprint $table) {
-            $table->dropColumn('school_url');
+            // Remove the column if needed
+            $table->dropColumn('petersons_id');
         });
     }
 };
