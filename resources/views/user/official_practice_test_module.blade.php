@@ -139,9 +139,9 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      height: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      background-color: blue;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      margin-right: 5px; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          height: 20px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          background-color: blue;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          margin-right: 5px; */
         }
     </style>
 
@@ -188,10 +188,16 @@
         <!-- Page Content -->
         <div class="content content-boxed content-height">
             <div class="row">
-                <div class="col-xl-12"  style="border: 1px dashed black;
+                <div class="col-xl-12"
+                    style="border: 1px dashed black;
                 padding: 21px;
                 text-align: center;">
-                    <h5>Select Delimiter</h5>
+                    @if ($getTestSection->practice_test_type == 'Math')
+                        <h5>Which Question #1 did you see on Module 2 of Math ?</h5>
+                    @elseif($getTestSection->practice_test_type == 'Reading_And_Writing')
+                        <h5>Which Question #1 did you see on Module 2 of Reading/Writing ?</h5>
+                    @else
+                    @endif
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-check">
