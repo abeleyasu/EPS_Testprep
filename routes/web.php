@@ -381,7 +381,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::any('/settings_updatepass', [UserController::class, 'settings_update'])->name('user.settings_update');
         });
 
-        Route::group(['prefix' => 'admin-dashboard', 'as' => 'admin-dashboard.'], function () {
+        Route::group(['prefix' => 'admissions', 'as' => 'admin-dashboard.'], function () {
 
             Route::group(['middleware' => ['subscription_valid:access-admission-dashboard']], function () {
                 Route::get('/dashboard', [DashboardController::class, 'admission_dashboard'])->name('dashboard');

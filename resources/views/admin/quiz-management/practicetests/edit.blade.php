@@ -8490,7 +8490,8 @@ var test = Sortable.create(addListWithHandleQuestion, {
             url: '{{ route("update_section") }}',
             method: 'post',
             success: (res) => {
-                $(`.editedAnswerOption_${id}`).find('strong').text(res.updatedSection.practice_test_type);
+            console.log()
+                $(`.editedAnswerOption_${id}`).find('strong').text(res.updatedSection.section_title);
                 $(`.selectedSection_${id}`).val(`${res.updatedSection.practice_test_type}`);
 
             }
