@@ -1339,7 +1339,7 @@ class TestPrepController extends Controller
 
         $test = DB::table('practice_tests')->where('id', $get_practice_id)->first();
         // dd($test);
-        if ($test->test_source == 1 && $test->format == 'DSAT') {
+        if ($test->test_source == 1 && $test->format == 'DSAT' && $request->testType == 'graded') {
             if ($user_reading_score < 200 || $user_reading_score > 800 || $user_math_score < 200 || $user_math_score > 800 || $user_total_score < 400 || $user_total_score > 1600) {
                 return response()->json(
                     [
@@ -1347,7 +1347,7 @@ class TestPrepController extends Controller
                     ]
                 );
             }
-        } elseif ($test->test_source == 1 && $test->format == 'DPSAT') {
+        } elseif ($test->test_source == 1 && $test->format == 'DPSAT' && $request_->testType == 'graded') {
             if ($user_reading_score < 160 || $user_reading_score > 760 || $user_math_score < 320 || $user_math_score > 1520 || $user_total_score < 480 || $user_total_score > 2280) {
                 return response()->json(
                     [
