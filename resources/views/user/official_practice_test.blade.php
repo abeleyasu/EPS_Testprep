@@ -143,9 +143,9 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      height: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      background-color: blue;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      margin-right: 5px; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  height: 20px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  background-color: blue;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  margin-right: 5px; */
         }
     </style>
     @php
@@ -291,7 +291,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2 d-flex">
                             <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3 clock-button"><i
                                     class="fa fa-fw fa-clock me-1"></i>
                                 <span id="timer">
@@ -304,6 +304,12 @@
                                     {{ $optionValue == 'regular' ? $regularTime : ($optionValue == '50per' ? $fiftyPerExtended : ($optionValue == '100per' ? $hundredPerExtended : '00:00:00')) }}
                                 </span>
                             </button>
+                            @if ($test->test_source == 1)
+                                <button id="pauseButton" class="btn-dark fs-xs fw-bold"
+                                    style="height:31px;border-radius: 10px;
+                            outline: none;
+                            border: 0;">Pause</button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -577,8 +583,25 @@
             const calculator = Desmos.GraphingCalculator(document.getElementById('calculator-container'));
             $('#exampleModal').modal('show');
         });
+        var isPaused = false;
 
         $(document).ready(function() {
+
+            $('#pauseButton').on('click', function() {
+                isPaused = !isPaused;
+
+                if (isPaused) {
+                    // Optional: You can add logic to update the button text or appearance when paused.
+                    $(this).text('Resume');
+                    console.log(isPaused)
+                } else {
+                    // Optional: You can add logic to update the button text or appearance when resumed.
+                    $(this).text('Pause');
+                    console.log(isPaused)
+
+                }
+            });
+
             $('#btn-close').click(function() {
                 $('#actualTImeConfirm').hide();
             })
@@ -2692,161 +2715,163 @@
                     const urlParams = new URLSearchParams(window.location.search);
                     get_test_id = urlParams.get('test_id');
 
+
                     var timerInterval = setInterval(function() {
-                        elapsedMilliseconds += 1000;
+                        if (!isPaused) {
+                            elapsedMilliseconds += 1000;
 
-                        actual_hours = Math.floor(elapsedMilliseconds / (60 * 60 * 1000));
-                        actual_minutes = Math.floor((elapsedMilliseconds % (60 * 60 * 1000)) / (
-                            60 *
-                            1000));
-                        actual_seconds = Math.floor((elapsedMilliseconds % (60 * 1000)) / 1000);
-
-                        if (elapsedMilliseconds < targetMilliseconds && OptionValue !=
-                            'untimed') {
-                            var remainingMilliseconds = targetMilliseconds -
-                                elapsedMilliseconds;
-                            hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
-                            minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (
+                            actual_hours = Math.floor(elapsedMilliseconds / (60 * 60 * 1000));
+                            actual_minutes = Math.floor((elapsedMilliseconds % (60 * 60 * 1000)) / (
                                 60 *
                                 1000));
-                            seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
-                        } else if (OptionValue == 'untimed') {
-                            var remainingMilliseconds = targetMilliseconds +
-                                elapsedMilliseconds;
-                            hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
-                            minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (
-                                60 *
-                                1000));
-                            seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
-                        } else {
-                            clearInterval(timerInterval);
-                            hours = 0;
-                            minutes = 0;
-                            seconds = 0;
-                        }
+                            actual_seconds = Math.floor((elapsedMilliseconds % (60 * 1000)) / 1000);
 
-                        var formattedHours = hours.toString().padStart(2, '0');
-                        var formattedMinutes = minutes.toString().padStart(2, '0');
-                        var formattedSeconds = seconds.toString().padStart(2, '0');
-
-                        var formattedActualHours = actual_hours.toString().padStart(2, '0');
-                        var formattedActualMinutes = actual_minutes.toString().padStart(2, '0');
-                        var formattedActualSeconds = actual_seconds.toString().padStart(2, '0');
-
-                        $('#timer').text(formattedHours + ':' + formattedMinutes + ':' +
-                            formattedSeconds);
-                        $('#actual_time').val(formattedActualHours + ':' +
-                            formattedActualMinutes +
-                            ':' + formattedActualSeconds);
-
-                        if (OptionValue != 'untimed') {
-                            if (hours === 0 && minutes === 5 && seconds === 0) {
-                                swal({
-                                    icon: 'warning',
-                                    title: 'Time is elapsed!',
-                                    text: 'You have 5 minutes remaining.',
-                                    confirmButtonColor: '#3085d6',
-                                    confirmButtonText: 'OK'
-                                });
-                            }
-
-                            if (hours === 0 && minutes === 0 && seconds === 0) {
-                                clearInterval(timerInterval);
-                                swal({
-                                    icon: 'warning',
-                                    title: 'Time is over!',
-                                    text: 'Your time has expired.',
-                                    confirmButtonColor: '#3085d6',
-                                    confirmButtonText: 'Continue'
-                                }, function(isConfirm) {
-                                    $('#timeisover').val(1);
-                                    if (isConfirm) {
-                                        $('.submit_section_btn').trigger('click');
-                                    }
-                                });
-                            }
-                        }
-
-
-                        //Progress Saving Starts
-                        let progress_index = jQuery('.next').attr('data-count');
-                        var get_question_id = jQuery('#onload_question_id').val();
-
-                        let selected_flag_val;
-                        if ($(".flag").is(':checked')) {
-                            selected_flag_val = 'yes';
-                        } else {
-                            selected_flag_val = 'no';
-                        }
-
-                        let selected_skip_val;
-                        if ($(".skip").is(':checked')) {
-                            selected_skip_val = 'yes';
-                        } else {
-                            selected_skip_val = 'no';
-                        }
-
-                        let selected_guess_val;
-                        if ($(".guess").is(':checked')) {
-                            selected_guess_val = 'yes';
-                        } else {
-                            selected_guess_val = 'no';
-                        }
-
-                        var get_section_id = jQuery('#section_id').val();
-                        var get_question_type = jQuery('#get_question_type').val();
-                        var get_practice_id = jQuery(this).attr('data-practice_test_id');
-
-                        let question_ids = @json($total_questions);
-                        var actual_time = jQuery('#actual_time').val();
-
-                        if ($("input[name='example-radios-default']").is(':checked')) {
-                            var getSelectedAnswer = $(
-                                    "input[name='example-radios-default']:checked")
-                                .val();
-                            selected_answer[get_question_id] = getSelectedAnswer;
-                        } else if ($("input[name='example-checkbox-default']").is(':checked')) {
-                            var store_multi = '';
-                            $('input[name="example-checkbox-default"]:checked').each(
-                                function() {
-                                    store_multi += this.value + ',';
-                                });
-                            store_multi = store_multi.replace(/,\s*$/, "");
-                            selected_answer[get_question_id] = store_multi;
-                        } else if ($("input[name='example-textbox-default']")) {
-                            store_multi = $("input[name='example-textbox-default']").val();
-                            selected_answer[get_question_id] = store_multi;
-                        } else {
-                            selected_answer[get_question_id] = '-';
-                        }
-
-                        Array.prototype.associate = function(keys) {
-                            var result = {};
-
-                            this.forEach(function(el, i) {
-                                result[keys[i]] = el;
-                            });
-                            return result;
-                        };
-
-                        let answer_details = [];
-                        for (let index = 0; index < question_ids.length; index++) {
-                            if (selected_answer.hasOwnProperty(question_ids[index])) {
-                                answer_details[question_ids[index]] = selected_answer[
-                                    question_ids[
-                                        index]];
+                            if (elapsedMilliseconds < targetMilliseconds && OptionValue !=
+                                'untimed') {
+                                var remainingMilliseconds = targetMilliseconds -
+                                    elapsedMilliseconds;
+                                hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
+                                minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (
+                                    60 *
+                                    1000));
+                                seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
+                            } else if (OptionValue == 'untimed') {
+                                var remainingMilliseconds = targetMilliseconds +
+                                    elapsedMilliseconds;
+                                hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
+                                minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (
+                                    60 *
+                                    1000));
+                                seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
                             } else {
-                                answer_details[question_ids[index]] = '-';
+                                clearInterval(timerInterval);
+                                hours = 0;
+                                minutes = 0;
+                                seconds = 0;
                             }
-                        }
 
-                        answer_details = answer_details.filter(function(element, key) {
-                            return element !== 'undefined';
-                        });
+                            var formattedHours = hours.toString().padStart(2, '0');
+                            var formattedMinutes = minutes.toString().padStart(2, '0');
+                            var formattedSeconds = seconds.toString().padStart(2, '0');
 
-                        answer_details = answer_details.associate(question_ids);
+                            var formattedActualHours = actual_hours.toString().padStart(2, '0');
+                            var formattedActualMinutes = actual_minutes.toString().padStart(2, '0');
+                            var formattedActualSeconds = actual_seconds.toString().padStart(2, '0');
 
-                        {{-- $.ajaxSetup({
+                            $('#timer').text(formattedHours + ':' + formattedMinutes + ':' +
+                                formattedSeconds);
+                            $('#actual_time').val(formattedActualHours + ':' +
+                                formattedActualMinutes +
+                                ':' + formattedActualSeconds);
+
+                            if (OptionValue != 'untimed') {
+                                if (hours === 0 && minutes === 5 && seconds === 0) {
+                                    swal({
+                                        icon: 'warning',
+                                        title: 'Time is elapsed!',
+                                        text: 'You have 5 minutes remaining.',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+
+                                if (hours === 0 && minutes === 0 && seconds === 0) {
+                                    clearInterval(timerInterval);
+                                    swal({
+                                        icon: 'warning',
+                                        title: 'Time is over!',
+                                        text: 'Your time has expired.',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Continue'
+                                    }, function(isConfirm) {
+                                        $('#timeisover').val(1);
+                                        if (isConfirm) {
+                                            $('.submit_section_btn').trigger('click');
+                                        }
+                                    });
+                                }
+                            }
+
+
+                            //Progress Saving Starts
+                            let progress_index = jQuery('.next').attr('data-count');
+                            var get_question_id = jQuery('#onload_question_id').val();
+
+                            let selected_flag_val;
+                            if ($(".flag").is(':checked')) {
+                                selected_flag_val = 'yes';
+                            } else {
+                                selected_flag_val = 'no';
+                            }
+
+                            let selected_skip_val;
+                            if ($(".skip").is(':checked')) {
+                                selected_skip_val = 'yes';
+                            } else {
+                                selected_skip_val = 'no';
+                            }
+
+                            let selected_guess_val;
+                            if ($(".guess").is(':checked')) {
+                                selected_guess_val = 'yes';
+                            } else {
+                                selected_guess_val = 'no';
+                            }
+
+                            var get_section_id = jQuery('#section_id').val();
+                            var get_question_type = jQuery('#get_question_type').val();
+                            var get_practice_id = jQuery(this).attr('data-practice_test_id');
+
+                            let question_ids = @json($total_questions);
+                            var actual_time = jQuery('#actual_time').val();
+
+                            if ($("input[name='example-radios-default']").is(':checked')) {
+                                var getSelectedAnswer = $(
+                                        "input[name='example-radios-default']:checked")
+                                    .val();
+                                selected_answer[get_question_id] = getSelectedAnswer;
+                            } else if ($("input[name='example-checkbox-default']").is(':checked')) {
+                                var store_multi = '';
+                                $('input[name="example-checkbox-default"]:checked').each(
+                                    function() {
+                                        store_multi += this.value + ',';
+                                    });
+                                store_multi = store_multi.replace(/,\s*$/, "");
+                                selected_answer[get_question_id] = store_multi;
+                            } else if ($("input[name='example-textbox-default']")) {
+                                store_multi = $("input[name='example-textbox-default']").val();
+                                selected_answer[get_question_id] = store_multi;
+                            } else {
+                                selected_answer[get_question_id] = '-';
+                            }
+
+                            Array.prototype.associate = function(keys) {
+                                var result = {};
+
+                                this.forEach(function(el, i) {
+                                    result[keys[i]] = el;
+                                });
+                                return result;
+                            };
+
+                            let answer_details = [];
+                            for (let index = 0; index < question_ids.length; index++) {
+                                if (selected_answer.hasOwnProperty(question_ids[index])) {
+                                    answer_details[question_ids[index]] = selected_answer[
+                                        question_ids[
+                                            index]];
+                                } else {
+                                    answer_details[question_ids[index]] = '-';
+                                }
+                            }
+
+                            answer_details = answer_details.filter(function(element, key) {
+                                return element !== 'undefined';
+                            });
+
+                            answer_details = answer_details.associate(question_ids);
+
+                            {{-- $.ajaxSetup({
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                             }
@@ -2877,6 +2902,7 @@
                                 }
                             }
                         }); --}}
+                        }
                         //Progress Saving Ends
                     }, 1000);
                 }

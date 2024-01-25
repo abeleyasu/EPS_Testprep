@@ -1347,7 +1347,7 @@ class TestPrepController extends Controller
                     ]
                 );
             }
-        } elseif ($test->test_source == 1 && $test->format == 'DPSAT' && $request_->testType == 'graded') {
+        } elseif ($test->test_source == 1 && $test->format == 'DPSAT' && $request->testType == 'graded') {
             if ($user_reading_score < 160 || $user_reading_score > 760 || $user_math_score < 320 || $user_math_score > 1520 || $user_total_score < 480 || $user_total_score > 2280) {
                 return response()->json(
                     [
