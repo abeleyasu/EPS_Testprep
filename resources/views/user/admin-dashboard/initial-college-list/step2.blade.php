@@ -345,6 +345,14 @@ $current_user_state_code = (
                                                     <div>Rolling Admission Deadline</div>
                                                     <small><span id="c-rolling-admission-deadline"></span></small>
                                                 </div>
+                                                <div class="block-title mb-2">
+                                                    <div>Early Decision 1 Deadline</div>
+                                                    <small><span id="c-early-decision-1-deadline"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>Early Decision 2 Deadline</div>
+                                                    <small><span id="c-early-decision-2-deadline"></span></small>
+                                                </div>
                                             </div>
                                             <div>
                                                 <div class="fs-base lh-base fw-large mb-0 border-bottom mb-2">
@@ -1183,6 +1191,11 @@ $current_user_state_code = (
                 let earlyDeadlineDay = data.latest.college_info.AP_DL_EACT_DAY;
                 let regAdmissionDeadlineDay = data.latest.college_info.AP_DL_FRSH_DAY
                 let regAdmissionDeadlineMon = data.latest.college_info.AP_DL_FRSH_MON
+                let collegeInfo = data.latest.college_info
+                let earlyDecision1DeadlineMon = collegeInfo.AP_DL_EDEC_1_MON
+                let earlyDecision1DeadlineDay = collegeInfo.AP_DL_EDEC_1_DAY
+                let earlyDecision2DeadlineMon = collegeInfo.AP_DL_EDEC_2_MON
+                let earlyDecision2DeadlineDay = collegeInfo.AP_DL_EDEC_2_DAY
 
                 function displayDate(day, month, whereToInsert){
                     if(earlyDeadlineDay && earlyDeadlineMonth){
@@ -1201,14 +1214,40 @@ $current_user_state_code = (
                     }
                 }
 
+                displayDate(earlyDeadlineDay, earlyDeadlineMonth, '#c-early-action-deadline')
+                displayDate(regAdmissionDeadlineDay, regAdmissionDeadlineMon, '#c-regular-admission-deadline')
+                displayDate(earlyDecision1DeadlineDay, earlyDecision1DeadlineMon, '#c-early-decision-1-deadline')
+                displayDate(earlyDecision2DeadlineDay, earlyDecision2DeadlineMon, '#c-early-decision-2-deadline')
+
                 function displayGPA(){
 
 
                 }
 
+                function convertStringToDate(dateString){
+                    const [month, day, year] = dateString.split('-')
+                    return new Date(year, month - 1, day)
+                }
 
-                displayDate(earlyDeadlineDay, earlyDeadlineMonth, '#c-early-action-deadline')
-                displayDate(regAdmissionDeadlineDay, regAdmissionDeadlineMon, '#c-regular-admission-deadline')
+                let rollingAdmissionDeadline = data.latest.college_info.rolling_admission_deadline
+                console.log(rollingAdmissionDeadline)
+                if(rollingAdmissionDeadline){
+                    const [month, day, year] = rollingAdmissionDeadline.split('-')
+                    const rollingAdmissionDeadlineDate = new Date(year, month - 1, day)
+                    const todayDate = new Date()
+                    if(todayDate > rollingAdmissionDeadlineDate){
+                        rollingAdmissionDeadlineDate.setFullYear(todayDate.getFullYear() + 1)
+                    }
+                    $('#c-rolling-admission-deadline').html((rollingAdmissionDeadlineDate ? rollingAdmissionDeadlineDate.toDateString() : 'No Data'))
+
+                }
+
+
+
+
+                
+
+
 
 
 
@@ -1219,7 +1258,6 @@ $current_user_state_code = (
                 // $('#c-regular-adminssion-deadline').html((data.latest.college_info.regular_admission_deadline ? moment(data.latest.college_info.early_decision_deadline).format('MMMM, DD') : '-'))
                 // $('#c-rolling-admission-deadline').html((data.latest.college_info.regular_admission_deadline ? moment(data.latest.college_info.early_decision_deadline).format('MMMM, DD') : '-'))
                 console.log(typeof(data.latest.college_info.rolling_admission_deadline))
-                $('#c-rolling-admission-deadline').html((data.latest.college_info.rolling_admission_deadline ? data.latest.college_info.rolling_admission_deadline : 'No Data'))
                 $('#overall-adminssion-rate').html(data.latest.admissions.admission_rate.overall ? Math.round(data.latest.admissions.admission_rate.overall * 100) + '%' : '0%')
                 // $('#total-application').html(data.latest.student.FAFSA_applications)
                 $('#enrollment').html(data.latest.student.size)
