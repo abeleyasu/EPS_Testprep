@@ -352,6 +352,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::get('/practice-tests/{test}/{id}/review-page', [TestPrepController::class, 'singleReview'])->name('single_review');
         // new
         Route::get('/practice-tests/{testId}/{id}', [TestPrepController::class, 'resetSection'])->name('reset_section');
+        Route::get('/practice-tests-proctored/{testId}/{id}', [TestPrepController::class, 'resetProctoredSection'])->name('reset_proc_section');
         Route::get('/practice-tests-reset/{id}/review-page', [TestPrepController::class, 'resetTest'])->name('reset_test');
 
         Route::patch('setting/update', [UserSettingsController::class, 'updateUserSettings'])->name('update-user-settings');
@@ -386,7 +387,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::any('/settings_updatepass', [UserController::class, 'settings_update'])->name('user.settings_update');
         });
 
-        Route::group(['prefix' => 'admin-dashboard', 'as' => 'admin-dashboard.'], function () {
+        Route::group(['prefix' => 'admissions', 'as' => 'admin-dashboard.'], function () {
 
             Route::group(['middleware' => ['subscription_valid:access-admission-dashboard']], function () {
                 Route::get('/dashboard', [DashboardController::class, 'admission_dashboard'])->name('dashboard');
@@ -519,6 +520,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
         Route::group(['middleware' => ['subscription_valid:access-test-home-page']], function () {
             Route::get('/test-home-page', [TestPrepController::class, 'testHomePage'])->name('test_home_page');
+            Route::get('/select-test-page/{id}', [TestPrepController::class, 'selectTestPage'])->name('select-test');
             Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
             Route::get('/test-break/{id}', [TestPrepController::class, 'testBreak'])->name('testBreak');
 

@@ -1330,8 +1330,32 @@ class TestPrepController extends Controller
         $get_question_type = $request->get_question_type;
         $get_practice_id = $request->get_practice_id;
         $actual_time = $request->actual_time;
-        $user_actual_time = $request->user_actual_time;
-        $user_actual_score = $request->user_actual_score;
+        $user_reading_score = $request->userReadingActualScore;
+        $user_math_score = $request->userMathActualScore;
+        $user_total_score = $request->userTotalActualScore;
+        $user_hour = $request->userHour;
+        $user_mins = $request->userMinutes;
+        $user_secs = $request->userSeconds;
+
+        $test = DB::table('practice_tests')->where('id', $get_practice_id)->first();
+        // dd($test);
+        if ($test->test_source == 1 && $test->format == 'DSAT' && $request->testType == 'graded') {
+            if ($user_reading_score < 200 || $user_reading_score > 800 || $user_math_score < 200 || $user_math_score > 800 || $user_total_score < 400 || $user_total_score > 1600) {
+                return response()->json(
+                    [
+                        'error' => '1',
+                    ]
+                );
+            }
+        } elseif ($test->test_source == 1 && $test->format == 'DPSAT' && $request->testType == 'graded') {
+            if ($user_reading_score < 160 || $user_reading_score > 760 || $user_math_score < 320 || $user_math_score > 1520 || $user_total_score < 480 || $user_total_score > 2280) {
+                return response()->json(
+                    [
+                        'error' => '1',
+                    ]
+                );
+            }
+        }
 
         // if ($user_actual_time  &&  $user_actual_score == null) {
         //     return response()->json(
@@ -1385,8 +1409,12 @@ class TestPrepController extends Controller
                 $userAnswers->skip = json_encode($filtered_skip);
                 $userAnswers->test_id = $get_practice_id;
                 $userAnswers->actual_time = $actual_time;
-                $userAnswers->user_actual_score = $user_actual_score;
-                $userAnswers->user_actual_time = $user_actual_time;
+                $userAnswers->reading_and_writing_score = $user_reading_score;
+                $userAnswers->math_score = $user_math_score;
+                $userAnswers->total_score = $user_total_score;
+                $userAnswers->hours = $user_hour;
+                $userAnswers->minutes = $user_mins;
+                $userAnswers->seconds = $user_secs;
                 $userAnswers->save();
             }
         } else if (isset($get_question_type) && !empty($get_question_type) && $get_question_type == 'all') {
@@ -1456,8 +1484,12 @@ class TestPrepController extends Controller
                         $userAnswers->skip = json_encode($values['skip']);
                         $userAnswers->test_id = $get_practice_id;
                         $userAnswers->actual_time = $actual_time;
-                        $userAnswers->user_actual_score = $user_actual_score;
-                        $userAnswers->user_actual_time = $user_actual_time;
+                        $userAnswers->reading_and_writing_score = $user_reading_score;
+                        $userAnswers->math_score = $user_math_score;
+                        $userAnswers->total_score = $user_total_score;
+                        $userAnswers->hours = $user_hour;
+                        $userAnswers->minutes = $user_mins;
+                        $userAnswers->seconds = $user_secs;
                         $userAnswers->save();
                     }
                 }
@@ -1521,7 +1553,8 @@ class TestPrepController extends Controller
 
         // lets calculate the score and redirect to other sections based on the required_number_of_correct_answers.
         $checkTestFormat = DB::table('practice_tests')->where('id', $testSection[0]->testid)->first();
-        if ($checkTestFormat->test_source == 0) {
+        if ($checkTestFormat->test_source == 0 || $request->test_type == 'proctored') {
+            // dd('hey');
             if (isset($testSection[0]->id)) {
                 if (($testSection[0]->format == 'DSAT') ||  ($testSection[0]->format == 'DPSAT')) {
                     $currectSection = DB::table('practice_test_sections')
@@ -1538,6 +1571,7 @@ class TestPrepController extends Controller
                                 ->first('id');
                             if ($is_correct) {
                                 $totalScore++;
+                                // $totalScore = 10;
                             }
                         }
                     }
@@ -1562,7 +1596,11 @@ class TestPrepController extends Controller
                     // dump('Redirect to which section: '.$toSeciton);
                     if ($request->section_size == 'all') {
                         // dump('All section test');
-                        $redirectUrl = '/user/practice-test/';
+                        if ($request->test_type == 'proctored') {
+                            $redirectUrl = '/user/official-practice-test/';
+                        } else {
+                            $redirectUrl = '/user/practice-test/';
+                        }
                         // redirect to hard module
                         $allTestSection = DB::table('practice_test_sections')
                             ->where('practice_test_sections.testid', $testSection[0]->testid)
@@ -1580,7 +1618,11 @@ class TestPrepController extends Controller
                         }
                     } else {
                         // dump('Single section test');
-                        $redirectUrl = '/user/practice-test/';
+                        if ($request->test_type == 'proctored') {
+                            $redirectUrl = '/user/official-practice-test/';
+                        } else {
+                            $redirectUrl = '/user/practice-test/';
+                        }
                         // redirect to easy module
                         if (in_array($currectSection->practice_test_type, ['Math', 'Math_with_calculator', 'Math_no_calculator'])) {
                             $allTestSection = DB::table('practice_test_sections')
@@ -1693,7 +1735,8 @@ class TestPrepController extends Controller
                 'redirect_url' => $redirectUrl,
                 'get_test_type' => $get_question_type,
                 'get_test_name' => $get_test_name,
-                'total_question' => $get_total_question
+                'total_question' => $get_total_question,
+                'test_type' => $request->test_type
             ]
         );
     }
@@ -2042,13 +2085,14 @@ class TestPrepController extends Controller
         //     }    
         // }
 
+        $testType = $request->session()->get('testType');
         $set_offset = 0;
         $test_id = $request->test_id ?? '';
         // dd($test_id);
         $testSection = DB::table('practice_test_sections')
             ->where('practice_test_sections.id', $id)
             ->get();
-            // dd( $testSection);
+        // dd( $testSection);
 
         $total_questions = PracticeQuestion::where('practice_test_sections_id', $id)
             ->orderBy('question_order', 'ASC')
@@ -2093,6 +2137,7 @@ class TestPrepController extends Controller
                 'testSection' => $testSection,
                 'isSubmitted' => $isSubmitted,
                 'test_id' => $test_id,
+                'test_type' => $testType,
             ]
         );
     }
@@ -2293,6 +2338,15 @@ class TestPrepController extends Controller
             return redirect(route('test_home_page'))->with('error', 'Test not found');
         }
 
+        $test_type  = $request->query('test_section');
+        // dd($test_type);
+        if ($test_type !== null) {
+            // dd($test_type);
+            $request->session()->put('testType', $test_type);
+        } else {
+            $request->session()->put('testType', 'graded');
+        }
+        // dd($test_type);
         // if ($practice_test->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($practice_test->practice_tests_products()->pluck('product_id')->toArray())) {
         //     return redirect(route('test_home_page'))->with('error', 'You are not authorized to access this test');
         // }
@@ -2325,7 +2379,7 @@ class TestPrepController extends Controller
             ->whereIn('user_answers.section_id', $get_all_sections_id)
             ->count();
 
-     
+
         if ($get_all_section_id === $get_users_answers_section_id) {
             $check_test_completed = 'yes';
         } else if ($get_all_section_id > $get_users_answers_section_id) {
@@ -2373,10 +2427,10 @@ class TestPrepController extends Controller
                     ->select('practice_questions.*')
                     ->where('practice_questions.practice_test_sections_id', $single_test_sections->id)
                     ->get();
-                    // dump($single_test_sections);
+                // dump($single_test_sections);
 
                 $check_if_section_completed = 'no';
-// dump(DB::table('user_answers')->where('section_id', $single_test_sections->id)->where('user_id', $current_user_id)->exists());
+                // dump(DB::table('user_answers')->where('section_id', $single_test_sections->id)->where('user_id', $current_user_id)->exists());
                 if (DB::table('user_answers')->where('section_id', $single_test_sections->id)->where('user_id', $current_user_id)->exists()) {
                     $check_if_section_completed = 'yes';
                 } else {
@@ -2815,6 +2869,7 @@ class TestPrepController extends Controller
             'totalAttempetdQuestions' => $totalAttempetdQuestions,
             'totalNonAttempetdQuestions' => $totalNonAttempetdQuestions,
             'practice_test' => $practice_test,
+            'test_type' => $test_type,
             'total_all_section_question' => isset($total_all_section_question) ? $total_all_section_question : '0'
         ]);
     }
@@ -2856,8 +2911,17 @@ class TestPrepController extends Controller
         // if ($existingRecord) {
         //     $existingRecord->delete();
         // }
+        if ($request->session()->has('testType')) {
+            $request->session()->forget('testType');
+        }
 
-        return redirect(url('user/practice-test-sections/' . $request['test_id']));
+        $data = DB::table('practice_tests')->where('id', $request['test_id'])->first();
+        // dd($data);
+        if ($data->test_source == 1 && ($data->format == 'ACT' || $data->format == 'SAT' || $data->format == 'PSAT' || $data->format == 'DSAT' || $data->format == 'DPSAT')) {
+            return redirect(url('user/select-test-page/' . $request['test_id']));
+        } else {
+            return redirect(url('user/practice-test-sections/' . $request['test_id']));
+        }
     }
 
     public function resetSection($testId, $sectionId)
@@ -2904,6 +2968,52 @@ class TestPrepController extends Controller
         }
         return redirect(url('user/practice-test-sections/' . $testId));
     }
+
+    public function resetProctoredSection($testId, $sectionId)
+    {
+        $current_sections = DB::table('practice_test_sections')
+            ->where('id', $sectionId)
+            ->first();
+        // dump($current_sections);
+        // test section not found
+        if ($current_sections == null) {
+            return redirect(url('user/practice-test-sections/' . $testId));
+        }
+
+        $all_sections  = [];
+        if ($current_sections->practice_test_type == 'Reading_And_Writing') {
+            $all_sections = DB::table('practice_test_sections')
+                ->where('testid', $testId)
+                ->whereIn('practice_test_type', ['Reading_And_Writing', 'Easy_Reading_And_Writing', 'Hard_Reading_And_Writing'])
+                ->pluck('id');
+        } elseif ($current_sections->practice_test_type == 'Math') {
+            $all_sections = DB::table('practice_test_sections')
+                ->where('testid', $testId)
+                ->whereIn('practice_test_type', ['Math', 'Math_with_calculator', 'Math_no_calculator'])
+                ->pluck('id');
+        } else {
+            $all_sections = DB::table('practice_test_sections')
+                ->where('testid', $testId)
+                ->whereIn('practice_test_type', [$current_sections->practice_test_type])
+                ->pluck('id');
+        }
+        // dump($testId);
+        // dd($all_sections);
+        $user_id = Auth::id();
+        foreach ($all_sections as $section_id) {
+            $user_answers = UserAnswers::where('user_id', $user_id)
+                ->where('test_id', $testId)
+                ->where('section_id', $section_id)
+                ->delete();
+
+            $test_progress = TestProgress::where('user_id', $user_id)
+                ->where('test_id', $testId)
+                ->where('section_id', $section_id)
+                ->delete();
+        }
+        return redirect(url('user/practice-test-sections/' . $testId . '?test_section=proctored'));
+    }
+
     public function resetSectionBkp($testId, $id)
     {
         // dd('here');
@@ -3556,6 +3666,10 @@ class TestPrepController extends Controller
 
         $getAllProgressPracticeTests = $this->getAllProgressPracticeTests($user_id, $formats);
 
+        if (request()->session()->has('testType')) {
+            request()->session()->forget('testType');
+        }
+
         // Combine data for caching
         $cachedData = compact(
             'getAllPracticeTests',
@@ -3582,6 +3696,15 @@ class TestPrepController extends Controller
         Cache::put($cacheKey, $cachedData, now()->addMinutes(1));
 
         return view('student.test-home-page.test_home_page', $cachedData);
+    }
+
+    public function selectTestPage($id)
+    {
+        $test_info = DB::table('practice_tests')
+            ->where('id', $id)
+            ->first();
+        // dd($test_info);
+        return view('student.test-home-page.select_test')->with('test_info', $test_info);
     }
 
     // Common method to fetch practice tests

@@ -1,14 +1,21 @@
 @if (isset($test) && is_object($test) && method_exists($test, 'practice_tests_products'))
-    @php $practiceTestProducts = $test->practice_tests_products(); @endphp
+    @php $practiceTestProducts = $test->practice_tests_products();  @endphp
 
     @if (
         $test->status == 'unpaid' ||
             ($test->status == 'paid' &&
                 ($practiceTestProducts->count() > 0 &&
                     auth()->user()->isUserSubscibedToTheProduct($practiceTestProducts->pluck('product_id')->toArray()))))
-        <a href="{{ route('single_test', ['id' => $test->id]) }}">
-            <button class="btn btn-success d-block mb-2">{{ $slug }} {{ $test->title }}</button>
-        </a>
+
+        @if ($test->test_source == 1)
+            <a href="{{ route('select-test', ['id' => $test->id]) }}">
+                <button class="btn btn-success d-block mb-2">{{ $slug }} {{ $test->title }}</button>
+            </a>
+        @else
+            <a href="{{ route('single_test', ['id' => $test->id]) }}">
+                <button class="btn btn-success d-block mb-2">{{ $slug }} {{ $test->title }}</button>
+            </a>
+        @endif
     @else
         @php
             $tp = $test->practice_tests_products;

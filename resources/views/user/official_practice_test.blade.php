@@ -8,6 +8,10 @@
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        .cancel {
+            background: #0d6efd !important;
+        }
+
         .fa-circle-arrow-right {
             font-size: 22px;
             color: #87ceeb;
@@ -139,16 +143,16 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  height: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  background-color: blue;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  margin-right: 5px; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  height: 20px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  background-color: blue;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  margin-right: 5px; */
         }
     </style>
     @php
         $testSections = \DB::table('practice_test_sections')
             ->where('practice_test_sections.testid', $test_id)
             ->get();
-// dd($testSections);
+        // dd($testSections);
         $test = \DB::table('practice_tests')
             ->where('id', $test_id)
             ->first();
@@ -178,9 +182,14 @@
         } elseif ($getTestSection->practice_test_type == 'Math_no_calculator') {
             $hardCheckBox = 'yes';
         }
+
+        $testSectionType = request()
+            ->session()
+            ->get('testType');
     @endphp
     <!-- Main Container -->
     <main id="main-container">
+        <input type="hidden" value="{{ $testSectionType }}" id="testType" />
         <div class="bg-body-light">
             <div class="content content-boxed py-3">
                 <nav aria-label="breadcrumb">
@@ -194,9 +203,9 @@
                                 ->value('title');
 
                             // dd($getTestSection);
-                         $modifiedString = str_replace(['_'], [' '], $getTestSection->practice_test_type);
-                         $modifiedStrings = str_replace(['calculator', 'Easy', 'with', 'no', 'Hard'], '', $modifiedString);
-                                          
+                            $modifiedString = str_replace(['_'], [' '], $getTestSection->practice_test_type);
+                            $modifiedStrings = str_replace(['calculator', 'Easy', 'with', 'no', 'Hard'], '', $modifiedString);
+
                         @endphp
                         <li class="breadcrumb-item" aria-current="page">
                             <a class="link-fx"
@@ -282,14 +291,49 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-2 d-flex">
+                            <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3 clock-button"><i
+                                    class="fa fa-fw fa-clock me-1"></i>
+                                <span id="timer">
+                                    @php
+                                        $optionValue = $_GET['time'] ?? null;
+                                        $regularTime = optional($testSection[0])->regular_time ?? '00:00:00';
+                                        $fiftyPerExtended = optional($testSection[0])->fifty_per_extended ?? '00:00:00';
+                                        $hundredPerExtended = optional($testSection[0])->hundred_per_extended ?? '00:00:00';
+                                    @endphp
+                                    {{ $optionValue == 'regular' ? $regularTime : ($optionValue == '50per' ? $fiftyPerExtended : ($optionValue == '100per' ? $hundredPerExtended : '00:00:00')) }}
+                                </span>
+                            </button>
+                            @if ($test->test_source == 1)
+                                <button id="pauseButton" class="btn-dark fs-xs fw-bold"
+                                    style="height:31px;border-radius: 10px;
+                            outline: none;
+                            border: 0;">Pause</button>
+                            @endif
+                        </div>
                     </div>
                 </div>
-                @if (($test->format == 'DSAT' || $test->format == 'DPSAT') && ($getTestSection->practice_test_type == 'Hard_Reading_And_Writing' || $getTestSection->practice_test_type == 'Easy_Reading_And_Writing' || $getTestSection->practice_test_type == 'Math_no_calculator' || $getTestSection->practice_test_type == 'Math_with_calculator'))
+                @if (
+                    ($test->format == 'DSAT' || $test->format == 'DPSAT') &&
+                        ($getTestSection->practice_test_type == 'Hard_Reading_And_Writing' ||
+                            $getTestSection->practice_test_type == 'Easy_Reading_And_Writing' ||
+                            $getTestSection->practice_test_type == 'Math_no_calculator' ||
+                            $getTestSection->practice_test_type == 'Math_with_calculator') &&
+                        $testSectionType == 'graded')
                     <div class="col-xl-12 mb-3"
                         style="border: 1px dashed black;
                 padding: 21px;
                 text-align: center;">
-                        <h5>Select Delimiter</h5>
+                        @if (
+                            $getTestSection->practice_test_type == 'Hard_Reading_And_Writing' ||
+                                $getTestSection->practice_test_type == 'Easy_Reading_And_Writing')
+                            <h5>Which Question #1 did you see on Module 2 of Reading/Writing ?</h5>
+                        @elseif(
+                            $getTestSection->practice_test_type == 'Math_no_calculator' ||
+                                $getTestSection->practice_test_type == 'Math_with_calculator')
+                            <h5>Which Question #1 did you see on Module 2 of Math?</h5>
+                        @else
+                        @endif
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-check">
@@ -341,19 +385,68 @@
         </div>
         <!-- END Page Conten    t -->
         <!-- Navigation -->
+
         <div class="bg-body-extra-light">
             <div class="content content-boxed py-3">
-                <div class="col-xl-12 d-flex gap-3 justify-content-end mb-2">
-                    <div class="mb-2">
-                        <input type="text" class="form-control form-control-md " id="user_actual_score"
-                            name="user_actual_score" placeholder="Enter your Actual Score"
-                            onkeydown="return /[a-z]/i.test(event.key)">
+                @if (($test->format == 'DSAT' || $test->format == 'DPSAT') && $testSectionType == 'graded')
+                    <input type="hidden" value="{{ $test->format }}" id="format" />
+                    <div class="col-xl-12 ">
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-2">
+                                <p class="fw-bold" style="font-size:15px">
+                                    Actual Score <span
+                                        title="If you took this test on the dSAT Bluebook app or another platform, please enter your score from those platforms to ensure the most accurate score is recorded)."
+                                        style="cursor: pointer">&#9432;</span>
+                                </p>
+                            </div>
+                            @if ($test->format == 'DSAT')
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control form-control-md " id="user_reading_score"
+                                        name="user_reading_score" placeholder="Reading & Writing Score" min="200"
+                                        max="800">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control form-control-md " id="user_math_score"
+                                        name="user_math_score" placeholder="Math Score" min="200" max="800">
+                                </div>
+                            @elseif($test->format == 'DPSAT')
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control form-control-md " id="user_reading_score"
+                                        name="user_reading_score" placeholder="Reading & Writing Score" min="160"
+                                        max="760">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control form-control-md " id="user_math_score"
+                                        name="user_math_score" placeholder="Math Score" min="320" max="1520">
+                                </div>
+                            @else
+                            @endif
+                            <div class="col-md-3">
+                                <input type="number" class="form-control form-control-md " id="user_total_score"
+                                    name="user_total_score" placeholder="Total Score">
+                            </div>
+                        </div>
+                        <p style="display: none" class="text-center text-success fw-bold" id="total"></p>
                     </div>
-                    <div class="mb-2">
-                        <input type="time" class="form-control form-control-md" id="user_actual_time"
-                            name="user_actual_time" placeholder="Enter your Actual Time">
+                    <div class="row">
+                        <div class="col-md-2 text-center mt-2">
+                            <p class="fw-bold" style="font-size:15px">Actual Time</p>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control form-control-md " id="user_hours"
+                                name="user_hours" placeholder="Enter Hours">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control form-control-md " id="user_minutes"
+                                name="user_minutes" placeholder="Enter Minutes">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control form-control-md " id="user_seconds"
+                                name="user_seconds" placeholder="Enter Seconds">
+                        </div>
                     </div>
-                </div>
+
+                @endif
 
                 <div class="row">
                     <div class="col-xl-4">
@@ -365,18 +458,7 @@
                             data-count="0">Next<i class="fa fa-fw fa-arrow-right me-1"></i></button>
                         {{-- <button type="button" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 review"><i
                                 class="fa fa-fw fa-list-check me-1"></i>Review</button> --}}
-                        <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3 clock-button"><i
-                                class="fa fa-fw fa-clock me-1"></i>
-                            <span id="timer">
-                                @php
-                                    $optionValue = $_GET['time'] ?? null;
-                                    $regularTime = optional($testSection[0])->regular_time ?? '00:00:00';
-                                    $fiftyPerExtended = optional($testSection[0])->fifty_per_extended ?? '00:00:00';
-                                    $hundredPerExtended = optional($testSection[0])->hundred_per_extended ?? '00:00:00';
-                                @endphp
-                                {{ $optionValue == 'regular' ? $regularTime : ($optionValue == '50per' ? $fiftyPerExtended : ($optionValue == '100per' ? $hundredPerExtended : '00:00:00')) }}
-                            </span>
-                        </button>
+
                     </div>
                     <div class="col-xl-5">
                         {{-- <label
@@ -422,6 +504,13 @@
                             class="btn btn-sm btn-outline-success fs-xs fw-semibold me-1 mb-3 submit_section_btn"><i
                                 class="fa fa-fw fa-circle-check me-1"></i>Submit Section</button>
                     </div>
+                    @if (($test->format == 'DSAT' || $test->format == 'DPSAT') && $testSectionType == 'graded')
+                        <div class="text-left fw-bold" style="font-size: 15px"><span class="text-danger">Note:</span> If
+                            you
+                            fill in the 'Actual Time' field, your input will be used in the test
+                            history. If you leave it blank, the system will automatically use the timer value.
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -442,8 +531,28 @@
             </div>
         </div>
         <!-- END Navigation -->
+        <div class="modal" id="actualTImeConfirm" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true" style="display: none;
+        background: #00000042;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    </div>
+                    <div class="modal-body fw-bold text-center">
+                        <span class="text-danger fw-bold">Note:</span> Double-check to ensure that you don't need to
+                        manually enter the timing for the test if you have already timed it yourself.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="btn-close"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     <!-- END Main Container -->
+
+
 @endsection
 
 @section('page-style')
@@ -455,6 +564,12 @@
 
         .modal-dialog {
             max-width: 1000px;
+        }
+
+        @media only screen and (max-width: 767px) {
+            #half-height {
+                height: 100% !important;
+            }
         }
     </style>
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
@@ -468,8 +583,28 @@
             const calculator = Desmos.GraphingCalculator(document.getElementById('calculator-container'));
             $('#exampleModal').modal('show');
         });
+        var isPaused = false;
 
         $(document).ready(function() {
+
+            $('#pauseButton').on('click', function() {
+                isPaused = !isPaused;
+
+                if (isPaused) {
+                    // Optional: You can add logic to update the button text or appearance when paused.
+                    $(this).text('Resume');
+                    console.log(isPaused)
+                } else {
+                    // Optional: You can add logic to update the button text or appearance when resumed.
+                    $(this).text('Pause');
+                    console.log(isPaused)
+
+                }
+            });
+
+            $('#btn-close').click(function() {
+                $('#actualTImeConfirm').hide();
+            })
             let easyCheckBox = $('#easyCheckBox').val();
             let hardCheckBox = $('#hardCheckBox').val();
             if (easyCheckBox == 'yes') {
@@ -529,6 +664,76 @@
                     alert('is unchecked');
                 }
             });
+        });
+
+        $(document).ready(function() {
+            let format = $('#format').val();
+
+            function updateTotalScore() {
+                let reading = parseInt($('#user_reading_score').val()) || 0;
+                let math = parseInt($('#user_math_score').val()) || 0;
+
+                if (!isNaN(reading) && !isNaN(math)) {
+                    let total_score = reading + math;
+                    console.log(total_score);
+                    $('#user_total_score').val(total_score);
+                }
+            }
+            // Update total score when either reading or math is entered
+            $('#user_reading_score, #user_math_score').on('input', function() {
+                updateTotalScore();
+
+
+            });
+            // Check if total score is manually entered and remind to enter reading and math scores
+            $('#user_total_score').blur(function() {
+                let total = parseInt($(this).val()) || 0;
+                if (isNaN(total)) {
+                    alert("Please enter a valid total score.");
+                } else {
+                    let reading = $('#user_reading_score').val();
+                    let math = $('#user_math_score').val();
+
+                    if ((!reading || !math) && total !== 0) {
+                        console.log(total);
+                        $('#total').show();
+                        $('#total').text(
+                            'Note: Consider entering Reading & Writing and Math scores for a more accurate assessment.'
+                        );
+                    }
+                }
+            });
+
+            $('#user_reading_score').blur(function() {
+                let reading = parseInt($('#user_reading_score').val());
+                if (format == 'DSAT') {
+                    if (reading < 200 || reading > 800) {
+                        alert("Reading & Writing score must be between 200 and 800.");
+                    }
+                } else if (format == 'DPSAT') {
+                    if (reading < 160 || reading > 760) {
+                        alert("Reading & Writing score must be between 160 and 760.");
+                    }
+
+                } else {
+
+                }
+            });
+
+            $('#user_math_score').blur(function() {
+                let math = parseInt($('#user_math_score').val());
+                if (math < 200 || math > 800) {
+                    alert("Math score must be between 200 and 800.");
+                } else if (format == 'DPSAT') {
+                    if (math < 320 || math > 1520) {
+                        alert("Reading & Writing score must be between 320 and 1520.");
+                    }
+                } else {
+
+                }
+            });
+
+
         });
 
         jQuery(document).ready(function() {
@@ -1017,14 +1222,23 @@
             jQuery(".submit_section_btn").click(function() {
                 // await storeProgress();
                 // await new Promise(resolve => setTimeout(resolve, 100));
-
-
+                let userActualHour = $('#user_hours').val();
+                let userActualMinutes = $('#user_minutes').val();
+                let userActualSeconds = $('#user_seconds').val();
+                console.log(userActualHour)
+                if (userActualHour == '' || userActualMinutes == '' || userActualSeconds == '') {
+                    $('#actualTImeConfirm').show();
+                    return false;
+                }
 
                 if (jQuery('.next').prop('disabled') == false) {
                     var timeisover = jQuery('#timeisover').val();
                     if (timeisover == 1) {
                         confirm(true);
+
                     } else {
+
+
                         swal({
                             title: "Warning",
                             text: "Are you sure you want to submit this test? Make sure you have answered every question using the Review button.",
@@ -1046,15 +1260,457 @@
                     if (timeisover == 1) {
                         confirm(true);
                     } else {
-                        confirm(false);
+                        let testt = $('#testType').val();
+                        var testIDD = `{{ $test_id }}`;
+                        var testTitle = `{{ $test->title }}`;
+                        let sectionID = `{{ $section_id }}`;
+
+                        if (testt == 'graded') {
+                            swal({
+                                title: "Where do you want to go next?",
+                                type: "success",
+                                showCancelButton: true,
+                                confirmButtonColor: "#198754",
+                                confirmButtonText: "Section Review",
+                                cancelButtonText: "Grade Another Section",
+                                closeOnConfirm: true,
+                                closeOnCancel: true,
+
+                            }, function(isConfirm) {
+                                if (isConfirm) {
+                                    // Handle "Grade Another Section" link click
+                                    confirm(false);
+                                } else {
+                                    // Handle "Section Review" link click
+                                    // $('#reviewLink').click(function() {
+                                    //     // Handle the link action
+                                    //     confirm(false);
+                                    // });
+
+
+                                    // console.log('test')e
+                                    cancelConfirm(false);
+                                    // var url =
+                                    //     "{{ route('single_review', ['test' => ':testTitle', 'id' => ':sectionID']) }}?test_id=" +
+                                    //     testIDD + "&type=single";
+                                    // url = url.replace(':testTitle', encodeURIComponent(testTitle))
+                                    //     .replace(':sectionID', encodeURIComponent(sectionID));
+
+                                    // window.location.href = url;
+                                    // '' +
+                                    // testIDD;
+                                }
+                            });
+                        } else {
+                            // Proceed with the default confirm action
+                            confirm(false);
+                        }
+
                     }
                 }
             });
 
+            function cancelConfirm(flagTimeOut, submit = false) {
+
+                let userReadingActualScore = $('#user_reading_score').val();
+                let userMathActualScore = $('#user_math_score').val();
+                let userTotalActualScore = $('#user_total_score').val();
+                let userActualTime = $('#user_actual_time').val();
+                let userHour = $('#user_hours').val();
+                let userMinutes = $('#user_minutes').val();
+                let userSeconds = $('#user_seconds').val();
+
+
+
+
+
+
+                let sectionID = '{{ $section_id }}';
+
+                // var get_question_id = jQuery('#onload_question_id').val();
+
+                var question_ids_array = $('.get_question_id').map(function() {
+                    return $(this).val();
+                }).get();
+
+                // console.log(question_ids_array);
+
+
+                var get_section_id = jQuery('#section_id').val();
+                var get_question_type = jQuery('#get_question_type').val();
+                var get_practice_id = jQuery(this).attr('data-practice_test_id');
+                var get_test_id = '';
+                let question_ids = @json($total_questions);
+                // console.log(question_ids);
+                var actual_time = jQuery('#actual_time').val();
+
+                //if (window.location.href.indexOf("all") > -1)
+                //{
+                //    var url = window.location.href,
+                //    parts = url.split("/"),
+                //    last_part = parts[parts.length-1];
+                //    get_test_id = last_part;
+                //} else {
+                const urlParams = new URLSearchParams(window.location.search);
+                get_test_id = urlParams.get('test_id');
+                //}
+
+                question_ids_array.forEach(function(get_question_id) {
+
+                    if ($(".flag-" + get_question_id).is(':checked')) {
+                        selected_flag_details[get_question_id] = 'yes';
+                    } else {
+                        selected_flag_details[get_question_id] = 'no';
+                    }
+
+                    if ($(".skip-" + get_question_id).is(':checked')) {
+                        selected_skip_details[get_question_id] = 'yes';
+                    } else {
+                        selected_skip_details[get_question_id] = 'no';
+                    }
+
+                    if ($(".guess-" + get_question_id).is(':checked')) {
+                        selected_gusess_details[get_question_id] = 'yes';
+                    } else {
+                        selected_gusess_details[get_question_id] = 'no';
+                    }
+
+
+                    var radioSelector = 'input[name="example-radios-default-' + get_question_id +
+                        '"]:checked';
+                    var checkboxSelector = 'input[name="example-checkbox-default-' +
+                        get_question_id +
+                        '"]:checked';
+                    var textboxSelector = 'input[name="example-textbox-default-' + get_question_id +
+                        '"]';
+
+                    if ($(radioSelector).length) {
+                        var getSelectedAnswer = $(radioSelector).val();
+                        // console.log('Question ID: ' + get_question_id + ', Selected Answer: ' +
+                        //     getSelectedAnswer);
+                        selected_answer[get_question_id] = getSelectedAnswer;
+                    } else if ($(checkboxSelector).length) {
+                        var store_multi = '';
+                        $(checkboxSelector).each(function() {
+                            store_multi += this.value + ',';
+                        });
+                        store_multi = store_multi.replace(/,\s*$/, "");
+                        // console.log('Question ID: ' + get_question_id + ', Selected Answers: ' +
+                        //     store_multi);
+                        selected_answer[get_question_id] = store_multi;
+                    } else if ($(textboxSelector).length) {
+                        store_multi = $(textboxSelector).val();
+                        // console.log('Question ID: ' + get_question_id + ', Textbox Value: ' + store_multi);
+                        selected_answer[get_question_id] = store_multi;
+                    } else {
+                        // console.log('Question ID: ' + get_question_id + ', No option selected.');
+                        selected_answer[get_question_id] = '-';
+                    }
+                });
+
+
+
+
+
+                Array.prototype.associate = function(keys) {
+                    var result = {};
+
+                    this.forEach(function(el, i) {
+                        result[keys[i]] = el;
+                    });
+
+                    return result;
+                };
+
+                let answer_details = [];
+                // if (storedSelectedAnswers) {
+                //     answer_details = storedSelectedAnswers;
+                // } else {
+                for (let index = 0; index < question_ids.length; index++) {
+                    if (selected_answer.hasOwnProperty(question_ids[index])) {
+                        answer_details[question_ids[index]] = selected_answer[question_ids[index]];
+                    } else {
+                        answer_details[question_ids[index]] = '-';
+                    }
+                }
+
+                let flag_detail = [];
+                // selected_flag_details = selected_flag_details.filter(function( element, key ) {
+                //     return element !== "undefined";
+                // });
+                //start
+                for (let index = 0; index < question_ids.length; index++) {
+                    if (selected_flag_details.hasOwnProperty(question_ids[index])) {
+                        flag_detail[question_ids[index]] = selected_flag_details[question_ids[index]];
+                    } else {
+                        flag_detail[question_ids[index]] = 'no';
+                    }
+                }
+                //end
+                let guess_detail = [];
+                // selected_gusess_details = selected_gusess_details.filter(function( element, key ) {
+                //     return element !== "undefined";
+                // });
+                //start
+                for (let index = 0; index < question_ids.length; index++) {
+                    if (selected_gusess_details.hasOwnProperty(question_ids[index])) {
+                        guess_detail[question_ids[index]] = selected_gusess_details[question_ids[index]];
+                    } else {
+                        guess_detail[question_ids[index]] = 'no';
+                    }
+                }
+                //end
+
+                //skip
+                let skip_detail = [];
+                for (let index = 0; index < question_ids.length; index++) {
+                    if (selected_skip_details.hasOwnProperty(question_ids[index])) {
+                        skip_detail[question_ids[index]] = selected_skip_details[question_ids[index]];
+                    } else {
+                        skip_detail[question_ids[index]] = 'no';
+                    }
+                }
+                //end
+
+                Array.prototype.associate = function(keys) {
+                    var result = {};
+
+                    this.forEach(function(el, i) {
+                        result[keys[i]] = el;
+                    });
+
+                    return result;
+                };
+
+                answer_details = answer_details.filter(function(element, key) {
+                    return element !== 'undefined';
+                });
+                answer_details = answer_details.associate(question_ids);
+                // // }
+                // var new_answer_detail = [];
+                // answer_details.map(function(key, index) {
+                //     if (key !== 'undefined') {
+                //         new_answer_detail.push({
+                //             [index]: key
+                //         })
+                //     }
+
+                // });
+
+                flag_detail = flag_detail.filter(function(element, key) {
+                    return element !== 'undefined';
+                });
+                flag_detail = flag_detail.associate(question_ids);
+
+                guess_detail = guess_detail.filter(function(element, key) {
+                    return element !== 'undefined';
+                });
+                guess_detail = guess_detail.associate(question_ids);
+
+                skip_detail = skip_detail.filter(function(element, key) {
+                    return element !== 'undefined';
+                });
+                skip_detail = skip_detail.associate(question_ids);
+                if (window.location.href.indexOf("all") !== -1) {
+                    var section_size = 'all';
+                } else {
+                    var section_size = 'single';
+                }
+
+                let flag_details = selected_flag_details.associate(question_ids);
+                let gusess_details = selected_gusess_details.associate(question_ids);
+                let testType = `{{ $test_type }}`;
+
+
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+
+                const postData = {
+                    section_id: sectionID,
+                    selected_answer: answer_details,
+                    selected_gusess_details: guess_detail,
+                    selected_flag_details: flag_detail,
+                    selected_skip_details: skip_detail,
+                    get_section_id: get_section_id,
+                    get_practice_id: get_test_id,
+                    get_question_type: get_question_type,
+                    section_size: section_size,
+                    actual_time: actual_time,
+                    userReadingActualScore,
+                    userMathActualScore,
+                    userTotalActualScore,
+                    userActualTime,
+                    userHour,
+                    userMinutes,
+                    userSeconds,
+                    test_type: testType
+                };
+                jQuery.ajax({
+                    url: "{{ url('/user/set_user_question_answer/post') }}",
+                    method: 'post',
+                    data: postData,
+                    success: function(result) {
+                        // console.log(result);
+                        // alert('Break Time: '+result.break_time);
+                        // alert('Redirect URL: '+result.redirect_url);
+                        // die;
+
+                        if (result.error == 1) {
+                            alert('Please the Scores provided in the fields.');
+                            return false;
+                        }
+                        if (count < result.total_question) {
+                            window.alert(
+                                "Are you sure you want to submit this test? Make sure you have answered every question using the Review button."
+                            );
+                        }
+
+                        // redirect code here.
+                        if (result.redirect_url != 0) {
+                            // only for DSAT, DPSAT
+                            var url = window.location.origin + result.redirect_url;
+                            // console.log(url);
+                            window.location.href = url;
+                            return false;
+                        } else {
+
+                            if (result.break_time != 0) {
+                                let next_section_id = result.next_section_id;
+                                if (result.test_type == 'proctored') {
+                                    var url = window.location.origin + '/user/test-break/' +
+                                        next_section_id + '?test_id=' + get_test_id;
+                                } else {
+                                    var url = window.location.origin + '/user/test-break/' +
+                                        next_section_id + '?test_id=' + get_test_id;
+                                }
+
+                                // console.log(url);
+
+                                window.location.href = url;
+                                return false;
+                            }
+
+                            if (result.test_type == 'proctored') {
+                                var url = window.location.origin + '/user/practice-test-sections/' +
+                                    get_test_id + '?test_section=proctored';
+
+                            } else {
+                                var url = window.location.origin + '/user/practice-test-sections/' +
+                                    get_test_id;
+                            }
+                            // console.log(url);
+                            window.location.href = url;
+                            return false;
+                        }
+
+                        // redirect to test break here.
+                        // this code below is not working anymore.
+                        var url = "{{ url('') }}" + '/user/practice-tests/' + result
+                            .get_test_name + '/' + result.section_id + '/review-page?test_id=' +
+                            get_test_id + '&type=' + result.get_test_type;
+
+                        if (window.location.href.indexOf("all") > -1) {
+                            var url = window.location.href,
+                                parts = url.split("=");
+                            var sectionArrayJson = parts[parts.length - 1];
+                            var sectionArray = JSON.parse(sectionArrayJson);
+                            if (sectionArray.length > 0) {
+                                var next_section_id = sectionArray[0];
+                                if (next_section_id != '') {
+                                    sectionArray.shift();
+                                    let remainingSectionArrayJson = JSON.stringify(
+                                        sectionArray);
+
+                                    let option = new URLSearchParams(window.location.search);
+                                    let OptionValue = option.get('time');
+
+                                    if (flagTimeOut) {
+                                        swal({
+                                            title: "Confirm",
+                                            type: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#DD6B55",
+                                            confirmButtonText: "Submit",
+                                            cancelButtonText: "Proceed to Next section",
+                                            closeOnConfirm: true,
+                                            closeOnCancel: true,
+                                        }, function(isConfirm) {
+                                            if (isConfirm) {
+                                                var url = "{{ url('') }}" +
+                                                    '/user/practice-tests/' + result
+                                                    .get_test_name + '/' + result
+                                                    .section_id +
+                                                    '/review-page?test_id=' +
+                                                    get_test_id +
+                                                    '&type=' + result.get_test_type;
+                                                window.location.href = url;
+                                            } else {
+                                                var url = "{{ url('') }}" +
+                                                    '/user/practice-test/' +
+                                                    next_section_id +
+                                                    '?test_id=' + get_test_id +
+                                                    '&time=' +
+                                                    OptionValue +
+                                                    '&section=all&sections=' +
+                                                    remainingSectionArrayJson;
+                                                window.location.href = url;
+                                            }
+                                        });
+                                        return false;
+                                    } else {
+                                        var url = "{{ url('') }}" +
+                                            '/user/practice-test/' +
+                                            next_section_id + '?test_id=' + get_test_id +
+                                            '&time=' +
+                                            OptionValue + '&section=all&sections=' +
+                                            remainingSectionArrayJson;
+                                    }
+                                } else {
+                                    // var url = "{{ url('') }}"+'/user/practice-test-sections/'+get_test_id;
+                                    var url = "{{ url('') }}" + '/user/practice-tests/' +
+                                        result
+                                        .get_test_name + '/' + get_test_id +
+                                        '/review-page?test_id=' +
+                                        get_test_id + '&type=all';
+                                }
+                            } else {
+                                var url = "{{ url('') }}" + '/user/practice-tests/' +
+                                    result
+                                    .get_test_name + '/' + get_test_id +
+                                    '/review-page?test_id=' +
+                                    get_test_id + '&type=all';
+                            }
+                        } else {
+                            if (flagTimeOut) {
+                                var url = "{{ url('') }}" + '/user/practice-tests/' +
+                                    result
+                                    .get_test_name + '/' + result.section_id +
+                                    '/review-page?test_id=' +
+                                    get_test_id + '&type=' + result.get_test_type;
+                            } else {
+                                var url = "{{ url('') }}" +
+                                    '/user/practice-test-sections/' +
+                                    get_test_id;
+                            }
+                        }
+                        window.location.href = url;
+                    }
+                });
+            }
+
             function confirm(flagTimeOut, submit = false) {
 
-                let userActualScore = $('#user_actual_score').val();
+                let userReadingActualScore = $('#user_reading_score').val();
+                let userMathActualScore = $('#user_math_score').val();
+                let userTotalActualScore = $('#user_total_score').val();
                 let userActualTime = $('#user_actual_time').val();
+                let userHour = $('#user_hours').val();
+                let userMinutes = $('#user_minutes').val();
+                let userSeconds = $('#user_seconds').val();
 
                 // if (userActualScore == '' && userActualTime == '') {
                 //     alert('Please enter valid values for Actual Score and Actual Time fields.');
@@ -1256,7 +1912,7 @@
 
                 let flag_details = selected_flag_details.associate(question_ids);
                 let gusess_details = selected_gusess_details.associate(question_ids);
-
+                let testType = `{{ $test_type }}`;
 
 
 
@@ -1277,8 +1933,14 @@
                     get_question_type: get_question_type,
                     section_size: section_size,
                     actual_time: actual_time,
-                    user_actual_time: userActualTime,
-                    user_actual_score: userActualScore
+                    userReadingActualScore,
+                    userMathActualScore,
+                    userTotalActualScore,
+                    userActualTime,
+                    userHour,
+                    userMinutes,
+                    userSeconds,
+                    test_type: testType
                 };
                 jQuery.ajax({
                     url: "{{ url('/user/set_user_question_answer/post') }}",
@@ -1291,7 +1953,7 @@
                         // die;
 
                         if (result.error == 1) {
-                            alert('Please enter valid values for Actual Score and Actual Time field.');
+                            alert('Please the Scores provided in the fields.');
                             return false;
                         }
                         if (count < result.total_question) {
@@ -1304,20 +1966,37 @@
                         if (result.redirect_url != 0) {
                             // only for DSAT, DPSAT
                             var url = window.location.origin + result.redirect_url;
+                            // console.log(url);
                             window.location.href = url;
                             return false;
                         } else {
 
                             if (result.break_time != 0) {
                                 let next_section_id = result.next_section_id;
-                                var url = window.location.origin + '/user/test-break/' +
-                                    next_section_id + '?test_id=' + get_test_id;
+                                if (result.test_type == 'proctored') {
+                                    var url = window.location.origin + '/user/test-break/' +
+                                        next_section_id + '?test_id=' + get_test_id;
+                                } else {
+                                    var url = window.location.origin + '/user/test-break/' +
+                                        next_section_id + '?test_id=' + get_test_id;
+                                }
+
+                                // console.log(url);
+
                                 window.location.href = url;
                                 return false;
                             }
 
-                            var url = window.location.origin + '/user/practice-test-sections/' +
-                                get_test_id;
+                            if (result.test_type == 'proctored') {
+                                var url = window.location.origin + '/user/practice-test-sections/' +
+                                    get_test_id + '?test_section=proctored';
+
+                            } else {
+                                var url = "{{ url('') }}" + '/user/practice-tests/' + result
+                                    .get_test_name + '/' + result.section_id + '/review-page?test_id=' +
+                                    get_test_id + '&type=' + result.get_test_type;
+                            }
+                            // console.log(url);
                             window.location.href = url;
                             return false;
                         }
@@ -2036,161 +2715,163 @@
                     const urlParams = new URLSearchParams(window.location.search);
                     get_test_id = urlParams.get('test_id');
 
+
                     var timerInterval = setInterval(function() {
-                        elapsedMilliseconds += 1000;
+                        if (!isPaused) {
+                            elapsedMilliseconds += 1000;
 
-                        actual_hours = Math.floor(elapsedMilliseconds / (60 * 60 * 1000));
-                        actual_minutes = Math.floor((elapsedMilliseconds % (60 * 60 * 1000)) / (
-                            60 *
-                            1000));
-                        actual_seconds = Math.floor((elapsedMilliseconds % (60 * 1000)) / 1000);
-
-                        if (elapsedMilliseconds < targetMilliseconds && OptionValue !=
-                            'untimed') {
-                            var remainingMilliseconds = targetMilliseconds -
-                                elapsedMilliseconds;
-                            hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
-                            minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (
+                            actual_hours = Math.floor(elapsedMilliseconds / (60 * 60 * 1000));
+                            actual_minutes = Math.floor((elapsedMilliseconds % (60 * 60 * 1000)) / (
                                 60 *
                                 1000));
-                            seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
-                        } else if (OptionValue == 'untimed') {
-                            var remainingMilliseconds = targetMilliseconds +
-                                elapsedMilliseconds;
-                            hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
-                            minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (
-                                60 *
-                                1000));
-                            seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
-                        } else {
-                            clearInterval(timerInterval);
-                            hours = 0;
-                            minutes = 0;
-                            seconds = 0;
-                        }
+                            actual_seconds = Math.floor((elapsedMilliseconds % (60 * 1000)) / 1000);
 
-                        var formattedHours = hours.toString().padStart(2, '0');
-                        var formattedMinutes = minutes.toString().padStart(2, '0');
-                        var formattedSeconds = seconds.toString().padStart(2, '0');
-
-                        var formattedActualHours = actual_hours.toString().padStart(2, '0');
-                        var formattedActualMinutes = actual_minutes.toString().padStart(2, '0');
-                        var formattedActualSeconds = actual_seconds.toString().padStart(2, '0');
-
-                        $('#timer').text(formattedHours + ':' + formattedMinutes + ':' +
-                            formattedSeconds);
-                        $('#actual_time').val(formattedActualHours + ':' +
-                            formattedActualMinutes +
-                            ':' + formattedActualSeconds);
-
-                        if (OptionValue != 'untimed') {
-                            if (hours === 0 && minutes === 5 && seconds === 0) {
-                                swal({
-                                    icon: 'warning',
-                                    title: 'Time is elapsed!',
-                                    text: 'You have 5 minutes remaining.',
-                                    confirmButtonColor: '#3085d6',
-                                    confirmButtonText: 'OK'
-                                });
-                            }
-
-                            if (hours === 0 && minutes === 0 && seconds === 0) {
-                                clearInterval(timerInterval);
-                                swal({
-                                    icon: 'warning',
-                                    title: 'Time is over!',
-                                    text: 'Your time has expired.',
-                                    confirmButtonColor: '#3085d6',
-                                    confirmButtonText: 'Continue'
-                                }, function(isConfirm) {
-                                    $('#timeisover').val(1);
-                                    if (isConfirm) {
-                                        $('.submit_section_btn').trigger('click');
-                                    }
-                                });
-                            }
-                        }
-
-
-                        //Progress Saving Starts
-                        let progress_index = jQuery('.next').attr('data-count');
-                        var get_question_id = jQuery('#onload_question_id').val();
-
-                        let selected_flag_val;
-                        if ($(".flag").is(':checked')) {
-                            selected_flag_val = 'yes';
-                        } else {
-                            selected_flag_val = 'no';
-                        }
-
-                        let selected_skip_val;
-                        if ($(".skip").is(':checked')) {
-                            selected_skip_val = 'yes';
-                        } else {
-                            selected_skip_val = 'no';
-                        }
-
-                        let selected_guess_val;
-                        if ($(".guess").is(':checked')) {
-                            selected_guess_val = 'yes';
-                        } else {
-                            selected_guess_val = 'no';
-                        }
-
-                        var get_section_id = jQuery('#section_id').val();
-                        var get_question_type = jQuery('#get_question_type').val();
-                        var get_practice_id = jQuery(this).attr('data-practice_test_id');
-
-                        let question_ids = @json($total_questions);
-                        var actual_time = jQuery('#actual_time').val();
-
-                        if ($("input[name='example-radios-default']").is(':checked')) {
-                            var getSelectedAnswer = $(
-                                    "input[name='example-radios-default']:checked")
-                                .val();
-                            selected_answer[get_question_id] = getSelectedAnswer;
-                        } else if ($("input[name='example-checkbox-default']").is(':checked')) {
-                            var store_multi = '';
-                            $('input[name="example-checkbox-default"]:checked').each(
-                                function() {
-                                    store_multi += this.value + ',';
-                                });
-                            store_multi = store_multi.replace(/,\s*$/, "");
-                            selected_answer[get_question_id] = store_multi;
-                        } else if ($("input[name='example-textbox-default']")) {
-                            store_multi = $("input[name='example-textbox-default']").val();
-                            selected_answer[get_question_id] = store_multi;
-                        } else {
-                            selected_answer[get_question_id] = '-';
-                        }
-
-                        Array.prototype.associate = function(keys) {
-                            var result = {};
-
-                            this.forEach(function(el, i) {
-                                result[keys[i]] = el;
-                            });
-                            return result;
-                        };
-
-                        let answer_details = [];
-                        for (let index = 0; index < question_ids.length; index++) {
-                            if (selected_answer.hasOwnProperty(question_ids[index])) {
-                                answer_details[question_ids[index]] = selected_answer[
-                                    question_ids[
-                                        index]];
+                            if (elapsedMilliseconds < targetMilliseconds && OptionValue !=
+                                'untimed') {
+                                var remainingMilliseconds = targetMilliseconds -
+                                    elapsedMilliseconds;
+                                hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
+                                minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (
+                                    60 *
+                                    1000));
+                                seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
+                            } else if (OptionValue == 'untimed') {
+                                var remainingMilliseconds = targetMilliseconds +
+                                    elapsedMilliseconds;
+                                hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
+                                minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (
+                                    60 *
+                                    1000));
+                                seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
                             } else {
-                                answer_details[question_ids[index]] = '-';
+                                clearInterval(timerInterval);
+                                hours = 0;
+                                minutes = 0;
+                                seconds = 0;
                             }
-                        }
 
-                        answer_details = answer_details.filter(function(element, key) {
-                            return element !== 'undefined';
-                        });
+                            var formattedHours = hours.toString().padStart(2, '0');
+                            var formattedMinutes = minutes.toString().padStart(2, '0');
+                            var formattedSeconds = seconds.toString().padStart(2, '0');
 
-                        answer_details = answer_details.associate(question_ids);
+                            var formattedActualHours = actual_hours.toString().padStart(2, '0');
+                            var formattedActualMinutes = actual_minutes.toString().padStart(2, '0');
+                            var formattedActualSeconds = actual_seconds.toString().padStart(2, '0');
 
-                        {{-- $.ajaxSetup({
+                            $('#timer').text(formattedHours + ':' + formattedMinutes + ':' +
+                                formattedSeconds);
+                            $('#actual_time').val(formattedActualHours + ':' +
+                                formattedActualMinutes +
+                                ':' + formattedActualSeconds);
+
+                            if (OptionValue != 'untimed') {
+                                if (hours === 0 && minutes === 5 && seconds === 0) {
+                                    swal({
+                                        icon: 'warning',
+                                        title: 'Time is elapsed!',
+                                        text: 'You have 5 minutes remaining.',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+
+                                if (hours === 0 && minutes === 0 && seconds === 0) {
+                                    clearInterval(timerInterval);
+                                    swal({
+                                        icon: 'warning',
+                                        title: 'Time is over!',
+                                        text: 'Your time has expired.',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Continue'
+                                    }, function(isConfirm) {
+                                        $('#timeisover').val(1);
+                                        if (isConfirm) {
+                                            $('.submit_section_btn').trigger('click');
+                                        }
+                                    });
+                                }
+                            }
+
+
+                            //Progress Saving Starts
+                            let progress_index = jQuery('.next').attr('data-count');
+                            var get_question_id = jQuery('#onload_question_id').val();
+
+                            let selected_flag_val;
+                            if ($(".flag").is(':checked')) {
+                                selected_flag_val = 'yes';
+                            } else {
+                                selected_flag_val = 'no';
+                            }
+
+                            let selected_skip_val;
+                            if ($(".skip").is(':checked')) {
+                                selected_skip_val = 'yes';
+                            } else {
+                                selected_skip_val = 'no';
+                            }
+
+                            let selected_guess_val;
+                            if ($(".guess").is(':checked')) {
+                                selected_guess_val = 'yes';
+                            } else {
+                                selected_guess_val = 'no';
+                            }
+
+                            var get_section_id = jQuery('#section_id').val();
+                            var get_question_type = jQuery('#get_question_type').val();
+                            var get_practice_id = jQuery(this).attr('data-practice_test_id');
+
+                            let question_ids = @json($total_questions);
+                            var actual_time = jQuery('#actual_time').val();
+
+                            if ($("input[name='example-radios-default']").is(':checked')) {
+                                var getSelectedAnswer = $(
+                                        "input[name='example-radios-default']:checked")
+                                    .val();
+                                selected_answer[get_question_id] = getSelectedAnswer;
+                            } else if ($("input[name='example-checkbox-default']").is(':checked')) {
+                                var store_multi = '';
+                                $('input[name="example-checkbox-default"]:checked').each(
+                                    function() {
+                                        store_multi += this.value + ',';
+                                    });
+                                store_multi = store_multi.replace(/,\s*$/, "");
+                                selected_answer[get_question_id] = store_multi;
+                            } else if ($("input[name='example-textbox-default']")) {
+                                store_multi = $("input[name='example-textbox-default']").val();
+                                selected_answer[get_question_id] = store_multi;
+                            } else {
+                                selected_answer[get_question_id] = '-';
+                            }
+
+                            Array.prototype.associate = function(keys) {
+                                var result = {};
+
+                                this.forEach(function(el, i) {
+                                    result[keys[i]] = el;
+                                });
+                                return result;
+                            };
+
+                            let answer_details = [];
+                            for (let index = 0; index < question_ids.length; index++) {
+                                if (selected_answer.hasOwnProperty(question_ids[index])) {
+                                    answer_details[question_ids[index]] = selected_answer[
+                                        question_ids[
+                                            index]];
+                                } else {
+                                    answer_details[question_ids[index]] = '-';
+                                }
+                            }
+
+                            answer_details = answer_details.filter(function(element, key) {
+                                return element !== 'undefined';
+                            });
+
+                            answer_details = answer_details.associate(question_ids);
+
+                            {{-- $.ajaxSetup({
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                             }
@@ -2221,6 +2902,7 @@
                                 }
                             }
                         }); --}}
+                        }
                         //Progress Saving Ends
                     }, 1000);
                 }
