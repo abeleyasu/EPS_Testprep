@@ -1,0 +1,18 @@
+
+Requird Columns from UG ADMIS
+
+AP_RECD_1ST_N
+
+AD_DIFF_ALL
+
+AP_DL_EACT_MON
+
+AP_DL_EACT_DAY
+
+
+AP_DL_FRSH_MON
+
+AP_DL_FRSH_DAY
+
+
+Start migration from after add_peterson_id_columns_to

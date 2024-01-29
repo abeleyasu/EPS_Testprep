@@ -48,6 +48,43 @@
               <div class="invalid-feedback">{{$message}}</div>
             @enderror
           </div>
+          <div class="mb-4">
+            <label class="from-label">
+                <input {{ $info->display_peterson_weighted_gpa ? 'checked' : '' }} type="checkbox" class="form-check-input {{$errors->has('display_peterson_weighted_gpa') ? 'is-invalid' : ''}}" name="display_peterson_weighted_gpa" 
+                {{ old('display_peterson_weighted_gpa') ? 'checked' : ($info->display_peterson_weighted_gpa ? 'checked' : '') }}>
+                Display Peterson (CSV Data) Weighted GPA
+            </label>
+        
+            @error('display_peterson_weighted_gpa')
+                <div class="invalid-feedback">{{$message}}</div>
+            @enderror
+          </div>
+          <div class="mb-4">
+            <label class="from-label">Weighted GPA:</label>
+            <input type="text" class="js-range-slider {{$errors->has('weighted_gpa') ? 'is-invalid' : ''}}" name="weighted_gpa" data-step="0.1" data-min="0.00" data-max="8.00" data-from="{{ $info->weighted_gpa ? $info->weighted_gpa : 0.00 }}" data-grid="true"/>
+            @error('weighted_gpa')
+              <div class="invalid-feedback">{{$message}}</div>
+            @enderror
+          </div>
+          <div class="mb-4">
+            <label class="from-label">
+                <input {{$info->display_peterson_unweighted_gpa ? 'checked' : ''}}  type="checkbox" class="form-check-input {{$errors->has('display_peterson_unweighted_gpa') ? 'is-invalid' : ''}}" name="display_peterson_unweighted_gpa" 
+                {{ old('display_peterson_unweighted_gpa') ? 'checked' : ($info->display_peterson_unweighted_gpa ? 'checked' : '') }}">
+                Display Peterson (CSV Data) UnWeighted GPA
+            </label>
+        
+            @error('display_peterson_weighted_gpa')
+                <div class="invalid-feedback">{{$message}}</div>
+            @enderror
+          </div>
+          <div class="mb-4">
+            <label class="from-label">Unweighted GPA:</label>
+            <input type="text" class="js-range-slider {{$errors->has('unweighted_gpa') ? 'is-invalid' : ''}}" name="unweighted_gpa" data-step="0.1" data-min="0.00" data-max="8.00" data-from="{{ $info->unweighted_gpa ? $info->unweighted_gpa : 0.00 }}" data-grid="true"/>
+            @error('unweighted_gpa')
+              <div class="invalid-feedback">{{$message}}</div>
+            @enderror
+          </div>
+
 
           <div class="mb-4">
             <label class="from-label">Average ACT Composite Score:</label>
@@ -122,7 +159,7 @@
             @enderror
           </div>
 
-          <div class="mb-4 d-flex gap-3">
+          {{-- <div class="mb-4 d-flex gap-3">
             <label class="from-label">Early Action Offered:</label>
             <div class="form-check">
               <input class="form-check-input" type="radio" id="early_action_offerd1" name="early_action_offerd" value="1" @if($info->early_action_offerd == '1') checked @endif>
@@ -135,9 +172,9 @@
             @error('early_action_offerd')
               <div class="invalid-feedback">{{$message}}</div>
             @enderror
-          </div>
+          </div> --}}
 
-          <div class="mb-4 d-flex gap-3">
+          {{-- <div class="mb-4 d-flex gap-3">
             <label class="from-label">Early Decision Offered:</label>
             <div class="form-check">
               <input class="form-check-input" type="radio" id="early_decision_offerd1" name="early_decision_offerd" value="1" @if($info->early_decision_offerd == '1') checked @endif>
@@ -150,12 +187,20 @@
             @error('early_decision_offerd')
               <div class="invalid-feedback">{{$message}}</div>
             @enderror
-          </div>
+          </div> --}}
 
-          <div class="mb-4">
+          {{-- <div class="mb-4">
             <label class="from-label">Regular Admission Deadline:</label>
             <input type="text" class="date-own form-control {{$errors->has('regular_admission_deadline') ? 'is-invalid' : ''}}" name="regular_admission_deadline" value="{{ old('regular_admission_deadline') ? old('regular_admission_deadline') : $info->regular_admission_deadline }}"/>
             @error('regular_admission_deadline')
+              <div class="invalid-feedback">{{$message}}</div>
+            @enderror
+          </div> --}}
+
+          <div class="mb-4">
+            <label class="from-label">Rolling Admission Deadline:</label>
+            <input type="text" class="date-own form-control {{$errors->has('rolling_admission_deadline') ? 'is-invalid' : ''}}" name="rolling_admission_deadline" value="{{ old('rolling_admission_deadline') ? old('rolling_admission_deadline') : $info->rolling_admission_deadline }}"/>
+            @error('rolling_admission_deadline')
               <div class="invalid-feedback">{{$message}}</div>
             @enderror
           </div>

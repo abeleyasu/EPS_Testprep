@@ -121,6 +121,11 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                     Route::post('/edit', 'update')->name('update');
                     Route::post('/import_csv', 'import_csv')->name('import_csv');
                     Route::post('/import_ug_expense_asgns', 'import_ug_expense_asgns')->name('import_ug_expense_asgns');
+                    Route::post('/import_ug_admission', 'import_ug_expense_asgns')->name('import_ug_expense_asgns');
+                    Route::post('/import_ug_admis', 'import_ug_admis')->name('import_ug_admis');
+                    Route::post('/import_ug_enroll', 'import_ug_enroll')->name('import_ug_enroll');
+                    Route::post('/import_ug_campus', 'import_ug_campus')->name('import_ug_campus');
+                    Route::post('/import_ux_inst', 'import_ux_inst')->name('import_ux_inst');
                 });
             });
         });

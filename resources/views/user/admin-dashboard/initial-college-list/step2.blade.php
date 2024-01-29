@@ -157,25 +157,25 @@ $current_user_state_code = (
                                                     $costOfAttendanceStr = "Cost of Attendance";
                                                     $total_cost = '';
                                                     $college_info =   $college['college_info'];
-                                                    $fees_ft_d =  $college_info->FEES_FT_D ? (int) $college_info->FEES_FT_D : 0;
-                                                    $books_res_d = $college_info->BOOKS_RES_D ? (int) $college_info->BOOKS_RES_D : 0;
-                                                    $transport_res_d = $college_info->TRANSPORT_RES_D ? (int) $college_info->TRANSPORT_RES_D : 0;
-                                                    $total_cost = $fees_ft_d + $books_res_d + $transport_res_d;
+                                                    // $fees_ft_d =  $college_info->FEES_FT_D ? (int) $college_info->FEES_FT_D : 0;
+                                                    // $books_res_d = $college_info->BOOKS_RES_D ? (int) $college_info->BOOKS_RES_D : 0;
+                                                    // $transport_res_d = $college_info->TRANSPORT_RES_D ? (int) $college_info->TRANSPORT_RES_D : 0;
+                                                    // $total_cost = $fees_ft_d + $books_res_d + $transport_res_d;
                                                 @endphp
                                                 @switch($college['school.ownership'])
                                                     @case(1)
                                                         @if($college['school.state'] == $current_user_state_code )
                                                             @php
                                                                 $costOfAttendanceStr .= "(In-State)";
-                                                                $tuit_state_ft_d  = $college_info->TUIT_STATE_FT_D ? (int) $college_info->TUIT_STATE_FT_D  : 0;
-                                                                $total_cost += $tuit_state_ft_d;
+                                                                // $tuit_state_ft_d  = $college_info->TUIT_STATE_FT_D ? (int) $college_info->TUIT_STATE_FT_D  : 0;
+                                                                $total_cost = $college_info->public_coa_in_state;
                                                             @endphp
                                                         
                                                         @else
                                                             @php
                                                                 $costOfAttendanceStr .= "(Out-of-State)";
-                                                                $tuit_nres_ft_d = $college_info->TUIT_NRES_FT_D ? (int) $college_info->TUIT_NRES_FT_D  : 0;
-                                                                $total_cost += $tuit_nres_ft_d;
+                                                                // $tuit_nres_ft_d = $college_info->TUIT_NRES_FT_D ? (int) $college_info->TUIT_NRES_FT_D  : 0;
+                                                                $total_cost = $college_info->public_coa_out_state;
 
                                                             @endphp
                                                         
@@ -184,15 +184,15 @@ $current_user_state_code = (
                                                     @case(2)
                                                         @php
                                                             $costOfAttendanceStr .= "";
-                                                            $tuit_overall_ft_d = $college_info->TUIT_OVERALL_FT_D ? (int) $college_info->TUIT_OVERALL_FT_D : 0;
-                                                            $total_cost += $tuit_overall_ft_d;
+                                                            // $tuit_overall_ft_d = $college_info->TUIT_OVERALL_FT_D ? (int) $college_info->TUIT_OVERALL_FT_D : 0;
+                                                            $total_cost = $college_info->pvt_coa;
 
                                                         @endphp
                                                     @break
                                                 @endswitch
                                                 <p><b>{{ $costOfAttendanceStr }}:</b> 
                                                     @if($college['latest.cost.avg_net_price.overall'])
-                                                        {{ '$' . $total_cost }}
+                                                        {{  $total_cost ?  '$' . $total_cost : 'No Data'}}
                                                         {{-- {{ '$' . number_format($college['latest.cost.avg_net_price.overall'] / 1000, 0) . 'k' }} --}}
                                                     @else
                                                         N/A
@@ -318,29 +318,49 @@ $current_user_state_code = (
                                                     <small><span id="overall-adminssion-rate"></span></small>
                                                 </div>
                                                 <div class="block-title mb-2">
+                                                    <div>Number of Applicants</div>
+                                                    <small><span id="c-number-of-applicants"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
                                                     <div>Entrance Difficulty</div>
                                                     <small><span id="c-entrance-difficulty"></span></small>
                                                 </div>
-                                                <div class="block-title mb-2">
+                                                {{-- <div class="block-title mb-2">
                                                     <div>Early Action Offered</div>
                                                     <small><span id="c-early-action-offered"></span></small>
                                                 </div>
                                                 <div class="block-title mb-2">
                                                     <div>Early Decision Offered</div>
                                                     <small><span id="c-early-decision-offerd"></span></small>
+                                                </div> --}}
+                                                <div class="block-title mb-2">
+                                                    <div>Early Action Deadline</div>
+                                                    <small><span id="c-early-action-deadline"></span></small>
                                                 </div>
                                                 <div class="block-title mb-2">
                                                     <div>Regular Admission Deadline</div>
-                                                    <small><span id="c-regular-adminssion-deadline"></span></small>
+                                                    <small><span id="c-regular-admission-deadline"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>Rolling Admission Deadline</div>
+                                                    <small><span id="c-rolling-admission-deadline"></span></small>
                                                 </div>
                                             </div>
                                             <div>
                                                 <div class="fs-base lh-base fw-large mb-0 border-bottom mb-2">
                                                     <i class="fa fa-graduation-cap"></i> Enrolled Freshman Academic Statistics
                                                 </div>
-                                                <div class="block-title mb-2">
+                                                {{-- <div class="block-title mb-2">
                                                     <div>AVERAGE ACCEPTED GPA</div>
                                                     <small id="c-avg-accepted-gpa"></small>
+                                                </div> --}}
+                                                <div class="block-title mb-2">
+                                                    <div>AVERAGE ACCEPTED WEIGHTED GPA</div>
+                                                    <small id="c-avg-accepted-weighted-gpa"></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>AVERAGE ACCEPTED UNWEIGHTED GPA</div>
+                                                    <small id="c-avg-accepted-unweighted-gpa"></small>
                                                 </div>
                                                 <div class="block-title mb-2">
                                                     <div>SAT Math</div>
@@ -366,6 +386,10 @@ $current_user_state_code = (
                                                     <small id="avg-act-composite-middle"></small>
                                                 </div>
                                                 <div class="block-title mb-2">
+                                                    <div>Academic Calender System</div>
+                                                    <small id="main_calendar"></small>
+                                                </div>
+                                                <div class="block-title mb-2">
                                                     <div>ENROLLMENT</div>
                                                     <small><span id="enrollment"></span> Undergraduates</small>
                                                 </div>
@@ -374,14 +398,26 @@ $current_user_state_code = (
                                                 <div class="fs-base lh-base fw-large mb-0 border-bottom mb-2">
                                                     <i class="fa fa-comments-dollar"></i> Financial Overview
                                                 </div>
-                                                <div class="block-title mb-2">
+                                                <div style="display: none" id="c-private-cost-of-attendance-block" class="block-title mb-2">
                                                     <div>COST OF ATTENDANCE</div>
-                                                    <small><span id="c-cost-of-attendamce"></span></small>
+                                                    <small><span id="c-private-cost-of-attendance"></span></small>
                                                 </div>
-                                                <div class="block-title mb-2">
+                                                <div style="display: none" id="c-in-state-cost-of-attendance-block" class="block-title mb-2">
+                                                    <div>COST OF ATTENDANCE (In State)</div>
+                                                    <small><span id="c-in-state-cost-of-attendance"></span></small>
+                                                    {{-- <div>Tuition & Fees (In State))</div>
+                                                    <small><span id="c-in-state-tuition-and-fees"></span></small> --}}
+                                                </div>
+                                                <div style="display:none" id="c-out-state-cost-of-attendance-block" class="block-title mb-2">
+                                                    <div>COST OF ATTENDANCE (Out of State)</div>
+                                                    <small><span id="c-out-state-cost-of-attendance"></span></small>
+                                                    {{-- <div>Tuition & Fees (Out of State)</div>
+                                                    <small><span id="c-out-state-tuition-and-fees"></span></small> --}}
+                                                </div>
+                                                {{-- <div class="block-title mb-2">
                                                     <div>TUITION AND FEES</div>
-                                                    <small><span id="c-tution-and-fees"></span></small>
-                                                </div>
+                                                    <small><span id="c-pvt-tution-and-fees"></span></small>
+                                                </div> --}}
                                                 <div class="block-title mb-2">
                                                     <div>ROOM AND BOARD</div>
                                                     <small><span id="c-room-and-board"></span></small>
@@ -441,7 +477,8 @@ $current_user_state_code = (
                                         <a class=" text-white fw-600 collapsed"><i class="fa-solid fa-comments-dollar me-2"></i> Fields of Study</a>
                                     </div>
                                     <div id="collapseThree" class="collapse" aria-labelledby="headingOne" data-bs-parent=".accordionExample">
-                                        <div class="college-content-wrapper college-content">
+                                        {{-- Main Wrapper --}}
+                                        <div id="college-content" class="college-content-wrapper college-content">
                                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                 <div class="block-header block-header-tab" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
                                                     <a class=" text-white fw-600 collapsed"><i class="fa-solid fa-circle-check me-2"></i> Architecture</a>
@@ -644,10 +681,6 @@ $current_user_state_code = (
                                                         <h2 class="block-title">Test Scores</h2>
                                                         <p id="test-score-content"><span class="test-score-college-name"></span> has an acceptance rate of <span id="test-score-acceptance-rate-percentage"></span>. <span class="test-score-college-name"></span> considers admission test scores (SAT/ACT) during the application process, but does not require them. Students who were admitted to <span class="test-score-college-name"></span> and enrolled typically had admission test scores in these ranges.</p>
                                                         <div class="block-title mb-2">
-                                                            <div>AVERAGE ACCEPTED GPA</div>
-                                                            <small id="c-avg-accepted-gpa-2"></small>
-                                                        </div>
-                                                        <div class="block-title mb-2">
                                                             <div>SAT Math</div>
                                                             <div><small>Average SAT Math</small></div>
                                                             <small id="c-avg-sat-math-2"></small>
@@ -690,38 +723,69 @@ $current_user_state_code = (
                                     </div>
                                     <div id="collapseEleven" class="collapse" aria-labelledby="headingOne" data-bs-parent=".accordionExample">
                                         <div class="college-content-wrapper college-content">
+                                            {{-- Athletic Division --}}
                                             <div class="block block-rounded block-bordered">
                                                 <div class="block-content">
                                                     <div class="block block-rounded block-link-shadow">
                                                         <h2 class="block-title">1. Athletic Division</h2>
-                                                        <div id="test-info-acceptance-rate"></div>
-                                                    </div>
-                                                    <div class="block block-rounded block-link-shadow">
-                                                        <h2 class="block-title">2. Greek Life (Sororities & Fraternities)</h2>
-                                                        <div id="test-info-acceptance-rate"></div>
-                                                    </div>
-                                                    <div class="block block-rounded block-link-shadow">
-                                                        <h2 class="block-title">3. % in sororities</h2>
-                                                        <div id="test-info-acceptance-rate"></div>
-                                                    </div>
-                                                    <div class="block block-rounded block-link-shadow">
-                                                        <h2 class="block-title">4. % in Fraternities</h2>
-                                                        <div id="test-info-acceptance-rate"></div>
-                                                    </div>
-                                                    <div class="block block-rounded block-link-shadow">
-                                                        <h2 class="block-title">5. Nearest Metropolitan Area </h2>
-                                                        <div id="test-info-acceptance-rate"></div>
-                                                    </div>
-                                                    <div class="block block-rounded block-link-shadow">
-                                                        <h2 class="block-title">6. Freshman Housing Guarantee </h2>
-                                                        <div id="test-info-acceptance-rate"></div>
-                                                    </div>
-                                                    <div class="block block-rounded block-link-shadow">
-                                                        <h2 class="block-title">7. Students in College Housing</h2>
-                                                        <div id="test-info-acceptance-rate"></div>
+                                                         <small id=""></small>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="block block-rounded block-bordered">
+                                                <div class="block-content">
+                                                    <div class="block block-rounded block-link-shadow">
+                                                        <h2 class="block-title">2. Greek Life (Sororities & Fraternities)</h2>
+                                                        <div>LIFE_SOR_NAT</div>
+                                                        <small id="life_sor_nat"></small>
+                                                        <div>LIFE_SOR_LOCAL</div>
+                                                        <small id="life_sor_local"></small>
+                                                        <div>LIFE_FRAT_NAT</div>
+                                                        <small id="life_frat_nat"></small>
+                                                        <div>LIFE_FRAT_LOCAL</div>
+                                                        <small id="life_frat_local"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="block block-rounded block-bordered">
+                                                <div class="block-content">
+                                                    <div class="block block-rounded block-link-shadow">
+                                                        <h2 class="block-title">3.% in Sororities </h2>
+                                                         <small id="SORO_1ST_P"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="block block-rounded block-bordered">
+                                                <div class="block-content">
+                                                    <div class="block block-rounded block-link-shadow">
+                                                        <h2 class="block-title">4.% Fraternities</h2>
+                                                         <small id="FRAT_1ST_P"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="block block-rounded block-bordered">
+                                                <div class="block-content">
+                                                    <div class="block block-rounded block-link-shadow">
+                                                        <h2 class="block-title">5. Nearest Metropolitan Area </h2>
+                                                         <small id="CMPS_METRO_T"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="block block-rounded block-bordered">
+                                                <div class="block-content">
+                                                    <div class="block block-rounded block-link-shadow">
+                                                        <h2 class="block-title">6. Freshman Housing Guarantee </h2>
+                                                         <small id="HOUS_FRSH_POLICY"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="block block-rounded block-bordered">
+                                                <div class="block-content">
+                                                    <div class="block block-rounded block-link-shadow">
+                                                        <h2 class="block-title">7. Students in College Housing</h2>
+                                                         <small id="HOUS_SPACES_OCCUP"></small>
+                                                    </div>
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
@@ -916,6 +980,7 @@ $current_user_state_code = (
                 } else if (data.latest.student.size > 2000 && data.latest.student.size < 15000) {
                     size = 'Medium'
                 }
+
                 const avganualcosr = data.latest.cost.avg_net_price.overall ? data.latest.cost.avg_net_price.overall : 0
                 const graduationrate = data.latest.completion.consumer_rate ? Math.round(data.latest.completion.consumer_rate * 100) : 0
                 $('#graduation-rate-progress-bar').html(`
@@ -1015,6 +1080,7 @@ $current_user_state_code = (
                 }
 
                 $('#main-college-name').html(data.school.name)
+                $('#main_calendar').html((data.latest.college_info.MAIN_CALENDAR ? data.latest.college_info.MAIN_CALENDAR : '-'))
 
                 // $('#college-map-url').attr('href', `https://www.google.com/maps/search/?api=1&query=${data.location.lat},${data.location.lon}`)
 
@@ -1032,6 +1098,42 @@ $current_user_state_code = (
                     $('#college-description').html('')
                 }
 
+
+                const programsOffered = data.latest.programs.cip_4_digit
+                const uniqueIdsOfPrograms = [...new Set(programsOffered.map(item => item.code))]; // [ 'A', 'B']
+                console.log(uniqueIdsOfPrograms)
+
+                // Adding Fields of Study Dynamically
+                $("#college-content").append(`
+            <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                <div class="block-header block-header-tab" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                    <a class="text-white fw-600 collapsed"><i class="fa-solid fa-circle-check me-2"></i> Architecture</a>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingOne1" data-bs-parent=".accordionExamplemain">
+                    <div class="college-content-wrapper college-content">
+                        <p><b>Salary After Completing Giving Kona</b></p>
+                        <p>Median Earnings <b>$79,000</b></p>
+                        <p><b>Financial Aid & Debt</b></p>
+                        <p>Median Debt After Graduation <b>$25,000</b></p>
+                        <p><b>Additional Information</b></p>
+                        <p class="mb-0">Number of Graduates <b>250</b></p>
+                    </div>
+                </div>
+            </div>
+        `);
+            
+
+                if(data.latest.college_info.display_peterson_weighted_gpa) {
+                    $('#c-avg-accepted-weighted-gpa').html(data.latest.college_info.FRSH_GPA_WEIGHTED ? data.latest.college_info.FRSH_GPA_WEIGHTED : data.latest.college_info.weighted_gpa)
+                }else{
+                    $('#c-avg-accepted-weighted-gpa').html(data.latest.college_info.weighted_gpa ? data.latest.college_info.weighted_gpa : 'No Data')
+                }
+                if(data.latest.college_info.display_peterson_unweighted_gpa) {
+                    $('#c-avg-accepted-unweighted-gpa').html(data.latest.college_info.FRSH_GPA_WEIGHTED ? data.latest.college_info.FRSH_GPA : data.latest.college_info.unweighted_gpa)
+                }else{
+                    $('#c-avg-accepted-unweighted-gpa').html(data.latest.college_info.unweighted_gpa ? data.latest.college_info.unweighted_gpa : 'No Data')
+                }
+
                 $('#c-avg-accepted-gpa').html((data.latest.college_info.gpa_average && data.latest.college_info.gpa_average !== '0' ? data.latest.college_info.gpa_average : '-'))
                 $('#c-avg-accepted-gpa-2').html((data.latest.college_info.gpa_average && data.latest.college_info.gpa_average !== '0' ? data.latest.college_info.gpa_average : '-'))
                 $('#c-avg-sat-math').html((data.latest.college_info.sat_math_average && data.latest.college_info.sat_math_average !== '0' ? data.latest.college_info.sat_math_average : '-'))
@@ -1041,19 +1143,83 @@ $current_user_state_code = (
                 $('#c-avg-act-composite').html((data.latest.college_info.act_composite_average && data.latest.college_info.act_composite_average !== '0' ? data.latest.college_info.act_composite_average : '-'))
                 $('#c-avg-act-composite-2').html((data.latest.college_info.act_composite_average && data.latest.college_info.act_composite_average !== '0' ? data.latest.college_info.act_composite_average : '-'))
 
-                $('#c-cost-of-attendamce').html((data.latest.college_info.cost_of_attendance && data.latest.college_info.cost_of_attendance !== '0' ? '$'+data.latest.college_info.cost_of_attendance : '-'))
+                if(data.latest.school.ownership == 1){
+                    $('#c-in-state-cost-of-attendance-block').show()
+                    $('#c-in-state-cost-of-attendance').html((data.latest.college_info.public_coa_in_state && data.latest.college_info.public_coa_in_state !== '0' ? '$'+data.latest.college_info.public_coa_in_state : '-'))
+                    // $('#c-in-state-tuition-and-fees').html((data.latest.college_info.TUIT_STATE_FT_D && data.latest.college_info.TUIT_STATE_FT_D !== '0' && data.latest_college_info.FEES_FT_D ? '$'+(parseInt(data.latest.college_info.TUIT_STATE_FT_D) +  parseInt(data.latest.college_info.FEES_FT_D))    : '-'))
+                    $('#c-out-state-cost-of-attendance-block').show()
+                    $('#c-out-state-cost-of-attendance').html((data.latest.college_info.public_coa_out_state && data.latest.college_info.public_coa_out_state !== '0' ? '$'+data.latest.college_info.public_coa_out_state : '-'))
+                    // $('#c-out-state-tuition-and-fees').html((data.latest.college_info.TUIT_NRES_FT_D && data.latest.college_info.TUIT_NRES_FT_D !== '0' && data.latest_college_info.FEES_FT_D ? '$'+( parseInt(data.latest.college_info.TUIT_NRES_FT_D) + parseInt(data.latest.college_info.FEES_FT_D) )   : '-'))
+                }else{
+                    $('#c-private-cost-of-attendance-block').show()
+                    $('#c-private-cost-of-attendance').html((data.latest.college_info.pvt_coa && data.latest.college_info.pvt_coa !== '0' ? '$'+data.latest.college_info.pvt_coa : '-'))
+                    // $('#c-pvt-tuition-and-fees').html((data.latest.college_info.TUIT_OVERALL_FT_D && data.latest.college_info.TUIT_OVERALL_FT_D !== '0' && data.latest_college_info.FEES_FT_D ? '$'+(  parseInt(data.latest.college_info.TUIT_NRES_FT_D) +  parseInt(data.latest.college_info.FEES_FT_D) )   : '-'))
+                }
                 $('#c-tution-and-fees').html((data.latest.college_info.tution_and_fess && data.latest.college_info.tution_and_fess !== '0' ? '$'+data.latest.college_info.tution_and_fess : '-'))
-                $('#c-room-and-board').html((data.latest.college_info.room_and_board && data.latest.college_info.room_and_board !== '0' ? '$'+data.latest.college_info.room_and_board : '-'))
+                $('#c-room-and-board').html((data.latest.college_info.RM_BD_D && data.latest.college_info.RM_BD_D !== '0' ? '$'+data.latest.college_info.RM_BD_D : '-'))
                 $('#c-average-percent-of-need-met').html((data.latest.college_info.average_percent_of_need_met && data.latest.college_info.average_percent_of_need_met !== '0' ? data.latest.college_info.average_percent_of_need_met+ '%' : '-'))
                 $('#c-average-freshman-award').html((data.latest.college_info.average_freshman_award && data.latest.college_info.average_freshman_award !== '0' ? '$'+data.latest.college_info.average_freshman_award : '-'))
 
                 console.log("HAyE")
                 console.log(data)
-                $('#c-entrance-difficulty').html((data.latest.college_info.entrance_difficulty ? data.latest.college_info.entrance_difficulty : '-'))
-                $('#c-early-action-offered').html((data.latest.college_info.early_action_offerd === 1 ? 'Yes' : 'No'))
-                $('#c-early-decision-offerd').html((data.latest.college_info.early_decision_offerd === 1 ? 'Yes' : 'No'))
-                $('#c-regular-adminssion-deadline').html((data.latest.college_info.regular_admission_deadline ? moment(data.latest.college_info.early_decision_deadline).format('MMMM, DD') : '-'))
-                
+                // $('#c-entrance-difficulty').html((data.latest.college_info.entrance_difficulty ? data.latest.college_info.entrance_difficulty : '-'))
+                $('#c-entrance-difficulty').html((data.latest.college_info.AD_DIFF_ALL ? data.latest.college_info.AD_DIFF_ALL : '-'))
+                $('#c-number-of-applicants').html((data.latest.college_info.AP_RECD_1ST_N ? data.latest.college_info.AP_RECD_1ST_N : '-'))
+
+
+                // Campus Accordion Data
+                displayYesOrNo = (input) => input.toLowerCase() == 'y' ? 'Yes' : 'No'
+                $('#life_sor_nat').html((data.latest.college_info.LIFE_SOR_NAT ? displayYesOrNo(data.latest.college_info.LIFE_SOR_NAT) : '-'))
+                $('#life_sor_local').html((data.latest.college_info.LIFE_SOR_LOCAL ? displayYesOrNo(data.latest.college_info.LIFE_SOR_LOCAL) : '-'))
+                $('#life_frat_nat').html((data.latest.college_info.LIFE_FRAT_NAT ? displayYesOrNo(data.latest.college_info.LIFE_FRAT_NAT) : '-'))
+                $('#life_frat_local').html((data.latest.college_info.LIFE_FRAT_LOCAL ? displayYesOrNo(data.latest.college_info.LIFE_FRAT_LOCAL): '-'))
+                $('#SORO_1ST_P').html((data.latest.college_info.SORO_1ST_P ? (data.latest.college_info.SORO_1ST_P): '-'))
+                $('#FRAT_1ST_P').html((data.latest.college_info.FRAT_1ST_P ? (data.latest.college_info.FRAT_1ST_P + '%'): '-'))
+                $('#CMPS_METRO_T').html((data.latest.college_info.CMPS_METRO_T ? (data.latest.college_info.CMPS_METRO_T) : '-'))
+                $('#HOUS_FRSH_POLICY').html((data.latest.college_info.HOUS_FRSH_POLICY ? (data.latest.college_info.HOUS_FRSH_POLICY) : '-'))
+                $('#HOUS_SPACES_OCCUP').html((data.latest.college_info.HOUS_SPACES_OCCUP ? (data.latest.college_info.HOUS_SPACES_OCCUP) : '-'))
+
+                let earlyDeadlineMonth = data.latest.college_info.AP_DL_EACT_MON;
+                let earlyDeadlineDay = data.latest.college_info.AP_DL_EACT_DAY;
+                let regAdmissionDeadlineDay = data.latest.college_info.AP_DL_FRSH_DAY
+                let regAdmissionDeadlineMon = data.latest.college_info.AP_DL_FRSH_MON
+
+                function displayDate(day, month, whereToInsert){
+                    if(earlyDeadlineDay && earlyDeadlineMonth){
+                        let currentYear = new Date().getFullYear()
+                        let earlyActionDeadlineDate = new Date( currentYear ,earlyDeadlineMonth - 1, earlyDeadlineDay);
+                        let todayDate = new Date()
+
+                        if (earlyActionDeadlineDate < todayDate){
+                            earlyActionDeadlineDate.setFullYear(earlyActionDeadlineDate.getFullYear() + 1)
+                            $(whereToInsert).html((earlyActionDeadlineDate.toDateString()))
+                        } else {
+                            $(whereToInsert).html((earlyActionDeadlineDate.toDateString()))
+                        }
+                    }else{
+                        $(whereToInsert).html(('No Data'))
+                    }
+                }
+
+                function displayGPA(){
+
+
+                }
+
+
+                displayDate(earlyDeadlineDay, earlyDeadlineMonth, '#c-early-action-deadline')
+                displayDate(regAdmissionDeadlineDay, regAdmissionDeadlineMon, '#c-regular-admission-deadline')
+
+
+
+
+
+                // $('#c-early-action-offered').html((data.latest.college_info.early_action_offerd === 1 ? 'Yes' : 'No'))
+                // $('#c-early-decision-offerd').html((data.latest.college_info.early_decision_offerd === 1 ? 'Yes' : 'No'))
+                // $('#c-regular-adminssion-deadline').html((data.latest.college_info.regular_admission_deadline ? moment(data.latest.college_info.early_decision_deadline).format('MMMM, DD') : '-'))
+                // $('#c-rolling-admission-deadline').html((data.latest.college_info.regular_admission_deadline ? moment(data.latest.college_info.early_decision_deadline).format('MMMM, DD') : '-'))
+                console.log(typeof(data.latest.college_info.rolling_admission_deadline))
+                $('#c-rolling-admission-deadline').html((data.latest.college_info.rolling_admission_deadline ? data.latest.college_info.rolling_admission_deadline : 'No Data'))
                 $('#overall-adminssion-rate').html(data.latest.admissions.admission_rate.overall ? Math.round(data.latest.admissions.admission_rate.overall * 100) + '%' : '0%')
                 // $('#total-application').html(data.latest.student.FAFSA_applications)
                 $('#enrollment').html(data.latest.student.size)

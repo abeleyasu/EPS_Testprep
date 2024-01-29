@@ -90,21 +90,195 @@ class CollegeInformationController extends Controller
 
         return redirect()->back()->with('success', 'CSV file imported successfully.');
     }
+
+    private function getColumnIndicesFromCSV($column_names, $csv_column_names){
+        $column_names_ass_arr = array();
+        
+        foreach($column_names as $column_name) {
+            $result = array_search($column_name, $csv_column_names);
+            $column_names_ass_arr[$column_name] = $result;
+        }
+
+        return ($column_names_ass_arr);
+    }
+
+    public function get_column_values($column_names, $data){
+            $i = 0;
+            foreach($column_names as $column_name => $column_name_index){
+                if($data[$column_name_index] == 0 || !empty($data[$column_name_index])){
+                    $new_data[$column_name] = $data[$column_name_index];
+                }
+                $i++;
+            }
+            return $new_data;
+    }
+
     public function import_ug_expense_asgns(Request $request)
     {
-        // $indeces_of_data = array(7, 9, );
-        // Get indices
+        
         $column_names = array(
-            'TUIT_STATE_FT_D' => -1, 
-            'FEES_FT_D' => -1, 
-            'BOOKS_RES_D' => -1, 
-            'TRANSPORT_RES_D' => -1, 
-            'TUIT_NRES_FT_D' => -1, 
-            'TUIT_OVERALL_FT_D' => -1 
+            'TUIT_STATE_FT_D' , 
+            'FEES_FT_D' , 
+            'BOOKS_RES_D', 
+            'TRANSPORT_RES_D', 
+            'TUIT_NRES_FT_D', 
+            'TUIT_OVERALL_FT_D',
+            'RM_BD_D',
         );
+        $peterson_id_index = null;
         $file = $request->file('ug_expense_asgns');
         $fileContents = file($file->getPathname());
 
+        $index = -1;
+        foreach ($fileContents as $line) {
+            $index++;
+            $data = str_getcsv($line);
+            // Storing the indeces of Required Columns
+            if ($index == 0) {
+                $peterson_id_index = $this->getColumnIndicesFromCSV(array('INUN_ID') , $data)['INUN_ID'];
+                $column_names = $this->getColumnIndicesFromCSV($column_names , $data);
+                continue;
+            }
+            $new_data = $this->get_column_values($column_names, $data);
+            if(isset($new_data['FEES_FT_D']) && isset($new_data['BOOKS_RES_D']) && isset($new_data['TRANSPORT_RES_D'])){
+                if(isset($new_data['TUIT_OVERALL_FT_D'])){
+                    $new_data['pvt_coa'] = $new_data['TUIT_OVERALL_FT_D'] + $new_data['FEES_FT_D'] + $new_data['BOOKS_RES_D'] + $new_data['TRANSPORT_RES_D'];
+                }
+                if(isset($new_data['TUIT_STATE_FT_D'])){
+                    $new_data['public_coa_in_state'] = $new_data['TUIT_STATE_FT_D'] + $new_data['FEES_FT_D'] + $new_data['BOOKS_RES_D'] + $new_data['TRANSPORT_RES_D'];
+                }
+                if(isset($new_data['TUIT_NRES_FT_D'])){
+                    $new_data['public_coa_out_state'] = $new_data['TUIT_NRES_FT_D'] + $new_data['FEES_FT_D'] + $new_data['BOOKS_RES_D'] + $new_data['TRANSPORT_RES_D'];
+                }
+            }
+
+            $collegeInfo = CollegeInformation::where('petersons_id', $data[$peterson_id_index])
+                ->first();
+            if ($collegeInfo) {
+                $collegeInfo->update($new_data);
+            }
+        }
+
+        return redirect()->back()->with('success', 'CSV file imported successfully.');
+    }
+    public function import_ux_inst(Request $request)
+    {
+        
+        $column_names = array(
+            'MAIN_CALENDAR' , 
+        );
+        $peterson_id_index = null;
+        $file = $request->file('ux_inst');
+        $fileContents = file($file->getPathname());
+
+        $index = -1;
+        foreach ($fileContents as $line) {
+            $index++;
+            $data = str_getcsv($line);
+            // Storing the indeces of Required Columns
+            if ($index == 0) {
+                $peterson_id_index = $this->getColumnIndicesFromCSV(array('INUN_ID') , $data)['INUN_ID'];
+                $column_names = $this->getColumnIndicesFromCSV($column_names , $data);
+                continue;
+            }
+            $new_data = $this->get_column_values($column_names, $data);
+            $collegeInfo = CollegeInformation::where('petersons_id', $data[$peterson_id_index])
+                ->first();
+            if ($collegeInfo) {
+                $collegeInfo->update($new_data);
+            }
+        }
+
+        return redirect()->back()->with('success', 'CSV file imported successfully.');
+    }
+
+    public function import_ug_enroll(Request $request)
+    {
+        
+        $column_names = array(
+            'FRSH_GPA',
+            'FRSH_GPA_WEIGHTED'
+        );
+        $peterson_id_index = null;
+        $file = $request->file('ug_enroll');
+        $fileContents = file($file->getPathname());
+
+        $index = -1;
+        foreach ($fileContents as $line) {
+            $index++;
+            $data = str_getcsv($line);
+            // Storing the indeces of Required Columns
+            if ($index == 0) {
+                $peterson_id_index = $this->getColumnIndicesFromCSV(array('INUN_ID') , $data)['INUN_ID'];
+                $column_names = $this->getColumnIndicesFromCSV($column_names , $data);
+                continue;
+            }
+            $new_data = $this->get_column_values($column_names, $data);
+            $collegeInfo = CollegeInformation::where('petersons_id', $data[$peterson_id_index])
+                ->first();
+            if ($collegeInfo) {
+                $collegeInfo->update($new_data);
+            }
+        }
+
+        return redirect()->back()->with('success', 'CSV file imported successfully.');
+    }
+    public function import_ug_campus(Request $request)
+    {
+        
+        $column_names = array(
+            'LIFE_SOR_NAT' , 
+            'LIFE_SOR_LOCAL', 
+            'LIFE_FRAT_NAT', 
+            'LIFE_FRAT_LOCAL', 
+            'SORO_1ST_P',
+            'FRAT_1ST_P',
+            'CMPS_METRO_T',
+            'HOUS_FRSH_POLICY',
+            'HOUS_SPACES_OCCUP',
+ 
+        );
+        $peterson_id_index = null;
+        $file = $request->file('ug_campus');
+        $fileContents = file($file->getPathname());
+
+        $index = -1;
+        foreach ($fileContents as $line) {
+            $index++;
+            $data = str_getcsv($line);
+            // Storing the indeces of Required Columns
+            if ($index == 0) {
+                $peterson_id_index = $this->getColumnIndicesFromCSV(array('INUN_ID') , $data)['INUN_ID'];
+                $column_names = $this->getColumnIndicesFromCSV($column_names , $data);
+                continue;
+            }
+            $new_data = $this->get_column_values($column_names, $data);
+            $collegeInfo = CollegeInformation::where('petersons_id', $data[$peterson_id_index])
+                ->first();
+            if ($collegeInfo) {
+                $collegeInfo->update($new_data);
+            }
+        }
+
+        return redirect()->back()->with('success', 'UG Campus Data have been imported Successfully');
+    }
+
+    public function import_ug_admis(Request $request){
+         $column_names = array(
+            'AP_RECD_1ST_N' => -1, 
+            'AD_DIFF_ALL' => -1, 
+            'AP_DL_EACT_MON' => -1, 
+            'AP_DL_EACT_DAY' => -1, 
+            'AP_DL_FRSH_MON' => -1, 
+            'AP_DL_FRSH_DAY' => -1,
+            'AP_DL_EDEC_1_MON' => -1,
+            'AP_DL_EDEC_1_DAY' => -1,
+            'AP_DL_EDEC_2_DAY' => -1,
+            'AP_DL_EDEC_2_MON' => -1,
+         );
+        
+        $file = $request->file('ug_admis');
+        $fileContents = file($file->getPathname());
         $index = -1;
         foreach ($fileContents as $line) {
             $index++;
@@ -128,13 +302,6 @@ class CollegeInformationController extends Controller
 
             $new_data = array();
             
-            // Insert Data from CSV into new_data associative array if the cell is not empty
-            // foreach($indeces_of_columns as $column_index) {
-            //     if(!empty($data[$column_index])){
-            //         $new_data[$column_names[$i]] = $data[$column_index];
-            //     }
-            //     $i++;
-            // }
             $i = 0;
             foreach($column_names as $column_name => $column_name_index){
                 if(!empty($data[$column_name_index])){
@@ -148,9 +315,10 @@ class CollegeInformationController extends Controller
                 $collegeInfo->update($new_data);
             }
         }
-
         return redirect()->back()->with('success', 'CSV file imported successfully.');
     }
+
+
 
     public function editView($id)
     {
@@ -178,10 +346,22 @@ class CollegeInformationController extends Controller
             'room_and_board' => 'required|numeric',
             'average_percent_of_need_met' => 'required',
             'average_freshman_award' => 'required|numeric',
-            'early_action_offerd' => 'required|boolean',
-            'early_decision_offerd' => 'required|boolean',
-            'regular_admission_deadline' => 'required|date_format:m-d-Y',
+            'early_action_offerd' => 'boolean',
+            'early_decision_offerd' => 'boolean',
+            // 'regular_admission_deadline' => 'required|date_format:m-d-Y',
         ];
+        if($request->display_peterson_weighted_gpa != 'on'){
+            $request->merge(['display_peterson_weighted_gpa' => 0]);
+        }else{
+            $request->merge(['display_peterson_weighted_gpa' => 1]);
+        }
+        if($request->display_peterson_unweighted_gpa != 'on'){
+            $request->merge(['display_peterson_unweighted_gpa' => 0]);
+        }else{
+            $request->merge(['display_peterson_unweighted_gpa' => 1]);
+        }
+
+
 
         $customMessages = [
             'entrance_difficulty.required' => 'The entrance difficulty field is required.',
