@@ -737,6 +737,20 @@
                             <input id="hard_section_determiner" name="hard_section_determiner" class="form-control"
                                 placeholder="Enter Hard Section Determiner">
                         </div>
+
+                        <div class="col-md-12 lower_value" style="display: none">
+                            <label class="form-label" style="font-size: 13px;">Lower Actual Score Value:<span
+                                    class="text-danger">*</span></label>
+                            <input id="lower_value" name="lower_value" class="form-control"
+                                placeholder="Enter Lower Actual Score value" type="number">
+                        </div>
+                        <div class="col-md-12 mt-3 mb-3  upper_value" style="display: none">
+                            <label class="form-label" style="font-size: 13px;">Upper Actual Score Value:<span
+                                    class="text-danger">*</span></label>
+                            <input id="upper_value" name="upper_value" class="form-control"
+                                placeholder="Enter Upper Actual Score value" type="number">
+                        </div>
+
                         <div class="mb-2 show-calc-div row">
                             <div class="col-md-1">
                                 <input type="checkbox" class="show-calc-box" name="add_show_calc" id="add_show_calc">
@@ -869,6 +883,21 @@
                                     class="text-danger">*</span></label>
                             <input id="edit_hard_section_determiner" name="hard_section_determiner" class="form-control"
                                 placeholder="Enter Hard Section Determiner">
+                        </div>  
+                        
+                        
+                        <div class="col-md-12 edit_lower_value" style="display: none">
+                            <label class="form-label" style="font-size: 13px;">Lower Actual Score value:<span
+                                    class="text-danger">*</span></label>
+                            <input id="edit_lower_value" name="lower_value" class="form-control"
+                                placeholder="Enter Lower Actual Score value" type="number">
+                        </div>
+                        <div class="col-md-12 mt-3 mb-3  edit_upper_value"
+                            style="display: none">
+                            <label class="form-label" style="font-size: 13px;">Upper Actual Score value:<span
+                                    class="text-danger">*</span></label>
+                            <input id="edit_upper_value" name="upper_value" class="form-control"
+                                placeholder="Enter Upper Actual Score value" type="number">
                         </div>
                         <div class="mb-2 show-calc-div row">
                             <div class="col-md-1">
@@ -5025,6 +5054,17 @@
                 $('.hard_section_determiner').hide();
                 $('.easy_section_determiner').hide();
             }
+
+            if (test_source == "1" && (format == 'DSAT' || format == "DPSAT" || format == "PSAT" || format == "SAT")) {
+                $('#lower_value').val('');
+                $('#upper_value').val('');
+                $('.lower_value').show();
+                $('.upper_value').show();
+            } else {
+                $('.upper_value').hide();
+                $('.lower_value').hide();
+            }
+
             $('#add_show_calc').prop('checked', false);
             $("input[name=required_number_of_correct_answers]").val("");
             whichModel = "section";
@@ -5542,9 +5582,12 @@
             var question_type = $('#format').val();
             if (whichModel == 'section') {
                 var test_type = $('#format').val();
+                var lower_value = jQuery('#lower_value').val();
+                    var upper_value = jQuery('#upper_value').val();
                 if ((test_type == 'DSAT') || (test_type == 'DPSAT')) {
                     var easy_section_determiner = jQuery('#easy_section_determiner').val();
                     var hard_section_determiner = jQuery('#hard_section_determiner').val();
+                   
                     // this field is required - required_number_of_correct_answers
                     var numberOfCorrectAnswers = $('#required_number_of_correct_answers').val();
                     if (format == '' || testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0' ||
@@ -5603,6 +5646,8 @@
                         'question_type': question_type,
                         'easy_section_determiner': easy_section_determiner,
                         'hard_section_determiner': hard_section_determiner,
+                        'lower_value': lower_value,
+                        'upper_value': upper_value,
                         '_token': $('input[name="_token"]').val()
                     },
                     url: '{{ route('addPracticeTestSection') }}',
@@ -8653,6 +8698,13 @@
                     $('#edit_regular_minute').val(regularTime[1]);
                     $('#edit_regular_second').val(regularTime[2]);
 
+                    if(source == '1' && (res.sectionDetails.format == 'SAT' || res.sectionDetails.format == 'PSAT' || res.sectionDetails.format == 'DSAT' || res.sectionDetails.format == 'DPSAT')){
+                        $('.edit_lower_value').show();
+                        $('#edit_lower_value').val(res.sectionDetails.lower_value);
+                        $('.edit_upper_value').show();
+                        $('#edit_upper_value').val(res.sectionDetails.upper_value);
+                    }
+
                     if (source == '1' && (res.sectionDetails.practice_test_type == 'Reading_And_Writing' || res.sectionDetails.practice_test_type == 'Math')) {
                         $('.edit_easy_section_determiner').hide();
                         $('.edit_hard_section_determiner').hide();
@@ -8715,7 +8767,10 @@
             }
 
             var test_type = $('#format').val();
-            
+            if ((test_type == 'DSAT') || (test_type == 'DPSAT') || (test_type == 'PSAT') || (test_type == 'SAT')) {
+                var editLowerValue = $('#edit_lower_value').val();
+                var editUpperValue = $('#edit_upper_value').val();
+            }
             if ((test_type == 'DSAT') || (test_type == 'DPSAT')) {
                 // this field is required - required_number_of_correct_answers
                 var numberOfCorrectAnswers = $('#edit_required_number_of_correct_answers').val();
@@ -8731,6 +8786,8 @@
                 }
                 var editEasySection = $('#edit_easy_section_determiner').val();
                 var editHardSection = $('#edit_hard_section_determiner').val();
+
+                
             } else {
                 if (testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0') {
                     $('#editSectionModal .validError').text('Below fields are required!');
@@ -8758,7 +8815,9 @@
                     'required_number_of_correct_answers': edit_required_number_of_correct_answers,
                     'show_calculator': editShowCalc,
                     'editEasySection': editEasySection,
-                    'editHardSection': editHardSection,
+                    'editHardSection': editHardSection, 
+                    'editLowerValue': editLowerValue,
+                    'editUpperValue': editUpperValue,
                     '_token': $('input[name="_token"]').val()
                 },
                 url: '{{ route('update_section') }}',

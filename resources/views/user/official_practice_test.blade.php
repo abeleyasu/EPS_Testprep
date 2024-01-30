@@ -143,9 +143,9 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              height: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              background-color: blue;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              margin-right: 5px; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              height: 20px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              background-color: blue;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              margin-right: 5px; */
         }
     </style>
     @php
@@ -400,28 +400,19 @@
                                         style="cursor: pointer">&#9432;</span>
                                 </p>
                             </div>
-                            @if ($test->format == 'DSAT')
-                                <div class="col-md-3">
-                                    <input type="number" class="form-control form-control-md " id="user_reading_score"
-                                        name="user_reading_score" placeholder="Reading & Writing Score" min="200"
-                                        max="800">
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="number" class="form-control form-control-md " id="user_math_score"
-                                        name="user_math_score" placeholder="Math Score" min="200" max="800">
-                                </div>
-                            @elseif($test->format == 'DPSAT')
-                                <div class="col-md-3">
-                                    <input type="number" class="form-control form-control-md " id="user_reading_score"
-                                        name="user_reading_score" placeholder="Reading & Writing Score" min="160"
-                                        max="760">
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="number" class="form-control form-control-md " id="user_math_score"
-                                        name="user_math_score" placeholder="Math Score" min="320" max="1520">
-                                </div>
-                            @else
-                            @endif
+                            <input type="hidden" id="min_value" value="{{ $getSection->lower_value }}" />
+                            <input type="hidden" id="max_value" value="{{ $getSection->upper_value }}" />
+                            <div class="col-md-3">
+                                <input type="number" class="form-control form-control-md " id="user_reading_score"
+                                    name="user_reading_score" placeholder="Reading & Writing Score">
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <input type="number" class="form-control form-control-md " id="user_math_score"
+                                    name="user_math_score" placeholder="Math Score">
+                            </div>
+
                             <div class="col-md-3">
                                 <input type="number" class="form-control form-control-md " id="user_total_score"
                                     name="user_total_score" placeholder="Total Score">
@@ -676,6 +667,9 @@
         $(document).ready(function() {
             let format = $('#format').val();
 
+            let min_value = parseInt($('#min_value').val()) || 0;
+            let max_value = parseInt($('#max_value').val()) || 0;
+
             function updateTotalScore() {
                 let reading = parseInt($('#user_reading_score').val()) || 0;
                 let math = parseInt($('#user_math_score').val()) || 0;
@@ -713,30 +707,27 @@
 
             $('#user_reading_score').blur(function() {
                 let reading = parseInt($('#user_reading_score').val());
-                if (format == 'DSAT') {
-                    if (reading < 200 || reading > 800) {
-                        alert("Reading & Writing score must be between 200 and 800.");
-                    }
-                } else if (format == 'DPSAT') {
-                    if (reading < 160 || reading > 760) {
-                        alert("Reading & Writing score must be between 160 and 760.");
-                    }
+                if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' || format == 'DPSAT') {
+                    if (reading < min_value || reading > max_value) {
+                        alert("Reading & Writing score must be between " + min_value + " and " + max_value +
+                            ".");
+                        return false;
+                    } else {
 
-                } else {
-
+                    }
                 }
             });
 
             $('#user_math_score').blur(function() {
                 let math = parseInt($('#user_math_score').val());
-                if (math < 200 || math > 800) {
-                    alert("Math score must be between 200 and 800.");
-                } else if (format == 'DPSAT') {
-                    if (math < 320 || math > 1520) {
-                        alert("Reading & Writing score must be between 320 and 1520.");
-                    }
-                } else {
+                if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' || format == 'DPSAT') {
+                    if (math < min_value || math > max_value) {
+                        alert("Math score must be between " + min_value + " and " + max_value + ".");
+                        return false;
 
+                    } else {
+
+                    }
                 }
             });
 
@@ -1239,6 +1230,25 @@
                     $('#actualTImeConfirm').show();
                     return false;
                 }
+
+                let reading = parseInt($('#user_reading_score').val());
+                let math = parseInt($('#user_math_score').val());
+                let format = $('#format').val();
+
+                let min_value = parseInt($('#min_value').val()) || 0;
+                let max_value = parseInt($('#max_value').val()) || 0;
+
+                if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' || format == 'DPSAT') {
+                    if (math < min_value || math > max_value || reading < min_value || reading >
+                        max_value) {
+                        alert("Actual score must be between " + min_value + " and " + max_value + ".");
+                        return false;
+
+                    } else {
+
+                    }
+                }
+
 
                 if (jQuery('.next').prop('disabled') == false) {
                     var timeisover = jQuery('#timeisover').val();
