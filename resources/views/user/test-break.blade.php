@@ -117,8 +117,19 @@
 
                         </div>
                         <div>
-                            <a href="/user/practice-test/{{ $section_id }}?test_id={{ $test_id }}&time=regular"
-                                style='display:none' id="my-link"></a>
+                            @php
+                                $checkTest = \DB::table('practice_tests')
+                                    ->where('id', $test_id)
+                                    ->first();
+                                // dd($checkTest);
+                            @endphp
+                            @if ($checkTest->test_source == 1)
+                                <a href="/user/official-practice-test/{{ $section_id }}?test_id={{ $test_id }}&time=regular"
+                                    style='display:none' id="my-link"></a>
+                            @else
+                                <a href="/user/practice-test/{{ $section_id }}?test_id={{ $test_id }}&time=regular"
+                                    style='display:none' id="my-link"></a>
+                            @endif
                             <a href="#" style='padding: 5px 20px fs-5' class="btn btn-alt-success text-success 5"
                                 onclick="resumeTest()">
                                 <i class="fa-solid fa-circle-check" style='margin-right:5px'></i>

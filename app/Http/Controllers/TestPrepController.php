@@ -2539,10 +2539,13 @@ class TestPrepController extends Controller
         }
 
         $total_score = $total_score + ($math_score);
+        // dd($total_score);
 
         if (isset($sections[0]['format']) && $sections[0]['format'] == 'ACT') {
             $total_score = $total_score / ($sections->count());
+            // dd($total_score);
         } else {
+            // dd($total_score);
             $total_score = $total_score;
         }
 

@@ -143,9 +143,9 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  height: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  background-color: blue;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  margin-right: 5px; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              height: 20px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              background-color: blue;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              margin-right: 5px; */
         }
     </style>
     @php
@@ -188,6 +188,7 @@
             ->get('testType');
     @endphp
     <!-- Main Container -->
+    <input type="hidden" id="checkTime" value="0" />
     <main id="main-container">
         <input type="hidden" value="{{ $testSectionType }}" id="testType" />
         <div class="bg-body-light">
@@ -388,7 +389,7 @@
 
         <div class="bg-body-extra-light">
             <div class="content content-boxed py-3">
-                @if (($test->format == 'DSAT' || $test->format == 'DPSAT') && $testSectionType == 'graded')
+                @if ($test->format == 'DSAT' || $test->format == 'DPSAT' || $test->format == 'SAT' || $test->format == 'PSAT')
                     <input type="hidden" value="{{ $test->format }}" id="format" />
                     <div class="col-xl-12 ">
                         <div class="row">
@@ -428,6 +429,8 @@
                         </div>
                         <p style="display: none" class="text-center text-success fw-bold" id="total"></p>
                     </div>
+                @endif
+                @if (($test->format == 'DSAT' || $test->format == 'DPSAT') && $testSectionType == 'graded')
                     <div class="row">
                         <div class="col-md-2 text-center mt-2">
                             <p class="fw-bold" style="font-size:15px">Actual Time</p>
@@ -445,8 +448,8 @@
                                 name="user_seconds" placeholder="Enter Seconds">
                         </div>
                     </div>
-
                 @endif
+
 
                 <div class="row">
                     <div class="col-xl-4">
@@ -534,7 +537,7 @@
         <div class="modal" id="actualTImeConfirm" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true" style="display: none;
         background: #00000042;">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                     </div>
@@ -583,6 +586,9 @@
             const calculator = Desmos.GraphingCalculator(document.getElementById('calculator-container'));
             $('#exampleModal').modal('show');
         });
+
+
+
         var isPaused = false;
 
         $(document).ready(function() {
@@ -604,6 +610,7 @@
 
             $('#btn-close').click(function() {
                 $('#actualTImeConfirm').hide();
+                $('#checkTime').val(1);
             })
             let easyCheckBox = $('#easyCheckBox').val();
             let hardCheckBox = $('#hardCheckBox').val();
@@ -1225,8 +1232,10 @@
                 let userActualHour = $('#user_hours').val();
                 let userActualMinutes = $('#user_minutes').val();
                 let userActualSeconds = $('#user_seconds').val();
+                let checkTime = $('#checkTime').val();
                 console.log(userActualHour)
-                if (userActualHour == '' || userActualMinutes == '' || userActualSeconds == '') {
+                if ((userActualHour == '' || userActualMinutes == '' || userActualSeconds == '') && (
+                        checkTime == 0)) {
                     $('#actualTImeConfirm').show();
                     return false;
                 }
@@ -1272,7 +1281,7 @@
                                 showCancelButton: true,
                                 confirmButtonColor: "#198754",
                                 confirmButtonText: "Section Review",
-                                cancelButtonText: "Grade Another Section",
+                                cancelButtonText: "Proceed to next section",
                                 closeOnConfirm: true,
                                 closeOnCancel: true,
 
@@ -2244,7 +2253,7 @@
                                         get_option_number = 'd';
                                     }
                                 }
-
+                                // console.log(val)
                                 if (selected_answer[value.id] !==
                                     '' &&
                                     selected_answer[value.id] !==
@@ -2268,7 +2277,8 @@
                                                 '" checked ><label class="form-check-label" for="' +
                                                 get_option_number + '">' +
                                                 get_option_number
-                                                .toUpperCase() + '. ' + val +
+                                                .toUpperCase() +
+                                                //+ '. ' + val  added before to show  the description in front of option number
                                                 '</label></div></div>'
                                         } else {
                                             set_questions_options +=
@@ -2283,7 +2293,8 @@
                                                 '"><label class="form-check-label" for="' +
                                                 get_option_number + '">' +
                                                 get_option_number
-                                                .toUpperCase() + '. ' + val +
+                                                .toUpperCase() +
+                                                //+ '. ' + val  added before to show  the description in front of option number
                                                 '</label></div></div>'
                                         }
                                     } else {
@@ -2307,8 +2318,8 @@
                                                     '"><label class="form-check-label" for="' +
                                                     get_option_number + '">' +
                                                     get_option_number
-                                                    .toUpperCase() + '. ' +
-                                                    val +
+                                                    .toUpperCase() //+ '. ' + val  added before to show  the description in front of option number
+                                                    +
                                                     '</label></div></div>';
                                             } else if (value
                                                 .is_multiple_choice ==
@@ -2325,8 +2336,8 @@
                                                     '"><label class="form-check-label" for="' +
                                                     get_option_number + '">' +
                                                     get_option_number
-                                                    .toUpperCase() + '. ' +
-                                                    val +
+                                                    .toUpperCase() //+ '. ' + val  added before to show  the description in front of option number
+                                                    +
                                                     '</label></div></div>';
                                             } else if (value
                                                 .is_multiple_choice ==
@@ -2351,8 +2362,8 @@
                                                     '"><label class="form-check-label" for="' +
                                                     get_option_number + '">' +
                                                     get_option_number
-                                                    .toUpperCase() + '. ' +
-                                                    val +
+                                                    .toUpperCase() //+ '. ' + val  added before to show  the description in front of option number
+                                                    +
                                                     '</label></div></div>'
                                             }
                                         }
@@ -2381,7 +2392,8 @@
                                                         '">' +
                                                         get_option_number
                                                         .toUpperCase() +
-                                                        '. ' + val +
+                                                        //+ '. ' + val  added before to show  the description in front of option number
+
                                                         '</label></div></div>'
                                                 } else if (value
                                                     .is_multiple_choice ==
@@ -2403,7 +2415,8 @@
                                                         '">' +
                                                         get_option_number
                                                         .toUpperCase() +
-                                                        '. ' + val +
+                                                        //+ '. ' + val  added before to show  the description in front of option number
+
                                                         '</label></div></div>'
                                                 } else if (value
                                                     .is_multiple_choice ==
@@ -2436,7 +2449,8 @@
                                                         '">' +
                                                         get_option_number
                                                         .toUpperCase() +
-                                                        '. ' + val +
+                                                        //+ '. ' + val  added before to show  the description in front of option number
+
                                                         '</label></div></div>'
                                                 }
                                             }
@@ -2474,7 +2488,8 @@
                                             '><label class="form-check-label" for="' +
                                             get_option_number + '">' +
                                             get_option_number
-                                            .toUpperCase() + '. ' + val +
+                                            .toUpperCase() +
+                                            //+ '. ' + val  added before to show  the description in front of option number
                                             '</label></div></div>'
                                     } else if (value.is_multiple_choice ==
                                         1) {
@@ -2505,7 +2520,8 @@
                                             '><label class="form-check-label" for="' +
                                             get_option_number + '">' +
                                             get_option_number
-                                            .toUpperCase() + '. ' + val +
+                                            .toUpperCase() +
+                                            //+ '. ' + val  added before to show  the description in front of option number
                                             '</label></div></div>'
                                     } else if (value.is_multiple_choice ==
                                         2) {
@@ -2541,7 +2557,8 @@
                                             '><label class="form-check-label" for="' +
                                             get_option_number + '">' +
                                             get_option_number
-                                            .toUpperCase() + '. ' + val +
+                                            .toUpperCase() +
+                                            //+ '. ' + val  added before to show  the description in front of option number
                                             '</label></div></div>'
                                     }
                                 }
