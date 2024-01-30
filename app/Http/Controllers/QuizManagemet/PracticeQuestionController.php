@@ -550,6 +550,8 @@ class PracticeQuestionController extends Controller
         $practiceSection->hundred_per_extended = $request->hundred;
         $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
         $practiceSection->show_calculator = $request->show_calculator;
+        $practiceSection->lower_value = $request->lower_value;
+        $practiceSection->upper_value = $request->upper_value;
         $practiceSection->save();
         $data[] = [
             'id' => $practiceSection->id,
@@ -604,6 +606,8 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->show_calculator = $request->show_calculator;
+                $practiceSection->lower_value = $request->lower_value;
+                $practiceSection->upper_value = $request->upper_value;
                 $practiceSection->save();
                 $data[] = [
                     'id' => $practiceSection->id,
@@ -626,6 +630,8 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->show_calculator = $request->show_calculator;
+                $practiceSection->lower_value = $request->lower_value;
+                $practiceSection->upper_value = $request->upper_value;
                 $practiceSection->save();
                 $data[] = [
                     'id' => $practiceSection->id,
@@ -649,6 +655,8 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->show_calculator = $request->show_calculator;
+                $practiceSection->lower_value = $request->lower_value;
+                $practiceSection->upper_value = $request->upper_value;
                 $practiceSection->save();
                 $data[] = [
                     'id' => $practiceSection->id,
@@ -687,6 +695,8 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->show_calculator = $request->show_calculator;
+                $practiceSection->lower_value = $request->lower_value;
+                $practiceSection->upper_value = $request->upper_value;
                 $practiceSection->save();
                 $data[] = [
                     'id' => $practiceSection->id,
@@ -732,6 +742,8 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->show_calculator = $request->show_calculator;
+                $practiceSection->lower_value = $request->lower_value;
+                $practiceSection->upper_value = $request->upper_value;
                 $practiceSection->save();
                 $data[] = [
                     'id' => $practiceSection->id,
@@ -754,6 +766,8 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->show_calculator = $request->show_calculator;
+                $practiceSection->lower_value = $request->lower_value;
+                $practiceSection->upper_value = $request->upper_value;
                 $practiceSection->save();
                 $data[] = [
                     'id' => $practiceSection->id,
@@ -777,6 +791,8 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->show_calculator = $request->show_calculator;
+                $practiceSection->lower_value = $request->lower_value;
+                $practiceSection->upper_value = $request->upper_value;
                 $practiceSection->save();
                 $data[] = [
                     'id' => $practiceSection->id,
@@ -815,6 +831,8 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->show_calculator = $request->show_calculator;
+                $practiceSection->lower_value = $request->lower_value;
+                $practiceSection->upper_value = $request->upper_value;
                 $practiceSection->save();
                 $data[] = [
                     'id' => $practiceSection->id,
@@ -1118,6 +1136,8 @@ class PracticeQuestionController extends Controller
             "hundred_per_extended" => $request->hundred,
             'easy_section_determiner' => $request->editEasySection,
             'hard_section_determiner' => $request->editHardSection,
+            'lower_value' => $request->editLowerValue,
+            'upper_value' => $request->editUpperValue,
         ]);
 
         $updatedSection = PracticeTestSection::where('id', $request->sectionId)->first();
