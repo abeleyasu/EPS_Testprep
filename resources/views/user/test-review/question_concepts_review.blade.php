@@ -52,6 +52,20 @@
                     <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
                         <ol class="breadcrumb breadcrumb-alt">
                             @if (isset($test_details) && !empty($test_details))
+                            @php
+                                $testType = request()->session()->get('testType');
+                                // dd($testType);
+                            @endphp
+                            @if($testType == "proctored" )
+                                <li class="breadcrumb-item" aria-current="page">
+                                    <a class="link-fx"
+                                        href="{{ url('user/practice-test-sections/' . $test_details->id . '?test_section=proctored') }}">College
+                                        Prep
+                                        System {{ isset($test_details->format) ? $test_details->format : '' }}
+                                        {{ isset($test_details->title) ? $test_details->title : '' }}
+                                    </a>
+                                </li>
+                                @else
                                 <li class="breadcrumb-item" aria-current="page">
                                     <a class="link-fx"
                                         href="{{ url('user/practice-test-sections/' . $test_details->id) }}">College
@@ -60,6 +74,7 @@
                                         {{ isset($test_details->title) ? $test_details->title : '' }}
                                     </a>
                                 </li>
+                                @endif
                                 <li class="breadcrumb-item">
                                     <a class="link-fx"
                                         href="javascript:void(0)">{{ isset($test_details->format) ? $test_details->format . ' Practice Test' : '' }}
