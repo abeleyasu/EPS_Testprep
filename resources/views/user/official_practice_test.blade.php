@@ -143,9 +143,9 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              height: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              background-color: blue;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              margin-right: 5px; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  height: 20px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  background-color: blue;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  margin-right: 5px; */
         }
     </style>
     @php
@@ -374,6 +374,9 @@
                     </div>
                     <hr>
                 @endif
+                <div class="col-xl-12 " id="showMessage" style="display: none">
+                    <h3 class="text-danger">This content is inaccessible.</h3>
+                </div>
                 <div class="col-xl-12" id="set_question_data">
 
                     <!-- Question -->
@@ -390,7 +393,17 @@
         <div class="bg-body-extra-light">
             <div class="content content-boxed py-3">
                 @if ($test->format == 'DSAT' || $test->format == 'DPSAT' || $test->format == 'SAT' || $test->format == 'PSAT')
+                    @php
+                        // dd($getTestSection->practice_test_type);
+                        if (strpos($getTestSection->practice_test_type, 'Math') !== false) {
+                            $testFor = 'Math';
+                        } elseif (strpos($getTestSection->practice_test_type, 'Reading') !== false || strpos($getTestSection->practice_test_type, 'Writing') !== false) {
+                            $testFor = 'English';
+                        } else {
+                        }
+                    @endphp
                     <input type="hidden" value="{{ $test->format }}" id="format" />
+                    <input type="hidden" value="{{ $testFor }}" id="testFor" />
                     <div class="col-xl-12 ">
                         <div class="row">
                             <div class="col-md-2 text-center mt-2">
@@ -402,20 +415,22 @@
                             </div>
                             <input type="hidden" id="min_value" value="{{ $getSection->lower_value }}" />
                             <input type="hidden" id="max_value" value="{{ $getSection->upper_value }}" />
-                            <div class="col-md-3">
-                                <input type="number" class="form-control form-control-md " id="user_reading_score"
-                                    name="user_reading_score" placeholder="Reading & Writing Score">
-                            </div>
+                            @if ($testFor == 'English')
+                                <div class="col-md-10">
+                                    <input type="number" class="form-control form-control-md " id="user_reading_score"
+                                        name="user_reading_score" placeholder="Reading & Writing Score">
+                                </div>
+                            @endif
 
-
+                            @if ($testFor == 'Math')
+                                <div class="col-md-10">
+                                    <input type="number" class="form-control form-control-md " id="user_math_score"
+                                        name="user_math_score" placeholder="Math Score">
+                                </div>
+                            @endif
                             <div class="col-md-3">
-                                <input type="number" class="form-control form-control-md " id="user_math_score"
-                                    name="user_math_score" placeholder="Math Score">
-                            </div>
-
-                            <div class="col-md-3">
-                                <input type="number" class="form-control form-control-md " id="user_total_score"
-                                    name="user_total_score" placeholder="Total Score">
+                                {{-- <input type="number" class="form-control form-control-md " id="user_total_score"
+                                    name="user_total_score" placeholder="Total Score"> --}}
                             </div>
                         </div>
                         <p style="display: none" class="text-center text-success fw-bold" id="total"></p>
@@ -666,70 +681,74 @@
 
         $(document).ready(function() {
             let format = $('#format').val();
-
+            let testFor = $('#testFor').val();
             let min_value = parseInt($('#min_value').val()) || 0;
             let max_value = parseInt($('#max_value').val()) || 0;
 
-            function updateTotalScore() {
-                let reading = parseInt($('#user_reading_score').val()) || 0;
-                let math = parseInt($('#user_math_score').val()) || 0;
+            // function updateTotalScore() {
+            //     let reading = parseInt($('#user_reading_score').val()) || 0;
+            //     let math = parseInt($('#user_math_score').val()) || 0;
 
-                if (!isNaN(reading) && !isNaN(math)) {
-                    let total_score = reading + math;
-                    console.log(total_score);
-                    $('#user_total_score').val(total_score);
-                }
-            }
+            //     if (!isNaN(reading) && !isNaN(math)) {
+            //         let total_score = reading + math;
+            //         console.log(total_score);
+            //         $('#user_total_score').val(total_score);
+            //     }
+            // }
             // Update total score when either reading or math is entered
-            $('#user_reading_score, #user_math_score').on('input', function() {
-                updateTotalScore();
+            // $('#user_reading_score, #user_math_score').on('input', function() {
+            //     updateTotalScore();
 
 
-            });
+            // });
             // Check if total score is manually entered and remind to enter reading and math scores
-            $('#user_total_score').blur(function() {
-                let total = parseInt($(this).val()) || 0;
-                if (isNaN(total)) {
-                    alert("Please enter a valid total score.");
-                } else {
-                    let reading = $('#user_reading_score').val();
-                    let math = $('#user_math_score').val();
+            // $('#user_total_score').blur(function() {
+            //     let total = parseInt($(this).val()) || 0;
+            //     if (isNaN(total)) {
+            //         alert("Please enter a valid total score.");
+            //     } else {
+            //         let reading = $('#user_reading_score').val();
+            //         let math = $('#user_math_score').val();
 
-                    if ((!reading || !math) && total !== 0) {
-                        console.log(total);
-                        $('#total').show();
-                        $('#total').text(
-                            'Note: Consider entering Reading & Writing and Math scores for a more accurate assessment.'
-                        );
-                    }
-                }
-            });
+            //         if ((!reading || !math) && total !== 0) {
+            //             console.log(total);
+            //             $('#total').show();
+            //             $('#total').text(
+            //                 'Note: Consider entering Reading & Writing and Math scores for a more accurate assessment.'
+            //             );
+            //         }
+            //     }
+            // });          
+            // if (testFor == 'English') {
+            //     $('#user_reading_score').blur(function() {
+            //         let reading = parseInt($('#user_reading_score').val());
+            //         if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' || format == 'DPSAT') {
+            //             if (reading < min_value || reading > max_value) {
+            //                 alert("Reading & Writing score must be between " + min_value + " and " +
+            //                     max_value +
+            //                     ".");
+            //                 return false;
+            //             } else {
 
-            $('#user_reading_score').blur(function() {
-                let reading = parseInt($('#user_reading_score').val());
-                if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' || format == 'DPSAT') {
-                    if (reading < min_value || reading > max_value) {
-                        alert("Reading & Writing score must be between " + min_value + " and " + max_value +
-                            ".");
-                        return false;
-                    } else {
+            //             }
+            //         }
+            //     });
+            // }
 
-                    }
-                }
-            });
+            // if (testFor == 'Math') {
+            //     $('#user_math_score').blur(function() {
+            //         let math = parseInt($('#user_math_score').val());
+            //         if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' || format == 'DPSAT') {
+            //             if (math < min_value || math > max_value) {
+            //                 alert("Math score must be between " + min_value + " and " + max_value + ".");
+            //                 return false;
 
-            $('#user_math_score').blur(function() {
-                let math = parseInt($('#user_math_score').val());
-                if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' || format == 'DPSAT') {
-                    if (math < min_value || math > max_value) {
-                        alert("Math score must be between " + min_value + " and " + max_value + ".");
-                        return false;
+            //             } else {
 
-                    } else {
-
-                    }
-                }
-            });
+            //             }
+            //         }
+            //     });
+            // }
 
 
         });
@@ -1224,37 +1243,60 @@
                 let userActualMinutes = $('#user_minutes').val();
                 let userActualSeconds = $('#user_seconds').val();
                 let checkTime = $('#checkTime').val();
-                console.log(userActualHour)
+
                 if ((userActualHour == '' || userActualMinutes == '' || userActualSeconds == '') && (
                         checkTime == 0)) {
                     $('#actualTImeConfirm').show();
-                    return false;
+                    return true;
                 }
-
+                // console.log(userActualHour)
                 let reading = parseInt($('#user_reading_score').val());
                 let math = parseInt($('#user_math_score').val());
                 let format = $('#format').val();
-
                 let min_value = parseInt($('#min_value').val()) || 0;
                 let max_value = parseInt($('#max_value').val()) || 0;
 
-                if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' || format == 'DPSAT') {
-                    if (math < min_value || math > max_value || reading < min_value || reading >
-                        max_value) {
-                        alert("Actual score must be between " + min_value + " and " + max_value + ".");
-                        return false;
-
-                    } else {
-
+                let testFor = $('#testFor').val();
+                if (testFor == 'English') {
+                    if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' ||
+                        format == 'DPSAT') {
+                        if (reading < min_value || reading >
+                            max_value) {
+                            alert("Reading & Writing score must be between " +
+                                min_value + " and " +
+                                max_value + ".");
+                            return false;
+                        }
                     }
                 }
+
+
+                if (testFor == 'Math') {
+                    if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' ||
+                        format == 'DPSAT') {
+                        if (math < min_value || math >
+                            max_value) {
+                            alert("Math score must be between " + min_value +
+                                " and " +
+                                max_value + ".");
+                            return false;
+                        }
+                    }
+
+
+                }
+
+                
+
+
+
+
 
 
                 if (jQuery('.next').prop('disabled') == false) {
                     var timeisover = jQuery('#timeisover').val();
                     if (timeisover == 1) {
                         confirm(true);
-
                     } else {
 
 
@@ -1333,7 +1375,7 @@
 
                 let userReadingActualScore = $('#user_reading_score').val();
                 let userMathActualScore = $('#user_math_score').val();
-                let userTotalActualScore = $('#user_total_score').val();
+                // let userTotalActualScore = $('#user_total_score').val();
                 let userActualTime = $('#user_actual_time').val();
                 let userHour = $('#user_hours').val();
                 let userMinutes = $('#user_minutes').val();
@@ -1561,7 +1603,7 @@
                     actual_time: actual_time,
                     userReadingActualScore,
                     userMathActualScore,
-                    userTotalActualScore,
+                    // userTotalActualScore,
                     userActualTime,
                     userHour,
                     userMinutes,
@@ -1725,7 +1767,7 @@
 
                 let userReadingActualScore = $('#user_reading_score').val();
                 let userMathActualScore = $('#user_math_score').val();
-                let userTotalActualScore = $('#user_total_score').val();
+                // let userTotalActualScore = $('#user_total_score').val();
                 let userActualTime = $('#user_actual_time').val();
                 let userHour = $('#user_hours').val();
                 let userMinutes = $('#user_minutes').val();
@@ -1954,7 +1996,7 @@
                     actual_time: actual_time,
                     userReadingActualScore,
                     userMathActualScore,
-                    userTotalActualScore,
+                    // userTotalActualScore,
                     userActualTime,
                     userHour,
                     userMinutes,
@@ -2803,19 +2845,88 @@
                                 }
 
                                 if (hours === 0 && minutes === 0 && seconds === 0) {
-                                    clearInterval(timerInterval);
-                                    swal({
-                                        icon: 'warning',
-                                        title: 'Time is over!',
-                                        text: 'Your time has expired.',
-                                        confirmButtonColor: '#3085d6',
-                                        confirmButtonText: 'Continue'
-                                    }, function(isConfirm) {
-                                        $('#timeisover').val(1);
-                                        if (isConfirm) {
-                                            $('.submit_section_btn').trigger('click');
+                                    let reading = parseInt($('#user_reading_score').val());
+                                    let math = parseInt($('#user_math_score').val());
+                                    let format = $('#format').val();
+                                    let min_value = parseInt($('#min_value').val()) || 0;
+                                    let max_value = parseInt($('#max_value').val()) || 0;
+
+                                    let testFor = $('#testFor').val();
+                                    if (testFor == 'English') {
+                                        if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' ||
+                                            format == 'DPSAT') {
+                                            if (reading < min_value || reading >
+                                                max_value) {
+                                                $('#set_question_data').css("opacity", 0);
+                                                $('#showMessage').show();
+                                                alert("Reading & Writing score must be between " +
+                                                    min_value + " and " +
+                                                    max_value + ".");
+                                            } else {
+                                                clearInterval(timerInterval);
+                                                swal({
+                                                    icon: 'warning',
+                                                    title: 'Time is over!',
+                                                    text: 'Your time has expired.',
+                                                    confirmButtonColor: '#3085d6',
+                                                    confirmButtonText: 'Continue'
+                                                }, function(isConfirm) {
+                                                    $('#timeisover').val(1);
+                                                    if (isConfirm) {
+                                                        $('.submit_section_btn').trigger(
+                                                            'click');
+                                                    }
+                                                });
+                                            }
                                         }
-                                    });
+
+
+                                    } else if (testFor == 'Math') {
+                                        if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' ||
+                                            format == 'DPSAT') {
+                                            if (math < min_value || math >
+                                                max_value) {
+                                                $('#set_question_data').css("opacity", 0);
+                                                alert("Math score must be between " + min_value +
+                                                    " and " +
+                                                    max_value + ".");
+
+                                            } else {
+                                                clearInterval(timerInterval);
+                                                swal({
+                                                    icon: 'warning',
+                                                    title: 'Time is over!',
+                                                    text: 'Your time has expired.',
+                                                    confirmButtonColor: '#3085d6',
+                                                    confirmButtonText: 'Continue'
+                                                }, function(isConfirm) {
+                                                    $('#timeisover').val(1);
+                                                    if (isConfirm) {
+                                                        $('.submit_section_btn').trigger(
+                                                            'click');
+                                                    }
+                                                });
+                                            }
+                                        }
+
+
+                                    } else {
+                                        clearInterval(timerInterval);
+                                        swal({
+                                            icon: 'warning',
+                                            title: 'Time is over!',
+                                            text: 'Your time has expired.',
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: 'Continue'
+                                        }, function(isConfirm) {
+                                            $('#timeisover').val(1);
+                                            if (isConfirm) {
+                                                $('.submit_section_btn').trigger(
+                                                    'click');
+                                            }
+                                        });
+                                    }
+
                                 }
                             }
 
