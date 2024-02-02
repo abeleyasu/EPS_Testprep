@@ -1193,9 +1193,9 @@ $current_user_state_code = (
                 let earlyDecision2DeadlineDay = collegeInfo.AP_DL_EDEC_2_DAY
 
                 function displayDate(day, month, whereToInsert){
-                    if(earlyDeadlineDay && earlyDeadlineMonth){
+                    if(day && month){
                         let currentYear = new Date().getFullYear()
-                        let earlyActionDeadlineDate = new Date( currentYear ,earlyDeadlineMonth - 1, earlyDeadlineDay);
+                        let earlyActionDeadlineDate = new Date( currentYear , month - 1, day);
                         let todayDate = new Date()
 
                         if (earlyActionDeadlineDate < todayDate){
