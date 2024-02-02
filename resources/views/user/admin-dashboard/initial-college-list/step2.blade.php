@@ -1240,12 +1240,6 @@ $current_user_state_code = (
 
 
 
-                
-
-
-
-
-
 
 
                 // $('#c-early-action-offered').html((data.latest.college_info.early_action_offerd === 1 ? 'Yes' : 'No'))

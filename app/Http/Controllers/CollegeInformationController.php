@@ -96,6 +96,75 @@ class CollegeInformationController extends Controller
             }
         }
 
+        
+        $column_names = array(
+            'TUIT_STATE_FT_D' , 
+            'FEES_FT_D' , 
+            'BOOKS_RES_D', 
+            'TRANSPORT_RES_D', 
+            'TUIT_NRES_FT_D', 
+            'TUIT_OVERALL_FT_D',
+            'RM_BD_D',
+            'MAIN_CALENDAR' , 
+            'FRSH_GPA',
+            'FRSH_GPA_WEIGHTED',
+            'LIFE_SOR_NAT', 
+            'LIFE_SOR_LOCAL', 
+            'LIFE_FRAT_NAT', 
+            'LIFE_FRAT_LOCAL', 
+            'SORO_1ST_P',
+            'FRAT_1ST_P',
+            'CMPS_METRO_T',
+            'HOUS_FRSH_POLICY',
+            'HOUS_SPACES_OCCUP',
+            'AP_RECD_1ST_N' , 
+            'AD_DIFF_ALL' , 
+            'AP_DL_EACT_MON', 
+            'AP_DL_EACT_DAY', 
+            'AP_DL_FRSH_MON', 
+            'AP_DL_FRSH_DAY',
+            'AP_DL_EDEC_1_MON',
+            'AP_DL_EDEC_1_DAY',
+            'AP_DL_EDEC_2_DAY',
+            'AP_DL_EDEC_2_MON',
+        );
+        $peterson_id_index = null;
+        $file = $request->file('csv_file');
+        $fileContents = file($file->getPathname());
+
+        $index = -1;
+        foreach ($fileContents as $line) {
+            $index++;
+            $data = str_getcsv($line);
+            // Storing the indeces of Required Columns
+            if ($index == 0) {
+                $peterson_id_index = $this->getColumnIndicesFromCSV(array('INUN_ID') , $data)['INUN_ID'];
+                $column_names = $this->getColumnIndicesFromCSV($column_names , $data);
+                continue;
+            }
+            $new_data = $this->get_column_values($column_names, $data);
+            if(isset($new_data['FEES_FT_D']) && isset($new_data['BOOKS_RES_D']) && isset($new_data['TRANSPORT_RES_D'])){
+                if(isset($new_data['TUIT_OVERALL_FT_D'])){
+                    $new_data['pvt_coa'] = $new_data['TUIT_OVERALL_FT_D'] + $new_data['FEES_FT_D'] + $new_data['BOOKS_RES_D'] + $new_data['TRANSPORT_RES_D'];
+                }
+                if(isset($new_data['TUIT_STATE_FT_D'])){
+                    $new_data['public_coa_in_state'] = $new_data['TUIT_STATE_FT_D'] + $new_data['FEES_FT_D'] + $new_data['BOOKS_RES_D'] + $new_data['TRANSPORT_RES_D'];
+                }
+                if(isset($new_data['TUIT_NRES_FT_D'])){
+                    $new_data['public_coa_out_state'] = $new_data['TUIT_NRES_FT_D'] + $new_data['FEES_FT_D'] + $new_data['BOOKS_RES_D'] + $new_data['TRANSPORT_RES_D'];
+                }
+            }
+
+            $collegeInfo = CollegeInformation::where('petersons_id', $data[$peterson_id_index])
+                ->first();
+            if ($collegeInfo) {
+                $collegeInfo->update($new_data);
+            }
+        }
+
+
+
+
         return redirect()->back()->with('success', 'CSV file imported successfully.');
     }
 
