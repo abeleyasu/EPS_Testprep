@@ -164,39 +164,32 @@ $current_user_state_code = (
                                                 @endphp
                                                 @switch($college['school.ownership'])
                                                     @case(1)
-                                                        @if($college['school.state'] == $current_user_state_code )
                                                             @php
-                                                                $costOfAttendanceStr .= "(In-State)";
+                                                                echo '<p><b>Cost of Attendance (In-State): </b>';
                                                                 // $tuit_state_ft_d  = $college_info->TUIT_STATE_FT_D ? (int) $college_info->TUIT_STATE_FT_D  : 0;
                                                                 $total_cost = $college_info->public_coa_in_state;
-                                                            @endphp
-                                                        
-                                                        @else
-                                                            @php
+                                                                echo  ($total_cost ? '$' . $total_cost : 'No Data');
+
                                                                 $costOfAttendanceStr .= "(Out-of-State)";
+                                                                echo '<p><b>Cost of Attendance (Out-of-State): </b>';
                                                                 // $tuit_nres_ft_d = $college_info->TUIT_NRES_FT_D ? (int) $college_info->TUIT_NRES_FT_D  : 0;
                                                                 $total_cost = $college_info->public_coa_out_state;
+                                                                echo  ($total_cost ? '$' . $total_cost : 'No Data');
 
                                                             @endphp
                                                         
-                                                        @endif
                                                     @break
                                                     @case(2)
                                                         @php
                                                             $costOfAttendanceStr .= "";
+                                                            echo '<p><b>Cost of Attendance: </b>';
                                                             // $tuit_overall_ft_d = $college_info->TUIT_OVERALL_FT_D ? (int) $college_info->TUIT_OVERALL_FT_D : 0;
                                                             $total_cost = $college_info->pvt_coa;
+                                                            echo  ($total_cost ? '$' . $total_cost : 'No Data');
 
                                                         @endphp
                                                     @break
                                                 @endswitch
-                                                <p><b>{{ $costOfAttendanceStr }}:</b> 
-                                                    @if($college['latest.cost.avg_net_price.overall'])
-                                                        {{  $total_cost ?  '$' . $total_cost : 'No Data'}}
-                                                        {{-- {{ '$' . number_format($college['latest.cost.avg_net_price.overall'] / 1000, 0) . 'k' }} --}}
-                                                    @else
-                                                        N/A
-                                                    @endif
                                                 </p>
                                                 <p><b>Median Earnings:</b>
                                                     @if($college['latest.earnings.10_yrs_after_entry.median'])
@@ -1131,13 +1124,15 @@ $current_user_state_code = (
         `);
             
 
-                if(data.latest.college_info.display_peterson_weighted_gpa) {
+                if(parseInt(data.latest.college_info.display_peterson_weighted_gpa)) {
+                    console.log('Displaying Peterson Unweighted GPA')
                     $('#c-avg-accepted-weighted-gpa').html(data.latest.college_info.FRSH_GPA_WEIGHTED ? data.latest.college_info.FRSH_GPA_WEIGHTED : data.latest.college_info.weighted_gpa)
                 }else{
                     $('#c-avg-accepted-weighted-gpa').html(data.latest.college_info.weighted_gpa ? data.latest.college_info.weighted_gpa : 'No Data')
                 }
-                if(data.latest.college_info.display_peterson_unweighted_gpa) {
-                    $('#c-avg-accepted-unweighted-gpa').html(data.latest.college_info.FRSH_GPA_WEIGHTED ? data.latest.college_info.FRSH_GPA : data.latest.college_info.unweighted_gpa)
+                if(parseInt(data.latest.college_info.display_peterson_unweighted_gpa)) {
+                    console.log('Displaying Peterson weighted GPA')
+                    $('#c-avg-accepted-unweighted-gpa').html(data.latest.college_info.FRSH_GPA? data.latest.college_info.FRSH_GPA : data.latest.college_info.unweighted_gpa)
                 }else{
                     $('#c-avg-accepted-unweighted-gpa').html(data.latest.college_info.unweighted_gpa ? data.latest.college_info.unweighted_gpa : 'No Data')
                 }

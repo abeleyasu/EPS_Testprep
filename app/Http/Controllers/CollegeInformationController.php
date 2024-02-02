@@ -67,24 +67,32 @@ class CollegeInformationController extends Controller
     }
 
 
+    // Connects College  with Peterson's ID & import all other Data
     public function import_csv(Request $request)
     {
+
+
         $file = $request->file('csv_file');
         $fileContents = file($file->getPathname());
+        $indeces = null;
 
         $index = -1;
         foreach ($fileContents as $line) {
             $index++;
-            if ($index == 0) continue;
             $data = str_getcsv($line);
-            $collegeInfo = CollegeInformation::where('name', $data[2])
-                ->where('state', $data[10])
-                ->first();
-            if ($collegeInfo) {
-                $new_data = [
-                    'petersons_id' => $data[1],
-                ];
-                $collegeInfo->update($new_data);
+            if ($index == 0){
+                $indeces = $this->getColumnIndicesFromCSV(array('NAME', 'STATE_CODE', 'INUN_ID'), $data);
+            } else{
+                $collegeInfo = CollegeInformation::where('name', $data[$indeces['NAME']])
+                    ->where('state', $data[$indeces['STATE_CODE']])
+                    ->first();
+
+                if ($collegeInfo) {
+                    $new_data = [
+                        'petersons_id' => $data[$indeces['INUN_ID']],
+                    ];
+                    $collegeInfo->update($new_data);
+                }
             }
         }
 
