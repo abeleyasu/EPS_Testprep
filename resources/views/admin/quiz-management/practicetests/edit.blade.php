@@ -625,6 +625,20 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                             <input id="hard_section_determiner" name="hard_section_determiner" class="form-control"
                                                 placeholder="Enter Hard Section Determiner">
                                         </div>
+                
+                                        <div class="col-md-12 lower_value" style="display: none">
+                                            <label class="form-label" style="font-size: 13px;">Lower Actual Score Value:<span
+                                                    class="text-danger">*</span></label>
+                                            <input id="lower_value" name="lower_value" class="form-control"
+                                                placeholder="Enter Lower Actual Score value" type="number">
+                                        </div>
+
+                                        <div class="col-md-12 mt-3 mb-3  upper_value" style="display: none">
+                                            <label class="form-label" style="font-size: 13px;">Upper Actual Score Value:<span
+                                                    class="text-danger">*</span></label>
+                                            <input id="upper_value" name="upper_value" class="form-control"
+                                                placeholder="Enter Upper Actual Score value" type="number">
+                                        </div>
                                         <div class="mb-2 show-calc-div row">
                                             <div class="col-md-1">
                                                 <input type="checkbox" class="show-calc-box" name="add_show_calc" id="add_show_calc">
@@ -738,6 +752,19 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span></label>
                                             <input id="edit_hard_section_determiner" name="hard_section_determiner" class="form-control"
                                                 placeholder="Enter Hard Section Determiner">
+                                        </div>
+                                        <div class="col-md-12 edit_lower_value" style="display: none">
+                                            <label class="form-label" style="font-size: 13px;">Lower Actual Score value:<span
+                                                    class="text-danger">*</span></label>
+                                            <input id="edit_lower_value" name="lower_value" class="form-control"
+                                                placeholder="Enter Lower Actual Score value" type="number">
+                                        </div>
+                                        <div class="col-md-12 mt-3 mb-3  edit_upper_value"
+                                            style="display: none">
+                                            <label class="form-label" style="font-size: 13px;">Upper Actual Score value:<span
+                                                    class="text-danger">*</span></label>
+                                            <input id="edit_upper_value" name="upper_value" class="form-control"
+                                                placeholder="Enter Upper Actual Score value" type="number">
                                         </div>
                                         <div class="mb-2 show-calc-div row">
                                             <div class="col-md-1">
@@ -5546,7 +5573,8 @@ $('textarea').each(function (index) {
             if(jQuery.inArray(formatVal, myarray) != -1) {
                 add_score_button_class = 'digi_add_score_btn';
             }
-
+            var lower_value = jQuery('#lower_value').val();
+                    var upper_value = jQuery('#upper_value').val();
             var easy_section_determiner = jQuery('#easy_section_determiner').val();
                     var hard_section_determiner = jQuery('#hard_section_determiner').val();
 
@@ -5589,6 +5617,8 @@ $('textarea').each(function (index) {
                         'question_type': question_type,
                         'easy_section_determiner': easy_section_determiner,
                         'hard_section_determiner': hard_section_determiner,
+                        'lower_value': lower_value,
+                        'upper_value': upper_value,
                         '_token': $('input[name="_token"]').val()
                     },
                     url: "{{ route('addPracticeTestSection') }}",
@@ -8173,6 +8203,15 @@ Sortable.create(mainSectionContainer, {
 $('.add_section_modal_btn').click(function() {
      var format = $('#format').val();
             var test_source = $('#source option:selected').val();
+             if (test_source == "1" && (format == 'DSAT' || format == "DPSAT" || format == "PSAT" || format == "SAT")) {
+                $('#lower_value').val('');
+                $('#upper_value').val('');
+                $('.lower_value').show();
+                $('.upper_value').show();
+            } else {
+                $('.upper_value').hide();
+                $('.lower_value').hide();
+            }
             if (test_source == "1" && (format == 'DSAT' || format == "DPSAT")) {
                 $('#hard_section_determiner').val('');
                 $('#easy_section_determiner').val('');
@@ -8405,6 +8444,13 @@ var test = Sortable.create(addListWithHandleQuestion, {
                 let hundredTime = res.sectionDetails.hundred_per_extended.split(':');
                 var source = $('#source option:selected').val();
 
+                 if(source == '1' && (res.sectionDetails.format == 'SAT' || res.sectionDetails.format == 'PSAT' || res.sectionDetails.format == 'DSAT' || res.sectionDetails.format == 'DPSAT')){
+                        $('.edit_lower_value').show();
+                        $('#edit_lower_value').val(res.sectionDetails.lower_value);
+                        $('.edit_upper_value').show();
+                        $('#edit_upper_value').val(res.sectionDetails.upper_value);
+                    }
+
                 if (source == '1' && (res.sectionDetails.practice_test_type == 'Reading_And_Writing' || res.sectionDetails.practice_test_type == 'Math')) {
                         $('.edit_easy_section_determiner').hide();
                         $('.edit_hard_section_determiner').hide();
@@ -8470,7 +8516,12 @@ var test = Sortable.create(addListWithHandleQuestion, {
         if ($('#edit_show_calc').is(':checked')) {
             editShowCalc = 1;
         }
+        var test_type = $('#format').val();
 
+        if ((test_type == 'DSAT') || (test_type == 'DPSAT') || (test_type == 'PSAT') || (test_type == 'SAT')) {
+                var editLowerValue = $('#edit_lower_value').val();
+                var editUpperValue = $('#edit_upper_value').val();
+            }
         var editEasySection = $('#edit_easy_section_determiner').val();
                 var editHardSection = $('#edit_hard_section_determiner').val();
         $.ajax({
@@ -8485,6 +8536,8 @@ var test = Sortable.create(addListWithHandleQuestion, {
                 'show_calculator': editShowCalc,
                  'editEasySection': editEasySection,
                     'editHardSection': editHardSection,
+                    'editLowerValue': editLowerValue,
+                    'editUpperValue': editUpperValue,
                 '_token': $('input[name="_token"]').val()
             },
             url: '{{ route("update_section") }}',

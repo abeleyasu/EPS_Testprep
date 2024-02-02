@@ -1332,30 +1332,12 @@ class TestPrepController extends Controller
         $actual_time = $request->actual_time;
         $user_reading_score = $request->userReadingActualScore;
         $user_math_score = $request->userMathActualScore;
-        $user_total_score = $request->userTotalActualScore;
+        // $user_total_score = $request->userTotalActualScore;
         $user_hour = $request->userHour;
         $user_mins = $request->userMinutes;
         $user_secs = $request->userSeconds;
 
         $test = DB::table('practice_tests')->where('id', $get_practice_id)->first();
-        // dd($test);
-        if ($test->test_source == 1 && $test->format == 'DSAT' && $request->testType == 'graded') {
-            if ($user_reading_score < 200 || $user_reading_score > 800 || $user_math_score < 200 || $user_math_score > 800 || $user_total_score < 400 || $user_total_score > 1600) {
-                return response()->json(
-                    [
-                        'error' => '1',
-                    ]
-                );
-            }
-        } elseif ($test->test_source == 1 && $test->format == 'DPSAT' && $request->testType == 'graded') {
-            if ($user_reading_score < 160 || $user_reading_score > 760 || $user_math_score < 320 || $user_math_score > 1520 || $user_total_score < 480 || $user_total_score > 2280) {
-                return response()->json(
-                    [
-                        'error' => '1',
-                    ]
-                );
-            }
-        }
 
         // if ($user_actual_time  &&  $user_actual_score == null) {
         //     return response()->json(
@@ -1411,7 +1393,7 @@ class TestPrepController extends Controller
                 $userAnswers->actual_time = $actual_time;
                 $userAnswers->reading_and_writing_score = $user_reading_score;
                 $userAnswers->math_score = $user_math_score;
-                $userAnswers->total_score = $user_total_score;
+                // $userAnswers->total_score = $user_total_score;
                 $userAnswers->hours = $user_hour;
                 $userAnswers->minutes = $user_mins;
                 $userAnswers->seconds = $user_secs;
@@ -1486,7 +1468,7 @@ class TestPrepController extends Controller
                         $userAnswers->actual_time = $actual_time;
                         $userAnswers->reading_and_writing_score = $user_reading_score;
                         $userAnswers->math_score = $user_math_score;
-                        $userAnswers->total_score = $user_total_score;
+                        // $userAnswers->total_score = $user_total_score;
                         $userAnswers->hours = $user_hour;
                         $userAnswers->minutes = $user_mins;
                         $userAnswers->seconds = $user_secs;
@@ -2539,10 +2521,13 @@ class TestPrepController extends Controller
         }
 
         $total_score = $total_score + ($math_score);
+        // dd($total_score);
 
         if (isset($sections[0]['format']) && $sections[0]['format'] == 'ACT') {
             $total_score = $total_score / ($sections->count());
+            // dd($total_score);
         } else {
+            // dd($total_score);
             $total_score = $total_score;
         }
 

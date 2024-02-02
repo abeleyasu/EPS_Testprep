@@ -143,9 +143,9 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  height: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  background-color: blue;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  margin-right: 5px; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  height: 20px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  background-color: blue;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  margin-right: 5px; */
         }
     </style>
     @php
@@ -188,6 +188,7 @@
             ->get('testType');
     @endphp
     <!-- Main Container -->
+    <input type="hidden" id="checkTime" value="0" />
     <main id="main-container">
         <input type="hidden" value="{{ $testSectionType }}" id="testType" />
         <div class="bg-body-light">
@@ -373,6 +374,9 @@
                     </div>
                     <hr>
                 @endif
+                <div class="col-xl-12 " id="showMessage" style="display: none">
+                    <h3 class="text-danger">This content is inaccessible.</h3>
+                </div>
                 <div class="col-xl-12" id="set_question_data">
 
                     <!-- Question -->
@@ -388,8 +392,18 @@
 
         <div class="bg-body-extra-light">
             <div class="content content-boxed py-3">
-                @if (($test->format == 'DSAT' || $test->format == 'DPSAT') && $testSectionType == 'graded')
+                @if ($test->format == 'DSAT' || $test->format == 'DPSAT' || $test->format == 'SAT' || $test->format == 'PSAT')
+                    @php
+                        // dd($getTestSection->practice_test_type);
+                        if (strpos($getTestSection->practice_test_type, 'Math') !== false) {
+                            $testFor = 'Math';
+                        } elseif (strpos($getTestSection->practice_test_type, 'Reading') !== false || strpos($getTestSection->practice_test_type, 'Writing') !== false) {
+                            $testFor = 'English';
+                        } else {
+                        }
+                    @endphp
                     <input type="hidden" value="{{ $test->format }}" id="format" />
+                    <input type="hidden" value="{{ $testFor }}" id="testFor" />
                     <div class="col-xl-12 ">
                         <div class="row">
                             <div class="col-md-2 text-center mt-2">
@@ -399,35 +413,30 @@
                                         style="cursor: pointer">&#9432;</span>
                                 </p>
                             </div>
-                            @if ($test->format == 'DSAT')
-                                <div class="col-md-3">
+                            <input type="hidden" id="min_value" value="{{ $getSection->lower_value }}" />
+                            <input type="hidden" id="max_value" value="{{ $getSection->upper_value }}" />
+                            @if ($testFor == 'English')
+                                <div class="col-md-10">
                                     <input type="number" class="form-control form-control-md " id="user_reading_score"
-                                        name="user_reading_score" placeholder="Reading & Writing Score" min="200"
-                                        max="800">
+                                        name="user_reading_score" placeholder="Reading & Writing Score">
                                 </div>
-                                <div class="col-md-3">
+                            @endif
+
+                            @if ($testFor == 'Math')
+                                <div class="col-md-10">
                                     <input type="number" class="form-control form-control-md " id="user_math_score"
-                                        name="user_math_score" placeholder="Math Score" min="200" max="800">
+                                        name="user_math_score" placeholder="Math Score">
                                 </div>
-                            @elseif($test->format == 'DPSAT')
-                                <div class="col-md-3">
-                                    <input type="number" class="form-control form-control-md " id="user_reading_score"
-                                        name="user_reading_score" placeholder="Reading & Writing Score" min="160"
-                                        max="760">
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="number" class="form-control form-control-md " id="user_math_score"
-                                        name="user_math_score" placeholder="Math Score" min="320" max="1520">
-                                </div>
-                            @else
                             @endif
                             <div class="col-md-3">
-                                <input type="number" class="form-control form-control-md " id="user_total_score"
-                                    name="user_total_score" placeholder="Total Score">
+                                {{-- <input type="number" class="form-control form-control-md " id="user_total_score"
+                                    name="user_total_score" placeholder="Total Score"> --}}
                             </div>
                         </div>
                         <p style="display: none" class="text-center text-success fw-bold" id="total"></p>
                     </div>
+                @endif
+                @if (($test->format == 'DSAT' || $test->format == 'DPSAT') && $testSectionType == 'graded')
                     <div class="row">
                         <div class="col-md-2 text-center mt-2">
                             <p class="fw-bold" style="font-size:15px">Actual Time</p>
@@ -445,8 +454,8 @@
                                 name="user_seconds" placeholder="Enter Seconds">
                         </div>
                     </div>
-
                 @endif
+
 
                 <div class="row">
                     <div class="col-xl-4">
@@ -534,7 +543,7 @@
         <div class="modal" id="actualTImeConfirm" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true" style="display: none;
         background: #00000042;">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                     </div>
@@ -583,6 +592,9 @@
             const calculator = Desmos.GraphingCalculator(document.getElementById('calculator-container'));
             $('#exampleModal').modal('show');
         });
+
+
+
         var isPaused = false;
 
         $(document).ready(function() {
@@ -604,6 +616,7 @@
 
             $('#btn-close').click(function() {
                 $('#actualTImeConfirm').hide();
+                $('#checkTime').val(1);
             })
             let easyCheckBox = $('#easyCheckBox').val();
             let hardCheckBox = $('#hardCheckBox').val();
@@ -668,70 +681,74 @@
 
         $(document).ready(function() {
             let format = $('#format').val();
+            let testFor = $('#testFor').val();
+            let min_value = parseInt($('#min_value').val()) || 0;
+            let max_value = parseInt($('#max_value').val()) || 0;
 
-            function updateTotalScore() {
-                let reading = parseInt($('#user_reading_score').val()) || 0;
-                let math = parseInt($('#user_math_score').val()) || 0;
+            // function updateTotalScore() {
+            //     let reading = parseInt($('#user_reading_score').val()) || 0;
+            //     let math = parseInt($('#user_math_score').val()) || 0;
 
-                if (!isNaN(reading) && !isNaN(math)) {
-                    let total_score = reading + math;
-                    console.log(total_score);
-                    $('#user_total_score').val(total_score);
-                }
-            }
+            //     if (!isNaN(reading) && !isNaN(math)) {
+            //         let total_score = reading + math;
+            //         console.log(total_score);
+            //         $('#user_total_score').val(total_score);
+            //     }
+            // }
             // Update total score when either reading or math is entered
-            $('#user_reading_score, #user_math_score').on('input', function() {
-                updateTotalScore();
+            // $('#user_reading_score, #user_math_score').on('input', function() {
+            //     updateTotalScore();
 
 
-            });
+            // });
             // Check if total score is manually entered and remind to enter reading and math scores
-            $('#user_total_score').blur(function() {
-                let total = parseInt($(this).val()) || 0;
-                if (isNaN(total)) {
-                    alert("Please enter a valid total score.");
-                } else {
-                    let reading = $('#user_reading_score').val();
-                    let math = $('#user_math_score').val();
+            // $('#user_total_score').blur(function() {
+            //     let total = parseInt($(this).val()) || 0;
+            //     if (isNaN(total)) {
+            //         alert("Please enter a valid total score.");
+            //     } else {
+            //         let reading = $('#user_reading_score').val();
+            //         let math = $('#user_math_score').val();
 
-                    if ((!reading || !math) && total !== 0) {
-                        console.log(total);
-                        $('#total').show();
-                        $('#total').text(
-                            'Note: Consider entering Reading & Writing and Math scores for a more accurate assessment.'
-                        );
-                    }
-                }
-            });
+            //         if ((!reading || !math) && total !== 0) {
+            //             console.log(total);
+            //             $('#total').show();
+            //             $('#total').text(
+            //                 'Note: Consider entering Reading & Writing and Math scores for a more accurate assessment.'
+            //             );
+            //         }
+            //     }
+            // });          
+            // if (testFor == 'English') {
+            //     $('#user_reading_score').blur(function() {
+            //         let reading = parseInt($('#user_reading_score').val());
+            //         if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' || format == 'DPSAT') {
+            //             if (reading < min_value || reading > max_value) {
+            //                 alert("Reading & Writing score must be between " + min_value + " and " +
+            //                     max_value +
+            //                     ".");
+            //                 return false;
+            //             } else {
 
-            $('#user_reading_score').blur(function() {
-                let reading = parseInt($('#user_reading_score').val());
-                if (format == 'DSAT') {
-                    if (reading < 200 || reading > 800) {
-                        alert("Reading & Writing score must be between 200 and 800.");
-                    }
-                } else if (format == 'DPSAT') {
-                    if (reading < 160 || reading > 760) {
-                        alert("Reading & Writing score must be between 160 and 760.");
-                    }
+            //             }
+            //         }
+            //     });
+            // }
 
-                } else {
+            // if (testFor == 'Math') {
+            //     $('#user_math_score').blur(function() {
+            //         let math = parseInt($('#user_math_score').val());
+            //         if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' || format == 'DPSAT') {
+            //             if (math < min_value || math > max_value) {
+            //                 alert("Math score must be between " + min_value + " and " + max_value + ".");
+            //                 return false;
 
-                }
-            });
+            //             } else {
 
-            $('#user_math_score').blur(function() {
-                let math = parseInt($('#user_math_score').val());
-                if (math < 200 || math > 800) {
-                    alert("Math score must be between 200 and 800.");
-                } else if (format == 'DPSAT') {
-                    if (math < 320 || math > 1520) {
-                        alert("Reading & Writing score must be between 320 and 1520.");
-                    }
-                } else {
-
-                }
-            });
+            //             }
+            //         }
+            //     });
+            // }
 
 
         });
@@ -1225,17 +1242,61 @@
                 let userActualHour = $('#user_hours').val();
                 let userActualMinutes = $('#user_minutes').val();
                 let userActualSeconds = $('#user_seconds').val();
-                console.log(userActualHour)
-                if (userActualHour == '' || userActualMinutes == '' || userActualSeconds == '') {
+                let checkTime = $('#checkTime').val();
+
+                if ((userActualHour == '' || userActualMinutes == '' || userActualSeconds == '') && (
+                        checkTime == 0)) {
                     $('#actualTImeConfirm').show();
-                    return false;
+                    return true;
                 }
+                // console.log(userActualHour)
+                let reading = parseInt($('#user_reading_score').val());
+                let math = parseInt($('#user_math_score').val());
+                let format = $('#format').val();
+                let min_value = parseInt($('#min_value').val()) || 0;
+                let max_value = parseInt($('#max_value').val()) || 0;
+
+                let testFor = $('#testFor').val();
+                if (testFor == 'English') {
+                    if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' ||
+                        format == 'DPSAT') {
+                        if (reading < min_value || reading >
+                            max_value) {
+                            alert("Reading & Writing score must be between " +
+                                min_value + " and " +
+                                max_value + ".");
+                            return false;
+                        }
+                    }
+                }
+
+
+                if (testFor == 'Math') {
+                    if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' ||
+                        format == 'DPSAT') {
+                        if (math < min_value || math >
+                            max_value) {
+                            alert("Math score must be between " + min_value +
+                                " and " +
+                                max_value + ".");
+                            return false;
+                        }
+                    }
+
+
+                }
+
+                
+
+
+
+
+
 
                 if (jQuery('.next').prop('disabled') == false) {
                     var timeisover = jQuery('#timeisover').val();
                     if (timeisover == 1) {
                         confirm(true);
-
                     } else {
 
 
@@ -1272,7 +1333,7 @@
                                 showCancelButton: true,
                                 confirmButtonColor: "#198754",
                                 confirmButtonText: "Section Review",
-                                cancelButtonText: "Grade Another Section",
+                                cancelButtonText: "Proceed to next section",
                                 closeOnConfirm: true,
                                 closeOnCancel: true,
 
@@ -1314,7 +1375,7 @@
 
                 let userReadingActualScore = $('#user_reading_score').val();
                 let userMathActualScore = $('#user_math_score').val();
-                let userTotalActualScore = $('#user_total_score').val();
+                // let userTotalActualScore = $('#user_total_score').val();
                 let userActualTime = $('#user_actual_time').val();
                 let userHour = $('#user_hours').val();
                 let userMinutes = $('#user_minutes').val();
@@ -1542,7 +1603,7 @@
                     actual_time: actual_time,
                     userReadingActualScore,
                     userMathActualScore,
-                    userTotalActualScore,
+                    // userTotalActualScore,
                     userActualTime,
                     userHour,
                     userMinutes,
@@ -1706,7 +1767,7 @@
 
                 let userReadingActualScore = $('#user_reading_score').val();
                 let userMathActualScore = $('#user_math_score').val();
-                let userTotalActualScore = $('#user_total_score').val();
+                // let userTotalActualScore = $('#user_total_score').val();
                 let userActualTime = $('#user_actual_time').val();
                 let userHour = $('#user_hours').val();
                 let userMinutes = $('#user_minutes').val();
@@ -1935,7 +1996,7 @@
                     actual_time: actual_time,
                     userReadingActualScore,
                     userMathActualScore,
-                    userTotalActualScore,
+                    // userTotalActualScore,
                     userActualTime,
                     userHour,
                     userMinutes,
@@ -2244,7 +2305,7 @@
                                         get_option_number = 'd';
                                     }
                                 }
-
+                                // console.log(val)
                                 if (selected_answer[value.id] !==
                                     '' &&
                                     selected_answer[value.id] !==
@@ -2268,7 +2329,8 @@
                                                 '" checked ><label class="form-check-label" for="' +
                                                 get_option_number + '">' +
                                                 get_option_number
-                                                .toUpperCase() + '. ' + val +
+                                                .toUpperCase() +
+                                                //+ '. ' + val  added before to show  the description in front of option number
                                                 '</label></div></div>'
                                         } else {
                                             set_questions_options +=
@@ -2283,7 +2345,8 @@
                                                 '"><label class="form-check-label" for="' +
                                                 get_option_number + '">' +
                                                 get_option_number
-                                                .toUpperCase() + '. ' + val +
+                                                .toUpperCase() +
+                                                //+ '. ' + val  added before to show  the description in front of option number
                                                 '</label></div></div>'
                                         }
                                     } else {
@@ -2307,8 +2370,8 @@
                                                     '"><label class="form-check-label" for="' +
                                                     get_option_number + '">' +
                                                     get_option_number
-                                                    .toUpperCase() + '. ' +
-                                                    val +
+                                                    .toUpperCase() //+ '. ' + val  added before to show  the description in front of option number
+                                                    +
                                                     '</label></div></div>';
                                             } else if (value
                                                 .is_multiple_choice ==
@@ -2325,8 +2388,8 @@
                                                     '"><label class="form-check-label" for="' +
                                                     get_option_number + '">' +
                                                     get_option_number
-                                                    .toUpperCase() + '. ' +
-                                                    val +
+                                                    .toUpperCase() //+ '. ' + val  added before to show  the description in front of option number
+                                                    +
                                                     '</label></div></div>';
                                             } else if (value
                                                 .is_multiple_choice ==
@@ -2351,8 +2414,8 @@
                                                     '"><label class="form-check-label" for="' +
                                                     get_option_number + '">' +
                                                     get_option_number
-                                                    .toUpperCase() + '. ' +
-                                                    val +
+                                                    .toUpperCase() //+ '. ' + val  added before to show  the description in front of option number
+                                                    +
                                                     '</label></div></div>'
                                             }
                                         }
@@ -2381,7 +2444,8 @@
                                                         '">' +
                                                         get_option_number
                                                         .toUpperCase() +
-                                                        '. ' + val +
+                                                        //+ '. ' + val  added before to show  the description in front of option number
+
                                                         '</label></div></div>'
                                                 } else if (value
                                                     .is_multiple_choice ==
@@ -2403,7 +2467,8 @@
                                                         '">' +
                                                         get_option_number
                                                         .toUpperCase() +
-                                                        '. ' + val +
+                                                        //+ '. ' + val  added before to show  the description in front of option number
+
                                                         '</label></div></div>'
                                                 } else if (value
                                                     .is_multiple_choice ==
@@ -2436,7 +2501,8 @@
                                                         '">' +
                                                         get_option_number
                                                         .toUpperCase() +
-                                                        '. ' + val +
+                                                        //+ '. ' + val  added before to show  the description in front of option number
+
                                                         '</label></div></div>'
                                                 }
                                             }
@@ -2474,7 +2540,8 @@
                                             '><label class="form-check-label" for="' +
                                             get_option_number + '">' +
                                             get_option_number
-                                            .toUpperCase() + '. ' + val +
+                                            .toUpperCase() +
+                                            //+ '. ' + val  added before to show  the description in front of option number
                                             '</label></div></div>'
                                     } else if (value.is_multiple_choice ==
                                         1) {
@@ -2505,7 +2572,8 @@
                                             '><label class="form-check-label" for="' +
                                             get_option_number + '">' +
                                             get_option_number
-                                            .toUpperCase() + '. ' + val +
+                                            .toUpperCase() +
+                                            //+ '. ' + val  added before to show  the description in front of option number
                                             '</label></div></div>'
                                     } else if (value.is_multiple_choice ==
                                         2) {
@@ -2541,7 +2609,8 @@
                                             '><label class="form-check-label" for="' +
                                             get_option_number + '">' +
                                             get_option_number
-                                            .toUpperCase() + '. ' + val +
+                                            .toUpperCase() +
+                                            //+ '. ' + val  added before to show  the description in front of option number
                                             '</label></div></div>'
                                     }
                                 }
@@ -2776,19 +2845,88 @@
                                 }
 
                                 if (hours === 0 && minutes === 0 && seconds === 0) {
-                                    clearInterval(timerInterval);
-                                    swal({
-                                        icon: 'warning',
-                                        title: 'Time is over!',
-                                        text: 'Your time has expired.',
-                                        confirmButtonColor: '#3085d6',
-                                        confirmButtonText: 'Continue'
-                                    }, function(isConfirm) {
-                                        $('#timeisover').val(1);
-                                        if (isConfirm) {
-                                            $('.submit_section_btn').trigger('click');
+                                    let reading = parseInt($('#user_reading_score').val());
+                                    let math = parseInt($('#user_math_score').val());
+                                    let format = $('#format').val();
+                                    let min_value = parseInt($('#min_value').val()) || 0;
+                                    let max_value = parseInt($('#max_value').val()) || 0;
+
+                                    let testFor = $('#testFor').val();
+                                    if (testFor == 'English') {
+                                        if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' ||
+                                            format == 'DPSAT') {
+                                            if (reading < min_value || reading >
+                                                max_value) {
+                                                $('#set_question_data').css("opacity", 0);
+                                                $('#showMessage').show();
+                                                alert("Reading & Writing score must be between " +
+                                                    min_value + " and " +
+                                                    max_value + ".");
+                                            } else {
+                                                clearInterval(timerInterval);
+                                                swal({
+                                                    icon: 'warning',
+                                                    title: 'Time is over!',
+                                                    text: 'Your time has expired.',
+                                                    confirmButtonColor: '#3085d6',
+                                                    confirmButtonText: 'Continue'
+                                                }, function(isConfirm) {
+                                                    $('#timeisover').val(1);
+                                                    if (isConfirm) {
+                                                        $('.submit_section_btn').trigger(
+                                                            'click');
+                                                    }
+                                                });
+                                            }
                                         }
-                                    });
+
+
+                                    } else if (testFor == 'Math') {
+                                        if (format == 'SAT' || format == 'PSAT' || format == 'DSAT' ||
+                                            format == 'DPSAT') {
+                                            if (math < min_value || math >
+                                                max_value) {
+                                                $('#set_question_data').css("opacity", 0);
+                                                alert("Math score must be between " + min_value +
+                                                    " and " +
+                                                    max_value + ".");
+
+                                            } else {
+                                                clearInterval(timerInterval);
+                                                swal({
+                                                    icon: 'warning',
+                                                    title: 'Time is over!',
+                                                    text: 'Your time has expired.',
+                                                    confirmButtonColor: '#3085d6',
+                                                    confirmButtonText: 'Continue'
+                                                }, function(isConfirm) {
+                                                    $('#timeisover').val(1);
+                                                    if (isConfirm) {
+                                                        $('.submit_section_btn').trigger(
+                                                            'click');
+                                                    }
+                                                });
+                                            }
+                                        }
+
+
+                                    } else {
+                                        clearInterval(timerInterval);
+                                        swal({
+                                            icon: 'warning',
+                                            title: 'Time is over!',
+                                            text: 'Your time has expired.',
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: 'Continue'
+                                        }, function(isConfirm) {
+                                            $('#timeisover').val(1);
+                                            if (isConfirm) {
+                                                $('.submit_section_btn').trigger(
+                                                    'click');
+                                            }
+                                        });
+                                    }
+
                                 }
                             }
 

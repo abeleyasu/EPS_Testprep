@@ -160,7 +160,7 @@
                                         @if ($whichSection == 1)
                                             @if ($testSection[0]->format == 'DSAT' || $testSection[0]->format == 'DPSAT')
                                                 @if ($testSection[0]->test_source == 1)
-                                                    This test has 4 sections
+                                                    This test has 2 sections
                                                 @endif
                                             @else
                                                 This test has {{ $mainSectionsCount }} sections and
@@ -573,6 +573,7 @@
                                             @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Math', 'Reading_And_Writing']))
                                                 <!-- START SECTION -->
                                                 <li class="timeline-event">
+
                                                     <div class="timeline-event-icon bg-success">
                                                         <i class="fa-solid fa-{{ ++$count }}"></i>
                                                     </div>
@@ -627,13 +628,16 @@
                                                 $singletestSections['check_if_section_completed'][0] == 'yes')
                                             @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Math', 'Reading_And_Writing']))
                                                 <!-- REVIEW SECTION -->
-                                                @php
-                                                    // dump($singletestSections[0]);
-                                                @endphp
                                                 <li class="timeline-event">
-                                                    <div class="timeline-event-icon bg-success">
-                                                        <i class="fa-solid fa-{{ ++$count }}"></i>
-                                                    </div>
+                                                    @if ($loop->index == 0)
+                                                        <div class="timeline-event-icon bg-success">
+                                                            <i class="fa-solid fa-{{ ++$count }}"></i>
+                                                        </div>
+                                                    @else
+                                                        <div class="timeline-event-icon bg-success">
+                                                            <i class="fa-solid fa-3"></i>
+                                                        </div>
+                                                    @endif
                                                     <div class="timeline-event-block block">
                                                         <div class="block-header block-header-default">
                                                             <h3 class="block-title">
@@ -705,7 +709,7 @@
                                                 ]))
                                                 <li class="timeline-event">
                                                     <div class="timeline-event-icon bg-success">
-                                                        <i class="fa-solid fa-{{ ++$count }}"></i>
+                                                        <i class="fa-solid fa-2"></i>
                                                     </div>
                                                     @php
                                                         $modifiedString = str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']);
@@ -778,8 +782,9 @@
                                             @endif
                                             @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Math_no_calculator', 'Math_with_calculator']))
                                                 <li class="timeline-event">
+                                                    
                                                     <div class="timeline-event-icon bg-success">
-                                                        <i class="fa-solid fa-{{ ++$count }}"></i>
+                                                        <i class="fa-solid fa-{{ ($loop->index - 1) }}"></i>
                                                     </div>
                                                     @php
                                                         $modifiedString = str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']);
@@ -976,8 +981,9 @@
                                             @endif
                                             @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Math_with_calculator']))
                                                 <li class="timeline-event" id="math-id">
-                                                    <div class="timeline-event-icon bg-success">
-                                                        <i class="fa-solid fa-{{ ++$count }}"></i>
+                                                    <div class="timeline-event-icon bg-success">                                                     
+                                                        {{-- <i class="fa-solid fa-{{ ++$count }}"></i> --}}
+                                                        <i class="fa-solid fa-{{ $loop->index }}"></i>
                                                     </div>
                                                     @php
                                                         $modifiedString = str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']);
