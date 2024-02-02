@@ -181,7 +181,11 @@ class CollegeInformationController extends Controller
 
     public function get_column_values($column_names, $data){
             $i = 0;
+
             foreach($column_names as $column_name => $column_name_index){
+                if(empty($data[$column_name_index])){
+                    $new_data[$column_name] = null;
+                }
                 if($data[$column_name_index] == 0 || !empty($data[$column_name_index])){
                     $new_data[$column_name] = $data[$column_name_index];
                 }
