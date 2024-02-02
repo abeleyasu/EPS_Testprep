@@ -413,6 +413,10 @@ class CollegeInformationController extends Controller
         return redirect()->route('admin.admission-management.college-information.index');
     }
 
+    public function convert_on_off_to_boolean(){
+
+    }
+
     public function update(Request $request)
     {
         $rules = [
@@ -422,7 +426,7 @@ class CollegeInformationController extends Controller
             'sat_math_average' => 'required',
             'sat_reading_writing_average' => 'required',
             'sat_composite_score' => 'required',
-            'cost_of_attendance' => 'required|numeric',
+            'cost_of_attendance' => 'numeric',
             'tution_and_fess' => 'required|numeric',
             'room_and_board' => 'required|numeric',
             'average_percent_of_need_met' => 'required',
@@ -431,16 +435,38 @@ class CollegeInformationController extends Controller
             'early_decision_offerd' => 'boolean',
             // 'regular_admission_deadline' => 'required|date_format:m-d-Y',
         ];
-        if($request->display_peterson_weighted_gpa != 'on'){
-            $request->merge(['display_peterson_weighted_gpa' => 0]);
-        }else{
-            $request->merge(['display_peterson_weighted_gpa' => 1]);
+
+        $boolean_params = array(
+            'display_peterson_weighted_gpa',
+            'display_peterson_unweighted_gpa',
+            'display_peterson_pvt_coa',
+            'display_peterson_public_coa'
+        );
+
+        foreach($boolean_params as $bp){
+            if($request[$bp] != 'on'){
+                $request->merge([$bp => 0]);
+            }else{
+                $request->merge([$bp => 1]);
+            }
         }
-        if($request->display_peterson_unweighted_gpa != 'on'){
-            $request->merge(['display_peterson_unweighted_gpa' => 0]);
-        }else{
-            $request->merge(['display_peterson_unweighted_gpa' => 1]);
-        }
+
+
+        // if($request->display_peterson_weighted_gpa != 'on'){
+        //     $request->merge(['display_peterson_weighted_gpa' => 0]);
+        // }else{
+        //     $request->merge(['display_peterson_weighted_gpa' => 1]);
+        // }
+        // if($request->display_peterson_unweighted_gpa != 'on'){
+        //     $request->merge(['display_peterson_unweighted_gpa' => 0]);
+        // }else{
+        //     $request->merge(['display_peterson_unweighted_gpa' => 1]);
+        // }
+        // if($request->display_peterson_pvt_coa != 'on'){
+        //     $request->merge(['display_peterson_unweighted_gpa' => 0]);
+        // }else{
+        //     $request->merge(['display_peterson_unweighted_gpa' => 1]);
+        // }
 
 
 

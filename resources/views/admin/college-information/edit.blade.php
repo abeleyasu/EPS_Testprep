@@ -119,13 +119,85 @@
             @enderror
           </div>
 
+          @if($info->ownership == "2")
           <div class="mb-4">
-            <label class="from-label">Cost of Attendance:</label>
-            <input type="text" class="form-control {{$errors->has('cost_of_attendance') ? 'is-invalid' : ''}}" name="cost_of_attendance" value="{{ old('cost_of_attendance') ? old('cost_of_attendance') : $info->cost_of_attendance }}"/>
-            @error('cost_of_attendance')
-              <div class="invalid-feedback">{{$message}}</div>
+            <label class="from-label">
+                <input {{ $info->display_peterson_pvt_coa ? 'checked' : '' }} type="checkbox" class="form-check-input {{$errors->has('display_peterson_pvt_coa') ? 'is-invalid' : ''}}" name="display_peterson_pvt_coa" 
+                {{ old('display_peterson_pvt_coa') ? 'checked' : ($info->display_peterson_pvt_coa ? 'checked' : '') }}>
+                Check the checkbox to Display Peterson Cost of Attendace to Students
+            </label>
+        
+            @error('display_peterson_pvt_coa')
+                <div class="invalid-feedback">{{$message}}</div>
             @enderror
           </div>
+
+          <div class="row">
+            <div class="mb-4 col">
+              <label class="from-label">Cost of Attendance:</label>
+              <small>Peterson Data</small>
+              <input disabled type="text" class="form-control {{$errors->has('pvt_coa') ? 'is-invalid' : ''}}" name="pvt_coa" value="{{ old('pvt_coa') ? old('pvt_coa') : $info->pvt_coa }}"/>
+              @error('pvt_coa')
+                <div class="invalid-feedback">{{$message}}</div>
+              @enderror
+            </div>
+            <div class="mb-4 col">
+              <label class="from-label">Cost of Attendance:</label>
+              <small>Custom Cost Of Attendance</small>
+              <input type="text" class="form-control {{$errors->has('pvt_coa_admin') ? 'is-invalid' : ''}}" name="pvt_coa_admin" value="{{ old('pvt_coa_admin') ? old('pvt_coa_admin') : $info->pvt_coa_admin }}"/>
+              @error('pvt_coa_admin')
+                <div class="invalid-feedback">{{$message}}</div>
+              @enderror
+            </div>
+          </div>
+            @else
+          <div class="mb-4">
+            <label class="from-label">
+                <input {{ $info->display_peterson_public_coa ? 'checked' : '' }} type="checkbox" class="form-check-input {{$errors->has('display_peterson_public_coa') ? 'is-invalid' : ''}}" name="display_peterson_public_coa" 
+                {{ old('display_peterson_public_coa') ? 'checked' : ($info->display_peterson_public_coa ? 'checked' : '') }}>
+                Check the checkbox to Display Peterson Cost of Attendace to Students
+            </label>
+        
+            @error('display_peterson_public_coa')
+                <div class="invalid-feedback">{{$message}}</div>
+            @enderror
+          </div>
+            <div class="row">
+              <div class="mb-4 col">
+                <label class="from-label">Cost of Attendance (In State):</label>
+                <input disabled type="text" class="form-control {{$errors->has('public_coa_in_state') ? 'is-invalid' : ''}}" name="public_coa_in_state" value="{{ old('public_coa_in_state') ? old('public_coa_in_state') : $info->public_coa_in_state }}"/>
+                @error('public_coa_in_state')
+                  <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+              </div>
+              <div class="mb-4 col">
+                <label class="from-label">Cost of Attendance (In State):</label>
+                <small>Admin Data</small>
+                <input type="text" class="form-control {{$errors->has('public_coa_in_state_admin') ? 'is-invalid' : ''}}" name="public_coa_in_state_admin" value="{{ old('public_coa_in_state_admin') ? old('public_coa_in_state_admin') : $info->public_coa_in_state_admin }}"/>
+                @error('public_coa_in_state_admin')
+                  <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="row">
+              <div class="mb-4 col">
+                <label class="from-label">Cost of Attendance (Out of  State):</label>
+                <input disabled type="text" class="form-control {{$errors->has('public_coa_out_state') ? 'is-invalid' : ''}}" name="public_coa_out_state" value="{{ old('public_coa_out_state') ? old('public_coa_out_state') : $info->public_coa_out_state}}"/>
+                @error('public_coa_in_state')
+                  <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+              </div>
+              <div class="mb-4 col">
+                <label class="from-label">Cost of Attendance (Out of  State):</label>
+                <small>Admin Data</small>
+                <input type="text" class="form-control {{$errors->has('public_coa_out_state_admin') ? 'is-invalid' : ''}}" name="public_coa_out_state_admin" value="{{ old('public_coa_out_state_admin') ? old('public_coa_out_state_admin') : $info->public_coa_out_state_admin }}"/>
+                @error('public_coa_in_state_admin')
+                  <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+              </div>
+            </div>
+
+          @endif
 
           <div class="mb-4">
             <label class="from-label">Tuition and Fees:</label>

@@ -165,16 +165,29 @@ $current_user_state_code = (
                                                 @switch($college['school.ownership'])
                                                     @case(1)
                                                             @php
-                                                                echo '<p><b>Cost of Attendance (In-State): </b>';
-                                                                // $tuit_state_ft_d  = $college_info->TUIT_STATE_FT_D ? (int) $college_info->TUIT_STATE_FT_D  : 0;
-                                                                $total_cost = $college_info->public_coa_in_state;
-                                                                echo  ($total_cost ? '$' . $total_cost : 'No Data');
+                                                                if($college_info->display_peterson_public_coa == "1"){
+                                                                    echo '<p><b>Cost of Attendance (In-State): </b>';
+                                                                    // $tuit_state_ft_d  = $college_info->TUIT_STATE_FT_D ? (int) $college_info->TUIT_STATE_FT_D  : 0;
+                                                                    $total_cost = $college_info->public_coa_in_state;
+                                                                    echo  ($total_cost ? '$' . $total_cost : 'No Data');
 
-                                                                $costOfAttendanceStr .= "(Out-of-State)";
-                                                                echo '<p><b>Cost of Attendance (Out-of-State): </b>';
-                                                                // $tuit_nres_ft_d = $college_info->TUIT_NRES_FT_D ? (int) $college_info->TUIT_NRES_FT_D  : 0;
-                                                                $total_cost = $college_info->public_coa_out_state;
-                                                                echo  ($total_cost ? '$' . $total_cost : 'No Data');
+                                                                    $costOfAttendanceStr .= "(Out-of-State)";
+                                                                    echo '<p><b>Cost of Attendance (Out-of-State): </b>';
+                                                                    // $tuit_nres_ft_d = $college_info->TUIT_NRES_FT_D ? (int) $college_info->TUIT_NRES_FT_D  : 0;
+                                                                    $total_cost = $college_info->public_coa_out_state;
+                                                                    echo  ($total_cost ? '$' . $total_cost : 'No Data');
+
+                                                                }else{
+                                                                    echo '<p><b>Cost of Attendance (In-State): </b>';
+                                                                    $total_cost = $college_info->public_coa_in_state_admin;
+                                                                    echo  ($total_cost ? '$' . $total_cost : 'No Data');
+
+                                                                    $costOfAttendanceStr .= "(Out-of-State)";
+                                                                    echo '<p><b>Cost of Attendance (Out-of-State): </b>';
+                                                                    $total_cost = $college_info->public_coa_out_state_admin;
+                                                                    echo  ($total_cost ? '$' . $total_cost : 'No Data');
+
+                                                                }
 
                                                             @endphp
                                                         
@@ -184,8 +197,16 @@ $current_user_state_code = (
                                                             $costOfAttendanceStr .= "";
                                                             echo '<p><b>Cost of Attendance: </b>';
                                                             // $tuit_overall_ft_d = $college_info->TUIT_OVERALL_FT_D ? (int) $college_info->TUIT_OVERALL_FT_D : 0;
-                                                            $total_cost = $college_info->pvt_coa;
-                                                            echo  ($total_cost ? '$' . $total_cost : 'No Data');
+                                                            if($college_info->display_peterson_pvt_coa == "1"){
+                                                                $total_cost = $college_info->pvt_coa;
+                                                                echo  ($total_cost ? '$' . $total_cost : 'No Data');
+
+                                                            }
+                                                            else{
+                                                                $total_cost = $college_info->pvt_coa_admin;
+                                                                echo  ($total_cost ? '$' . $total_cost : 'No Data');
+
+                                                            }
 
                                                         @endphp
                                                     @break
