@@ -436,6 +436,8 @@ class CollegeInformationController extends Controller
             // 'regular_admission_deadline' => 'required|date_format:m-d-Y',
         ];
 
+
+
         $boolean_params = array(
             'display_peterson_weighted_gpa',
             'display_peterson_unweighted_gpa',

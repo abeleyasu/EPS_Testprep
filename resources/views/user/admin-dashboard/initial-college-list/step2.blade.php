@@ -1203,6 +1203,8 @@ $current_user_state_code = (
                 $('#HOUS_FRSH_POLICY').html((data.latest.college_info.HOUS_FRSH_POLICY ? (data.latest.college_info.HOUS_FRSH_POLICY) : '-'))
                 $('#HOUS_SPACES_OCCUP').html((data.latest.college_info.HOUS_SPACES_OCCUP ? (data.latest.college_info.HOUS_SPACES_OCCUP) : '-'))
 
+
+
                 let earlyDeadlineMonth = data.latest.college_info.AP_DL_EACT_MON;
                 let earlyDeadlineDay = data.latest.college_info.AP_DL_EACT_DAY;
                 let regAdmissionDeadlineDay = data.latest.college_info.AP_DL_FRSH_DAY
