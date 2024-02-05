@@ -127,6 +127,11 @@ class CollegeInformationController extends Controller
             'AP_DL_EDEC_1_DAY',
             'AP_DL_EDEC_2_DAY',
             'AP_DL_EDEC_2_MON',
+            'ASSN_ATHL_NCAA',
+            'ASSN_ATHL_NAIA',
+            'ASSN_ATHL_NCCAA',
+            'ASSN_ATHL_NJCAA',
+            'ASSN_ATHL_CIAU'
         );
         $peterson_id_index = null;
         $file = $request->file('csv_file');

@@ -188,7 +188,7 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div {{ $info->display_peterson_pvt_coa == "1" ? 'hidden' : '' }} id="pvt_coa_admin_container" class="mb-4 col">
+                                <div {{ $info->display_peterson_pvt_coa == "1" ? 'hidden' : '' }} id="pvt_coa_container_admin" class="mb-4 col">
                                     <label class="from-label">Cost of Attendance:</label>
                                     <small>Custom Cost Of Attendance</small>
                                     <input type="text"
@@ -432,26 +432,47 @@
             preview.src = URL.createObjectURL(event.target.files[0]);
         })
 
-        $('#display_peterson_public_coa').change(function () {
-          if(this.checked){
-            $('.public_coa_container').removeAttr('hidden')
-            $('.public_coa_container_admin').prop('hidden', true)
-          }else{
-            console.log('Pvt Coa Container should be hidden')
-            $('.public_coa_container').prop('hidden', true)
-            $('.public_coa_container_admin').removeAttr('hidden')
-          }
-        })
+        /**
+         * Toggles between displaying data for the admin and Peterson based on the state of a checkbox.
+         * Hello 
+         * @param {string} checkboxSelector - The CSS selector for the checkbox element.
+         * @param {string[]} selectorsOfElToHide - An array of CSS selectors for elements to hide when the checkbox is checked.
+         * @param {string[]} selectorsOfElToShow - An array of CSS selectors for elements to show when the checkbox is checked.
+        */
+        function toggleBetweenAdminAndPetersonData(checkboxSelector, selectorsOfElToHide, selectorsOfElToShow){
+            $(checkboxSelector).change(function(){
+                if(this.checked){
+                    selectorsOfElToHide.forEach(element => $(element).prop('hidden', true) )
+                    selectorsOfElToShow.forEach(element => $(element).removeAttr('hidden') )
+                }else{
+                    selectorsOfElToShow.forEach(element => $(element).prop('hidden', true) )
+                    selectorsOfElToHide.forEach(element => $(element).removeAttr('hidden') )
+                }
+            })
 
-        $('#display_peterson_pvt_coa').change(function () {
-          if(this.checked){
-            $('#pvt_coa_container').removeAttr('hidden')
-            $('#pvt_coa_admin_container').prop('hidden', true)
-          }else{
-            console.log('Pvt Coa Container should be hidden')
-            $('#pvt_coa_container').prop('hidden', true)
-            $('#pvt_coa_admin_container').removeAttr('hidden')
-          }
-        })
+        }
+        toggleBetweenAdminAndPetersonData('#display_peterson_public_coa',['.public_coa_container_admin'] , ['.public_coa_container'])
+        toggleBetweenAdminAndPetersonData('#display_peterson_pvt_coa',['.pvt_coa_container_admin'] , ['.pvt_coa_container'])
+        // $('#display_peterson_public_coa').change(function () {
+        //   if(this.checked){
+        //     $('.public_coa_container').removeAttr('hidden')
+        //     $('.public_coa_container_admin').prop('hidden', true)
+        //   }else{
+        //     console.log('Pvt Coa Container should be hidden')
+        //     $('.public_coa_container').prop('hidden', true)
+        //     $('.public_coa_container_admin').removeAttr('hidden')
+        //   }
+        // })
+
+        // $('#display_peterson_pvt_coa').change(function () {
+        //   if(this.checked){
+        //     $('#pvt_coa_container').removeAttr('hidden')
+        //     $('#pvt_coa_admin_container').prop('hidden', true)
+        //   }else{
+        //     console.log('Pvt Coa Container should be hidden')
+        //     $('#pvt_coa_container').prop('hidden', true)
+        //     $('#pvt_coa_admin_container').removeAttr('hidden')
+        //   }
+        // })
     </script>
 @endsection

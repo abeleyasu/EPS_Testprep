@@ -750,11 +750,28 @@ $current_user_state_code = (
                                                 <div class="block-content">
                                                     <div class="block block-rounded block-link-shadow">
                                                         <h2 class="block-title">1. Athletic Division</h2>
+                                                        @php
+                                                        $athletic_divisions = array(
+                                                            'ASSN_ATHL_NCAA' => 'National Collegiate Athletic Association (NCAA)',
+                                                            'ASSN_ATHL_NAIA' => 'National Association of Intercollegiate Athletics',
+                                                            'ASSN_ATHL_NCCAA' => 'National Christian College Athletic Association',
+                                                            'ASSN_ATHL_NJCAA' => ' National Small College Athletic Association (NSCAA)',
+                                                            'ASSN_ATHL_CIAU' => 'National Junior College Athletic Association' 
+                                                        );
+                                                        foreach ($athletic_divisions as $key => $value) {
+                                                            echo "<div id='$key-container'>";
+                                                            echo '<div>' . $value . '</div>';
+                                                            echo "<div><small id='$key'></small></div>";
+                                                            echo "</div>";
+                                                        }
+                                                        echo "<div id="athletic-divisions-no-data">No Data Found</div>";
+
+                                                        @endphp
                                                          <small id=""></small>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="block block-rounded block-bordered">
+                                            <div class="block block-rounded block-bordered mt-2">
                                                 <div class="block-content">
                                                     <div class="block block-rounded block-link-shadow">
                                                         <h2 class="block-title">2. Greek Life (Sororities & Fraternities)</h2>
@@ -1260,10 +1277,25 @@ $current_user_state_code = (
 
                 }
 
+                // Athletic Division
 
+                let ASSN_ATHL_NCAA = data.latest.college_info.ASSN_ATHL_NCAA 
+                ASSN_ATHL_NCAA != null ? $('#ASSN_ATHL_NCAA' + '-container').removeAttr('hidden') : ''
+                $('#ASSN_ATHL_NCAA').html('NCAA Division ' + ASSN_ATHL_NCAA)
 
+                const athleticDivisionIDs = [
+                    'ASSN_ATHL_NAIA' ,
+                    'ASSN_ATHL_NCCAA',
+                    'ASSN_ATHL_NJCAA',
+                    'ASSN_ATHL_CIAU' 
+                ];
 
-
+                athleticDivisionIDs.forEach( (ad) => {
+                    if(data.latest.college_info.ad != null){
+                        $`${ad}-container`).removeAttr('hidden')
+                        $(`#ad`).html(data.latest.college_info.ad)
+                    }
+                })
 
                 // $('#c-early-action-offered').html((data.latest.college_info.early_action_offerd === 1 ? 'Yes' : 'No'))
                 // $('#c-early-decision-offerd').html((data.latest.college_info.early_decision_offerd === 1 ? 'Yes' : 'No'))
