@@ -453,26 +453,5 @@
         }
         toggleBetweenAdminAndPetersonData('#display_peterson_public_coa',['.public_coa_container_admin'] , ['.public_coa_container'])
         toggleBetweenAdminAndPetersonData('#display_peterson_pvt_coa',['.pvt_coa_container_admin'] , ['.pvt_coa_container'])
-        // $('#display_peterson_public_coa').change(function () {
-        //   if(this.checked){
-        //     $('.public_coa_container').removeAttr('hidden')
-        //     $('.public_coa_container_admin').prop('hidden', true)
-        //   }else{
-        //     console.log('Pvt Coa Container should be hidden')
-        //     $('.public_coa_container').prop('hidden', true)
-        //     $('.public_coa_container_admin').removeAttr('hidden')
-        //   }
-        // })
-
-        // $('#display_peterson_pvt_coa').change(function () {
-        //   if(this.checked){
-        //     $('#pvt_coa_container').removeAttr('hidden')
-        //     $('#pvt_coa_admin_container').prop('hidden', true)
-        //   }else{
-        //     console.log('Pvt Coa Container should be hidden')
-        //     $('#pvt_coa_container').prop('hidden', true)
-        //     $('#pvt_coa_admin_container').removeAttr('hidden')
-        //   }
-        // })
     </script>
 @endsection

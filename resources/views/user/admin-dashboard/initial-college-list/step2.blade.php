@@ -751,6 +751,7 @@ $current_user_state_code = (
                                                     <div class="block block-rounded block-link-shadow">
                                                         <h2 class="block-title">1. Athletic Division</h2>
                                                         @php
+
                                                         $athletic_divisions = array(
                                                             'ASSN_ATHL_NCAA' => 'National Collegiate Athletic Association (NCAA)',
                                                             'ASSN_ATHL_NAIA' => 'National Association of Intercollegiate Athletics',
@@ -759,12 +760,12 @@ $current_user_state_code = (
                                                             'ASSN_ATHL_CIAU' => 'National Junior College Athletic Association' 
                                                         );
                                                         foreach ($athletic_divisions as $key => $value) {
-                                                            echo "<div id='$key-container'>";
+                                                            echo "<div hidden id='$key-container'>";
                                                             echo '<div>' . $value . '</div>';
                                                             echo "<div><small id='$key'></small></div>";
                                                             echo "</div>";
                                                         }
-                                                        echo "<div id="athletic-divisions-no-data">No Data Found</div>";
+                                                        echo "<div id='athletic-divisions-no-data'>No Data Found</div>";
 
                                                         @endphp
                                                          <small id=""></small>
@@ -1279,9 +1280,11 @@ $current_user_state_code = (
 
                 // Athletic Division
 
+
                 let ASSN_ATHL_NCAA = data.latest.college_info.ASSN_ATHL_NCAA 
                 ASSN_ATHL_NCAA != null ? $('#ASSN_ATHL_NCAA' + '-container').removeAttr('hidden') : ''
                 $('#ASSN_ATHL_NCAA').html('NCAA Division ' + ASSN_ATHL_NCAA)
+                ASSN_ATHL_NCAA != null ? $('athletic-division-no-data').prop('hidden' , true) : ''
 
                 const athleticDivisionIDs = [
                     'ASSN_ATHL_NAIA' ,
@@ -1292,7 +1295,8 @@ $current_user_state_code = (
 
                 athleticDivisionIDs.forEach( (ad) => {
                     if(data.latest.college_info.ad != null){
-                        $`${ad}-container`).removeAttr('hidden')
+                        $('athletic-division-no-data').prop('hidden' , true)
+                        $(`${ad}-container`).removeAttr('hidden')
                         $(`#ad`).html(data.latest.college_info.ad)
                     }
                 })
