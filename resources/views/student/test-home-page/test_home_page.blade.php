@@ -12,18 +12,18 @@
 
                         <h1 class="h2 text-white mb-0">Test Prep Dashboard</h1>
                         <br>
-                        <span class="text-white-75">ACT/SAT/PSAT</span>
+                        <span class="text-white-75">ACT/SAT/PSAT/DSAT/DPSAT</span>
                         <br>
                         <br>
                     </div>
                 </div>
                 <div class="content">
-                    @if(session('error'))
-                    <div class="mx-lg-auto col-lg-10">
-                        <div class="alert alert-danger">
-                            {{session('error')}}
+                    @if (session('error'))
+                        <div class="mx-lg-auto col-lg-10">
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
                         </div>
-                    </div>
                     @endif
                     <div class="card p-3  col-lg-10 mx-lg-auto ">
                         <nav class="d-flex justify-content-center">
@@ -80,10 +80,14 @@
                                                                                 @if (!$getOfficialPracticeTests['ACT']->isEmpty())
                                                                                     @foreach ($getOfficialPracticeTests['ACT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'ACT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $getOfficialPracticeTest,
-                                                                                                'slug' => 'Official Released'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $getOfficialPracticeTest,
+                                                                                                    'slug' =>
+                                                                                                        'Official Released',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -114,10 +118,14 @@
                                                                                 @if (!$getOfficialPracticeTests['SAT']->isEmpty())
                                                                                     @foreach ($getOfficialPracticeTests['SAT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'SAT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $getOfficialPracticeTest,
-                                                                                                'slug' => 'Official Released'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $getOfficialPracticeTest,
+                                                                                                    'slug' =>
+                                                                                                        'Official Released',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -148,10 +156,14 @@
                                                                                 @if (!$getOfficialPracticeTests['PSAT']->isEmpty())
                                                                                     @foreach ($getOfficialPracticeTests['PSAT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'PSAT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $getOfficialPracticeTest,
-                                                                                                'slug' => 'Official Released'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $getOfficialPracticeTest,
+                                                                                                    'slug' =>
+                                                                                                        'Official Released',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -182,10 +194,14 @@
                                                                                 @if (!$getOfficialPracticeTests['DSAT']->isEmpty())
                                                                                     @foreach ($getOfficialPracticeTests['DSAT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'DSAT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $getOfficialPracticeTest,
-                                                                                                'slug' => 'Official Released'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $getOfficialPracticeTest,
+                                                                                                    'slug' =>
+                                                                                                        'Official Released',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -216,10 +232,14 @@
                                                                                 @if (!$getOfficialPracticeTests['DPSAT']->isEmpty())
                                                                                     @foreach ($getOfficialPracticeTests['DPSAT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'DPSAT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $getOfficialPracticeTest,
-                                                                                                'slug' => 'Official Released'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $getOfficialPracticeTest,
+                                                                                                    'slug' =>
+                                                                                                        'Official Released',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -272,10 +292,14 @@
                                                                                 @if (!$getAllPracticeTests['ACT']->isEmpty())
                                                                                     @foreach ($getAllPracticeTests['ACT'] as $test)
                                                                                         @if ($test->format == 'ACT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $test,
-                                                                                                'slug' => 'College Prep'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $test,
+                                                                                                    'slug' =>
+                                                                                                        'College Prep',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -306,10 +330,14 @@
                                                                                 @if (!$getAllPracticeTests['SAT']->isEmpty())
                                                                                     @foreach ($getAllPracticeTests['SAT'] as $test)
                                                                                         @if ($test->format == 'SAT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $test,
-                                                                                                'slug' => 'College Prep'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $test,
+                                                                                                    'slug' =>
+                                                                                                        'College Prep',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -340,10 +368,14 @@
                                                                                 @if (!$getAllPracticeTests['PSAT']->isEmpty())
                                                                                     @foreach ($getAllPracticeTests['PSAT'] as $test)
                                                                                         @if ($test->format == 'PSAT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $test,
-                                                                                                'slug' => 'College Prep'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $test,
+                                                                                                    'slug' =>
+                                                                                                        'College Prep',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -374,10 +406,14 @@
                                                                                 @if (!$getAllPracticeTests['DSAT']->isEmpty())
                                                                                     @foreach ($getAllPracticeTests['DSAT'] as $test)
                                                                                         @if ($test->format == 'DSAT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $test,
-                                                                                                'slug' => 'College Prep'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $test,
+                                                                                                    'slug' =>
+                                                                                                        'College Prep',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -408,10 +444,14 @@
                                                                                 @if (!$getAllPracticeTests['DPSAT']->isEmpty())
                                                                                     @foreach ($getAllPracticeTests['DPSAT'] as $test)
                                                                                         @if ($test->format == 'DPSAT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $test,
-                                                                                                'slug' => 'College Prep'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $test,
+                                                                                                    'slug' =>
+                                                                                                        'College Prep',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -464,10 +504,14 @@
                                                                                 @if (!$getAllProgressPracticeTests['ACT']->isEmpty())
                                                                                     @foreach ($getAllProgressPracticeTests['ACT'] as $test)
                                                                                         @if ($test->format == 'ACT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $test,
-                                                                                                'slug' => 'College Prep'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $test,
+                                                                                                    'slug' =>
+                                                                                                        'College Prep',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -498,10 +542,14 @@
                                                                                 @if (!$getAllProgressPracticeTests['SAT']->isEmpty())
                                                                                     @foreach ($getAllProgressPracticeTests['SAT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'SAT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $getOfficialPracticeTest,
-                                                                                                'slug' => 'Official Released'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $getOfficialPracticeTest,
+                                                                                                    'slug' =>
+                                                                                                        'Official Released',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -532,10 +580,14 @@
                                                                                 @if (!$getAllProgressPracticeTests['PSAT']->isEmpty())
                                                                                     @foreach ($getAllProgressPracticeTests['PSAT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'PSAT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $getOfficialPracticeTest,
-                                                                                                'slug' => 'Official Released'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $getOfficialPracticeTest,
+                                                                                                    'slug' =>
+                                                                                                        'Official Released',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -566,10 +618,14 @@
                                                                                 @if (!$getAllProgressPracticeTests['DSAT']->isEmpty())
                                                                                     @foreach ($getAllProgressPracticeTests['DSAT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'DSAT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $getOfficialPracticeTest,
-                                                                                                'slug' => 'Official Released'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $getOfficialPracticeTest,
+                                                                                                    'slug' =>
+                                                                                                        'Official Released',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -600,10 +656,14 @@
                                                                                 @if (!$getAllProgressPracticeTests['DPSAT']->isEmpty())
                                                                                     @foreach ($getAllProgressPracticeTests['DPSAT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'DPSAT')
-                                                                                            @include('student.test-home-page.components.test-button', [
-                                                                                                "test" => $getOfficialPracticeTest,
-                                                                                                'slug' => 'Official Released'
-                                                                                            ])
+                                                                                            @include(
+                                                                                                'student.test-home-page.components.test-button',
+                                                                                                [
+                                                                                                    'test' => $getOfficialPracticeTest,
+                                                                                                    'slug' =>
+                                                                                                        'Official Released',
+                                                                                                ]
+                                                                                            )
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -1572,7 +1632,7 @@
                                                                             </tbody>
                                                                         </table>
                                                                     </div>
-                                                                    
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1614,21 +1674,23 @@
                                                                                     </th>
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
-                                                                                        DSAT Reading & Writing<span class="mt-2"> Score
+                                                                                        DSAT Reading & Writing<span
+                                                                                            class="mt-2"> Score
                                                                                             (Timing)</span></th>
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         DSAT Math<span class="mt-2"> Score
                                                                                             (Timing)</span></th>
-                                                                                    {{--<th class="text-center"
+                                                                                    {{-- <th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         DSAT <span class="mt-2">
                                                                                             (Combined
-                                                                                            Section 2 & 3)</span></th>--}}
+                                                                                            Section 2 & 3)</span></th> --}}
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         Composite <span>(Total) Score</span>
                                                                                     </th>
+
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         Date Taken</th>
@@ -1637,16 +1699,39 @@
                                                                             <tbody>
                                                                                 @foreach ($dsat_details_array as $psat_test)
                                                                                     @if ($psat_test['date_taken'] !== '-')
-                                                                                        
                                                                                         <tr>
                                                                                             <td class="text-center">
-                                                                                                <a
-                                                                                                    href="{{ url('user/practice-test-sections/' . $psat_test['test_id']) }}"><button
-                                                                                                        class="btn btn-success d-block mb-2">{{ $psat_test['test_name'] }}</button></a>
+                                                                                                @if ($psat_test['is_proctored'] == 1)
+                                                                                                    <a
+                                                                                                        href="{{ url('user/practice-test-sections/' . $psat_test['test_id'] . '?test_section=proctored') }}"><button
+                                                                                                            class="btn btn-success d-block mb-2">{{ $psat_test['test_name'] }}</button></a>
+                                                                                                @else
+                                                                                                    <a
+                                                                                                        href="{{ url('user/practice-test-sections/' . $psat_test['test_id']) }}"><button
+                                                                                                            class="btn btn-success d-block mb-2">{{ $psat_test['test_name'] }}</button></a>
+                                                                                                @endif
                                                                                             </td>
                                                                                             <td class="text-center 1">
-                                                                                                {{ isset($psat_test['ReadSectionsScore']) ? $psat_test['ReadSectionsScore'] : '0' }}
-                                                                                                <br>
+                                                                                                @php
+                                                                                                    $test = \DB::table('practice_tests')
+                                                                                                        ->where('id', $psat_test['test_id'])
+                                                                                                        ->first();
+                                                                                                @endphp
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($psat_test['ReadSectionsScore']) ? $psat_test['ReadSectionsScore'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($psat_test['reading_score']) ? $psat_test['reading_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ isset($psat_test['ReadSectionsScore']) ? $psat_test['ReadSectionsScore'] : '0' }}
+                                                                                                    <br>
+                                                                                                @endif
                                                                                                 <span
                                                                                                     class="custom-actual-time">
                                                                                                     @if (isset($psat_test['Reading_And_Writing_actual_time']) && $psat_test['Reading_And_Writing_actual_time'] !== '')
@@ -1657,8 +1742,21 @@
                                                                                                 </span>
                                                                                             </td>
                                                                                             <td class="text-center 2">
-                                                                                                {{ isset($psat_test['MathSectionsScore']) ? $psat_test['MathSectionsScore'] : '0' }}
-                                                                                                <br>
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($psat_test['MathSectionsScore']) ? $psat_test['MathSectionsScore'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($psat_test['math_score']) ? $psat_test['math_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ isset($psat_test['MathSectionsScore']) ? $psat_test['MathSectionsScore'] : '0' }}
+                                                                                                    <br>
+                                                                                                @endif
                                                                                                 <span
                                                                                                     class="custom-actual-time">
                                                                                                     @if (isset($psat_test['Math_actual_time']) && $psat_test['Math_actual_time'] !== '')
@@ -1668,7 +1766,7 @@
                                                                                                     @endif
                                                                                                 </span>
                                                                                             </td>
-                                                                                            {{--<td class="text-center 3">
+                                                                                            {{-- <td class="text-center 3">
                                                                                                 {{ isset($psat_test['CompSectionsScore']) ? $psat_test['CompSectionsScore'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0) }}
                                                                                                 <br>
                                                                                                 <span
@@ -1683,10 +1781,24 @@
                                                                                                         ({{ $totalTime }})
                                                                                                     @endif
                                                                                                 </span>
-                                                                                            </td>--}}
+                                                                                            </td> --}}
                                                                                             <td class="text-center">
-                                                                                                {{ (isset($psat_test['CompSectionsScore']) ? $psat_test['CompSectionsScore'] : '0') }}
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($psat_test['CompSectionsScore']) ? $psat_test['CompSectionsScore'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($psat_test['actual_total_score']) ? $psat_test['actual_total_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ isset($psat_test['CompSectionsScore']) ? $psat_test['CompSectionsScore'] : '0' }}
+                                                                                                @endif
                                                                                             </td>
+
                                                                                             <td class="text-center">
                                                                                                 {{ isset($psat_test['date_taken']) ? $psat_test['date_taken'] : '-' }}
                                                                                             </td>
@@ -1697,7 +1809,8 @@
                                                                         </table>
                                                                     </div>
                                                                     <div class="block-header block-header-default px-0">
-                                                                        <h3 class="block-title fw-bold">SAT CUSTOM QUIZ HISTORY
+                                                                        <h3 class="block-title fw-bold">DSAT CUSTOM QUIZ
+                                                                            HISTORY
                                                                         </h3>
                                                                         <button class="btn btn-success"
                                                                             id="sortable_sat_2">Sort <i
@@ -1788,7 +1901,7 @@
                                                                         </table>
                                                                     </div>
                                                                     <div class="block-header block-header-default px-0">
-                                                                        <h3 class="block-title fw-bold">ALL SAT TEST & QUIZ
+                                                                        <h3 class="block-title fw-bold">ALL DSAT TEST & QUIZ
                                                                             HISTORY</h3>
                                                                         <button class="btn btn-success"
                                                                             id="sortable_sat_3">Sort <i
@@ -1807,18 +1920,20 @@
                                                                                     </th>
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
-                                                                                        SAT Reading</th>
+                                                                                        DSAT Reading</th>
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
-                                                                                        SAT Writing</th>
+                                                                                        DSAT Writing</th>
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
-                                                                                        SAT Math<span class="mt-2"> (Combined
+                                                                                        DSAT Math<span class="mt-2">
+                                                                                            (Combined
                                                                                             Section 3 & 4)</span></th>
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         Composite <span>(Total) Score</span>
                                                                                     </th>
+
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         Date Taken</th>
@@ -1827,15 +1942,43 @@
                                                                             <tbody>
                                                                                 @foreach ($all_dsat_details_array as $sat_test)
                                                                                     @if ($sat_test['date_taken'] !== '-')
+                                                                                        @php
+                                                                                            $test = \DB::table('practice_tests')
+                                                                                                ->where('id', $sat_test['test_id'])
+                                                                                                ->first();
+                                                                                        @endphp
                                                                                         <tr>
                                                                                             <td class="text-center">
-                                                                                                <a
-                                                                                                    href="{{ url('user/practice-test-sections/' . $sat_test['test_id']) }}"><button
-                                                                                                        class="btn btn-success d-block mb-2">{{ $sat_test['test_name'] }}</button></a>
+
+                                                                                                @if ($sat_test['is_proctored'] == 1)
+                                                                                                    <a
+                                                                                                        href="{{ url('user/practice-test-sections/' . $sat_test['test_id'] . '?test_section=proctored') }}"><button
+                                                                                                            class="btn btn-success d-block mb-2">{{ $sat_test['test_name'] }}</button></a>
+                                                                                                @else
+                                                                                                    <a
+                                                                                                        href="{{ url('user/practice-test-sections/' . $sat_test['test_id']) }}"><button
+                                                                                                            class="btn btn-success d-block mb-2">{{ $sat_test['test_name'] }}</button></a>
+                                                                                                @endif
                                                                                             </td>
+
                                                                                             <td class="text-center">
-                                                                                                {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
-                                                                                                <br>
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($sat_test['reading_score']) ? $sat_test['reading_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
+                                                                                                    <br>
+                                                                                                @endif
+                                                                                                {{-- {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
+                                                                                                <br> --}}
                                                                                                 <span
                                                                                                     class="custom-actual-time">
                                                                                                     @if (isset($sat_test['Reading_actual_time']) && $sat_test['Reading_actual_time'] !== '')
@@ -1846,8 +1989,23 @@
                                                                                                 </span>
                                                                                             </td>
                                                                                             <td class="text-center">
-                                                                                                {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
-                                                                                                <br>
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($sat_test['reading_score']) ? $sat_test['reading_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
+                                                                                                    <br>
+                                                                                                @endif
+                                                                                                {{-- {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
+                                                                                                <br> --}}
                                                                                                 <span
                                                                                                     class="custom-actual-time">
                                                                                                     @if (isset($sat_test['Writing_actual_time']) && $sat_test['Writing_actual_time'] !== '')
@@ -1859,8 +2017,24 @@
                                                                                             </td>
                                                                                             <td class="text-center">
                                                                                                 {{-- {{ (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0') }} --}}
-                                                                                                {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}
-                                                                                                <br>
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">
+                                                                                                            {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}</span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($sat_test['math_score']) ? $sat_test['math_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}
+                                                                                                    <br>
+                                                                                                @endif
+                                                                                                {{-- {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }} --}}
+                                                                                                {{-- <br> --}}
                                                                                                 <span
                                                                                                     class="custom-actual-time">
                                                                                                     @php
@@ -1876,8 +2050,25 @@
                                                                                             </td>
                                                                                             <td class="text-center">
                                                                                                 {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0') }} --}}
-                                                                                                {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">
+                                                                                                            {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}
+                                                                                                        </span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($sat_test['actual_total_score']) ? $sat_test['actual_total_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}
+                                                                                                @endif
+                                                                                                {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }} --}}
                                                                                             </td>
+
                                                                                             <td class="text-center">
                                                                                                 {{ isset($sat_test['date_taken']) ? $sat_test['date_taken'] : '-' }}
                                                                                             </td>
@@ -1928,21 +2119,24 @@
                                                                                     </th>
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
-                                                                                        DPSAT Reading & Writing<span class="mt-2"> Score
+                                                                                        DPSAT Reading & Writing<span
+                                                                                            class="mt-2"> Score
                                                                                             (Timing)</span></th>
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
-                                                                                        DPSAT WriMathting<span class="mt-2"> Score
+                                                                                        DPSAT WriMathting<span class="mt-2">
+                                                                                            Score
                                                                                             (Timing)</span></th>
-                                                                                    {{--<th class="text-center"
+                                                                                    {{-- <th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         PSAT <span class="mt-2">
                                                                                             (Combined
-                                                                                            Section 2 & 3)</span></th>--}}
+                                                                                            Section 2 & 3)</span></th> --}}
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         Composite <span>(Total) Score</span>
                                                                                     </th>
+
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         Date Taken</th>
@@ -1951,15 +2145,43 @@
                                                                             <tbody>
                                                                                 @foreach ($dpsat_details_array as $psat_test)
                                                                                     @if ($psat_test['date_taken'] !== '-')
+                                                                                        @php
+                                                                                            $test = \DB::table('practice_tests')
+                                                                                                ->where('id', $psat_test['test_id'])
+                                                                                                ->first();
+                                                                                        @endphp
                                                                                         <tr>
+
                                                                                             <td class="text-center">
-                                                                                                <a
-                                                                                                    href="{{ url('user/practice-test-sections/' . $psat_test['test_id']) }}"><button
-                                                                                                        class="btn btn-success d-block mb-2">{{ $psat_test['test_name'] }}</button></a>
+                                                                                                @if ($psat_test['is_proctored'] == 1)
+                                                                                                    <a
+                                                                                                        href="{{ url('user/practice-test-sections/' . $psat_test['test_id'] . '?test_section=proctored') }}"><button
+                                                                                                            class="btn btn-success d-block mb-2">{{ $psat_test['test_name'] }}</button></a>
+                                                                                                @else
+                                                                                                    <a
+                                                                                                        href="{{ url('user/practice-test-sections/' . $psat_test['test_id']) }}"><button
+                                                                                                            class="btn btn-success d-block mb-2">{{ $psat_test['test_name'] }}</button></a>
+                                                                                                @endif
                                                                                             </td>
+
                                                                                             <td class="text-center">
-                                                                                                {{ isset($psat_test['ReadSectionsScore']) ? $psat_test['ReadSectionsScore'] : '0' }}
-                                                                                                <br>
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($psat_test['ReadSectionsScore']) ? $psat_test['ReadSectionsScore'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($psat_test['reading_score']) ? $psat_test['reading_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ isset($psat_test['ReadSectionsScore']) ? $psat_test['ReadSectionsScore'] : '0' }}
+                                                                                                    <br>
+                                                                                                @endif
+                                                                                                {{-- {{ isset($psat_test['ReadSectionsScore']) ? $psat_test['ReadSectionsScore'] : '0' }}
+                                                                                                <br> --}}
                                                                                                 <span
                                                                                                     class="custom-actual-time">
                                                                                                     @if (isset($psat_test['Reading_And_Writing_actual_time']) && $psat_test['Reading_And_Writing_actual_time'] !== '')
@@ -1970,8 +2192,23 @@
                                                                                                 </span>
                                                                                             </td>
                                                                                             <td class="text-center">
-                                                                                                {{ isset($psat_test['MathSectionsScore']) ? $psat_test['MathSectionsScore'] : '0' }}
-                                                                                                <br>
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($psat_test['MathSectionsScore']) ? $psat_test['MathSectionsScore'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($psat_test['math_score']) ? $psat_test['math_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ isset($psat_test['MathSectionsScore']) ? $psat_test['MathSectionsScore'] : '0' }}
+                                                                                                    <br>
+                                                                                                @endif
+                                                                                                {{-- {{ isset($psat_test['MathSectionsScore']) ? $psat_test['MathSectionsScore'] : '0' }}
+                                                                                                <br> --}}
                                                                                                 <span
                                                                                                     class="custom-actual-time">
                                                                                                     @if (isset($psat_test['Math_actual_time']) && $psat_test['Math_actual_time'] !== '')
@@ -1981,10 +2218,10 @@
                                                                                                     @endif
                                                                                                 </span>
                                                                                             </td>
-                                                                                            {{--<td class="text-center">--}}
-                                                                                                {{-- {{(isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') +  (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0')}} --}}
-                                                                                                {{-- isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0) --}}
-                                                                                                {{--<br>
+                                                                                            {{-- <td class="text-center"> --}}
+                                                                                            {{-- {{(isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') +  (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0')}} --}}
+                                                                                            {{-- isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0) --}}
+                                                                                            {{-- <br>
                                                                                                 <span
                                                                                                     class="custom-actual-time">
                                                                                                     @php
@@ -1997,12 +2234,27 @@
                                                                                                         ({{ $totalTime }})
                                                                                                     @endif
                                                                                                 </span>
-                                                                                            </td>--}}
+                                                                                            </td> --}}
                                                                                             <td class="text-center">
                                                                                                 {{-- {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') + (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0') }} --}}
                                                                                                 {{-- (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0)) --}}
-                                                                                                {{ (isset($psat_test['CompSectionsScore']) ? $psat_test['CompSectionsScore'] : '0') }}
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($psat_test['CompSectionsScore']) ? $psat_test['CompSectionsScore'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($psat_test['actual_total_score']) ? $psat_test['actual_total_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ isset($psat_test['CompSectionsScore']) ? $psat_test['CompSectionsScore'] : '0' }}
+                                                                                                @endif
+                                                                                                {{-- {{ isset($psat_test['CompSectionsScore']) ? $psat_test['CompSectionsScore'] : '0' }} --}}
                                                                                             </td>
+
                                                                                             <td class="text-center">
                                                                                                 {{ isset($psat_test['date_taken']) ? $psat_test['date_taken'] : '-' }}
                                                                                             </td>
@@ -2013,7 +2265,8 @@
                                                                         </table>
                                                                     </div>
                                                                     <div class="block-header block-header-default px-0">
-                                                                        <h3 class="block-title fw-bold">SAT CUSTOM QUIZ HISTORY
+                                                                        <h3 class="block-title fw-bold">DPSAT CUSTOM QUIZ
+                                                                            HISTORY
                                                                         </h3>
                                                                         <button class="btn btn-success"
                                                                             id="sortable_sat_2">Sort <i
@@ -2104,7 +2357,7 @@
                                                                         </table>
                                                                     </div>
                                                                     <div class="block-header block-header-default px-0">
-                                                                        <h3 class="block-title fw-bold">ALL SAT TEST & QUIZ
+                                                                        <h3 class="block-title fw-bold">ALL DPSAT TEST & QUIZ
                                                                             HISTORY</h3>
                                                                         <button class="btn btn-success"
                                                                             id="sortable_sat_3">Sort <i
@@ -2123,18 +2376,20 @@
                                                                                     </th>
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
-                                                                                        SAT Reading</th>
+                                                                                        DPSAT Reading</th>
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
-                                                                                        SAT Writing</th>
+                                                                                        DPSAT Writing</th>
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
-                                                                                        SAT Math<span class="mt-2"> (Combined
+                                                                                        DPSAT Math<span class="mt-2">
+                                                                                            (Combined
                                                                                             Section 3 & 4)</span></th>
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         Composite <span>(Total) Score</span>
                                                                                     </th>
+
                                                                                     <th class="text-center"
                                                                                         style="width: 100px;">
                                                                                         Date Taken</th>
@@ -2143,15 +2398,42 @@
                                                                             <tbody>
                                                                                 @foreach ($all_dpsat_details_array as $sat_test)
                                                                                     @if ($sat_test['date_taken'] !== '-')
+                                                                                        @php
+                                                                                            $test = \DB::table('practice_tests')
+                                                                                                ->where('id', $sat_test['test_id'])
+                                                                                                ->first();
+                                                                                        @endphp
                                                                                         <tr>
                                                                                             <td class="text-center">
-                                                                                                <a
-                                                                                                    href="{{ url('user/practice-test-sections/' . $sat_test['test_id']) }}"><button
-                                                                                                        class="btn btn-success d-block mb-2">{{ $sat_test['test_name'] }}</button></a>
+
+                                                                                                @if ($sat_test['is_proctored'] == 1)
+                                                                                                    <a
+                                                                                                        href="{{ url('user/practice-test-sections/' . $sat_test['test_id'] . '?test_section=proctored') }}"><button
+                                                                                                            class="btn btn-success d-block mb-2">{{ $sat_test['test_name'] }}</button></a>
+                                                                                                @else
+                                                                                                    <a
+                                                                                                        href="{{ url('user/practice-test-sections/' . $sat_test['test_id']) }}"><button
+                                                                                                            class="btn btn-success d-block mb-2">{{ $sat_test['test_name'] }}</button></a>
+                                                                                                @endif
                                                                                             </td>
                                                                                             <td class="text-center">
-                                                                                                {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
-                                                                                                <br>
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($sat_test['reading_score']) ? $sat_test['reading_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
+                                                                                                    <br>
+                                                                                                @endif
+                                                                                                {{-- {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
+                                                                                                <br> --}}
                                                                                                 <span
                                                                                                     class="custom-actual-time">
                                                                                                     @if (isset($sat_test['Reading_actual_time']) && $sat_test['Reading_actual_time'] !== '')
@@ -2162,8 +2444,23 @@
                                                                                                 </span>
                                                                                             </td>
                                                                                             <td class="text-center">
-                                                                                                {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
-                                                                                                <br>
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($sat_test['reading_score']) ? $sat_test['reading_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
+                                                                                                    <br>
+                                                                                                @endif
+                                                                                                {{-- {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
+                                                                                                <br> --}}
                                                                                                 <span
                                                                                                     class="custom-actual-time">
                                                                                                     @if (isset($sat_test['Writing_actual_time']) && $sat_test['Writing_actual_time'] !== '')
@@ -2175,8 +2472,23 @@
                                                                                             </td>
                                                                                             <td class="text-center">
                                                                                                 {{-- {{ (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0') }} --}}
-                                                                                                {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}
-                                                                                                <br>
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}</span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($sat_test['reading_score']) ? $sat_test['reading_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}
+                                                                                                    <br>
+                                                                                                @endif
+                                                                                                {{-- {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}
+                                                                                                <br> --}}
                                                                                                 <span
                                                                                                     class="custom-actual-time">
                                                                                                     @php
@@ -2192,7 +2504,23 @@
                                                                                             </td>
                                                                                             <td class="text-center">
                                                                                                 {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0') }} --}}
-                                                                                                {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}
+
+                                                                                                @if ($test->test_source == 1)
+                                                                                                    <p class="fw-bold">
+                                                                                                        Estimated Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">
+                                                                                                            {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}</span>
+                                                                                                    </p>
+                                                                                                    <p class="fw-bold"> Actual
+                                                                                                        Score:
+                                                                                                        <span
+                                                                                                            class="fw-normal">{{ isset($psat_test['actual_total_score']) ? $psat_test['actual_total_score'] : '0' }}</span>
+                                                                                                    </p>
+                                                                                                @else
+                                                                                                    {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}
+                                                                                                @endif
+                                                                                                {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }} --}}
                                                                                             </td>
                                                                                             <td class="text-center">
                                                                                                 {{ isset($sat_test['date_taken']) ? $sat_test['date_taken'] : '-' }}
@@ -2203,7 +2531,7 @@
                                                                             </tbody>
                                                                         </table>
                                                                     </div>
-                                                                    
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2235,29 +2563,29 @@
         [$hours, $minutes, $seconds] = explode(':', $time);
         return $hours * 3600 + $minutes * 60 + $seconds;
     }
-    
+
     function addTimes($time1, $time2)
     {
         // Convert time strings to seconds
         $seconds1 = $time1 !== '' ? timeToSeconds($time1) : 0;
         $seconds2 = $time2 !== '' ? timeToSeconds($time2) : 0;
-    
+
         // Case 1: If both values are empty strings, return an empty string
         if ($seconds1 === 0 && $seconds2 === 0) {
             return '';
         }
-    
+
         // Case 2: If one of the values is an empty string, return the non-empty value
         if ($seconds1 === 0 || $seconds2 === 0) {
             return $seconds1 !== 0 ? $time1 : $time2;
         }
-    
+
         // Add the time intervals
         $totalSeconds = $seconds1 + $seconds2;
-    
+
         // Convert the total seconds back to "H:i:s" format
         $totalTime = gmdate('H:i:s', $totalSeconds);
-    
+
         return $totalTime;
     }
 @endphp
@@ -2668,19 +2996,19 @@
         }
 
         /* .edit-icon{
-                                                                                                                                                                                                        display: none;
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                    .hover-btn:hover .edit-icon{
-                                                                                                                                                                                                        display: block;
-                                                                                                                                                                                                        position: absolute;
-                                                                                                                                                                                                        bottom: 6px;
-                                                                                                                                                                                                        right: 7px
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                    .hover-btn {
-                                                                                                                                                                                                        transition: all 0.5s;
-                                                                                                                                                                                                        width: auto;
-                                                                                                                                                                                                        position: relative;
-                                                                                                                                                                                                    } */
+                                                                                                                                                                                                                                                                            display: none;
+                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                        .hover-btn:hover .edit-icon{
+                                                                                                                                                                                                                                                                            display: block;
+                                                                                                                                                                                                                                                                            position: absolute;
+                                                                                                                                                                                                                                                                            bottom: 6px;
+                                                                                                                                                                                                                                                                            right: 7px
+                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                        .hover-btn {
+                                                                                                                                                                                                                                                                            transition: all 0.5s;
+                                                                                                                                                                                                                                                                            width: auto;
+                                                                                                                                                                                                                                                                            position: relative;
+                                                                                                                                                                                                                                                                        } */
         .input_test_name {
             max-width: 110px !important;
         }

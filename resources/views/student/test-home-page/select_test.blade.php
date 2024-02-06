@@ -19,15 +19,15 @@
                         <h5 class="modal-title" id="staticBackdropLabel">{{ $test_info->title }}</h5>
                     </div>
                     <div class="modal-body">
-                        @if ($test_info->format == 'DSAT' || $test_info->format == 'DPSAT')
+                        {{-- @if ($test_info->format == 'DSAT' || $test_info->format == 'DPSAT') --}}
                             <a href="{{ route('single_test', ['id' => $test_info->id,'test_section' => 'proctored']) }}"
                                 title="Take, time, and grade an official paper practice test." class="btn btn-secondary"
                                 id="proctored">Start Proctored Section</a>
-                        @else
-                            <a href="{{ route('single_test', ['id' => $test_info->id]) }}"
+                        {{-- @else --}}
+                            {{-- <a href="{{ route('single_test', ['id' => $test_info->id,'test_section' => 'proctored']) }}"
                                 title="Take, time, and grade an official paper practice test."
-                                class="btn btn-secondary">Start Proctored Section</a>
-                        @endif
+                                class="btn btn-secondary">Start Proctored Section</a> --}}
+                        {{-- @endif --}}
                         <a href="{{ route('single_test', ['id' => $test_info->id]) }}"
                             title="Grade a paper test you've already taken." class="btn btn-primary">Start Grade Section</a>
                     </div>
