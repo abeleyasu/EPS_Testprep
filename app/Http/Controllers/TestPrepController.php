@@ -1338,7 +1338,54 @@ class TestPrepController extends Controller
         $user_secs = $request->userSeconds;
 
         $test = DB::table('practice_tests')->where('id', $get_practice_id)->first();
+        // dd($test);
+        $is_proctored = 0;
+        if ($test->test_source == 1 && ($test->format == 'DSAT' || $test->format == 'DPSAT')) {
+            if ($user_reading_score > 0) {
+                // dd($test->test_source);
+                $readingTest = DB::table('practice_test_sections')
+                    ->select('id', 'testid', 'practice_test_type')
+                    ->where('testid', $test->id)
+                    ->where(function ($query) {
+                        $query
+                            ->where('practice_test_type', 'Reading_And_Writing')
+                            ->orWhere('practice_test_type', 'Easy_Reading_And_Writing')
+                            ->orWhere('practice_test_type', 'Hard_Reading_And_Writing');
+                    })
+                    ->get();
+                foreach ($readingTest as $score) {
+                    $scoreValue = DB::table('user_answers')
+                        ->where('section_id', $score->id)
+                        ->update(['reading_and_writing_score' => $user_reading_score]);
+                }
+            }
 
+
+            if ($user_math_score > 0) {
+                $mathTest = DB::table('practice_test_sections')
+                    ->select('id', 'testid', 'practice_test_type')
+                    ->where('testid', $test->id)
+                    ->where(function ($query) {
+                        $query
+                            ->where('practice_test_type', 'Math')
+                            ->orWhere('practice_test_type', 'Math_no_calculator')
+                            ->orWhere('practice_test_type', 'Math_with_calculator');
+                    })
+                    ->get();
+
+                foreach ($mathTest as $scoreMa) {
+                    $scoreValueMa = DB::table('user_answers')
+                        ->where('section_id', $scoreMa->id)
+                        ->update(['math_score' => $user_math_score]);
+                }
+            }
+
+            if ($request->test_type == 'proctored') {
+                $is_proctored = 1;
+            } else {
+                $is_proctored = 0;
+            }
+        }
         // if ($user_actual_time  &&  $user_actual_score == null) {
         //     return response()->json(
         //         [
@@ -1346,6 +1393,7 @@ class TestPrepController extends Controller
         //         ]
         //     );
         // }
+
 
         if (isset($get_question_type) && !empty($get_question_type) && $get_question_type == 'single') {
             $get_question_title = DB::table('practice_tests')
@@ -1397,6 +1445,7 @@ class TestPrepController extends Controller
                 $userAnswers->hours = $user_hour;
                 $userAnswers->minutes = $user_mins;
                 $userAnswers->seconds = $user_secs;
+                $userAnswers->is_proctored = $is_proctored;
                 $userAnswers->save();
             }
         } else if (isset($get_question_type) && !empty($get_question_type) && $get_question_type == 'all') {
@@ -1472,6 +1521,7 @@ class TestPrepController extends Controller
                         $userAnswers->hours = $user_hour;
                         $userAnswers->minutes = $user_mins;
                         $userAnswers->seconds = $user_secs;
+                        $userAnswers->is_proctored = $is_proctored;
                         $userAnswers->save();
                     }
                 }
@@ -2819,6 +2869,25 @@ class TestPrepController extends Controller
                 $store_sections_details[$mathSectionID]['Sections'][0]['section_quest_count'] = $mathCount;
             }
         }
+        $readingScore = 0;
+        $mathScore = 0;
+
+        if ($sections['Sections'][0]['format'] == 'DPSAT' || $sections['Sections'][0]['format'] == 'DSAT') {
+            $scoreCalculations = UserAnswers::where('test_id', $id)->where('user_id', $current_user_id)->get();
+            $readingScore = $scoreCalculations->where('reading_and_writing_score', '!=', null)->first();
+            $mathScore = $scoreCalculations->where('math_score', '!=', null)->first();
+            if ($readingScore !== null) {
+                $readingScore = $readingScore->reading_and_writing_score;
+            } else {
+                $readingScore = 0;
+            }
+
+            if ($mathScore !== null) {
+                $mathScore = $mathScore->math_score;
+            } else {
+                $mathScore = 0;
+            }
+        }
         // dd($practice_test);
 
         // dump($mathSectionCount);
@@ -2855,6 +2924,8 @@ class TestPrepController extends Controller
             'totalNonAttempetdQuestions' => $totalNonAttempetdQuestions,
             'practice_test' => $practice_test,
             'test_type' => $test_type,
+            'readingScore' => $readingScore,
+            'mathScore' => $mathScore,
             'total_all_section_question' => isset($total_all_section_question) ? $total_all_section_question : '0'
         ]);
     }
@@ -3954,12 +4025,34 @@ class TestPrepController extends Controller
             $sat_details_array[$test->id]['test_id'] = $test->id;
             $sat_details_array[$test->id]['test_name'] = $test->title;
             $sections_details = $this->getSectionsDetails($test->id);
-            $date_taken = UserAnswers::where('test_id', $test->id)->where('user_id', $user_id)->get('created_at');
+            $date_taken = UserAnswers::where('test_id', $test->id)->where('user_id', $user_id)->get();
+            $readingScore = $date_taken->where('reading_and_writing_score', '!=', null)->first();
+            $mathScore = $date_taken->where('math_score', '!=', null)->first();
+
+            if ($readingScore !== null) {
+                $readingScore = $readingScore->reading_and_writing_score;
+            } else {
+                $readingScore = 0;
+            }
+
+            if ($mathScore !== null) {
+                $mathScore = $mathScore->math_score;
+            } else {
+                $mathScore = 0;
+            }
 
             if (isset($date_taken[0]->created_at)) {
                 $sat_details_array[$test->id]['date_taken'] = $date_taken[0]->created_at->format('m/d/y');
+                $sat_details_array[$test->id]['is_proctored'] = $date_taken[0]->is_proctored;
+                $sat_details_array[$test->id]['reading_score'] = $readingScore;
+                $sat_details_array[$test->id]['math_score'] = $mathScore;
+                $sat_details_array[$test->id]['actual_total_score'] = $readingScore + $mathScore;
             } else {
                 $sat_details_array[$test->id]['date_taken'] = '-';
+                $sat_details_array[$test->id]['is_proctored'] = 0;
+                $sat_details_array[$test->id]['reading_score'] = 0;
+                $sat_details_array[$test->id]['math_score'] = 0;
+                $sat_details_array[$test->id]['actual_total_score'] = 0;
             }
 
             foreach ($sections_details as $section_detail) {
@@ -3970,6 +4063,7 @@ class TestPrepController extends Controller
                     ->where('section_id', $section_detail['id'])
                     ->where('test_id', $test->id)
                     ->get();
+
 
                 if ($answers->isNotEmpty()) {
                     $sat_details_array[$test->id][$section_detail['practice_test_type'] . "_actual_time"] = $answers[0]->actual_time;
@@ -4046,14 +4140,44 @@ class TestPrepController extends Controller
             $sat_details_array[$test->id]['test_id'] = $test->id;
             $sat_details_array[$test->id]['test_name'] = $test->title;
             $sections_details = PracticeTestSection::where('testid', $test->id)->where('format', 'DPSAT')->get();
-            $date_taken = UserAnswers::where('test_id', $test->id)->where('user_id', $user_id)->value('created_at');
+            $date_taken = UserAnswers::where('test_id', $test->id)->where('user_id', $user_id)->get();
             $right_question[$test->id]['readSecIDs1'] = [];
             $right_question[$test->id]['mathSecIDs1'] = [];
+            $readingScore = $date_taken->where('reading_and_writing_score', '!=', null)->first();
+            $mathScore = $date_taken->where('math_score', '!=', null)->first();
 
-            if ($date_taken) {
-                $sat_details_array[$test->id]['date_taken'] = $date_taken->format('m/d/y');
+            if ($readingScore !== null) {
+                $readingScore = $readingScore->reading_and_writing_score;
+            } else {
+                $readingScore = 0;
+            }
+
+            if ($mathScore !== null) {
+                $mathScore = $mathScore->math_score;
+            } else {
+                $mathScore = 0;
+            }
+
+
+            // if ($date_taken) {
+            //     $sat_details_array[$test->id]['date_taken'] = $date_taken->format('m/d/y');
+            //     $sat_details_array[$test->id]['is_proctored'] = $date_taken[0]->is_proctored;
+            // } else {
+            //     $sat_details_array[$test->id]['date_taken'] = '-';
+            //     $sat_details_array[$test->id]['is_proctored'] = 0;
+            // }
+            if (isset($date_taken[0]->created_at)) {
+                $sat_details_array[$test->id]['date_taken'] = $date_taken[0]->created_at->format('m/d/y');
+                $sat_details_array[$test->id]['is_proctored'] = $date_taken[0]->is_proctored;
+                $sat_details_array[$test->id]['reading_score'] = $readingScore;
+                $sat_details_array[$test->id]['math_score'] = $mathScore;
+                $sat_details_array[$test->id]['actual_total_score'] = $readingScore + $mathScore;
             } else {
                 $sat_details_array[$test->id]['date_taken'] = '-';
+                $sat_details_array[$test->id]['is_proctored'] = 0;
+                $sat_details_array[$test->id]['reading_score'] = 0;
+                $sat_details_array[$test->id]['math_score'] = 0;
+                $sat_details_array[$test->id]['actual_total_score'] = 0;
             }
             foreach ($sections_details as $section_detail) {
                 $practice_questions = PracticeQuestion::where('practice_test_sections_id', $section_detail->id)->get();
