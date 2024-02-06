@@ -387,7 +387,7 @@
                                                                 class="btn btn-alt-success text-success 4">
                                                                 {{ $score[$singletestSections['Sections'][0]['id']] }}
                                                             </a>
-                                                            <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&type=single' }}"
+                                                            <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&&type=single' }}"
                                                                 style='padding: 5px 20px fs-5'
                                                                 class="btn btn-alt-success text-success 5">
                                                                 <i class="fa-solid fa-circle-check"
@@ -410,7 +410,7 @@
                                                         @if ($practice_test->test_source == 1)
                                                             <a href="{{ route('official_single_section', ['id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id }}"
                                                                 style="padding: 5px 20px fs-5"
-                                                                class="btn btn-alt-secondary text-primary official_start_section"
+                                                                class="btn btn-alt-secondary text-primary official_proctored_module_start_section"
                                                                 data-section_id="{{ $singletestSections['Sections'][0]['id'] }}"
                                                                 data-test_id="{{ $current_section_id }}">
                                                                 {{-- Start {{str_replace(['_'],[' '], $singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
@@ -782,9 +782,9 @@
                                             @endif
                                             @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Math_no_calculator', 'Math_with_calculator']))
                                                 <li class="timeline-event">
-                                                    
+
                                                     <div class="timeline-event-icon bg-success">
-                                                        <i class="fa-solid fa-{{ ($loop->index - 1) }}"></i>
+                                                        <i class="fa-solid fa-{{ $loop->index - 1 }}"></i>
                                                     </div>
                                                     @php
                                                         $modifiedString = str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']);
@@ -981,7 +981,7 @@
                                             @endif
                                             @if (in_array($singletestSections['Sections'][0]['practice_test_type'], ['Math_with_calculator']))
                                                 <li class="timeline-event" id="math-id">
-                                                    <div class="timeline-event-icon bg-success">                                                     
+                                                    <div class="timeline-event-icon bg-success">
                                                         {{-- <i class="fa-solid fa-{{ ++$count }}"></i> --}}
                                                         <i class="fa-solid fa-{{ $loop->index }}"></i>
                                                     </div>
@@ -1180,19 +1180,46 @@
                                 <h3 class="block-title">COMPOSITE SCORE</h3>
                             </div>
                             <hr class="m-0">
-                            <div class="block-content pb-3 d-flex justify-content-center align-items-center">
+                            <div class="block-content pb-3 gap-1 d-flex justify-content-center align-items-center">
 
                                 @if ($whichSection == 0)
-                                    <a href="#" style='padding: 5px 20px fs-5'
-                                        class="btn btn-alt-success text-success">
-                                        {{ number_format($total_score, 0) }}
-                                    </a>
+                                    @if (($testSection[0]->format == 'DSAT' || $testSection[0]->format == 'DPSAT') && $testSection[0]->test_source == 1)
+                                        <a href="#" style='padding: 5px 20px fs-5'
+                                            class="btn btn-alt-success text-success">
+                                            Estimated Score: {{ number_format($total_score, 0) }}
+                                        </a>
+
+                                        <a href="#" style='padding: 5px 20px fs-5'
+                                            class="btn btn-alt-success text-success">
+                                            {{-- Actual Score: {{ number_format($total_score, 0) }} --}}
+                                            Actual Score: {{ $readingScore + $mathScore }}
+                                        </a>
+                                    @else
+                                        <a href="#" style='padding: 5px 20px fs-5'
+                                            class="btn btn-alt-success text-success">
+                                            {{ number_format($total_score, 0) }}
+                                        </a>
+                                    @endif
                                 @else
-                                    <a href="#" style='padding: 5px 20px fs-5'
-                                        class="btn btn-alt-success text-success">
-                                        {{ number_format($compositeScore, 0) }}
-                                    </a>
+                                    @if (($testSection[0]->format == 'DSAT' || $testSection[0]->format == 'DPSAT') && $testSection[0]->test_source == 1)
+                                        <a href="#" style='padding: 5px 20px fs-5'
+                                            class="btn btn-alt-success text-success">
+                                            Estimated Score: {{ number_format($compositeScore, 0) }}
+                                        </a>
+                                        <a href="#" style='padding: 5px 20px fs-5'
+                                            class="btn btn-alt-success text-success">
+                                            {{-- Actual Score: {{ number_format($total_score, 0) }} --}}
+                                            Actual Score: {{ $readingScore + $mathScore }}
+                                        </a>
+                                    @else
+                                        <a href="#" style='padding: 5px 20px fs-5'
+                                            class="btn btn-alt-success text-success">
+                                            {{ number_format($compositeScore, 0) }}
+                                        </a>
+                                    @endif
+
                                 @endif
+
                             </div>
                         </div>
                     </li>
