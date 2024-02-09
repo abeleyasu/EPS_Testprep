@@ -54,6 +54,7 @@ class DashboardService extends GoogleService
         }])->first();
         if ($college_list_deadline) {
             $college_list_deadline = $college_list_deadline->toArray();
+            ddd($college_list_deadline);
             $college_list_deadline = $college_list_deadline['college_list_details'];
             foreach ($college_list_deadline as $key => $deadline) {
                 $college_information_deadline = $deadline['college_information']['regular_admission_deadline'];
