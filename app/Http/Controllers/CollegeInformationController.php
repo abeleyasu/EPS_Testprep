@@ -397,6 +397,7 @@ class CollegeInformationController extends Controller
             }
             $collegeInfo = CollegeInformation::where('petersons_id', $data[2])
                 ->first();
+            
             if ($collegeInfo) {
                 $collegeInfo->update($new_data);
             }
@@ -411,8 +412,19 @@ class CollegeInformationController extends Controller
         $college_detail = CollegeInformation::find($id);
         if ($college_detail) {
             // dd($college_detail);
+            $admin_editable_date_inputs = 
+                array( 
+                    'regular_admission_deadline' => "Regular Admission Deadline",
+                    'early_decision_1_deadline' => "Early Decision 1 Deadline",
+                    'early_decision_2_deadline' => "Early Decision 2 Deadline"
+                );
+
+            $toggle_between_peterson_and_csv = array(
+                
+            );
             return view('admin.college-information.edit', [
                 'info' => $college_detail,
+                'date_inputs' => $admin_editable_date_inputs
             ]);
         }
         return redirect()->route('admin.admission-management.college-information.index');
@@ -458,22 +470,6 @@ class CollegeInformationController extends Controller
             }
         }
 
-
-        // if($request->display_peterson_weighted_gpa != 'on'){
-        //     $request->merge(['display_peterson_weighted_gpa' => 0]);
-        // }else{
-        //     $request->merge(['display_peterson_weighted_gpa' => 1]);
-        // }
-        // if($request->display_peterson_unweighted_gpa != 'on'){
-        //     $request->merge(['display_peterson_unweighted_gpa' => 0]);
-        // }else{
-        //     $request->merge(['display_peterson_unweighted_gpa' => 1]);
-        // }
-        // if($request->display_peterson_pvt_coa != 'on'){
-        //     $request->merge(['display_peterson_unweighted_gpa' => 0]);
-        // }else{
-        //     $request->merge(['display_peterson_unweighted_gpa' => 1]);
-        // }
 
 
 

@@ -368,6 +368,55 @@
                             @enderror
                         </div>
 
+
+                        @foreach($date_inputs as $date_key => $date_value)
+                            <div class="form-check form-switch">
+                                <input name="display_peterson_{{$date_key}}"
+                                    id="display_peterson_{{$date_key}}"
+                                    {{ $info['display_peterson_' . $date_key] ? 'checked' : '' }} class="form-check-input"
+                                    type="checkbox" role="switch" id="display_peterson_{{$date_key}}"
+                                    {{ old('display_peterson_' . $date_key) ? 'checked' : ($info['display_peterson_' . $date_key] ? 'checked' : '') }}
+                                    >
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Display Peterson {{$date_value}} </label>
+                                @error('display_peterson_' . $date_key)
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-4">
+                                <label class="from-label">{{ $date_value }}:</label>
+                                <input type="text"
+                                    class="date-own form-control {{ $errors->has('$date_key') ? 'is-invalid' : '' }}"
+                                    name="{{$date_key}}"
+                                    value="{{ old('$date_key') ? old('$date_key') : $info->$date_key }}" />
+                                @error('{{$date_key}}')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                        @endforeach
+
+                        <div class="mb-4">
+                            <label class="from-label">Early Action Deadline (M/D/YY):</label>
+                            <input type="text"
+                                disabled 
+                                class="date-own form-control"
+                                value="{{ new Date $info->AP_DL_EACT_MON . "-" . $info->AP_DL_EACT_DAY  . "-"}}" />
+                        </div>
+
+
+
+
+                        <div class="mb-4">
+                            <label class="from-label">Early Action Deadline:</label>
+                            <input type="text"
+                                class="date-own form-control {{ $errors->has('early_action_deadline') ? 'is-invalid' : '' }}"
+                                name="early_action_deadline"
+                                value="{{ old('rolling_admission_deadline') ? old('rolling_admission_deadline') : $info->rolling_admission_deadline }}" />
+                            @error('rolling_admission_deadline')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <div class="mb-4">
                             <label class="from-label">Website URL:</label>
                             <input type="text"

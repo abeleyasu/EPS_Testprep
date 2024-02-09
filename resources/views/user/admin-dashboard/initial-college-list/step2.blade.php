@@ -1250,6 +1250,7 @@ $current_user_state_code = (
                     }
                 }
 
+
                 displayDate(earlyDeadlineDay, earlyDeadlineMonth, '#c-early-action-deadline')
                 displayDate(regAdmissionDeadlineDay, regAdmissionDeadlineMon, '#c-regular-admission-deadline')
                 displayDate(earlyDecision1DeadlineDay, earlyDecision1DeadlineMon, '#c-early-decision-1-deadline')
