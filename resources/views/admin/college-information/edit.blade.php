@@ -395,18 +395,18 @@
 
                         @endforeach
 
+
                         <div class="mb-4">
                             <label class="from-label">Early Action Deadline (M/D/YY):</label>
                             <input type="text"
                                 disabled 
                                 class="date-own form-control"
-                                value="{{ new Date $info->AP_DL_EACT_MON . "-" . $info->AP_DL_EACT_DAY  . "-"}}" />
+                                value="{{ $info->AP_DL_EACT_MON . "-" . $info->AP_DL_EACT_DAY  . "-" . "2024"}}" />
                         </div>
 
 
 
-
-                        <div class="mb-4">
+                        <div class="">
                             <label class="from-label">Early Action Deadline:</label>
                             <input type="text"
                                 class="date-own form-control {{ $errors->has('early_action_deadline') ? 'is-invalid' : '' }}"
@@ -416,6 +416,10 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        {{-- <div class="col d-flex align-items-end">
+                            <button class="btn btn-primary">Reset</button>
+                        </div> --}}
+
 
                         <div class="mb-4">
                             <label class="from-label">Website URL:</label>
@@ -480,6 +484,8 @@
             const preview = document.getElementById('preview');
             preview.src = URL.createObjectURL(event.target.files[0]);
         })
+
+
 
         /**
          * Toggles between displaying data for the admin and Peterson based on the state of a checkbox.

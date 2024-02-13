@@ -532,7 +532,6 @@ $current_user_state_code = (
                                                 </div>
                                             </div>
 
-
                                         </div>
                                     </div>
                                 </div>
@@ -1139,29 +1138,7 @@ $current_user_state_code = (
                 }
 
 
-                const programsOffered = data.latest.programs.cip_4_digit
-                const uniqueIdsOfPrograms = [...new Set(programsOffered.map(item => item.code))]; // [ 'A', 'B']
-                console.log(uniqueIdsOfPrograms)
 
-                // Adding Fields of Study Dynamically
-                $("#college-content").append(`
-            <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                <div class="block-header block-header-tab" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                    <a class="text-white fw-600 collapsed"><i class="fa-solid fa-circle-check me-2"></i> Architecture</a>
-                </div>
-                <div id="collapseFour" class="collapse" aria-labelledby="headingOne1" data-bs-parent=".accordionExamplemain">
-                    <div class="college-content-wrapper college-content">
-                        <p><b>Salary After Completing Giving Kona</b></p>
-                        <p>Median Earnings <b>$79,000</b></p>
-                        <p><b>Financial Aid & Debt</b></p>
-                        <p>Median Debt After Graduation <b>$25,000</b></p>
-                        <p><b>Additional Information</b></p>
-                        <p class="mb-0">Number of Graduates <b>250</b></p>
-                    </div>
-                </div>
-            </div>
-        `);
-            
 
                 if(parseInt(data.latest.college_info.display_peterson_weighted_gpa)) {
                     console.log('Displaying Peterson Unweighted GPA')
@@ -1249,6 +1226,41 @@ $current_user_state_code = (
                         $(whereToInsert).html(('No Data'))
                     }
                 }
+
+                function getAllUniqueProgrammesID(programmes){
+                    const uniqueProgrammes = [...new Map(programmes.map(programme =>
+                    [programme['code'], programme])).values()];
+                    return uniqueProgrammes
+                }
+                function appendProgramme(programme){
+                    let programmeMedianEarning =  programme.earnings.highest.overall_median_earnings ? '$' + programme.earnings.highest.overall_median_earnings : 'No Data'
+                    let median
+                            $("#college-content").append(`
+                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                            <div class="block-header block-header-tab" type="button" data-bs-toggle="collapse" data-bs-target="#id-${programme.code}" aria-expanded="true" aria-controls="collapseFour">
+                                <a class="text-white fw-600 collapsed"><i class="fa-solid fa-circle-check me-2"></i> ${programme.title}</a>
+                            </div>
+                            <div id="id-${programme.code}" class="collapse" aria-labelledby="headingOne1" data-bs-parent=".accordionExamplemain">
+                                <div class="college-content-wrapper college-content">
+                                    <p><b>Salary After Completing</b></p>
+                                    <p>Median Earnings <b>${programmeMedianEarning}</b></p>
+                                    <p><b>Financial Aid & Debt</b></p>
+                                    <p>Median Debt After Graduation <b>$25</b></p>
+                                    <p><b>Additional Information</b></p>
+                                    <p class="mb-0">Number of Graduates <b>250</b></p>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                }
+
+                getAllUniqueProgrammesID(data.latest.programs.cip_4_digit).forEach(programme => appendProgramme(programme))
+
+
+
+
+
+
 
 
                 displayDate(earlyDeadlineDay, earlyDeadlineMonth, '#c-early-action-deadline')
