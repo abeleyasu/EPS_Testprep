@@ -118,6 +118,7 @@
                                 <h3 class="block-title">(BEST SO FAR..) QUESTION TYPE CATEGORIZATION</h3>
                             </div>
                             <div class="block-content">
+                             
                                 <div class="block-content p-0">
                                     @if (isset($categoryAndQuestionTypeSummaryData) && !empty($categoryAndQuestionTypeSummaryData))
                                         <div class="tab-content" id="myTabContent">
@@ -130,7 +131,7 @@
                                                     @foreach ($categoryAndQuestionTypeSummaryData as $categoryAndQuestionTypeSummary)
                                                         @php
                                                             $category_arr = Helper::getCategoryNameByID($categoryAndQuestionTypeSummary['ct']);
-                                                            // dump($category_arr);
+                                                            // dd($category_arr);
                                                         @endphp
                                                         @if ($category_arr)
                                                             <div
@@ -234,6 +235,7 @@
                                                                                 <!-- END MODAL -->
                                                                                 @php
                                                                                     $incorrect = $categoryAndQuestionTypeSummary['incorrect'] ?? 0;
+                                                                                    $correct = $categoryAndQuestionTypeSummary['correct'] ?? 0;
                                                                                     $count = $categoryAndQuestionTypeSummary['count'] ?? 0;
                                                                                     $total_questions = $categoryAndQuestionTypeSummary['total_qts'] ?? 0;
                                                                                     $missed_ct = $categoryAndQuestionTypeSummary['missed'] ?? 0;
@@ -335,7 +337,7 @@
                                                                                     @foreach ($qtArray as $qtDataKey => $qtData)
                                                                                         @php
                                                                                             $question_arr = Helper::getQuestionNameByID($qtDataKey);
-                                                                                            //dd($question_arr);
+                                                                                            // dump($question_arr);
                                                                                         @endphp
                                                                                         <div class="odd p-3 ps-4">
                                                                                             <div></div>
@@ -387,6 +389,7 @@
                                                                                                     } ?></button>
                                                                                                 @php
                                                                                                     $incorrect = $qtData['incorrect'] ?? 0;
+                                                                                                    $correct = $qtData['correct'] ?? 0;
                                                                                                     $missed_qt = $qtData['missed'] ?? 0;
                                                                                                     $count = $qtData['count'] ?? 0;
                                                                                                     $percentage = ($incorrect / $qtData['count']) * 100;
@@ -406,6 +409,7 @@
                                                                                                         aria-valuemax="100">
                                                                                                     </div>
                                                                                                 </div>
+                                                                                              
                                                                                                 <div
                                                                                                     class="d-flex align-items-center justify-content-center gap-5">
                                                                                                     @if ($count != $missed_qt)
@@ -539,7 +543,7 @@
 </main>
 @include('user.test-review._test_type_selection_modal')
 @endsection
-@php
+{{-- @php
     $practice_test_section_ids = [];
     if (isset($user_selected_answers[0]['all_sections']) && !empty($user_selected_answers[0]['all_sections'])) {
         foreach ($user_selected_answers as $user_selected_answer) {
@@ -557,7 +561,7 @@
         }
     }
     $practice_test_section_ids = array_unique($practice_test_section_ids);
-@endphp
+@endphp --}}
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('css/test-review.css') }}">
 <style>
@@ -623,7 +627,6 @@
     const GETSELFMADEQUESTION_ROUTE = "{{ route('getSelfMadeTestQuestion') }}";
     const ADD_MISTAKE_TYPE_ROUTE = "{{ route('addMistakeType') }}";
     const ADD_NOTES_ROUTE = "{{ route('addNotesToQuestionReview') }}";
-    const PRACTICE_TEST_SECTION_ID = @json($practice_test_section_ids);
 </script>
 <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
