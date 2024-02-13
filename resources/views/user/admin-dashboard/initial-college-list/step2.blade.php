@@ -501,37 +501,6 @@ $current_user_state_code = (
                                     <div id="collapseThree" class="collapse" aria-labelledby="headingOne" data-bs-parent=".accordionExample">
                                         {{-- Main Wrapper --}}
                                         <div id="college-content" class="college-content-wrapper college-content">
-                                            <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                <div class="block-header block-header-tab" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                                    <a class=" text-white fw-600 collapsed"><i class="fa-solid fa-circle-check me-2"></i> Architecture</a>
-                                                </div>
-                                                <div id="collapseFour" class="collapse " aria-labelledby="headingOne1" data-bs-parent=".accordionExamplemain">
-                                                    <div class="college-content-wrapper college-content">
-                                                        <p><b>Salary After Completing</b></p>
-                                                        <p>Median Earnings <b>$79,000</b></p>
-                                                        <p><b>Financial Aid & Debt</b></p>
-                                                        <p>Median Debt After Graduation <b>$25,000</b></p>
-                                                        <p><b>Additional Information</b></p>
-                                                        <p class="mb-0">Number of Graduates <b>250</b></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                <div class="block-header block-header-tab" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                                                    <a class=" text-white fw-600 collapsed"><i class="fa-solid fa-circle-check me-2"></i> Accounting</a>
-                                                </div>
-                                                <div id="collapseFive" class="collapse" aria-labelledby="headingOne1" data-bs-parent=".accordionExamplemain">
-                                                    <div class="college-content-wrapper college-content">
-                                                        <p><b>Salary After Completing</b></p>
-                                                        <p>Median Earnings <b>$79,000</b></p>
-                                                        <p><b>Financial Aid & Debt</b></p>
-                                                        <p>Median Debt After Graduation <b>$25,000</b></p>
-                                                        <p><b>Additional Information</b></p>
-                                                        <p class="mb-0">Number of Graduates <b>250</b></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </div>
