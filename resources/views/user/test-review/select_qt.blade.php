@@ -3,7 +3,6 @@
 @section('title', 'Question & Concept Review : CPS')
 
 @section('user-content')
-
     <main id="main-container">
         <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
             <div class="bg-body-light">
@@ -49,8 +48,47 @@
             @endif
         </div>
     </main>
+    <style>
+        .custom-loader {
+            width: 50px;
+            height: 50px;
+            display: grid;
+            border-radius: 50%;
+            -webkit-mask: radial-gradient(farthest-side, #0000 40%, #000 41%);
+            background: linear-gradient(0deg, #766DF480 50%, #766DF4FF 0) center/4px 100%,
+                linear-gradient(90deg, #766DF440 50%, #766DF4BF 0) center/100% 4px;
+            background-repeat: no-repeat;
+            animation: s3 1s infinite steps(12);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            visibility: hidden;
+        }
+
+        .custom-loader::before,
+        .custom-loader::after {
+            content: "";
+            grid-area: 1/1;
+            border-radius: 50%;
+            background: inherit;
+            opacity: 0.915;
+            transform: rotate(30deg);
+        }
+
+        .custom-loader::after {
+            opacity: 0.83;
+            transform: rotate(60deg);
+        }
+
+        @keyframes s3 {
+            100% {
+                transform: rotate(1turn)
+            }
+        }
+    </style>
 @endsection
 @section('page-script')
+
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -106,10 +144,19 @@
             // Check if selectedTest is "All Test"
             if (selectedTest === 'all') {
                 // If selectedTest is "All Test", redirect accordingly
+                $('.custom-loader').css('visibility', 'visible');
+                $('#test-select').prop('disabled', true);
+                $('#test-name').prop('disabled', true);
+                $('#show-results-btn').prop('disabled', true);
                 window.location.href = `/user/test-prep-insights?test=${selectedFormat}`;
             } else {
                 // Otherwise, redirect to the selected test
-                window.location.href = `/user/single/test-prep-insights?test=${selectedFormat}&testid=${selectedTest}`;
+                $('.custom-loader').css('visibility', 'visible');
+                $('#test-select').prop('disabled', true);
+                $('#test-name').prop('disabled', true);
+                $('#show-results-btn').prop('disabled', true);
+                window.location.href =
+                    `/user/single/test-prep-insights?test=${selectedFormat}&testid=${selectedTest}`;
             }
         });
     </script>

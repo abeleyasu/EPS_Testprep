@@ -206,7 +206,7 @@
                 </li>
 
                 <li
-                    class="nav-main-item {{ Route::is(['self-made-test.*', 'test_home_page', 'test_prep_dashboard', 'test-review.review']) ? 'open' : '' }}">
+                    class="nav-main-item {{ Route::is(['self-made-test.*', 'test_home_page', 'test_prep_dashboard', 'test-review.review', 'test-prep-insights']) ? 'open' : '' }}">
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
                         aria-expanded="false" href="#">
                         <i class="nav-main-link-icon">
@@ -234,6 +234,16 @@
                                     href="{{ route('test_home_page') }}">
                                     <i class="nav-main-link-icon si si-book-open"></i>
                                     <span class="nav-main-link-name">Test Home Page</span>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if (Auth::user()->isUserHasValidPermission('Access Test Home Page'))
+                            <li class="nav-main-item">
+                                <a class="nav-main-link {{ Route::is(['test-prep-insights']) ? 'active' : '' }}"
+                                    href="{{ route('test-prep-insights') }}">
+                                    <i class="nav-main-link-icon si si-list"></i>
+                                    <span class="nav-main-link-name">Test Prep Insights</span>
                                 </a>
                             </li>
                         @endif
