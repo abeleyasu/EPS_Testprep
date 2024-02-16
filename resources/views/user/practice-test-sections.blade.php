@@ -741,10 +741,10 @@
                                                                 </div>
                                                                 <div>
 
-                                                                    {{-- <a href="#" style='padding: 5px 20px fs-5'
+                                                                    <a href="#" style='padding: 5px 20px fs-5'
                                                                         class="btn btn-alt-success text-success 1">
                                                                         {{ $score }}
-                                                                    </a> --}}
+                                                                    </a>
 
 
                                                                     <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&type=single' }}"
@@ -816,10 +816,10 @@
                                                                 </div>
                                                                 <div>
 
-                                                                    {{-- <a href="#" style='padding: 5px 20px fs-5'
+                                                                    <a href="#" style='padding: 5px 20px fs-5'
                                                                         class="btn btn-alt-success text-success 1">
                                                                         {{ $score }}
-                                                                    </a> --}}
+                                                                    </a>
 
 
                                                                     <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&type=single' }}"
