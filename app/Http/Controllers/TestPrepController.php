@@ -1017,22 +1017,28 @@ class TestPrepController extends Controller
 
         $checkData = [];
         $ctData = [];
-
+        // dd($categoryTypeData);
         foreach ($categoryTypeData as $key => $catData) {
+            
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
                 $selected_answer = $answer_arr[$key] ?? '';
 
                 if ($selected_answer != "-") {
                     $answers = explode(",", $selected_answer);
+                   
                     if (in_array(strtolower($catKey), $answers) || empty($selected_answer)) {
                         $pq = PracticeQuestion::where("id", $key)->first();
-
+                     
+                        
                         foreach ($cat as $catKey1 => $catId) {
                             $tmp = $ctData[$key][$catId] ?? [];
+                          
                             if (!in_array($catKey, $tmp)) {
                                 $ctData[$key][$catId][] = $catKey;
+                               
                             }
+                           
 
                             $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] ?? 0;
                             $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] ?? 0;
