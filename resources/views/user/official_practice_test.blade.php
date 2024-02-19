@@ -143,19 +143,15 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      height: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      background-color: blue;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      margin-right: 5px; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  height: 20px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  background-color: blue;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  margin-right: 5px; */
         }
     </style>
     @php
-        $testSections = \DB::table('practice_test_sections')
-            ->where('practice_test_sections.testid', $test_id)
-            ->get();
+        $testSections = \DB::table('practice_test_sections')->where('practice_test_sections.testid', $test_id)->get();
         // dd($testSections);
-        $test = \DB::table('practice_tests')
-            ->where('id', $test_id)
-            ->first();
+        $test = \DB::table('practice_tests')->where('id', $test_id)->first();
         // dd($test);
         $getTestSection = $testSections->where('id', $section_id)->first();
         // dd($testSections);
@@ -183,19 +179,14 @@
             $hardCheckBox = 'yes';
         }
 
-        $testSectionType = request()
-            ->session()
-            ->get('testType');
+        $testSectionType = request()->session()->get('testType');
 
         if ($test->format == 'DSAT' || $test->format == 'DPSAT') {
             $readingTest = DB::table('practice_test_sections')
                 ->select('id', 'testid', 'practice_test_type')
                 ->where('testid', $test_id)
                 ->where(function ($query) {
-                    $query
-                        ->where('practice_test_type', 'Reading_And_Writing')
-                        ->orWhere('practice_test_type', 'Easy_Reading_And_Writing')
-                        ->orWhere('practice_test_type', 'Hard_Reading_And_Writing');
+                    $query->where('practice_test_type', 'Reading_And_Writing')->orWhere('practice_test_type', 'Easy_Reading_And_Writing')->orWhere('practice_test_type', 'Hard_Reading_And_Writing');
                 })
                 ->get();
 
@@ -216,10 +207,7 @@
                 ->select('id', 'testid', 'practice_test_type')
                 ->where('testid', $test_id)
                 ->where(function ($query) {
-                    $query
-                        ->where('practice_test_type', 'Math')
-                        ->orWhere('practice_test_type', 'Math_no_calculator')
-                        ->orWhere('practice_test_type', 'Math_with_calculator');
+                    $query->where('practice_test_type', 'Math')->orWhere('practice_test_type', 'Math_no_calculator')->orWhere('practice_test_type', 'Math_with_calculator');
                 })
                 ->get();
             $mathScore = null;
@@ -432,6 +420,10 @@
                 @endif
                 <div class="col-xl-12 " id="showMessage" style="display: none">
                     <h3 class="text-danger">This content is inaccessible.</h3>
+                </div>
+                <div class="col-xl-12 " id="showMessage1" style="display: none">
+                    <h3 class="text-danger">This content is inaccessible. Please click on 'Submit Section' button to
+                        proceed next.</h3>
                 </div>
                 <div class="col-xl-12" id="set_question_data">
 
@@ -662,6 +654,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
     <script>
+        window.onbeforeunload = function() {
+            return "Are you sure you want to leave this page? It will reset all your progress.";
+        };
+
         var storedSelectedAnswers = [];
         $(document).on('click', '.calculator', function() {
             $('#exampleModal #calculator-container').html('');
@@ -1323,8 +1319,9 @@
                 if ((userActualHour == '' || userActualMinutes == '' || userActualSeconds == '') && (
                         checkTime == 0)) {
                     $('#actualTImeConfirm').show();
-                    // return true;
+                    return true;
                 }
+
                 // console.log(userActualHour)
                 let reading = parseInt($('#user_reading_score').val());
                 let math = parseInt($('#user_math_score').val());
@@ -2939,6 +2936,8 @@
                                                     min_value + " and " +
                                                     max_value + ".");
                                             } else {
+                                                $('#set_question_data').css("opacity", 0);
+                                                $('#showMessage1').show();
                                                 clearInterval(timerInterval);
                                                 swal({
                                                     icon: 'warning',
@@ -2968,6 +2967,8 @@
                                                     max_value + ".");
 
                                             } else {
+                                                $('#set_question_data').css("opacity", 0);
+                                                $('#showMessage1').show();
                                                 clearInterval(timerInterval);
                                                 swal({
                                                     icon: 'warning',
@@ -2987,6 +2988,8 @@
 
 
                                     } else {
+                                        $('#set_question_data').css("opacity", 0);
+                                        $('#showMessage1').show();
                                         clearInterval(timerInterval);
                                         swal({
                                             icon: 'warning',
