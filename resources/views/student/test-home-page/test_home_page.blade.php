@@ -1966,7 +1966,7 @@
                                                                                                     <p class="fw-bold">
                                                                                                         Estimated Score:
                                                                                                         <span
-                                                                                                            class="fw-normal">{{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}</span>
+                                                                                                            class="fw-normal">{{ isset($sat_test['ReadSectionsScore']) ? $sat_test['ReadSectionsScore'] : '0' }}</span>
                                                                                                     </p>
                                                                                                     <p class="fw-bold"> Actual
                                                                                                         Score:
@@ -1974,7 +1974,7 @@
                                                                                                             class="fw-normal">{{ isset($sat_test['reading_score']) ? $sat_test['reading_score'] : '0' }}</span>
                                                                                                     </p>
                                                                                                 @else
-                                                                                                    {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
+                                                                                                    {{ isset($sat_test['ReadSectionsScore']) ? $sat_test['ReadSectionsScore'] : '0' }}
                                                                                                     <br>
                                                                                                 @endif
                                                                                                 {{-- {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
@@ -1993,7 +1993,7 @@
                                                                                                     <p class="fw-bold">
                                                                                                         Estimated Score:
                                                                                                         <span
-                                                                                                            class="fw-normal">{{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}</span>
+                                                                                                            class="fw-normal">{{ isset($sat_test['ReadSectionsScore']) ? $sat_test['ReadSectionsScore'] : '0' }}</span>
                                                                                                     </p>
                                                                                                     <p class="fw-bold"> Actual
                                                                                                         Score:
@@ -2001,7 +2001,7 @@
                                                                                                             class="fw-normal">{{ isset($sat_test['reading_score']) ? $sat_test['reading_score'] : '0' }}</span>
                                                                                                     </p>
                                                                                                 @else
-                                                                                                    {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
+                                                                                                    {{ isset($sat_test['ReadSectionsScore']) ? $sat_test['ReadSectionsScore'] : '0' }}
                                                                                                     <br>
                                                                                                 @endif
                                                                                                 {{-- {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
@@ -2022,7 +2022,8 @@
                                                                                                         Estimated Score:
                                                                                                         <span
                                                                                                             class="fw-normal">
-                                                                                                            {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}</span>
+                                                                                                            {{-- {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}</span> --}}
+                                                                                                            {{ isset($sat_test['MathSectionsScore']) ? $sat_test['MathSectionsScore'] : 0 }}</span>
                                                                                                     </p>
                                                                                                     <p class="fw-bold"> Actual
                                                                                                         Score:
@@ -2030,7 +2031,8 @@
                                                                                                             class="fw-normal">{{ isset($sat_test['math_score']) ? $sat_test['math_score'] : '0' }}</span>
                                                                                                     </p>
                                                                                                 @else
-                                                                                                    {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}
+                                                                                                    {{-- {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }} --}}
+                                                                                                    {{ isset($sat_test['MathSectionsScore']) ? $sat_test['MathSectionsScore'] : 0 }}
                                                                                                     <br>
                                                                                                 @endif
                                                                                                 {{-- {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }} --}}
@@ -2055,7 +2057,8 @@
                                                                                                         Estimated Score:
                                                                                                         <span
                                                                                                             class="fw-normal">
-                                                                                                            {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}
+                                                                                                            {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }} --}}
+                                                                                                            {{ isset($sat_test['CompSectionsScore']) ? $sat_test['CompSectionsScore'] : 0 }}
                                                                                                         </span>
                                                                                                     </p>
                                                                                                     <p class="fw-bold"> Actual
@@ -2064,7 +2067,8 @@
                                                                                                             class="fw-normal">{{ isset($sat_test['actual_total_score']) ? $sat_test['actual_total_score'] : '0' }}</span>
                                                                                                     </p>
                                                                                                 @else
-                                                                                                    {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}
+                                                                                                    {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }} --}}
+                                                                                                    {{ isset($sat_test['CompSectionsScore']) ? $sat_test['CompSectionsScore'] : 0 }}
                                                                                                 @endif
                                                                                                 {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }} --}}
                                                                                             </td>
@@ -2421,7 +2425,7 @@
                                                                                                     <p class="fw-bold">
                                                                                                         Estimated Score:
                                                                                                         <span
-                                                                                                            class="fw-normal">{{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}</span>
+                                                                                                            class="fw-normal">{{ isset($sat_test['ReadSectionsScore']) ? $sat_test['ReadSectionsScore'] : '0' }}</span>
                                                                                                     </p>
                                                                                                     <p class="fw-bold"> Actual
                                                                                                         Score:
@@ -2429,7 +2433,7 @@
                                                                                                             class="fw-normal">{{ isset($sat_test['reading_score']) ? $sat_test['reading_score'] : '0' }}</span>
                                                                                                     </p>
                                                                                                 @else
-                                                                                                    {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
+                                                                                                    {{ isset($sat_test['ReadSectionsScore']) ? $sat_test['ReadSectionsScore'] : '0' }}
                                                                                                     <br>
                                                                                                 @endif
                                                                                                 {{-- {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
@@ -2448,7 +2452,7 @@
                                                                                                     <p class="fw-bold">
                                                                                                         Estimated Score:
                                                                                                         <span
-                                                                                                            class="fw-normal">{{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}</span>
+                                                                                                            class="fw-normal">{{ isset($sat_test['ReadSectionsScore']) ? $sat_test['ReadSectionsScore'] : '0' }}</span>
                                                                                                     </p>
                                                                                                     <p class="fw-bold"> Actual
                                                                                                         Score:
@@ -2456,7 +2460,7 @@
                                                                                                             class="fw-normal">{{ isset($sat_test['reading_score']) ? $sat_test['reading_score'] : '0' }}</span>
                                                                                                     </p>
                                                                                                 @else
-                                                                                                    {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
+                                                                                                    {{ isset($sat_test['ReadSectionsScore']) ? $sat_test['ReadSectionsScore'] : '0' }}
                                                                                                     <br>
                                                                                                 @endif
                                                                                                 {{-- {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
@@ -2475,8 +2479,10 @@
                                                                                                 @if ($test->test_source == 1)
                                                                                                     <p class="fw-bold">
                                                                                                         Estimated Score:
+                                                                                                        {{-- <span
+                                                                                                            class="fw-normal">{{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}</span> --}}
                                                                                                         <span
-                                                                                                            class="fw-normal">{{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}</span>
+                                                                                                            class="fw-normal">{{ isset($sat_test['MathSectionsScore']) ? $sat_test['MathSectionsScore'] : 0 }}</span>
                                                                                                     </p>
                                                                                                     <p class="fw-bold"> Actual
                                                                                                         Score:
@@ -2484,7 +2490,8 @@
                                                                                                             class="fw-normal">{{ isset($sat_test['reading_score']) ? $sat_test['reading_score'] : '0' }}</span>
                                                                                                     </p>
                                                                                                 @else
-                                                                                                    {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}
+                                                                                                    {{-- {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }} --}}
+                                                                                                    {{ isset($sat_test['MathSectionsScore']) ? $sat_test['MathSectionsScore'] : 0 }}
                                                                                                     <br>
                                                                                                 @endif
                                                                                                 {{-- {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}
@@ -2508,17 +2515,21 @@
                                                                                                 @if ($test->test_source == 1)
                                                                                                     <p class="fw-bold">
                                                                                                         Estimated Score:
+                                                                                                        {{-- <span
+                                                                                                            class="fw-normal">
+                                                                                                            {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}</span> --}}
                                                                                                         <span
                                                                                                             class="fw-normal">
-                                                                                                            {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}</span>
+                                                                                                            {{ isset($sat_test['CompSectionsScore']) ? $sat_test['CompSectionsScore'] : '0' }}</span>
                                                                                                     </p>
                                                                                                     <p class="fw-bold"> Actual
                                                                                                         Score:
                                                                                                         <span
-                                                                                                            class="fw-normal">{{ isset($psat_test['actual_total_score']) ? $psat_test['actual_total_score'] : '0' }}</span>
+                                                                                                            class="fw-normal">{{ isset($sat_test['actual_total_score']) ? $sat_test['actual_total_score'] : '0' }}</span>
                                                                                                     </p>
                                                                                                 @else
-                                                                                                    {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}
+                                                                                                    {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }} --}}
+                                                                                                    {{ isset($sat_test['CompSectionsScore']) ? $sat_test['CompSectionsScore'] : '0' }}
                                                                                                 @endif
                                                                                                 {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }} --}}
                                                                                             </td>
@@ -2996,19 +3007,19 @@
         }
 
         /* .edit-icon{
-                                                                                                                                                                                                                                                                            display: none;
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                        .hover-btn:hover .edit-icon{
-                                                                                                                                                                                                                                                                            display: block;
-                                                                                                                                                                                                                                                                            position: absolute;
-                                                                                                                                                                                                                                                                            bottom: 6px;
-                                                                                                                                                                                                                                                                            right: 7px
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                        .hover-btn {
-                                                                                                                                                                                                                                                                            transition: all 0.5s;
-                                                                                                                                                                                                                                                                            width: auto;
-                                                                                                                                                                                                                                                                            position: relative;
-                                                                                                                                                                                                                                                                        } */
+                                                                                                                                                                                                                                                                                    display: none;
+                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                .hover-btn:hover .edit-icon{
+                                                                                                                                                                                                                                                                                    display: block;
+                                                                                                                                                                                                                                                                                    position: absolute;
+                                                                                                                                                                                                                                                                                    bottom: 6px;
+                                                                                                                                                                                                                                                                                    right: 7px
+                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                .hover-btn {
+                                                                                                                                                                                                                                                                                    transition: all 0.5s;
+                                                                                                                                                                                                                                                                                    width: auto;
+                                                                                                                                                                                                                                                                                    position: relative;
+                                                                                                                                                                                                                                                                                } */
         .input_test_name {
             max-width: 110px !important;
         }

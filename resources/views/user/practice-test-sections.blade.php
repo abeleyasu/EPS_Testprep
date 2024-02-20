@@ -456,26 +456,18 @@
                                     }
                                     if ($singletestSections['Sections'][0]['practice_test_type'] == 'Easy_Reading_And_Writing') {
                                         $readingAndWritingId = $singletestSections['Sections'][0]['id'];
-                                        $checkReading = \DB::table('user_answers')
-                                            ->where('section_id', $readingAndWritingId)
-                                            ->exists();
+                                        $checkReading = \DB::table('user_answers')->where('section_id', $readingAndWritingId)->exists();
                                         // dd($readingAndWritingId);
                                     } elseif ($singletestSections['Sections'][0]['practice_test_type'] == 'Hard_Reading_And_Writing') {
                                         $readingAndWritingId = $singletestSections['Sections'][0]['id'];
-                                        $checkReading = \DB::table('user_answers')
-                                            ->where('section_id', $readingAndWritingId)
-                                            ->exists();
+                                        $checkReading = \DB::table('user_answers')->where('section_id', $readingAndWritingId)->exists();
                                     }
                                     if ($singletestSections['Sections'][0]['practice_test_type'] == 'Math_no_calculator') {
                                         $mathId = $singletestSections['Sections'][0]['id'];
-                                        $checkMath = \DB::table('user_answers')
-                                            ->where('section_id', $mathId)
-                                            ->exists();
+                                        $checkMath = \DB::table('user_answers')->where('section_id', $mathId)->exists();
                                     } elseif ($singletestSections['Sections'][0]['practice_test_type'] == 'Math_with_calculator') {
                                         $mathId = $singletestSections['Sections'][0]['id'];
-                                        $checkMath = \DB::table('user_answers')
-                                            ->where('section_id', $mathId)
-                                            ->exists();
+                                        $checkMath = \DB::table('user_answers')->where('section_id', $mathId)->exists();
                                     }
                                     // if (isset($checkReading)) {
                                     //     dump($checkReading);
@@ -663,11 +655,19 @@
 
                                                                 </div>
                                                                 <div>
+                                                                    @php
+                                                                        if (strpos($singletestSections['Sections'][0]['practice_test_type'], 'Math') !== false) {
+                                                                            $score = $singletestSections['Sections'][0]['newScore'];
+                                                                        } elseif (strpos($singletestSections['Sections'][0]['practice_test_type'], 'Reading') !== false) {
+                                                                            $score = $singletestSections['Sections'][0]['newScore'];
+                                                                        } else {
+                                                                        }
+                                                                    @endphp
 
-                                                                    {{-- <a href="#" style='padding: 5px 20px fs-5'
-                                                                    class="btn btn-alt-success text-success 1">
-                                                                    {{ $singletestSections['Sections'][0]['newScore'] }}
-                                                                </a> --}}
+                                                                    <a href="#" style='padding: 5px 20px fs-5'
+                                                                        class="btn btn-alt-success text-success 1">
+                                                                        {{ $singletestSections['Sections'][0]['newScore'] }}
+                                                                    </a>
 
 
                                                                     <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&type=single' }}"
@@ -741,10 +741,10 @@
                                                                 </div>
                                                                 <div>
 
-                                                                    {{-- <a href="#" style='padding: 5px 20px fs-5'
-                                                                    class="btn btn-alt-success text-success 1">
-                                                                    {{ $singletestSections['Sections'][0]['newScore'] }}
-                                                                </a> --}}
+                                                                    <a href="#" style='padding: 5px 20px fs-5'
+                                                                        class="btn btn-alt-success text-success 1">
+                                                                        {{ $score }}
+                                                                    </a>
 
 
                                                                     <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&type=single' }}"
@@ -816,10 +816,10 @@
                                                                 </div>
                                                                 <div>
 
-                                                                    {{-- <a href="#" style='padding: 5px 20px fs-5'
-                                                                    class="btn btn-alt-success text-success 1">
-                                                                    {{ $singletestSections['Sections'][0]['newScore'] }}
-                                                                </a> --}}
+                                                                    <a href="#" style='padding: 5px 20px fs-5'
+                                                                        class="btn btn-alt-success text-success 1">
+                                                                        {{ $score }}
+                                                                    </a>
 
 
                                                                     <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&type=single' }}"

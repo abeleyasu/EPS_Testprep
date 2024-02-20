@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-
+use Psy\VarDumper\Dumper;
 
 class TestPrepController extends Controller
 {
@@ -120,10 +120,10 @@ class TestPrepController extends Controller
                 $math_score = $section_score[$section['id']];
             } else {
                 $scaled_score += $section_score[$section['id']];
+                
             }
         }
         $scaled_score = $scaled_score + ($math_score);
-
         if (isset($sections[0]['format']) && $sections[0]['format'] == 'ACT') {
             $scaled_score = $scaled_score / ($sections->count());
         } else {
@@ -1017,22 +1017,28 @@ class TestPrepController extends Controller
 
         $checkData = [];
         $ctData = [];
-
+        // dd($categoryTypeData);
         foreach ($categoryTypeData as $key => $catData) {
+            
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
                 $selected_answer = $answer_arr[$key] ?? '';
 
                 if ($selected_answer != "-") {
                     $answers = explode(",", $selected_answer);
+                   
                     if (in_array(strtolower($catKey), $answers) || empty($selected_answer)) {
                         $pq = PracticeQuestion::where("id", $key)->first();
-
+                     
+                        
                         foreach ($cat as $catKey1 => $catId) {
                             $tmp = $ctData[$key][$catId] ?? [];
+                          
                             if (!in_array($catKey, $tmp)) {
                                 $ctData[$key][$catId][] = $catKey;
+                               
                             }
+                           
 
                             $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] ?? 0;
                             $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] ?? 0;
@@ -4456,7 +4462,6 @@ class TestPrepController extends Controller
 
         if (isset($sections[0]['format']) && $sections[0]['format'] == 'ACT') {
             $total_score = $total_score / ($sections->count());
-            // dd($total_score);
         } else {
             // dd($total_score);
             $total_score = $total_score;
@@ -4495,7 +4500,7 @@ class TestPrepController extends Controller
 
                 if (strpos($sections['Sections'][0]['practice_test_type'], 'Reading') !== false) {
                     array_push($rwIdsArr, $key);
-                    // dump($rwIdsArr);
+                    // dd($rwIdsArr);
                 }
 
                 if (strpos($sections['Sections'][0]['practice_test_type'], 'Math') !== false) {
@@ -4553,25 +4558,56 @@ class TestPrepController extends Controller
                             // $readingSectionCount = 0;
 
                             // calculate Score for reading.
-                            if (count($count_right_question[$key]) != 0) {
-                                foreach ($count_right_question[$key] as $questions) {
-                                    $newRwScore++;
-                                    // dump($newRwScore);
+                            //Old code
+                            // if (count($count_right_question[$key]) != 0) {
+                            //     foreach ($count_right_question[$key] as $questions) {
+                            //         $newRwScore++;
+                            //         // dump($newRwScore);
+                            //     }
+                            // }
+
+                            //New code starts
+                            $nonEmptyKeysCount = 0; // Initialize count of non-empty keys
+                            $newRwScore = 0; // Initialize count of non-empty data
+
+                            foreach ($rwIdsArr as $value) {
+                                // Check if the key exists in $count_right_question
+                                if (isset($count_right_question[$value])) {
+                                    $nonEmptyKeysCount++; // Increment count of non-empty keys
+
+                                    // Check if the value associated with the key is not empty
+                                    if (is_array($count_right_question[$value])) {
+                                        // If the value is an array, increment the count by the number of non-empty elements
+                                        $newRwScore += count(array_filter($count_right_question[$value]));
+                                    } else {
+                                        // If the value is not an array, increment the count if it's not empty
+                                        if (!empty($count_right_question[$value])) {
+                                            $newRwScore++;
+                                        }
+                                    }
                                 }
                             }
+
+                            // dump($nonEmptyKeysCount);
+                            // dump($nonEmptyDataCount);
+                            //New Code end
 
                             $eachScore = DB::table('scores')
                                 ->whereIn('section_id', $rwIdsArr)
                                 ->where('test_id', $id)
                                 ->where('actual_score', $newRwScore)
+                                ->orderBy('created_at', 'desc')
                                 ->first('converted_score');
 
                             // dump($eachScore);
                             if ($eachScore) {
                                 $rwCScore = $eachScore->converted_score;
                                 // $compositeScore =  $compositeScore + $rwCScore;
+                            } else {
+                                $rwCScore = 0;
                             }
 
+                            // dd($eachScore);
                             $store_sections_details[$rwSectionID]['Sections'][0]['newScore'] = $rwCScore;
                         }
 
@@ -4601,26 +4637,55 @@ class TestPrepController extends Controller
                             //         }
                             //     }
                             // }
+                            // dd($count_right_question);
+                            //     dump(count($count_right_question[$key]));
 
-                            if (count($count_right_question[$key]) != 0) {
-                                foreach ($count_right_question[$key] as $questions) {
-                                    $newMathScore++;
-                                    // dump($newMathScore);
+                            //Old code
+                            // if (count($count_right_question[$key]) != 0) {
+                            //     foreach ($count_right_question[$key] as $questions) {
+                            //         $newMathScore++;
+                            //         // dump($newMathScore);
+                            //     }
+                            // }
+
+                            //NewCode 
+                            $nonEmptyKeysCount = 0; // Initialize count of non-empty keys
+                            $newMathScore = 0; // Initialize count of non-empty data
+                            foreach ($mathIdsArr as $value) {
+                                // Check if the key exists in $count_right_question
+                                if (isset($count_right_question[$value])) {
+                                    $nonEmptyKeysCount++; // Increment count of non-empty keys
+
+                                    // Check if the value associated with the key is not empty
+                                    if (is_array($count_right_question[$value])) {
+                                        // If the value is an array, increment the count by the number of non-empty elements
+                                        $newMathScore += count(array_filter($count_right_question[$value]));
+                                    } else {
+                                        // If the value is not an array, increment the count if it's not empty
+                                        if (!empty($count_right_question[$value])) {
+                                            $newMathScore++;
+                                        }
+                                    }
                                 }
                             }
+                            // dd($newMathScore);
+                            //New Code end
 
                             $eachMathScore = DB::table('scores')
                                 ->whereIn('section_id', $mathIdsArr)
                                 ->where('test_id', $id)
                                 ->where('actual_score', $newMathScore)
+                                ->orderBy('created_at', 'desc')
                                 ->first('converted_score');
 
                             // dump($eachMathScore);
                             if ($eachMathScore) {
                                 $mathCScore = $eachMathScore->converted_score;
                                 // $compositeScore =  $compositeScore + $mathCScore;
+                            } else {
+                                $mathCScore = 0;
                             }
-
+                            // dd($mathCScore);
                             $store_sections_details[$mathSectionID]['Sections'][0]['newScore'] = $mathCScore;
                         }
                     }
@@ -4665,6 +4730,7 @@ class TestPrepController extends Controller
                     $compositeScore = $compositeScore + $singletestSections['Sections'][0]['newScore'];
                 }
 
+                // dump($singletestSections['Sections'][0]['newScore']);
                 $whichSection = 1;
 
                 if (isset($singletestSections['Sections']) && isset($singletestSections['Sections_question'])) {
@@ -4729,7 +4795,9 @@ class TestPrepController extends Controller
                 $whichSection = 0;
             }
         }
-
+        // dump($mathCount);
+        // dump($count1);
+        // dump($count2);
         if ($count1 >= $count2) {
             $mathCount = $mathCount + $count1;
         } else {
@@ -4740,6 +4808,8 @@ class TestPrepController extends Controller
         } else {
             $rwCount = $rwCount + $count4;
         }
+
+        // dump($mathCount);
         $newTotal = $mathCount + $rwCount;
 
         if ($whichSection == 1) {
@@ -5937,7 +6007,8 @@ class TestPrepController extends Controller
             }
 
             foreach ($sections_details as $section_detail) {
-                $right_question[$section_detail->practice_test_type] = [];
+                // $right_question[$section_detail->practice_test_type] = [];
+                $right_question[$section_detail->id] = [];
 
                 $answers = UserAnswers::select('answer', 'actual_time')
                     ->where('user_id', $user_id)
@@ -5949,10 +6020,8 @@ class TestPrepController extends Controller
                 if ($answers->isNotEmpty()) {
                     $sat_details_array[$test->id][$section_detail['practice_test_type'] . "_actual_time"] = $answers[0]->actual_time;
                     $answer_data = json_decode($answers[0]->answer, true);
-
                     if (isset($answer_data)) {
                         $practice_questions = PracticeQuestion::where('practice_test_sections_id', $section_detail->id)->get();
-
                         foreach ($practice_questions as $practice_question) {
                             if (isset($answer_data[$practice_question->id])) {
                                 if ($practice_question->multiChoice == 2) {
@@ -5961,8 +6030,12 @@ class TestPrepController extends Controller
                                         array_push($right_question[$section_detail->practice_test_type], $practice_question->id);
                                     }
                                 } else {
+                                    // dd($section_detail->id);
+                                    // dump($answer_data[$practice_question->id]);
                                     if (str_replace(' ', '', $practice_question->answer) == str_replace(' ', '', $answer_data[$practice_question->id])) {
-                                        array_push($right_question[$section_detail->practice_test_type], $practice_question->id);
+                                        array_push($right_question[$section_detail->id], $practice_question->id);
+                                        // array_push($right_question[$section_detail->practice_test_type], $practice_question->id);
+                                        // dump($right_question);
                                     }
                                 }
                             }
@@ -5971,38 +6044,145 @@ class TestPrepController extends Controller
                 }
             }
         }
+        // $right_question = array_filter($right_question);
+        // dd($right_question);
+
+        // $section_types = array_keys($right_question);
+        // // dump($section_types);
+        // $section_ids_reading = array_map(function ($section_type) use ($sat_test, $user_id) {
+        //     return PracticeTestSection::where('testid', $sat_test[0]->id)
+        //         ->where('practice_test_type', 'LIKE', '%Reading%')
+        //         ->pluck('id')
+        //         ->toArray();
+        // }, $section_types);
+
+        // $reading_section_ids = isset($section_ids_reading[0]) ? $section_ids_reading[0] : [];
+
+        // // dd($reading_section_ids);
+        // $section_ids_math = array_map(function ($section_type) use ($sat_test, $user_id) {
+        //     return PracticeTestSection::where('testid', $sat_test[0]->id)
+        //         ->where('practice_test_type', 'LIKE', '%Math%')
+        //         ->pluck('id')
+        //         ->toArray();
+        // }, $section_types);
+
+        // $math_section_ids = isset($section_ids_math[0]) ? $section_ids_math[0] : [];
+
+        // // $mathScoreCount = array_map(function ($section_type) use ($right_question) {
+        // //     return count($right_question[$section_type]);
+        // // }, $section_types);  
+
+        // if (!empty($reading_section_ids)) {
+        //     $mathScoreCount = array_map(function ($section_type) use ($right_question, $math_section_ids) {
+        //         return isset($math_section_ids) ? count($right_question[$section_type]) : 0;
+        //     }, $math_section_ids);
+        // }
+
+        // if (!empty($reading_section_ids)) {
+        //     $readingScoreCount = array_map(function ($section_type) use ($right_question, $reading_section_ids) {
+        //         return isset($reading_section_ids) ? count($right_question[$section_type]) : 0;
+        //     }, $reading_section_ids);
+        // }
+        // // dump($mathScoreCount);
+        // // dd(array_sum($readingScoreCount));
+
+        // // dump($mathScoreCount);
+        // // dd($readingScoreCount);
+        // $eachReadingScore = DB::table('scores')
+        //     ->whereIn('section_id', $reading_section_ids)
+        //     ->where('actual_score', array_sum($readingScoreCount))
+        //     ->orderBy('created_at', 'desc')
+        //     ->first('converted_score');
+
+        // // $eachReadingScore = array_map(function ($section_ids_reading, $section_type, $readingScoreCount) {
+        // //     return DB::table('scores')
+        // //         ->where('section_id', $section_ids_reading)
+        // //         ->where('actual_score', $readingScoreCount)
+        // //         ->first('converted_score');
+        // // }, $section_ids_reading, $section_types, $readingScoreCount);
+
+        // // $eachMathScore = array_map(function ($section_ids_math, $section_type, $mathScoreCount) {
+        // //     return DB::table('scores')
+        // //         ->where('section_id', $section_ids_math)
+        // //         ->where('actual_score', $mathScoreCount)
+        // //         ->first('converted_score');
+        // // }, $section_ids_math, $section_types, $mathScoreCount);
+
+        // $eachMathScore = DB::table('scores')
+        // ->whereIn('section_id', $math_section_ids)
+        // ->where('actual_score', array_sum($mathScoreCount))
+        // ->orderBy('created_at', 'desc')
+        // ->first('converted_score');
+
+
+        // // dump($eachReadingScore);
+        // // dd($eachMathScore);
+
+        // // $score = array_map(function ($eachScore, $mathScoreCount) {
+        // //     return $eachScore ? $eachScore->converted_score : 0;
+        // // }, $eachScore, $mathScoreCount);
+
+
+
+        // // $mathSection = isset($score[0]) ? $score[0] : 0;
+        // // $readSection = isset($score[1]) ? $score[1] : 0;
+
+        // $mathSection = isset($eachMathScore) ? $eachMathScore : 0;
+        // $readSection = isset($eachReadingScore) ? $eachReadingScore : 0;
+
+        // foreach ($sat_test as $test) {
+        //     $sat_details_array[$test->id]["MathSectionsScore"] = $mathSection;
+        //     $sat_details_array[$test->id]["ReadSectionsScore"] = $readSection;
+        //     $sat_details_array[$test->id]["CompSectionsScore"] = $mathSection + $readSection;
+        // }
 
         $section_types = array_keys($right_question);
-        $section_ids = array_map(function ($section_type) use ($sat_test, $user_id) {
-            return PracticeTestSection::where('testid', $sat_test[0]->id)
-                ->where('practice_test_type', $section_type)
+        // dump($section_types);
+        // Iterate over each test ID
+        foreach ($sat_test as $test) {
+            // Calculate section IDs for Reading and Math separately for the current test ID
+            $section_ids_reading = PracticeTestSection::where('testid', $test->id)
+                ->where('practice_test_type', 'LIKE', '%Reading%')
                 ->pluck('id')
                 ->toArray();
-        }, $section_types);
 
-        $mathScoreCount = array_map(function ($section_type) use ($right_question) {
-            return count($right_question[$section_type]);
-        }, $section_types);
+            $section_ids_math = PracticeTestSection::where('testid', $test->id)
+                ->where('practice_test_type', 'LIKE', '%Math%')
+                ->pluck('id')
+                ->toArray();
 
-        $eachScore = array_map(function ($section_ids, $section_type, $mathScoreCount) {
-            return DB::table('scores')
-                ->whereIn('section_id', $section_ids)
-                ->where('actual_score', $mathScoreCount)
+
+            // Calculate scores for Reading and Math sections for the current test ID
+            $readingScoreCount = array_map(function ($section_type) use ($right_question, $section_ids_reading) {
+                return isset($section_ids_reading) ? count($right_question[$section_type]) : 0;
+            }, $section_ids_reading);
+
+            // dump($readingScoreCount);
+
+            $mathScoreCount = array_map(function ($section_type) use ($right_question, $section_ids_math) {
+                return isset($section_ids_math) ? count($right_question[$section_type]) : 0;
+            }, $section_ids_math);
+
+            // Calculate the total score for Reading and Math sections for the current test ID
+            $eachReadingScore = DB::table('scores')
+                ->whereIn('section_id', $section_ids_reading)
+                ->where('actual_score', array_sum($readingScoreCount))
+                ->orderBy('created_at', 'desc')
                 ->first('converted_score');
-        }, $section_ids, $section_types, $mathScoreCount);
 
-        $score = array_map(function ($eachScore, $mathScoreCount) {
-            return $eachScore ? $eachScore->converted_score : 0;
-        }, $eachScore, $mathScoreCount);
+            $eachMathScore = DB::table('scores')
+                ->whereIn('section_id', $section_ids_math)
+                ->where('actual_score', array_sum($mathScoreCount))
+                ->orderBy('created_at', 'desc')
+                ->first('converted_score');
 
-        $mathSection = isset($score[0]) ? $score[0] : 0;
-        $readSection = isset($score[1]) ? $score[1] : 0;
-
-        foreach ($sat_test as $test) {
-            $sat_details_array[$test->id]["MathSectionsScore"] = $mathSection;
-            $sat_details_array[$test->id]["ReadSectionsScore"] = $readSection;
-            $sat_details_array[$test->id]["CompSectionsScore"] = $mathSection + $readSection;
+            // Assign the calculated scores to the corresponding test ID
+            $sat_details_array[$test->id]["MathSectionsScore"] = isset($eachMathScore) ? $eachMathScore->converted_score : 0;
+            $sat_details_array[$test->id]["ReadSectionsScore"] = isset($eachReadingScore) ? $eachReadingScore->converted_score : 0;
+            $sat_details_array[$test->id]["CompSectionsScore"] = $sat_details_array[$test->id]["MathSectionsScore"] + $sat_details_array[$test->id]["ReadSectionsScore"];
         }
+        // Calculate other scores or perform further processing as needed
+
 
         return $sat_details_array;
     }
@@ -6060,109 +6240,193 @@ class TestPrepController extends Controller
                 $sat_details_array[$test->id]['math_score'] = 0;
                 $sat_details_array[$test->id]['actual_total_score'] = 0;
             }
-            foreach ($sections_details as $section_detail) {
-                $practice_questions = PracticeQuestion::where('practice_test_sections_id', $section_detail->id)->get();
-                $answer_details = UserAnswers::where('section_id', $section_detail->id)->where('user_id', $user_id)->first();
-                $right_question[$test->id][$section_detail->practice_test_type] = [];
+            // foreach ($sections_details as $section_detail) {
+            //     $practice_questions = PracticeQuestion::where('practice_test_sections_id', $section_detail->id)->get();
+            //     $answer_details = UserAnswers::where('section_id', $section_detail->id)->where('user_id', $user_id)->first();
+            //     $right_question[$test->id][$section_detail->practice_test_type] = [];
 
-                if ($answer_details) {
-                    $answer_data = json_decode($answer_details->answer, true);
-                    foreach ($practice_questions as $practice_question) {
-                        if (isset($answer_data[$practice_question->id])) {
-                            if ($practice_question->multiChoice == 2) {
-                                $correct[$practice_question->id] = $practice_question->answer;
-                                if ($helper->stringExactMatch($correct[$practice_question->id], $answer_data[$practice_question->id])) {
-                                    array_push($right_question[$test->id][$section_detail->practice_test_type], $practice_question->id);
-                                }
-                            } else {
-                                if (str_replace(' ', '', $practice_question->answer) == str_replace(' ', '', $answer_data[$practice_question->id])) {
-                                    array_push($right_question[$test->id][$section_detail->practice_test_type], $practice_question->id);
+            //     if ($answer_details) {
+            //         $answer_data = json_decode($answer_details->answer, true);
+            //         foreach ($practice_questions as $practice_question) {
+            //             if (isset($answer_data[$practice_question->id])) {
+            //                 if ($practice_question->multiChoice == 2) {
+            //                     $correct[$practice_question->id] = $practice_question->answer;
+            //                     if ($helper->stringExactMatch($correct[$practice_question->id], $answer_data[$practice_question->id])) {
+            //                         array_push($right_question[$test->id][$section_detail->practice_test_type], $practice_question->id);
+            //                     }
+            //                 } else {
+            //                     if (str_replace(' ', '', $practice_question->answer) == str_replace(' ', '', $answer_data[$practice_question->id])) {
+            //                         array_push($right_question[$test->id][$section_detail->practice_test_type], $practice_question->id);
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+
+            //     if (in_array($section_detail->practice_test_type, ['Math', 'Math_with_calculator', 'Math_no_calculator'])) {
+            //         array_push($right_question[$test->id]['mathSecIDs1'], $section_detail->id);
+            //     }
+            //     if (in_array($section_detail->practice_test_type, ['Reading_And_Writing', 'Easy_Reading_And_Writing', 'Hard_Reading_And_Writing'])) {
+            //         array_push($right_question[$test->id]['readSecIDs1'], $section_detail->id);
+            //     }
+            // }
+
+            foreach ($sections_details as $section_detail) {
+                // $right_question[$section_detail->practice_test_type] = [];
+                $right_question[$section_detail->id] = [];
+
+                $answers = UserAnswers::select('answer', 'actual_time')
+                    ->where('user_id', $user_id)
+                    ->where('section_id', $section_detail['id'])
+                    ->where('test_id', $test->id)
+                    ->get();
+
+
+                if ($answers->isNotEmpty()) {
+                    $sat_details_array[$test->id][$section_detail['practice_test_type'] . "_actual_time"] = $answers[0]->actual_time;
+                    $answer_data = json_decode($answers[0]->answer, true);
+                    if (isset($answer_data)) {
+                        $practice_questions = PracticeQuestion::where('practice_test_sections_id', $section_detail->id)->get();
+                        foreach ($practice_questions as $practice_question) {
+                            if (isset($answer_data[$practice_question->id])) {
+                                if ($practice_question->multiChoice == 2) {
+                                    $correct[$practice_question->id] = $practice_question->answer;
+                                    if ($helper->stringExactMatch($correct[$practice_question->id], $answer_data[$practice_question->id])) {
+                                        array_push($right_question[$section_detail->practice_test_type], $practice_question->id);
+                                    }
+                                } else {
+                                    // dd($section_detail->id);
+                                    // dump($answer_data[$practice_question->id]);
+                                    if (str_replace(' ', '', $practice_question->answer) == str_replace(' ', '', $answer_data[$practice_question->id])) {
+                                        array_push($right_question[$section_detail->id], $practice_question->id);
+                                        // array_push($right_question[$section_detail->practice_test_type], $practice_question->id);
+                                        // dump($right_question);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-
-                if (in_array($section_detail->practice_test_type, ['Math', 'Math_with_calculator', 'Math_no_calculator'])) {
-                    array_push($right_question[$test->id]['mathSecIDs1'], $section_detail->id);
-                }
-                if (in_array($section_detail->practice_test_type, ['Reading_And_Writing', 'Easy_Reading_And_Writing', 'Hard_Reading_And_Writing'])) {
-                    array_push($right_question[$test->id]['readSecIDs1'], $section_detail->id);
-                }
             }
         }
 
-        foreach ($right_question as $k => $answerCount) {
-            $mathScoreCount = 0;
-            $readScoreCount = 0;
+        // foreach ($right_question as $k => $answerCount) {
+        //     $mathScoreCount = 0;
+        //     $readScoreCount = 0;
 
-            $mathSecIDs = [];
-            $readSecIDs = [];
+        //     $mathSecIDs = [];
+        //     $readSecIDs = [];
 
-            if (isset($answerCount['Math'])) {
-                $mathScoreCount += count($answerCount['Math']);
-                $mathSecIDs = array_merge($mathSecIDs, array_values($answerCount['Math']));
-            }
-            if (isset($answerCount['Math_with_calculator'])) {
-                $mathScoreCount += count($answerCount['Math_with_calculator']);
-                $mathSecIDs = array_merge($mathSecIDs, array_values($answerCount['Math_with_calculator']));
-            }
-            if (isset($answerCount['Math_no_calculator'])) {
-                $mathScoreCount += count($answerCount['Math_no_calculator']);
-                $mathSecIDs = array_merge($mathSecIDs, array_values($answerCount['Math_no_calculator']));
-            }
-            if (isset($answerCount['Reading_And_Writing'])) {
-                $readScoreCount += count($answerCount['Reading_And_Writing']);
-                $readSecIDs = array_merge($readSecIDs, array_values($answerCount['Reading_And_Writing']));
-            }
-            if (isset($answerCount['Easy_Reading_And_Writing'])) {
-                $readScoreCount += count($answerCount['Easy_Reading_And_Writing']);
-                $readSecIDs = array_merge($readSecIDs, array_values($answerCount['Easy_Reading_And_Writing']));
-            }
-            if (isset($answerCount['Hard_Reading_And_Writing'])) {
-                $readScoreCount += count($answerCount['Hard_Reading_And_Writing']);
-                $readSecIDs = array_merge($readSecIDs, array_values($answerCount['Hard_Reading_And_Writing']));
-            }
-            // dump($mathScoreCount);
-            $right_question[$k]['MathScoreCount'] = $mathScoreCount;
-            $right_question[$k]['ReadScoreCount'] = $readScoreCount;
+        //     if (isset($answerCount['Math'])) {
+        //         $mathScoreCount += count($answerCount['Math']);
+        //         $mathSecIDs = array_merge($mathSecIDs, array_values($answerCount['Math']));
+        //     }
+        //     if (isset($answerCount['Math_with_calculator'])) {
+        //         $mathScoreCount += count($answerCount['Math_with_calculator']);
+        //         $mathSecIDs = array_merge($mathSecIDs, array_values($answerCount['Math_with_calculator']));
+        //     }
+        //     if (isset($answerCount['Math_no_calculator'])) {
+        //         $mathScoreCount += count($answerCount['Math_no_calculator']);
+        //         $mathSecIDs = array_merge($mathSecIDs, array_values($answerCount['Math_no_calculator']));
+        //     }
+        //     if (isset($answerCount['Reading_And_Writing'])) {
+        //         $readScoreCount += count($answerCount['Reading_And_Writing']);
+        //         $readSecIDs = array_merge($readSecIDs, array_values($answerCount['Reading_And_Writing']));
+        //     }
+        //     if (isset($answerCount['Easy_Reading_And_Writing'])) {
+        //         $readScoreCount += count($answerCount['Easy_Reading_And_Writing']);
+        //         $readSecIDs = array_merge($readSecIDs, array_values($answerCount['Easy_Reading_And_Writing']));
+        //     }
+        //     if (isset($answerCount['Hard_Reading_And_Writing'])) {
+        //         $readScoreCount += count($answerCount['Hard_Reading_And_Writing']);
+        //         $readSecIDs = array_merge($readSecIDs, array_values($answerCount['Hard_Reading_And_Writing']));
+        //     }
+        //     // dump($mathScoreCount);
+        //     $right_question[$k]['MathScoreCount'] = $mathScoreCount;
+        //     $right_question[$k]['ReadScoreCount'] = $readScoreCount;
 
-            $right_question[$k]['mathSecIDs'] = $mathSecIDs;
-            $right_question[$k]['readSecIDs'] = $readSecIDs;
-        }
+        //     $right_question[$k]['mathSecIDs'] = $mathSecIDs;
+        //     $right_question[$k]['readSecIDs'] = $readSecIDs;
+        // }
 
+        // foreach ($sat_test as $test) {
+        //     $sections_details = PracticeTestSection::where('testid', $test->id)->where('format', 'DPSAT')->get();
+        //     foreach ($sections_details as $section_detail) {
+        //         $answers = UserAnswers::select('actual_time')
+        //             ->where('user_id', $user_id)
+        //             ->where('section_id', $section_detail['id'])
+        //             ->where('test_id', $test->id)
+        //             ->first();
+
+        //         $actual_time = $answers->actual_time ?? '';
+        //         $sat_details_array[$test->id][$section_detail['practice_test_type'] . "_actual_time"] = $actual_time;
+
+        //         $eachMathScore = DB::table('scores')
+        //             ->whereIn('section_id', $right_question[$test->id]['mathSecIDs1'])
+        //             ->where('test_id', $test->id)
+        //             ->where('actual_score', $right_question[$test->id]['MathScoreCount'])
+        //             ->first('converted_score');
+
+        //         $mathSection = $eachMathScore->converted_score ?? 0;
+
+        //         $eachReadScore = DB::table('scores')
+        //             ->whereIn('section_id', $right_question[$test->id]['readSecIDs1'])
+        //             ->where('test_id', $test->id)
+        //             ->where('actual_score', $right_question[$test->id]['ReadScoreCount'])
+        //             ->first('converted_score');
+
+        //         $readSection = $eachReadScore->converted_score ?? 0;
+
+        //         $sat_details_array[$test->id]["MathSectionsScore"] = $mathSection;
+        //         $sat_details_array[$test->id]["ReadSectionsScore"] = $readSection;
+        //         $sat_details_array[$test->id]["CompSectionsScore"] = $mathSection + $readSection;
+        //     }
+        // }
+
+        $section_types = array_keys($right_question);
+        // dump($section_types);
+        // Iterate over each test ID
         foreach ($sat_test as $test) {
-            $sections_details = PracticeTestSection::where('testid', $test->id)->where('format', 'DPSAT')->get();
-            foreach ($sections_details as $section_detail) {
-                $answers = UserAnswers::select('actual_time')
-                    ->where('user_id', $user_id)
-                    ->where('section_id', $section_detail['id'])
-                    ->where('test_id', $test->id)
-                    ->first();
+            // Calculate section IDs for Reading and Math separately for the current test ID
+            $section_ids_reading = PracticeTestSection::where('testid', $test->id)
+                ->where('practice_test_type', 'LIKE', '%Reading%')
+                ->pluck('id')
+                ->toArray();
 
-                $actual_time = $answers->actual_time ?? '';
-                $sat_details_array[$test->id][$section_detail['practice_test_type'] . "_actual_time"] = $actual_time;
+            $section_ids_math = PracticeTestSection::where('testid', $test->id)
+                ->where('practice_test_type', 'LIKE', '%Math%')
+                ->pluck('id')
+                ->toArray();
 
-                $eachMathScore = DB::table('scores')
-                    ->whereIn('section_id', $right_question[$test->id]['mathSecIDs1'])
-                    ->where('test_id', $test->id)
-                    ->where('actual_score', $right_question[$test->id]['MathScoreCount'])
-                    ->first('converted_score');
 
-                $mathSection = $eachMathScore->converted_score ?? 0;
+            // Calculate scores for Reading and Math sections for the current test ID
+            $readingScoreCount = array_map(function ($section_type) use ($right_question, $section_ids_reading) {
+                return isset($section_ids_reading) ? count($right_question[$section_type]) : 0;
+            }, $section_ids_reading);
 
-                $eachReadScore = DB::table('scores')
-                    ->whereIn('section_id', $right_question[$test->id]['readSecIDs1'])
-                    ->where('test_id', $test->id)
-                    ->where('actual_score', $right_question[$test->id]['ReadScoreCount'])
-                    ->first('converted_score');
+            // dump($readingScoreCount);
 
-                $readSection = $eachReadScore->converted_score ?? 0;
+            $mathScoreCount = array_map(function ($section_type) use ($right_question, $section_ids_math) {
+                return isset($section_ids_math) ? count($right_question[$section_type]) : 0;
+            }, $section_ids_math);
 
-                $sat_details_array[$test->id]["MathSectionsScore"] = $mathSection;
-                $sat_details_array[$test->id]["ReadSectionsScore"] = $readSection;
-                $sat_details_array[$test->id]["CompSectionsScore"] = $mathSection + $readSection;
-            }
+            // Calculate the total score for Reading and Math sections for the current test ID
+            $eachReadingScore = DB::table('scores')
+                ->whereIn('section_id', $section_ids_reading)
+                ->where('actual_score', array_sum($readingScoreCount))
+                ->orderBy('created_at', 'desc')
+                ->first('converted_score');
+
+            $eachMathScore = DB::table('scores')
+                ->whereIn('section_id', $section_ids_math)
+                ->where('actual_score', array_sum($mathScoreCount))
+                ->orderBy('created_at', 'desc')
+                ->first('converted_score');
+
+            // Assign the calculated scores to the corresponding test ID
+            $sat_details_array[$test->id]["MathSectionsScore"] = isset($eachMathScore) ? $eachMathScore->converted_score : 0;
+            $sat_details_array[$test->id]["ReadSectionsScore"] = isset($eachReadingScore) ? $eachReadingScore->converted_score : 0;
+            $sat_details_array[$test->id]["CompSectionsScore"] = $sat_details_array[$test->id]["MathSectionsScore"] + $sat_details_array[$test->id]["ReadSectionsScore"];
         }
 
         return $sat_details_array;

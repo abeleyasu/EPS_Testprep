@@ -5342,6 +5342,7 @@ $('textarea').each(function (index) {
             let formatVal = $('#format').val();
             let section_id = $(this).attr('data-id');
             let section_types = $(this).attr('data-section_type');
+            
             let test_ids = $(this).attr('data-test_id');
             let total_question = $(`.section_${section_id} .sectionTypesFullMutli .sectionList`);
             // if(total_question.length > 0){
@@ -5386,9 +5387,13 @@ $('textarea').each(function (index) {
                                 } else {
                                     for (var i = 0; i < total_question.length + 1; i++) {
                                         if(i < result.length){
+                                           if(`${result[i]['test_id']}` != 0){
                                             $('.table_body').append(`<tr id="score_${result[i]['section_id']}_${i}" data-section_id="${result[i]['section_id']}" data-question_id="${result[i]['question_id']}" data-section_type="${result[i]['section_type']}" data-test_id="${result[i]['test_id']}" ><td><input type="number" placeholder="Actual Score" id="actualScore_${result[i]['question_id']}" name="actualScore" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="form-control" value="${result[i]['actual_score'] != null ? result[i]['actual_score'] : ''}"></td><td><input type="number" placeholder="Converted Score" id="convertedScore_${result[i]['question_id']}" name="convertedScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"  value="${result[i]['converted_score'] != null ? result[i]['converted_score'] : ''}"></td></tr>`);
+                                           }
                                         } else {
+                                            if(`${result[i]['test_id']}` != 0){
                                             $('.table_body').append(`<tr id="score_${section_id}_${i}" data-section_id="${section_id}" data-question_id="${i}" data-section_type="${section_types}" data-test_id="${test_ids}" ><td><input type="number" placeholder="Actual Score" id="actualScore_${i}" name="actualScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value=""></td><td><input type="number" placeholder="Converted Score" id="convertedScore_${i}" name="convertedScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value=""></td></tr>`);
+                                            }
                                         }
                                     }
                                 }
