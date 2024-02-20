@@ -18,7 +18,7 @@
                     <form action="{{ route('admin.admission-management.college-information.update') }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="id" value="{{ $info->id }}">
+                        <input data-id="{{ $info->college_id }}" type="hidden" name="id" value="{{ $info->id }}">
 
                         <div class="d-flex mb-4">
                             <div class="form-group col-md-5">
@@ -443,6 +443,112 @@
                             @enderror
                         </div>
 
+                        <div class="mb-4">
+                            <label class="from-label">Field of Studies:</label>
+                            <div>
+                                @foreach($api_data as $program)
+                                    <input 
+                                        type="number"
+                                        hidden
+                                        class="form-control"
+                                        value="{{ $program['code'] }}" />
+                                        
+                                    <input 
+                                        type="text"
+                                        hidden
+                                        class="form-control"
+                                        value="{{ $program['title'] }}" />
+                                    <input 
+                                        type="text"
+                                        hidden
+                                        class="form-control"
+                                        data-fos-description="{{ $program['code'] }}"
+                                        value="{{ $program['description'] }}" />
+                                    <input 
+                                        type="number"
+                                        hidden
+                                        class="form-control"
+                                        data-fos-salary="{{ $program['code'] }}"
+                                        value="{{ $program['median_earning'] }}" />
+                                    <input 
+                                        type="number"
+                                        hidden
+                                        class="form-control"
+                                        data-fos-debt="{{ $program['code'] }}"
+                                        value="{{ $program['debt_after_graduation'] }}" />
+                                @endforeach
+                                @foreach($data as $program)
+
+                                <div class="mt-4">
+                                    <div class="bg-dark p-3 text-white">{{ $program->title }} </div>
+                                    <br/>
+                                    {{-- ID of Program --}}
+                                    <input type="number"
+                                        hidden
+                                        class="form-control"
+                                        name="field_of_study[{{ $program->code }}][id]"
+                                        id="field_of_study[{{ $program->code }}][id]"
+                                        value="{{ $program->id }}" />
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <label 
+                                                for="field_of_study[{{ $program->code }}][description]"
+                                            >
+                                                Description
+                                            </label>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button" data-fos-id="{{$program->code}}" id="resetDescription">Reset Description</button>
+                                            </div>
+                                        </div>
+                                        <textarea type="text"
+                                            class="form-control"
+                                            name="field_of_study[{{ $program->code }}][description]"
+                                            id="field_of_study[{{ $program->code }}][description]"
+                                        >{{$program->description ?? ""}}</textarea>
+
+                                    </div>
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <label
+                                                for="field_of_study[{{ $program->code }}][salary_after_completing]"
+                                            >
+                                                Salary After Completing
+                                            </label>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button" data-fos-id="{{$program->code}}" id="resetSalary">Reset Salary</button>
+                                            </div>
+                                        </div>
+                                        <input type="number"
+                                            class="form-control"
+                                            name="field_of_study[{{ $program->code }}][salary_after_completing]"
+                                            id="field_of_study[{{ $program->code }}][salary_after_completing]"
+                                            value="{{ $program->median_earning ?? '' }}" />
+
+                                    </div>
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between mb-2 ">
+                                            <label
+                                                for="field_of_study[{{ $program->code }}][median_debt_after_graduation]"
+                                            >
+                                                Median Debt After Graduation
+                                            </label>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button" data-fos-id="{{$program->code}}" id="resetDebt">Reset Debt</button>
+                                            </div>
+
+                                        </div>
+                                        <input type="number"
+                                            class="form-control"
+                                            name="field_of_study[{{ $program->code }}][median_debt_after_graduation]"
+                                            id="field_of_study[{{ $program->code }}][median_debt_after_graduation]"
+                                            value="{{ $program->debt_after_graduation ?? "" }}" />
+
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+
 
 
                         <div class="row mb-4">
@@ -469,6 +575,34 @@
     <script src="{{ asset('assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script>
+
+
+        let resetButtons = $('[data-fos-id]');
+        resetButtons.each(function() {
+            if($(this).attr('id') == 'resetDescription'){
+                $(this).on('click', function(){
+                    let fosId = $(this).data('fos-id');
+                    let description = $(`[data-fos-description="${fosId}"]`).val();
+                    $(`#field_of_study\\[${fosId}\\]\\[description\\]`).val(description);
+                })
+            }
+            if($(this).attr('id') == 'resetSalary'){
+                $(this).on('click', function(){
+                    let fosId = $(this).data('fos-id');
+                    let salary = $(`[data-fos-salary="${fosId}"]`).val();
+                    $(`#field_of_study\\[${fosId}\\]\\[salary_after_completing\\]`).val(salary);
+                })
+            }
+            if($(this).attr('id') == 'resetDebt'){
+                $(this).on('click', function(){
+                    let fosId = $(this).data('fos-id');
+                    let debt = $(`[data-fos-debt="${fosId}"]`).val();
+                    $(`#field_of_study\\[${fosId}\\]\\[median_debt_after_graduation\\]`).val(debt);
+                })
+            }
+        });
+
+
         $(".js-range-slider").ionRangeSlider({
             skin: 'round',
             values_separator: "-",

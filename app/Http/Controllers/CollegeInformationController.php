@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\CollegeInformation;
+use App\Models\FieldsOfStudy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class CollegeInformationController extends Controller
 {
@@ -410,8 +412,60 @@ class CollegeInformationController extends Controller
     public function editView($id)
     {
         $college_detail = CollegeInformation::find($id);
+        $api = env('COLLEGE_RECORD_API') . '?'.'api_key='. env('COLLEGE_RECORD_API_KEY').'&id='.$college_detail->college_id;
+        error_log($api);
+        $data = Http::get($api);
+        $data = json_decode($data->body());
+        if (count($data->results) > 0) {
+            error_log('DATA VALUE');
+            error_log(json_encode($data));
+            $data = $data->results[0];
+            $college_info = CollegeInformation::where('college_id', $data->id)->first();
+            if ($college_info) {
+                $data->latest->college_info = $college_info;
+            }
+        } else {
+            $data = null;
+        }
+        if(isset($data->latest->programs->cip_4_digit)){
+
+        }
+        $programs = $data->latest->programs->cip_4_digit;
+
+        $fieldsOfStudy = array_reduce($programs, function ($carry, $item) {
+            // Check if the ID already exists in the associative array
+            if (!isset($carry[$item->code])) {
+                // If the ID is not found, add the object to the result and mark the ID as seen
+                $carry[$item->code] = $item;
+            }
+            return $carry;
+        }, []);
+        $api_data = [];
+        foreach($fieldsOfStudy as $fieldOfStudy){
+            $data = [
+                'code' => $fieldOfStudy->code,
+                'description' => $fieldOfStudy->description ?? "",
+                'debt_after_graduation' => $fieldOfStudy->debt->parent_plus->all->all_inst->median ?? 0,
+                'median_earning' => $fieldOfStudy->earnings->highest->{'1_yr'}->overall_median_earnings ?? 0,
+                'title' => $fieldOfStudy->title ?? "No Title"
+            ];
+            array_push($api_data, $data);
+        
+        }
+        if($college_detail->fieldsOfStudy()->count() < 1){
+            foreach($fieldsOfStudy as $fieldOfStudy){
+            // ddd($fieldOfStudy);
+                FieldsOfStudy::create([
+                    'code' => $fieldOfStudy->code,
+                    'description' => $fieldOfStudy->description ?? "",
+                    'debt_after_graduation' => $fieldOfStudy->debt->parent_plus->all->all_inst->median ?? 0,
+                    'median_earning' => $fieldOfStudy->earnings->highest->{'1_yr'}->overall_median_earnings ?? 0,
+                    'college_information_id' => $college_detail->id,
+                    'title' => $fieldOfStudy->title ?? "No Title"
+                ]);
+            }
+        }
         if ($college_detail) {
-            // dd($college_detail);
             $admin_editable_date_inputs = 
                 array( 
                     'regular_admission_deadline' => "Regular Admission Deadline",
@@ -424,7 +478,9 @@ class CollegeInformationController extends Controller
             );
             return view('admin.college-information.edit', [
                 'info' => $college_detail,
-                'date_inputs' => $admin_editable_date_inputs
+                'date_inputs' => $admin_editable_date_inputs,
+                'data' => $college_detail->fieldsOfStudy,
+                'api_data' => $api_data
             ]);
         }
         return redirect()->route('admin.admission-management.college-information.index');
@@ -453,6 +509,8 @@ class CollegeInformationController extends Controller
             // 'regular_admission_deadline' => 'required|date_format:m-d-Y',
         ];
 
+        // ddd($request->all());
+
 
 
         $boolean_params = array(
@@ -469,6 +527,7 @@ class CollegeInformationController extends Controller
                 $request->merge([$bp => 1]);
             }
         }
+
 
 
 
@@ -496,9 +555,17 @@ class CollegeInformationController extends Controller
             'regular_admission_deadline.required' => 'The regular admission deadline field is required.',
             'regular_admission_deadline.date' => 'The regular admission deadline field must be a date.',
         ];
+        // ddd($request->all());
+        foreach($request->field_of_study as $program){
+            $fos = FieldsOfStudy::find($program['id']);
+            $fos->description = $program['description'] ?? "";
+            $fos->debt_after_graduation = $program['median_debt_after_graduation'] ??  0;
+            $fos->median_earning = $program['salary_after_completing'] ?? 0;
+            $fos->save();
+        }
 
         $request->validate($rules, $customMessages);
-        $data = collect($request->all())->except(['_token', 'id'])->toArray();
+        $data = collect($request->all())->except(['_token', 'id', 'field_of_study'])->toArray();
         if (isset($data['college_icon'])) {
             $image = time() . '.' . $data['college_icon']->extension();
             $request->college_icon->move(public_path('college_icon'), $image);

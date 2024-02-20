@@ -86,4 +86,8 @@ class CollegeInformation extends Model
     public function college_details() {
         return $this->hasOne(CollegeDetails::class, 'college_id', 'id');
     }
+    public function fieldsOfStudy()
+    {
+        return $this->hasMany(FieldsOfStudy::class);
+    }
 }
