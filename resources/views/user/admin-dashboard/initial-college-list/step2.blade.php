@@ -956,7 +956,9 @@ $current_user_state_code = (
         }).done((response) => {
             if (response.success) {
                 One.loader('hide')
+                console.log(response)
                 const data = response.data
+                const programmes = response.programmes
                 let ownership = '', campus = 'N/A', size = 'Large'
                 switch(data.school.ownership) {
                     case 1:
@@ -1202,7 +1204,7 @@ $current_user_state_code = (
                     return uniqueProgrammes
                 }
                 function appendProgramme(programme){
-                    let programmeMedianEarning =  programme.earnings.highest.overall_median_earnings ? '$' + programme.earnings.highest.overall_median_earnings : 'No Data'
+                    let programmeMedianEarning =  programme.median_earning
                     let median
                             $("#college-content").append(`
                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
@@ -1211,19 +1213,21 @@ $current_user_state_code = (
                             </div>
                             <div id="id-${programme.code}" class="collapse" aria-labelledby="headingOne1" data-bs-parent=".accordionExamplemain">
                                 <div class="college-content-wrapper college-content">
+                                    <p><b>Description</b></p>
+                                    <p>${programme.description}</p>
                                     <p><b>Salary After Completing</b></p>
                                     <p>Median Earnings <b>${programmeMedianEarning}</b></p>
                                     <p><b>Financial Aid & Debt</b></p>
-                                    <p>Median Debt After Graduation <b>$25</b></p>
-                                    <p><b>Additional Information</b></p>
-                                    <p class="mb-0">Number of Graduates <b>250</b></p>
+                                    <p>Median Debt After Graduation <b>${programme.debt_after_graduation}</b></p>
                                 </div>
                             </div>
                         </div>
                     `);
                 }
 
-                getAllUniqueProgrammesID(data.latest.programs.cip_4_digit).forEach(programme => appendProgramme(programme))
+                console.log(programmes)
+                programmes.forEach(programme => appendProgramme(programme))
+
 
 
 

@@ -20,6 +20,7 @@ use Illuminate\Support\Arr;
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Support\Facades\Http;
 use App\Models\CollegeMajorInformation;
+use App\Models\FieldsOfStudy;
 use App\Models\UserCollgeScore;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use DB;
@@ -493,8 +494,8 @@ class InititalCollegeListController extends Controller
         $data = Http::get($api);
         $data = json_decode($data->body());
         if (count($data->results) > 0) {
-            error_log('DATA VALUE');
-            error_log(json_encode($data));
+            // error_log('DATA VALUE');
+            // error_log(json_encode($data));
             $data = $data->results[0];
             $college_info = CollegeInformation::where('college_id', $data->id)->first();
             if ($college_info) {
@@ -503,9 +504,12 @@ class InititalCollegeListController extends Controller
         } else {
             $data = null;
         }
+        error_log('Smack');
         return response()->json([
+            'id' => $id,
             'success' => $data ? true : false,
             'data' => $data,
+            'programmes' => FieldsOfStudy::where('college_information_id', $college_info->id)->get()
         ]);
     }
 
