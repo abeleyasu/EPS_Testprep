@@ -120,7 +120,6 @@ class TestPrepController extends Controller
                 $math_score = $section_score[$section['id']];
             } else {
                 $scaled_score += $section_score[$section['id']];
-                
             }
         }
         $scaled_score = $scaled_score + ($math_score);
@@ -1019,26 +1018,25 @@ class TestPrepController extends Controller
         $ctData = [];
         // dd($categoryTypeData);
         foreach ($categoryTypeData as $key => $catData) {
-            
+
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
                 $selected_answer = $answer_arr[$key] ?? '';
 
                 if ($selected_answer != "-") {
                     $answers = explode(",", $selected_answer);
-                   
+
                     if (in_array(strtolower($catKey), $answers) || empty($selected_answer)) {
                         $pq = PracticeQuestion::where("id", $key)->first();
-                     
-                        
+
+
                         foreach ($cat as $catKey1 => $catId) {
                             $tmp = $ctData[$key][$catId] ?? [];
-                          
+
                             if (!in_array($catKey, $tmp)) {
                                 $ctData[$key][$catId][] = $catKey;
-                               
                             }
-                           
+
 
                             $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] ?? 0;
                             $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] ?? 0;
@@ -3218,17 +3216,22 @@ class TestPrepController extends Controller
         $get_practice_id = $request->get_practice_id;
         $actual_time = $request->actual_time;
         $user_reading_score = $request->userReadingActualScore;
+        // dd($user_reading_score);
         $user_math_score = $request->userMathActualScore;
         // $user_total_score = $request->userTotalActualScore;
         $user_hour = $request->userHour;
         $user_mins = $request->userMinutes;
         $user_secs = $request->userSeconds;
 
+        $user_math_hour = $request->userMathHour;
+        $user_math_mins = $request->userMathMinutes;
+        $user_math_secs = $request->userMathSeconds;
+
         $test = DB::table('practice_tests')->where('id', $get_practice_id)->first();
         // dd($test);
         $is_proctored = 0;
         if ($test->test_source == 1 && ($test->format == 'DSAT' || $test->format == 'DPSAT')) {
-            if ($user_reading_score > 0) {
+            if ($user_reading_score > 0 || $user_hour || $user_mins || $user_secs) {
                 // dd($test->test_source);
                 $readingTest = DB::table('practice_test_sections')
                     ->select('id', 'testid', 'practice_test_type')
@@ -3243,12 +3246,14 @@ class TestPrepController extends Controller
                 foreach ($readingTest as $score) {
                     $scoreValue = DB::table('user_answers')
                         ->where('section_id', $score->id)
-                        ->update(['reading_and_writing_score' => $user_reading_score]);
+                        ->update(['reading_and_writing_score' => $user_reading_score, 'hours' => $user_hour, 'minutes' => $user_mins, 'seconds' => $user_secs, 'deleted_at' => null]);
                 }
+                // dd($scoreValue);
             }
 
 
-            if ($user_math_score > 0) {
+            if ($user_math_score > 0 || $user_math_hour > 0 || $user_math_mins > 0 || $user_math_secs > 0) {
+                // dd($user_math_hour );
                 $mathTest = DB::table('practice_test_sections')
                     ->select('id', 'testid', 'practice_test_type')
                     ->where('testid', $test->id)
@@ -3260,10 +3265,12 @@ class TestPrepController extends Controller
                     })
                     ->get();
 
+
+                // dd($mathTest);
                 foreach ($mathTest as $scoreMa) {
                     $scoreValueMa = DB::table('user_answers')
                         ->where('section_id', $scoreMa->id)
-                        ->update(['math_score' => $user_math_score]);
+                        ->update(['math_score' => $user_reading_score, 'hours' => $user_math_hour, 'minutes' => $user_math_mins, 'seconds' => $user_math_secs, 'deleted_at' => null]);
                 }
             }
 
@@ -3329,9 +3336,19 @@ class TestPrepController extends Controller
                 $userAnswers->reading_and_writing_score = $user_reading_score;
                 $userAnswers->math_score = $user_math_score;
                 // $userAnswers->total_score = $user_total_score;
-                $userAnswers->hours = $user_hour;
-                $userAnswers->minutes = $user_mins;
-                $userAnswers->seconds = $user_secs;
+
+                if ($user_hour || $user_mins || $user_secs) {
+                    $userAnswers->hours = $user_hour;
+                    $userAnswers->minutes = $user_mins;
+                    $userAnswers->seconds = $user_secs;
+                }
+
+                if ($user_math_hour || $user_math_mins || $user_math_secs) {
+                    $userAnswers->hours = $user_math_hour;
+                    $userAnswers->minutes = $user_math_mins;
+                    $userAnswers->seconds = $user_math_secs;
+                }
+
                 $userAnswers->is_proctored = $is_proctored;
                 $userAnswers->save();
             }
@@ -3405,9 +3422,17 @@ class TestPrepController extends Controller
                         $userAnswers->reading_and_writing_score = $user_reading_score;
                         $userAnswers->math_score = $user_math_score;
                         // $userAnswers->total_score = $user_total_score;
-                        $userAnswers->hours = $user_hour;
-                        $userAnswers->minutes = $user_mins;
-                        $userAnswers->seconds = $user_secs;
+                        if ($user_hour || $user_mins || $user_secs) {
+                            $userAnswers->hours = $user_hour;
+                            $userAnswers->minutes = $user_mins;
+                            $userAnswers->seconds = $user_secs;
+                        }
+
+                        if ($user_math_hour || $user_math_mins || $user_math_secs) {
+                            $userAnswers->hours = $user_math_hour;
+                            $userAnswers->minutes = $user_math_mins;
+                            $userAnswers->seconds = $user_math_secs;
+                        }
                         $userAnswers->is_proctored = $is_proctored;
                         $userAnswers->save();
                     }
