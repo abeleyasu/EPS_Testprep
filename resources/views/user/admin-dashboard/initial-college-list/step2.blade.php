@@ -1225,8 +1225,9 @@ $current_user_state_code = (
                     `);
                 }
 
-                console.log(programmes)
-                programmes.forEach(programme => appendProgramme(programme))
+                if(programmes){
+                    programmes.forEach(programme => appendProgramme(programme))
+                }
 
 
 
