@@ -143,9 +143,9 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      height: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      background-color: blue;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      margin-right: 5px; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      height: 20px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      background-color: blue;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      margin-right: 5px; */
         }
     </style>
     @php
@@ -191,16 +191,42 @@
                 ->get();
 
             $readingScore = null;
+            $hours = null;
+            $minutes = null;
+            $seconds = null;
 
             foreach ($readingTest as $score) {
                 $scoreValue = DB::table('user_answers')
                     ->where('section_id', $score->id)
                     ->value('reading_and_writing_score');
 
+                $hoursValue = DB::table('user_answers')
+                    ->where('section_id', $score->id)
+                    ->value('hours');
+                $minutesValue = DB::table('user_answers')
+                    ->where('section_id', $score->id)
+                    ->value('minutes');
+                $secondsValue = DB::table('user_answers')
+                    ->where('section_id', $score->id)
+                    ->value('seconds');
+
+                // dd($scoreValue);
                 if ($scoreValue !== null) {
                     $readingScore = $scoreValue;
-                    break;
                 }
+
+                if ($hoursValue !== null) {
+                    $hours = $hoursValue;
+                }
+
+                if ($minutesValue !== null) {
+                    $minutes = $minutesValue;
+                }
+
+                if ($secondsValue !== null) {
+                    $seconds = $secondsValue;
+                }
+               
             }
 
             $mathTest = DB::table('practice_test_sections')
@@ -211,14 +237,36 @@
                 })
                 ->get();
             $mathScore = null;
+            $hoursMa = null;
+            $minutesMa = null;
+            $secondsMa = null;
 
             foreach ($mathTest as $scoreMa) {
                 $scoreValueMa = DB::table('user_answers')
                     ->where('section_id', $scoreMa->id)
                     ->value('math_score');
+                $hoursValueMa = DB::table('user_answers')
+                    ->where('section_id', $scoreMa->id)
+                    ->value('hours');
+                $minutesValueMa = DB::table('user_answers')
+                    ->where('section_id', $scoreMa->id)
+                    ->value('minutes');
+                $secondsValueMa = DB::table('user_answers')
+                    ->where('section_id', $scoreMa->id)
+                    ->value('seconds');
                 if ($scoreValueMa !== null) {
                     $mathScore = $scoreValueMa;
-                    break;
+                }
+                if ($hoursValueMa !== null) {
+                    $hoursMa = $hoursValueMa;
+                }
+
+                if ($minutesValueMa !== null) {
+                    $minutesMa = $minutesValueMa;
+                }
+
+                if ($secondsValueMa !== null) {
+                    $secondsMa = $secondsValueMa;
                 }
             }
         }
@@ -504,22 +552,47 @@
                         </div>
                     </div>
                 @elseif(($test->format == 'DSAT' || $test->format == 'DPSAT') && $testSectionType == 'graded')
+                    @php
+                        // dd($getTestSection->practice_test_type);
+                        if (strpos($getTestSection->practice_test_type, 'Math') !== false) {
+                            $testFor = 'Math';
+                        } elseif (strpos($getTestSection->practice_test_type, 'Reading') !== false || strpos($getTestSection->practice_test_type, 'Writing') !== false) {
+                            $testFor = 'English';
+                        } else {
+                        }
+                    @endphp
                     <div class="row">
                         <div class="col-md-2 text-center mt-2">
                             <p class="fw-bold" style="font-size:15px">Actual Time</p>
                         </div>
-                        <div class="col-md-3">
-                            <input type="text" class="form-control form-control-md " id="user_hours"
-                                name="user_hours" placeholder="Enter Hours">
-                        </div>
-                        <div class="col-md-3">
-                            <input type="text" class="form-control form-control-md " id="user_minutes"
-                                name="user_minutes" placeholder="Enter Minutes">
-                        </div>
-                        <div class="col-md-3">
-                            <input type="text" class="form-control form-control-md " id="user_seconds"
-                                name="user_seconds" placeholder="Enter Seconds">
-                        </div>
+                        @if ($testFor == 'English')
+                            <div class="col-md-3">
+                                <input type="text" class="form-control form-control-md " id="user_hours"
+                                    name="user_hours" placeholder="Enter Hours" value="{{ $hours }}">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control form-control-md " id="user_minutes"
+                                    name="user_minutes" placeholder="Enter Minutes" value="{{ $minutes }}">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control form-control-md " id="user_seconds"
+                                    name="user_seconds" placeholder="Enter Seconds" value="{{ $seconds }}">
+                            </div>
+                        @endif
+                        @if ($testFor == 'Math')
+                            <div class="col-md-3">
+                                <input type="text" class="form-control form-control-md " id="user_math_hours"
+                                    name="user_math_hours" placeholder="Enter Hours" value="{{ $hoursMa }}">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control form-control-md " id="user_math_minutes"
+                                    name="user_math_minutes" placeholder="Enter Minutes" value="{{ $minutesMa }}">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control form-control-md " id="user_math_seconds"
+                                    name="user_math_seconds" placeholder="Enter Seconds" value="{{ $secondsMa }}">
+                            </div>
+                        @endif
                     </div>
                 @else
                 @endif
@@ -1450,6 +1523,10 @@
                 let userMinutes = $('#user_minutes').val();
                 let userSeconds = $('#user_seconds').val();
 
+                let userMathHour = $('#user_math_hours').val();
+                let userMathMinutes = $('#user_math_minutes').val();
+                let userMathSeconds = $('#user_math_seconds').val();
+
 
 
 
@@ -1677,6 +1754,9 @@
                     userHour,
                     userMinutes,
                     userSeconds,
+                    userMathHour,
+                    userMathMinutes,
+                    userMathSeconds,
                     test_type: testType
                 };
                 jQuery.ajax({
@@ -1841,6 +1921,10 @@
                 let userHour = $('#user_hours').val();
                 let userMinutes = $('#user_minutes').val();
                 let userSeconds = $('#user_seconds').val();
+                
+                let userMathHour = $('#user_math_hours').val();
+                let userMathMinutes = $('#user_math_minutes').val();
+                let userMathSeconds = $('#user_math_seconds').val();
 
                 // if (userActualScore == '' && userActualTime == '') {
                 //     alert('Please enter valid values for Actual Score and Actual Time fields.');
@@ -2069,7 +2153,10 @@
                     userActualTime,
                     userHour,
                     userMinutes,
-                    userSeconds,
+                    userSeconds, 
+                    userMathHour,
+                    userMathMinutes,
+                    userMathSeconds,
                     test_type: testType
                 };
                 jQuery.ajax({
