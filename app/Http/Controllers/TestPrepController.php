@@ -1191,16 +1191,20 @@ class TestPrepController extends Controller
         $checkboxData = [];
         // $testid = 553;
         $types = 'all';
-        if ($request->query('test') != null) {
-            $testType = $request->query('test');
+        if ($request->query('testType') != null) {
+            $testType = $request->query('testType');
         } else {
-            return to_route('test-prep-insights')->with('error', 'Please select a Test Format!!!');
+            return response()->json([
+                'error' => 'Please select a Test Format!!!'
+            ]);
         }
 
         if ($request->query('testid') != null) {
             $testid = $request->query('testid');
         } else {
-            return to_route('test-prep-insights')->with('error', 'Please select a Test!!!');
+            return response()->json([
+                'error' => 'No test was found with this format!!!'
+            ]);
         }
         // $allTestsByUser = DB::table('practice_tests')->where('user_id', $current_user_id)->where('format', $testType)->pluck('id')->toArray();
         // // dump($current_user_id);
@@ -2089,7 +2093,7 @@ class TestPrepController extends Controller
             }
         }
 
-        return view('user.test-review.all',  [
+        $html = view('user.test-review.all',  [
             'category_data' => $category_data,
             'questionTypeData' => $questionTypeData,
             'questionsCtPresent' => $questionsCtPresent,
@@ -2110,7 +2114,8 @@ class TestPrepController extends Controller
             // 'low_score' => $low_score,
             // 'practice_test_section_id' => $practice_test_section_id,
             'categoryAndQuestionTypeSummaryData' => $categoryAndQuestionTypeSummaryData
-        ]);
+        ])->render();
+        return response()->json(['html' => $html]);
     }
     public function allTestInsights(Request $request)
     {
@@ -2126,16 +2131,21 @@ class TestPrepController extends Controller
         $checkboxData = [];
         // $testid = 553;
         $types = 'all';
-        if ($request->query('test') != null) {
-            $testType = $request->query('test');
+        if ($request->query('testType') != null) {
+            $testType = $request->query('testType');
         } else {
-            return to_route('test-prep-insights')->with('error', 'Please select a Test Format!!!');
+            return response()->json([
+                'error' => 'Please select a Test Format!!!'
+            ]);
         }
         $allTestsByUser = DB::table('practice_tests')->where('user_id', $current_user_id)->where('format', $testType)->pluck('id')->toArray();
         // dump($current_user_id);
         // dd($allTestsByUser);
         if (empty($allTestsByUser)) {
-            return to_route('test-prep-insights')->with('error', 'No test was found with this format!!!');
+            return response()->json([
+                'error' => 'No test was found with this format!!!'
+            ]);
+            // return to_route('test-prep-insights')->with('error', 'No test was found with this format!!!');
         }
 
         foreach ($allTestsByUser as $testid) {
@@ -2268,124 +2278,6 @@ class TestPrepController extends Controller
                     }
                 }
             }
-            // else if ($types == 'single') {
-
-            //     $store_data = array();
-            //     $question_tags = [];
-            //     $check_question_answers = [];
-            //     $store_question_type_data = array();
-            //     $get_test_questions = DB::table('practice_questions')
-            //         ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
-            //         ->select(
-            //             'practice_questions.id as test_question_id',
-            //             'practice_questions.category_type',
-            //             'practice_questions.mistake_type',
-            //             'practice_questions.tags as tags',
-            //             'practice_questions.answer as answer',
-            //             'practice_questions.category_type_values as category_type_values',
-            //             'practice_questions.question_type_values as question_type_values',
-            //             'practice_questions.checkbox_values as checkbox_values',
-            //             // 'practice_questions.notes',
-            //         )
-            //         ->where('practice_test_sections.id', $id)
-            //         ->orderBy('practice_questions.question_order', 'ASC')
-            //         ->get();
-
-            //     $user_answers_data = DB::table('user_answers')
-            //         ->where('user_id', $current_user_id)
-            //         ->where('section_id', $id)
-            //         ->latest()
-            //         ->get();
-            //     foreach ($get_test_questions as $question) {
-            //         $questionDetails = QuestionDetails::where("question_id", $question->test_question_id)->get();
-            //         $questionTypeData[$question->test_question_id] = json_decode($question->question_type_values ?? '', true);
-            //         $categoryTypeData[$question->test_question_id] = json_decode($question->category_type_values ?? '', true);
-            //         $checkboxData[$question->test_question_id] = json_decode($question->checkbox_values ?? '', true);
-            //     }
-            //     $answer_arr = [];
-            //     foreach ($user_answers_data as $user_answer) {
-            //         $answers = json_decode($user_answer->answer, true);
-            //         $answer_arr[] = $answers;
-            //     }
-            //     $answer_arr = $this->array_flatten($answer_arr);
-            //     foreach ($get_test_questions as $question) {
-            //         if (isset($answer_arr[$question->test_question_id])  && !empty($answer_arr[$question->test_question_id])) {
-            //             if ($answer_arr[$question->test_question_id] == $question->answer) {
-            //                 $check_question_answers[$question->test_question_id] = true;
-            //             } else {
-            //                 $check_question_answers[$question->test_question_id] = false;
-            //             }
-            //         } else {
-            //             $check_question_answers[$question->test_question_id] = false;
-            //         }
-            //     }
-
-            //     $get_all_cat_type = DB::table('practice_category_types')->get();
-
-            //     if (!$get_test_questions->isEmpty()) {
-            //         $percentage_arr_all = [];
-            //         foreach ($get_test_questions as $get_single_test_questions) {
-
-            //             $questionDetails = QuestionDetails::where("question_id", $get_single_test_questions->test_question_id)->get(['question_type', 'category_type'])->toArray();
-
-            //             $array_ques_type = array_map(function ($item) {
-            //                 return $item['question_type'];
-            //             }, $questionDetails);
-
-            //             // $array_cat_type = json_decode($get_single_test_questions->category_type, true);
-            //             $array_cat_type = array_map(function ($item) {
-            //                 return $item['category_type'];
-            //             }, $questionDetails);
-
-            //             if (isset($array_cat_type) && !empty($array_cat_type) && isset($array_ques_type) && !empty($array_ques_type)) {
-            //                 $mergedArray = [];
-            //                 for ($i = 0; $i < count($array_ques_type); $i++) {
-            //                     $mergedArray[$i] = [
-            //                         'category_type' => $array_cat_type[$i],
-            //                         'question_type' => $array_ques_type[$i]
-            //                     ];
-            //                 }
-
-            //                 foreach ($check_question_answers as $q_id => $check_question_answer) {
-            //                     if ($get_single_test_questions->test_question_id == $q_id) {
-            //                         $percentage_arr = [
-            //                             $q_id => $check_question_answer
-            //                         ];
-            //                     }
-            //                 }
-
-            //                 foreach ($mergedArray as $type) {
-            //                     $get_cat_name_by_id = DB::table('practice_category_types')
-            //                         ->where('id', $type['category_type'])
-            //                         ->get();
-
-            //                     $get_ques_type_name_by_id = DB::table('question_types')
-            //                         ->where('id', $type['question_type'])
-            //                         ->get();
-            //                     if (isset($get_cat_name_by_id[0]->category_type_title) && !empty($get_cat_name_by_id[0]->category_type_title)) {
-            //                         $percentage_arr_all[$get_cat_name_by_id[0]->category_type_title][] = $percentage_arr;
-            //                         $question_tags[$get_cat_name_by_id[0]->category_type_title] = isset($get_single_test_questions->tags) ? explode(",", $get_single_test_questions->tags) : [];
-            //                     }
-            //                     if (isset($get_cat_name_by_id[0]->category_type_title) && !empty($get_cat_name_by_id[0]->category_type_title) && isset($get_ques_type_name_by_id[0]->question_type_title) && !empty($get_ques_type_name_by_id[0]->question_type_title)) {
-            //                         $store_all_data[$get_cat_name_by_id[0]->category_type_title][$get_ques_type_name_by_id[0]->question_type_title][] = array($get_single_test_questions->test_question_id, 'category_title' => $get_cat_name_by_id[0]->category_type_title, 'category_description' => $get_cat_name_by_id[0]->category_type_description, "category_type_lesson" => $get_cat_name_by_id[0]->category_type_lesson, "category_type_strategies" => $get_cat_name_by_id[0]->category_type_strategies, "category_type_identification_methods" => $get_cat_name_by_id[0]->category_type_identification_methods, "category_type_identification_activity" => $get_cat_name_by_id[0]->category_type_identification_activity, "question_desc" => $get_ques_type_name_by_id[0]->question_type_description, "question_type_title" => $get_ques_type_name_by_id[0]->question_type_title, "question_type_lesson" => $get_ques_type_name_by_id[0]->question_type_lesson, "question_type_strategies" => $get_ques_type_name_by_id[0]->question_type_strategies, "question_type_identification_methods" => $get_ques_type_name_by_id[0]->question_type_identification_methods, "question_type_identification_activity" => $get_ques_type_name_by_id[0]->question_type_identification_activity);
-            //                     }
-            //                 }
-            //             }
-
-            //             if (isset($array_ques_type) && !empty($array_ques_type)) {
-            //                 foreach ($array_ques_type as $single_ques_type) {
-            //                     $get_ques_type_name_by_id = DB::table('question_types')
-            //                         ->where('id', $single_ques_type)
-            //                         ->get();
-            //                     if (isset($get_ques_type_name_by_id[0]->question_type_title) && !empty($get_ques_type_name_by_id[0]->question_type_title) && isset($get_cat_name_by_id[0]->category_type_title) && !empty($get_cat_name_by_id[0]->category_type_title)) {
-            //                         $store_question_type_data[$get_ques_type_name_by_id[0]->question_type_title][] = array($get_single_test_questions->test_question_id, 'category_description' => $get_cat_name_by_id[0]->category_type_description, 'category_title' => $get_cat_name_by_id[0]->category_type_title, "category_type_lesson" => $get_cat_name_by_id[0]->category_type_lesson, "category_type_strategies" => $get_cat_name_by_id[0]->category_type_strategies, "category_type_identification_methods" => $get_cat_name_by_id[0]->category_type_identification_methods, "category_type_identification_activity" => $get_cat_name_by_id[0]->category_type_identification_activity, "question_desc" => $get_ques_type_name_by_id[0]->question_type_description, "question_type_title" => $get_ques_type_name_by_id[0]->question_type_title, "question_type_lesson" => $get_ques_type_name_by_id[0]->question_type_lesson, "question_type_strategies" => $get_ques_type_name_by_id[0]->question_type_strategies, "question_type_identification_methods" => $get_ques_type_name_by_id[0]->question_type_identification_methods, "question_type_identification_activity" => $get_ques_type_name_by_id[0]->question_type_identification_activity);
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }
-            // }
-
 
             if (isset($types) && !empty($types)) {
                 $helper = new Helper();
@@ -2465,71 +2357,6 @@ class TestPrepController extends Controller
                         }
                     }
                 }
-                // else if ($types == 'single') {
-                //     $user_selected_answers = DB::table('user_answers')
-                //         ->where('user_id', $current_user_id)
-                //         ->where('section_id', $id)
-                //         ->latest()
-                //         ->get();
-                //     $test_section = PracticeTestSection::where('testid', $test_details->id)->where('id', $id)->get();
-                //     $store_user_answers_details = array();
-                //     if (isset($user_selected_answers[0]) && !empty($user_selected_answers[0])) {
-                //         $decoded_answers = [];
-                //         $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
-                //         $question_order = PracticeQuestion::where('practice_test_sections_id', $id)->orderBy('question_order', 'ASC')->pluck('id')->toArray();
-
-                //         if (isset($question_order) && !empty($question_order)) {
-                //             foreach ($question_order as $order) {
-                //                 if (isset($json_decoded_answers->{$order})) {
-                //                     $decoded_answers[$order] = $json_decoded_answers->{$order};
-                //                 } else {
-                //                     $decoded_answers[$order] = '';
-                //                 }
-                //             }
-                //         }
-                //         $json_decoded_guess = json_decode($user_selected_answers[0]->guess);
-                //         $json_decoded_flag = json_decode($user_selected_answers[0]->flag);
-                //         $json_decoded_skip = json_decode($user_selected_answers[0]->skip);
-                //         foreach ($decoded_answers as $question_id => $json_decoded_single_answers) {
-                //             $get_question_details = DB::table('practice_questions')
-                //                 // ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
-                //                 ->select(
-                //                     'practice_questions.id as question_id',
-                //                     'practice_questions.practice_test_sections_id as section_id',
-                //                     'practice_questions.title as question_title',
-                //                     'practice_questions.type as practice_type',
-                //                     'practice_questions.answer as question_answer',
-                //                     'practice_questions.answer_content as question_answer_options',
-                //                     'practice_questions.multiChoice as is_multiple_choice',
-                //                     'practice_questions.question_order',
-                //                     'practice_questions.mistake_type',
-                //                     'practice_questions.tags',
-                //                     'practice_questions.passages_id',
-                //                     'passages.title',
-                //                     // 'practice_questions.notes',
-                //                     'passages.description',
-                //                     'practice_questions.category_type as category_type',
-                //                     'practice_questions.question_type_id as question_type_id',
-                //                     'practice_questions.answer_exp as answer_exp'
-                //                 )
-                //                 ->where('practice_questions.id', $question_id)
-                //                 ->leftJoin("passages", "passages.id", "=", "practice_questions.passages_id")
-                //                 ->orderBy('practice_questions.question_order', 'ASC')
-                //                 ->get();
-
-                //             $store_sections_details[] = array(
-                //                 'user_selected_answer' => $json_decoded_single_answers,
-                //                 'user_selected_guess' => (isset($json_decoded_guess) && !empty($json_decoded_guess)) ? $json_decoded_guess->$question_id ?? '' : null,
-                //                 'user_selected_flag' => (isset($json_decoded_flag) && !empty($json_decoded_flag)) ? $json_decoded_flag->$question_id ?? '' : null,
-                //                 'user_selected_skip' => (isset($json_decoded_skip) && !empty($json_decoded_skip)) ? $json_decoded_skip->$question_id ?? '' : null,
-                //                 'get_question_details' => $get_question_details,
-                //                 'sections' => $test_section,
-                //                 'date_taken' => $user_selected_answers,
-                //                 'type' => $types
-                //             );
-                //         }
-                //     }
-                // }
             }
 
             if ($types == 'all') {
@@ -2568,337 +2395,6 @@ class TestPrepController extends Controller
                 }
             }
         }
-        // foreach ($store_sections_details as $store_sections_detail) {
-        //     if ($types == "single") {
-        //         $section_id = $store_sections_detail['get_question_details'][0]->section_id;
-        //         $section_type = $store_sections_detail['sections'][0]->practice_test_type;
-        //         $count_right_answer[$section_id][$section_type] = [];
-        //         $count_total_question[$section_id][$section_type] = [];
-        //     } else {
-        //         foreach ($store_sections_detail['all_sections'] as $section) {
-        //             // $section_id = $store_sections_detail['get_question_details'][0]->section_id;
-        //             $section_id = $section->id;
-        //             $section_type = $section->practice_test_type;
-        //             $count_right_answer[$section_id][$section_type] = [];
-        //             $count_total_question[$section_id][$section_type] = [];
-        //         }
-        //     }
-        // }
-
-        // foreach ($store_sections_details as $store_sections_detail) {
-        //     if ($types == "single") {
-        //         if (isset($store_sections_detail['user_selected_answer']) && !empty($store_sections_detail['user_selected_answer']) && isset($store_sections_detail['get_question_details'][0]->question_answer) && !empty($store_sections_detail['get_question_details'][0]->question_answer)) {
-        //             if ($store_sections_detail['get_question_details'][0]->is_multiple_choice == 2) {
-        //                 $correct_answer[$id] =  $store_sections_detail['get_question_details'][0]->question_answer;
-        //                 // if(in_array(str_replace(' ','',$store_sections_detail['user_selected_answer']),$correct_answer) || in_array(str_replace(' ','',$store_sections_detail['user_selected_answer']),explode(',',$correct_answer[$id])) || Str::contains($correct_answer[$id],explode(',',str_replace(' ','',$store_sections_detail['user_selected_answer'])))){
-        //                 if ($helper->stringExactMatch($correct_answer[$id], $store_sections_detail['user_selected_answer'])) {
-        //                     $section_id = $store_sections_detail['get_question_details'][0]->section_id;
-        //                     $section_type = $store_sections_detail['sections'][0]->practice_test_type;
-        //                     array_push($count_right_answer[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-        //                     array_push($count_total_question[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-        //                 } else {
-        //                     array_push($count_total_question[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-        //                 }
-        //             } else {
-        //                 if (str_replace(' ', '', $store_sections_detail['user_selected_answer']) == str_replace(' ', '', $store_sections_detail['get_question_details'][0]->question_answer)) {
-        //                     $section_id = $store_sections_detail['get_question_details'][0]->section_id;
-        //                     $section_type = $store_sections_detail['sections'][0]->practice_test_type;
-        //                     array_push($count_right_answer[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-        //                     array_push($count_total_question[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-        //                 } else {
-        //                     array_push($count_total_question[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-        //                 }
-        //             }
-        //         }
-        //     } else {
-        //         if (isset($store_sections_detail['user_selected_answer']) && !empty($store_sections_detail['user_selected_answer']) && isset($store_sections_detail['get_question_details'][0]->question_answer) && !empty($store_sections_detail['get_question_details'][0]->question_answer)) {
-        //             foreach ($store_sections_detail['all_sections'] as $section) {
-        //                 $section_id = $section->id;
-        //                 $section_type = $section->practice_test_type;
-        //                 if ($section_id == $store_sections_detail['get_question_details'][0]->section_id) {
-        //                     if ($store_sections_detail['get_question_details'][0]->is_multiple_choice == 2) {
-        //                         $correct_answer[$section_id] =  $store_sections_detail['get_question_details'][0]->question_answer;
-        //                         // if(in_array(str_replace(' ','',$store_sections_detail['user_selected_answer']),explode(',',$correct_answer[$section_id])) || in_array(str_replace(' ','',$store_sections_detail['user_selected_answer']),$correct_answer) || Str::contains($correct_answer[$section_id],explode(',',str_replace(' ','',$store_sections_detail['user_selected_answer'])))){
-        //                         if ($helper->stringExactMatch($correct_answer[$section_id], $store_sections_detail['user_selected_answer'])) {
-        //                             array_push($count_right_answer[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-        //                             array_push($count_total_question[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-        //                         } else {
-        //                             array_push($count_total_question[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-        //                         }
-        //                     } else {
-        //                         if (str_replace(' ', '', $store_sections_detail['user_selected_answer']) == str_replace(' ', '', $store_sections_detail['get_question_details'][0]->question_answer)) {
-        //                             array_push($count_right_answer[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-        //                             array_push($count_total_question[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-        //                         } else {
-        //                             array_push($count_total_question[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-        // if ($types == "single") {
-        //     $right_answer = count($count_right_answer[$id][$store_sections_detail['sections'][0]['practice_test_type']]);
-        //     $scaled_score = Score::where(['section_id' => $id, 'actual_score' => $right_answer])->get('converted_score');
-        //     if (isset($scaled_score[0]['converted_score'])) {
-        //         $total_scaled_score[$id][$store_sections_detail['sections'][0]['practice_test_type']] = $scaled_score[0]['converted_score'];
-        //     } else {
-        //         $total_scaled_score[$id][$store_sections_detail['sections'][0]['practice_test_type']] = 0;
-        //     }
-        // } else {
-        //     foreach ($store_sections_details as $store_sections_detail) {
-        //         $old_section_id = 0;
-        //         foreach ($store_sections_detail['all_sections'] as $section) {
-        //             $section_id = $section->id;
-        //             $section_type = $section->practice_test_type;
-        //             $total_scaled_score[$section_id][$section_type] = [];
-        //             //new
-        //             if ($section_type == 'Math_no_calculator') {
-        //                 $total_other_right = 0;
-        //                 $other_section = PracticeTestSection::where('testid', $id)->where('practice_test_type', 'Math_with_calculator')->get();
-        //                 foreach ($other_section as $sec) {
-        //                     $total_other_right += count($count_right_answer[$sec['id']][$sec['practice_test_type']]);
-        //                 }
-        //                 $total_right = $total_other_right + count($count_right_answer[$section_id][$section_type]);
-        //                 $converted_score = Score::where('section_id', $section_id)->where('actual_score', $total_right)->get('converted_score');
-        //                 if (isset($converted_score[0]['converted_score'])) {
-        //                     array_push($total_scaled_score[$section_id][$section_type], $converted_score[0]['converted_score']);
-        //                 } else {
-        //                     array_push($total_scaled_score[$section_id][$section_type], 0);
-        //                 }
-        //             } else if ($section_type == 'Math_with_calculator') {
-        //                 $total_other_right = 0;
-        //                 $other_section = PracticeTestSection::where('testid', $id)->where('practice_test_type', 'Math_no_calculator')->get();
-        //                 foreach ($other_section as $sec) {
-        //                     $total_other_right += count($count_right_answer[$sec['id']][$sec['practice_test_type']]);
-        //                 }
-        //                 $total_right = $total_other_right + count($count_right_answer[$section_id][$section_type]);
-        //                 $converted_score = Score::where('section_id', $section_id)->where('actual_score', $total_right)->get('converted_score');
-        //                 if (isset($converted_score[0]['converted_score'])) {
-        //                     array_push($total_scaled_score[$section_id][$section_type], $converted_score[0]['converted_score']);
-        //                 } else {
-        //                     array_push($total_scaled_score[$section_id][$section_type], 0);
-        //                 }
-        //             } else {
-        //                 $right_answer = count($count_right_answer[$section_id][$section_type]);
-        //                 $scaled_score = Score::where(['section_id' => $section_id, 'actual_score' => $right_answer])->get('converted_score');
-        //                 if ($old_section_id != $section_id && isset($scaled_score[0]['converted_score'])) {
-        //                     array_push($total_scaled_score[$section_id][$section_type], $scaled_score[0]['converted_score']);
-        //                 } else {
-        //                     array_push($total_scaled_score[$section_id][$section_type], 0);
-        //                 }
-        //                 $old_section_id = $section_id;
-        //             }
-        //         }
-        //     }
-        // }
-
-        // if ($test_details->format == 'ACT') {
-        //     if ($types == 'single') {
-        //         $section_type = $store_sections_detail['sections'][0]['practice_test_type'];
-        //         $right_answers = count($count_right_answer[$id][$section_type]);
-        //         $total_questions = count($count_total_question[$id][$section_type]);
-        //         $scaled_score = $total_scaled_score[$id][$section_type];
-        //     } else {
-        //         $right_answers = 0;
-        //         $total_questions = 0;
-        //         $scaled_scores = 0;
-        //         $count = 0;
-        //         foreach ($store_sections_detail['all_sections'] as $section) {
-        //             $count++;
-        //             $section_id = $section->id;
-        //             $section_type = $section->practice_test_type;
-        //             $right_answers += count($count_right_answer[$section->id][$section->practice_test_type]);
-        //             $total_questions += count($count_total_question[$section->id][$section->practice_test_type]);
-        //             $scaled_scores += $total_scaled_score[$section->id][$section->practice_test_type][0];
-        //         }
-        //         $scaled_score = $scaled_scores / $count;
-        //     }
-        // } else {
-        //     if ($types == 'single') {
-        //         $section_type = $store_sections_detail['sections'][0]['practice_test_type'];
-        //         if ($section_type == 'Math_no_calculator') {
-        //             $test_id = $test_details->id;
-        //             $sections = PracticeTestSection::where('testid', $test_id)->where('practice_test_type', 'Math_with_calculator')->get();
-        //             if (isset($sections[0]->id)) {
-        //                 $section_id = $sections[0]->id;
-        //                 $questions = PracticeQuestion::where('practice_test_sections_id', $section_id)->get();
-
-        //                 foreach ($questions as $question) {
-        //                     $questionDetails = QuestionDetails::where("question_id", $question->test_question_id)->get();
-
-        //                     foreach ($questionDetails as $value) {
-        //                         # code...
-        //                         $superCategory = SuperCategory::find($value->super_category);
-        //                         $categoryType = PracticeCategoryType::find($value->category_type);
-        //                         $questionType = QuestionType::find($value->question_type);
-        //                         $category_data[$question->id][] = [
-        //                             'superCategory' => $superCategory,
-        //                             'categoryType' => $categoryType,
-        //                             'questionType' => $questionType
-        //                         ];
-        //                     }
-        //                 }
-
-        //                 $question_count = $questions->count();
-        //                 $answer_data = UserAnswers::where('section_id', $section_id)->where('user_id', $current_user_id)->get();
-        //                 $count_right_answer[$section_id][$sections[0]->practice_test_type] = [];
-        //                 $total_scaled_score[$section_id][$sections[0]->practice_test_type] = [];
-        //                 if (isset($answer_data[0]->answer)) {
-        //                     $decode_answers = json_decode($answer_data[0]->answer, true);
-        //                     foreach ($questions as $question) {
-        //                         if ($question['multiChoice'] == 2) {
-        //                             $correct[$question['id']] = $question['answer'];
-        //                             // if( in_array(str_replace(' ','',$decode_answers[$question['id']]),$correct) || in_array(str_replace(' ','',$decode_answers[$question['id']]),explode(',',$correct[$question['id']])) || Str::contains($correct[$question['id']],explode(',',str_replace(' ','',$decode_answers[$question['id']])))){
-        //                             if ($helper->stringExactMatch($correct[$question['id']], $decode_answers[$question['id']])) {
-        //                                 array_push($count_right_answer[$section_id][$sections[0]->practice_test_type], $question->id);
-        //                             }
-        //                         } else {
-        //                             if (isset($decode_answers[$question->id])) {
-        //                                 if (str_replace(' ', '', $question->answer) == str_replace(' ', '', $decode_answers[$question->id])) {
-        //                                     array_push($count_right_answer[$section_id][$sections[0]->practice_test_type], $question->id);
-        //                                 }
-        //                             }
-        //                         }
-        //                     }
-        //                     $count_right = count($count_right_answer[$section_id][$sections[0]->practice_test_type]) + count($count_right_answer[$id][$section_type]);
-        //                     $scaled_for_math = Score::where('section_id', $id)->where('actual_score', $count_right)->get('converted_score');
-        //                     if (isset($scaled_for_math[0]['converted_score']) && !empty($scaled_for_math[0]['converted_score'])) {
-        //                         array_push($total_scaled_score[$section_id][$sections[0]->practice_test_type], $scaled_for_math[0]['converted_score']);
-        //                     } else {
-        //                         array_push($total_scaled_score[$section_id][$sections[0]->practice_test_type], 0);
-        //                     }
-        //                     $total_questions = count($count_total_question[$id][$section_type]) + $question_count;
-        //                     $right_answers = $count_right;
-        //                     $scaled_score = $total_scaled_score[$section_id][$sections[0]->practice_test_type][0];
-        //                 } else {
-        //                     $total_questions = count($count_total_question[$id][$section_type]) + (isset($question_count) ? $question_count : 0);
-        //                     $right_answers = count($count_right_answer[$id][$section_type]);
-        //                     $scaled_score = $total_scaled_score[$id][$section_type];
-        //                 }
-        //             } else {
-        //                 $total_questions = count($count_total_question[$id][$section_type]);
-        //                 $right_answers = count($count_right_answer[$id][$section_type]);
-        //                 $scaled_score = $total_scaled_score[$id][$section_type];
-        //             }
-        //         } else if ($section_type == 'Math_with_calculator') {
-        //             $test_id = $test_details->id;
-        //             $sections = PracticeTestSection::where('testid', $test_id)->where('practice_test_type', 'Math_no_calculator')->get();
-        //             if (isset($sections[0]->id)) {
-        //                 $section_id = $sections[0]->id;
-        //                 $questions = PracticeQuestion::where('practice_test_sections_id', $section_id)->get();
-        //                 $question_count = $questions->count();
-        //                 $answer_data = UserAnswers::where('section_id', $section_id)->where('user_id', $current_user_id)->get();
-        //                 if (isset($answer_data[0]->answer)) {
-        //                     $count_right_answer[$section_id][$sections[0]->practice_test_type] = [];
-        //                     $total_scaled_score[$section_id][$sections[0]->practice_test_type] = [];
-        //                     $decode_answers = json_decode($answer_data[0]->answer, true);
-        //                     foreach ($questions as $question) {
-        //                         if ($question['multiChoice'] == 2) {
-        //                             $correct[$question['id']] = $question['answer'];
-        //                             // if( in_array(str_replace(' ','',$decode_answers[$question['id']]),$correct) || in_array(str_replace(' ','',$decode_answers[$question['id']]),explode(',',$correct[$question['id']])) || Str::contains($correct[$question['id']],explode(',',str_replace(' ','',$decode_answers[$question['id']])))){
-        //                             if ($helper->stringExactMatch($correct[$question['id']], $decode_answers[$question['id']])) {
-        //                                 array_push($count_right_answer[$section_id][$sections[0]->practice_test_type], $question->id);
-        //                             }
-        //                         } else {
-        //                             if (str_replace(' ', '', $question->answer) == str_replace(' ', '', $decode_answers[$question->id])) {
-        //                                 array_push($count_right_answer[$section_id][$sections[0]->practice_test_type], $question->id);
-        //                             }
-        //                         }
-        //                     }
-        //                     $count_right = count($count_right_answer[$section_id][$sections[0]->practice_test_type]) + count($count_right_answer[$id][$section_type]);
-        //                     $scaled_for_math = Score::where('section_id', $id)->where('actual_score', $count_right)->get('converted_score');
-        //                     if (isset($scaled_for_math[0]['converted_score']) && !empty($scaled_for_math[0]['converted_score'])) {
-        //                         array_push($total_scaled_score[$section_id][$sections[0]->practice_test_type], $scaled_for_math[0]['converted_score']);
-        //                     } else {
-        //                         array_push($total_scaled_score[$section_id][$sections[0]->practice_test_type], 0);
-        //                     }
-        //                     $total_questions = count($count_total_question[$id][$section_type]) + $question_count;
-        //                     $right_answers = $count_right;
-        //                     $scaled_score = $total_scaled_score[$section_id][$sections[0]->practice_test_type][0];
-        //                 } else {
-        //                     $total_questions = count($count_total_question[$id][$section_type]) + (isset($question_count) ? $question_count : 0);
-        //                     $right_answers = count($count_right_answer[$id][$section_type]);
-        //                     $scaled_score = $total_scaled_score[$id][$section_type];
-        //                 }
-        //             } else {
-        //                 $total_questions = count($count_total_question[$id][$section_type]);
-        //                 $right_answers = count($count_right_answer[$id][$section_type]);
-        //                 $scaled_score = $total_scaled_score[$id][$section_type];
-        //             }
-        //         } else {
-        //             $right_answers = count($count_right_answer[$id][$section_type]);
-        //             $total_questions = count($count_total_question[$id][$section_type]);
-        //             $scaled_score = $total_scaled_score[$id][$section_type];
-        //         }
-        //     } else {
-        //         $right_answers = 0;
-        //         $total_questions = 0;
-        //         $scaled_scores = 0;
-        //         $math_scaled_score = 0;
-        //         foreach ($store_sections_detail['all_sections'] as $section) {
-        //             $section_id = $section->id;
-        //             $section_type = $section->practice_test_type;
-        //             $right_answers += count($count_right_answer[$section_id][$section_type]);
-        //             $total_questions += count($count_total_question[$section_id][$section_type]);
-        //             if ($section->practice_test_type == 'Math_no_calculator' || $section->practice_test_type == 'Math_with_calculator') {
-        //                 $math_scaled_score = $total_scaled_score[$section_id][$section_type][0];
-        //             } else {
-        //                 $scaled_scores += $total_scaled_score[$section_id][$section_type][0];
-        //             }
-        //         }
-
-        //         if ($count > 0) {
-        //             $scaled_score = $scaled_scores + $math_scaled_score;
-        //         } else {
-        //             $scaled_score = $scaled_scores;
-        //         }
-        //     }
-        // }
-
-        // if ($types == 'all') {
-        //     $high_score = 0;
-        //     $low_score = 0;
-        //     if (Score::where('test_id', $test_details['id'])->exists()) {
-        //         $section_id_array = PracticeTestSection::where('testid', $test_details['id'])->pluck('id')->toArray();
-        //         foreach ($section_id_array as $section) {
-        //             $section_type = PracticeTestSection::where('id', $section)->value('practice_test_type');
-        //             if ($section_type == 'Math_with_calculator' && Score::where('test_id', $test_details['id'])->where('section_type', 'Math_no_calculator')->exists()) {
-        //                 continue;
-        //             }
-        //             $ind_high_score = Score::where('section_id', $section)->max('converted_score');
-        //             $ind_low_score = Score::where('section_id', $section)->min('converted_score');
-        //             if (isset($ind_high_score) && isset($ind_low_score)) {
-        //                 $high_score += $ind_high_score;
-        //                 $low_score += $ind_low_score;
-        //             } else {
-        //                 $high_score += 0;
-        //                 $low_score += 0;
-        //             }
-        //         }
-        //     } else {
-        //         $high_score = 0;
-        //         $low_score = 0;
-        //     }
-        // } else {
-        //     if (Score::where('section_id', $id)->exists()) {
-        //         $high_score = Score::where('section_id', $id)->max('converted_score');
-        //         $low_score = Score::where('section_id', $id)->min('converted_score');
-        //     } else {
-        //         $high_score = 0;
-        //         $low_score = 0;
-        //     }
-        // }
-
-        // if ($types == 'all' && $test_details['format'] == 'ACT') {
-        //     $high_score = $high_score / (count($store_sections_detail['all_sections']) == 0 ? 1 : count($store_sections_detail['all_sections']));
-        //     $low_score = $low_score / (count($store_sections_detail['all_sections']) == 0 ? 1 : count($store_sections_detail['all_sections']));
-        // } else {
-        //     $high_score = $high_score;
-        //     $low_score = $low_score;
-        // }
 
         $checkData = [];
         $ctData = [];
@@ -3019,7 +2515,7 @@ class TestPrepController extends Controller
             }
         }
 
-        return view('user.test-review.all',  [
+        $html = view('user.test-review.all',  [
             'category_data' => $category_data,
             'questionTypeData' => $questionTypeData,
             'questionsCtPresent' => $questionsCtPresent,
@@ -3040,7 +2536,9 @@ class TestPrepController extends Controller
             // 'low_score' => $low_score,
             // 'practice_test_section_id' => $practice_test_section_id,
             'categoryAndQuestionTypeSummaryData' => $categoryAndQuestionTypeSummaryData
-        ]);
+        ])->render();
+
+        return response()->json(['html' => $html]);
     }
 
     public function addNotesToQuestionReview(Request $request)
