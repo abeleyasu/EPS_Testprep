@@ -355,7 +355,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::get('/practice-tests-proctored/{testId}/{id}', [TestPrepController::class, 'resetProctoredSection'])->name('reset_proc_section');
         Route::get('/practice-tests-reset/{id}/review-page', [TestPrepController::class, 'resetTest'])->name('reset_test');
 
-        Route::get('test-prep-insights',[TestPrepController::class,'allTestInsights']);
+        Route::get('test-prep-insights',[TestPrepController::class,'allTestInsights'])->name('all-test');
         Route::get('single/test-prep-insights',[TestPrepController::class,'getSingleTestInsight']);
         Route::get('get-tests',[TestPrepController::class,'getAllTest']);
         Route::get('select/test-prep-insights',[TestPrepController::class,'selectFormat'])->name('test-prep-insights');
