@@ -559,6 +559,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
         Route::post('/gettypes', [TestPrepController::class, 'gettypes'])->name('gettypes');
         Route::post('/getAllTypes', [TestPrepController::class, 'getAllTypes'])->name('getAllTypes');
+        Route::post('/getDSAAllTypes', [TestPrepController::class, 'getDSAAllTypes'])->name('getDSAAllTypes');
         Route::post('/generate-custom-quiz', [TestPrepController::class, 'generateCustomQuiz'])->name('generateCustomQuiz');
         Route::post('/getSelfMadeTestQuestion', [TestPrepController::class, 'getSelfMadeTestQuestion'])->name('getSelfMadeTestQuestion');
         Route::post('/addMistakeType', [TestPrepController::class, 'addMistakeType'])->name('addMistakeType');

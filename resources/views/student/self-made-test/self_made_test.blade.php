@@ -16,7 +16,7 @@
 
                         <h1 class="h2 text-white mb-0">Self Made Test</h1>
                         <br>
-                        <span class="text-white-75">ACT/SAT/PSAT</span>
+                        <span class="text-white-75">ACT/SAT/PSAT/DSAT/DPSAT</span>
                         <br>
                         <br>
                     </div>
@@ -27,12 +27,21 @@
                     <div class="p-3 m-3 mb-0 sticky-tab">
                         <h5 class="font-weight-light">Choose a Test</h5>
                         <div class="d-flex align-items-center p-3 py-0">
-                            <button style="padding: 5px 20px fs-5" class=" btn btn-alt-success text-success me-3 test_type"
-                                data-value="PSAT">PSAT</button>
+                            <button style="padding: 5px 20px fs-5" class="btn btn-alt-success text-success test_type me-3"
+                                data-value="ACT">ACT</button>
                             <button style="padding: 5px 20px fs-5" class="btn btn-alt-success text-success me-3 test_type"
                                 data-value="SAT">SAT</button>
-                            <button style="padding: 5px 20px fs-5" class="btn btn-alt-success text-success test_type"
-                                data-value="ACT">ACT</button>
+                            <button style="padding: 5px 20px fs-5" class=" btn btn-alt-success text-success me-3 test_type"
+                                data-value="PSAT">PSAT</button>
+                            <button style="padding: 5px 20px" class=" btn btn-alt-success text-success me-3 test_type"
+                                data-value="DSAT">DSAT</button>
+                            <button style="padding: 5px 20px" class=" btn btn-alt-success text-success test_type"
+                                data-value="DPSAT">DPSAT</button>
+
+
+
+
+
                             {{-- <div class="d-flex justify-content-end "> --}}
                             <button onclick="getData()" class="btn btn-gray bg-dark text-gray ms-auto"
                                 style="position: fixed; right: 11%;">Generate Quiz</button>
@@ -184,6 +193,7 @@
                 // new for the section type
                 let sat_sections = ['Reading', 'Writing', 'Math_no_calculator', 'Math_with_calculator'];
                 let act_sections = ['English', 'Math', 'Reading', 'Science'];
+                let dsat_dpsat_sections = ['Reading / Writing', 'Math'];
                 if (value == 'SAT' || value == 'PSAT') {
                     $('.section_type').html('');
                     html = ``;
@@ -202,6 +212,15 @@
                         html += `<label for="${v}" class="ms-2">${v}</label>`;
                         html += `</div>`;
                     });
+                } else if (value == 'DSAT' || value == 'DPSAT') {
+                    $('.section_type').html('');
+                    html = ``;
+                    $.each(dsat_dpsat_sections, function(i, v) {
+                        html += `<div class="mb-2">`;
+                        html += `<input type="radio" name="section" id="${v}" value="${v}">`;
+                        html += `<label for="${v}" class="ms-2">${v}</label>`;
+                        html += `</div>`;
+                    });
                 }
                 $('.section_type').append(html);
             });
@@ -210,63 +229,123 @@
             function getAllTypes() {
                 let value = $('.section_type').find('input[type="radio"]:checked').val();
                 let test_type = $(".test_type.active-tab").attr('data-value');
-                $.ajax({
-                    type: 'post',
-                    url: '{{ route('getAllTypes') }}',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    data: {
-                        test_type: test_type,
-                        section_type: value,
-                    },
-                    success: function(res) {
-                        category_data = res?.category;
-                        question_types = res?.questionType;
-                        super_category_data = res?.super_category;
+                if ((test_type == 'DSAT' || test_type == 'DPSAT') && (value == 'Reading / Writing' || value == 'Math')) {
+                    $.ajax({
+                        type: 'post',
+                        url: '{{ route('getDSAAllTypes') }}',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            test_type: test_type,
+                            section_type: value,
+                        },
+                        success: function(res) {
+                            category_data = res?.category;
+                            question_types = res?.questionType;
+                            super_category_data = res?.super_category;
 
-                        $('.test-category').html('');
-                        let super_category = ``;
-                        $.each(res.super_category, function(i, v) {
-                            const super_category_id = v['id'];
-                            super_category += `<div class="mb-2 criteria pb-3">`;
-                            super_category +=
-                                `<div class="super-category-div">
+                            $('.test-category').html('');
+                            let super_category = ``;
+                            $.each(res.super_category, function(i, v) {
+                                const super_category_id = v['id'];
+                                super_category += `<div class="mb-2 criteria pb-3">`;
+                                super_category +=
+                                    `<div class="super-category-div">
                                 <input type="checkbox" id="${v['title']}" value="${v['id']}" class="super_category">`;
-                            super_category +=
-                                `<label for="${v['title']}" class="fw-bold ms-2">${v['title']}</label></div>`;
-                            // check_temp[super_category_id] = [];
-                            let temp = {};
-                            temp['super_category_id'] = v['id'];
-                            $.each(res.category[v['id']], function(i, v) {
-                                temp['category_id'] = v['id'];
+                                super_category +=
+                                    `<label for="${v['title']}" class="fw-bold ms-2">${v['title']}</label></div>`;
+                                // check_temp[super_category_id] = [];
+                                let temp = {};
+                                temp['super_category_id'] = v['id'];
+                                $.each(res.category[v['id']], function(i, v) {
+                                    temp['category_id'] = v['id'];
 
-                                super_category +=
-                                    `<div class="ms-4 mt-2 question_category_div">`;
-                                super_category +=
-                                    `<div class="category-div"><input type="checkbox" data-super_category_id="${v['super_category_id']}" id="${v['category_type_title']}" value="${v['id']}" class="question_category">`;
-                                super_category +=
-                                    `<label for="${v['category_type_title']}" class="fw-bold ms-2">${v['category_type_title']}</label></div>`;
-                                let super_category_id = v['super_category_id'];
-                                $.each(res.questionType[v['id']], function(i, v) {
-                                    temp['question_type_id'] = v['id'];
                                     super_category +=
-                                        `<div class="ms-5 mt-2 question_type_div">`;
+                                        `<div class="ms-4 mt-2 question_category_div">`;
                                     super_category +=
-                                        `<input type="checkbox" id="${v['question_type_title']}" data-super_category_id="${super_category_id}" data-category_id="${v['category_id']}" value="${v['id']}" class="question_type">`;
+                                        `<div class="category-div"><input type="checkbox" data-super_category_id="${v['super_category_id']}" id="${v['category_type_title']}" value="${v['id']}" class="question_category">`;
                                     super_category +=
-                                        `<label for="${v['question_type_title']}" class="fw-bold ms-2">${v['question_type_title']}</label>`;
+                                        `<label for="${v['category_type_title']}" class="fw-bold ms-2">${v['category_type_title']}</label></div>`;
+                                    let super_category_id = v['super_category_id'];
+                                    $.each(res.questionType[v['id']], function(i, v) {
+                                        temp['question_type_id'] = v['id'];
+                                        super_category +=
+                                            `<div class="ms-5 mt-2 question_type_div">`;
+                                        super_category +=
+                                            `<input type="checkbox" id="${v['question_type_title']}" data-super_category_id="${super_category_id}" data-category_id="${v['category_id']}" value="${v['id']}" class="question_type">`;
+                                        super_category +=
+                                            `<label for="${v['question_type_title']}" class="fw-bold ms-2">${v['question_type_title']}</label>`;
+                                        super_category += `</div>`;
+                                    });
                                     super_category += `</div>`;
                                 });
+                                check_temp.push(temp);
                                 super_category += `</div>`;
                             });
-                            check_temp.push(temp);
-                            super_category += `</div>`;
-                        });
 
-                        $('.test-category').append(super_category);
-                    }
-                });
+                            $('.test-category').append(super_category);
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        type: 'post',
+                        url: '{{ route('getAllTypes') }}',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            test_type: test_type,
+                            section_type: value,
+                        },
+                        success: function(res) {
+                            category_data = res?.category;
+                            question_types = res?.questionType;
+                            super_category_data = res?.super_category;
+
+                            $('.test-category').html('');
+                            let super_category = ``;
+                            $.each(res.super_category, function(i, v) {
+                                const super_category_id = v['id'];
+                                super_category += `<div class="mb-2 criteria pb-3">`;
+                                super_category +=
+                                    `<div class="super-category-div">
+                                <input type="checkbox" id="${v['title']}" value="${v['id']}" class="super_category">`;
+                                super_category +=
+                                    `<label for="${v['title']}" class="fw-bold ms-2">${v['title']}</label></div>`;
+                                // check_temp[super_category_id] = [];
+                                let temp = {};
+                                temp['super_category_id'] = v['id'];
+                                $.each(res.category[v['id']], function(i, v) {
+                                    temp['category_id'] = v['id'];
+
+                                    super_category +=
+                                        `<div class="ms-4 mt-2 question_category_div">`;
+                                    super_category +=
+                                        `<div class="category-div"><input type="checkbox" data-super_category_id="${v['super_category_id']}" id="${v['category_type_title']}" value="${v['id']}" class="question_category">`;
+                                    super_category +=
+                                        `<label for="${v['category_type_title']}" class="fw-bold ms-2">${v['category_type_title']}</label></div>`;
+                                    let super_category_id = v['super_category_id'];
+                                    $.each(res.questionType[v['id']], function(i, v) {
+                                        temp['question_type_id'] = v['id'];
+                                        super_category +=
+                                            `<div class="ms-5 mt-2 question_type_div">`;
+                                        super_category +=
+                                            `<input type="checkbox" id="${v['question_type_title']}" data-super_category_id="${super_category_id}" data-category_id="${v['category_id']}" value="${v['id']}" class="question_type">`;
+                                        super_category +=
+                                            `<label for="${v['question_type_title']}" class="fw-bold ms-2">${v['question_type_title']}</label>`;
+                                        super_category += `</div>`;
+                                    });
+                                    super_category += `</div>`;
+                                });
+                                check_temp.push(temp);
+                                super_category += `</div>`;
+                            });
+
+                            $('.test-category').append(super_category);
+                        }
+                    });
+                }
             }
 
             function getTypeFunctionality(callback) {
@@ -315,6 +394,7 @@
                         diff_rating: diff_rating,
                     },
                     success: function(res) {
+                        console.log(res)
                         callback(res);
                     }
                 });
@@ -490,6 +570,7 @@
                 let question_ids = [];
 
                 let no_of_questions = $("#no_of_questions").val();
+                // console.log(no_of_questions);
 
                 $('.test-category .super_category').each(function() {
                     if ($(this).prop('checked')) {

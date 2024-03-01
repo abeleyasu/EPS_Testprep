@@ -1173,7 +1173,8 @@ class TestPrepController extends Controller
         } else {
             return to_route('test-prep-insights')->with('error', 'Please select a Test Format!!!');
         }
-        $allTestsByUser = DB::table('practice_tests')->where('user_id', $current_user_id)->where('format', $testType)->get()->toArray();
+        $user_tests = DB::table('user_answers')->where('user_id', $current_user_id)->pluck('test_id')->toArray();
+        $allTestsByUser = DB::table('practice_tests')->where('user_id', $current_user_id)->where('format', $testType)->whereIn('id', $user_tests)->get()->toArray();
         //    dd(count($allTestsByUser));
         return response()->json($allTestsByUser);
     }
@@ -1615,6 +1616,7 @@ class TestPrepController extends Controller
         ])->render();
         return response()->json(['html' => $html]);
     }
+
     public function allTestInsights(Request $request)
     {
         $current_user_id = Auth::id();
@@ -1627,6 +1629,7 @@ class TestPrepController extends Controller
         $questionTypeData = [];
         $count = 0;
         $checkboxData = [];
+        $categoryAndQuestionTypeSummaryData = [];
         // $testid = 553;
         $types = 'all';
         if ($request->query('testType') != null) {
@@ -1636,7 +1639,9 @@ class TestPrepController extends Controller
                 'error' => 'Please select a Test Format!!!'
             ]);
         }
-        $allTestsByUser = DB::table('practice_tests')->where('user_id', $current_user_id)->where('format', $testType)->pluck('id')->toArray();
+        $user_tests = DB::table('user_answers')->where('user_id', $current_user_id)->pluck('test_id')->toArray();
+
+        $allTestsByUser = DB::table('practice_tests')->where('user_id', $current_user_id)->where('format', $testType)->whereIn('id', $user_tests)->pluck('id')->toArray();
         // dump($current_user_id);
         // dd($allTestsByUser);
         if (empty($allTestsByUser)) {
@@ -1686,13 +1691,31 @@ class TestPrepController extends Controller
                     })
                     ->orderBy('practice_questions.question_order', 'ASC')
                     ->get();
+                // dump($get_test_questions);
+                // foreach ($get_test_questions as $question) {
+                //     $questionDetails = QuestionDetails::where("question_id", $question->test_question_id)->get();
+                //     $questionTypeData[$question->test_question_id] = json_decode($question->question_type_values ?? '', true);
+                //     $categoryTypeData[$question->test_question_id] = json_decode($question->category_type_values ?? '', true);
+                //     $checkboxData[$question->test_question_id] = json_decode($question->checkbox_values ?? '', true);
+                // }
+
+                $questionTypeData = [];
+                $categoryTypeData = [];
+                $checkboxData = [];
 
                 foreach ($get_test_questions as $question) {
-                    $questionDetails = QuestionDetails::where("question_id", $question->test_question_id)->get();
-                    $questionTypeData[$question->test_question_id] = json_decode($question->question_type_values ?? '', true);
-                    $categoryTypeData[$question->test_question_id] = json_decode($question->category_type_values ?? '', true);
-                    $checkboxData[$question->test_question_id] = json_decode($question->checkbox_values ?? '', true);
+                    // Fetch additional details only if details haven't been fetched already
+                    if (!isset($questionTypeData[$question->test_question_id])) {
+                        // Fetch additional details
+                        $questionDetails = QuestionDetails::where("question_id", $question->test_question_id)->get();
+                        $questionTypeData[$question->test_question_id] = json_decode($question->question_type_values ?? '', true);
+                        $categoryTypeData[$question->test_question_id] = json_decode($question->category_type_values ?? '', true);
+                        $checkboxData[$question->test_question_id] = json_decode($question->checkbox_values ?? '', true);
+                    }
                 }
+
+                // Dump the category type data
+                // dump($categoryTypeData);
 
                 $user_answers_data = DB::table('user_answers')
                     ->where('user_id', $current_user_id)
@@ -1783,92 +1806,13 @@ class TestPrepController extends Controller
                 }
             }
 
-            if (isset($types) && !empty($types)) {
-                $helper = new Helper();
-                if ($types == 'all') {
-                    $get_all_section = DB::table('practice_test_sections')
-                        ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
-                        ->select('practice_test_sections.*')
-                        ->where('practice_tests.id', $test_id)
-                        ->get();
-
-                    if (!$get_all_section->isEmpty()) {
-                        foreach ($get_all_section as $get_single_section) {
-
-                            $user_selected_answers = DB::table('user_answers')
-                                ->where('user_id', $current_user_id)
-                                ->where('section_id', $get_single_section->id)
-                                ->latest()
-                                ->get();
-
-                            if (isset($user_selected_answers[0]) && !empty($user_selected_answers[0])) {
-                                $decoded_answers = [];
-                                $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
-                                $question_order = PracticeQuestion::where('practice_test_sections_id', $get_single_section->id)->orderBy('question_order', 'ASC')->pluck('id')->toArray();
-
-                                if (isset($question_order) && !empty($question_order)) {
-                                    foreach ($question_order as $order) {
-                                        if (isset($json_decoded_answers->{$order})) {
-                                            $decoded_answers[$order] = $json_decoded_answers->{$order};
-                                        } else {
-                                            $decoded_answers[$order] = '';
-                                        }
-                                    }
-                                }
-                                $json_decoded_guess = json_decode($user_selected_answers[0]->guess);
-                                $json_decoded_flag = json_decode($user_selected_answers[0]->flag);
-                                $json_decoded_skip = json_decode($user_selected_answers[0]->skip);
-
-                                foreach ($decoded_answers as $question_id => $json_decoded_single_answers) {
-                                    $get_question_details = DB::table('practice_questions')
-                                        // ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
-                                        ->select(
-                                            'practice_questions.id as question_id',
-                                            'practice_questions.practice_test_sections_id as section_id',
-                                            'practice_questions.title as question_title',
-                                            'practice_questions.type as practice_type',
-                                            'practice_questions.mistake_type as mistake_type',
-                                            'practice_questions.answer as question_answer',
-                                            'practice_questions.answer_content as question_answer_options',
-                                            'practice_questions.multiChoice as is_multiple_choice',
-                                            'practice_questions.question_order',
-                                            'practice_questions.passages_id',
-                                            'practice_questions.tags',
-                                            'passages.title',
-                                            // 'practice_questions.notes',
-                                            'passages.description',
-                                            'practice_questions.category_type as category_type',
-                                            'practice_questions.question_type_id as question_type_id',
-                                            'practice_questions.answer_exp as answer_exp'
-                                        )
-                                        ->where('practice_questions.id', $question_id)
-                                        ->leftJoin("passages", "passages.id", "=", "practice_questions.passages_id")
-                                        ->orderBy('practice_questions.question_order', 'ASC')
-                                        ->get();
-
-                                    $store_sections_details[] = array(
-                                        'user_selected_answer' => $json_decoded_single_answers,
-                                        'user_selected_guess' => $json_decoded_guess->$question_id ?? '',
-                                        'user_selected_flag' => $json_decoded_flag->$question_id ?? '',
-                                        'user_selected_skip' => $json_decoded_skip->$question_id ?? '',
-                                        'get_question_details' => $get_question_details,
-                                        'all_sections' => $get_all_section,
-                                        'date_taken' => $user_selected_answers,
-                                        'type' => $types
-                                    );
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
             if ($types == 'all') {
                 $question_tags = [];
                 foreach ($question_tags_all as $key => $question_tag) {
                     $question_tags[$key] = array_unique(Arr::flatten($question_tag));
                 }
             }
+            // dump($percentage_arr_all);
             foreach ($percentage_arr_all as $key => $percentage) {
                 $correct_ans = 0;
                 $wrong_ans = 0;
@@ -1898,126 +1842,159 @@ class TestPrepController extends Controller
                     }
                 }
             }
-        }
+            $checkData = [];
+            $ctData = [];
 
-        $checkData = [];
-        $ctData = [];
+            // dump($categoryTypeData);
 
-        foreach ($categoryTypeData as $key => $catData) {
-            foreach ($catData as $catKey => $cat) {
-                $answer_arr = $answer_arr ?? [];
-                $selected_answer = $answer_arr[$key] ?? '';
+            foreach ($categoryTypeData as $key => $catData) {
+                foreach ($catData as $catKey => $cat) {
+                    $answer_arr = $answer_arr ?? [];
+                    $selected_answer = $answer_arr[$key] ?? '';
 
-                if ($selected_answer != "-") {
-                    $answers = explode(",", $selected_answer);
-                    if (in_array(strtolower($catKey), $answers) || empty($selected_answer)) {
-                        $pq = PracticeQuestion::where("id", $key)->first();
+                    if ($selected_answer != "-") {
+                        $answers = explode(",", $selected_answer);
+                        if (in_array(strtolower($catKey), $answers) || empty($selected_answer)) {
+                            $pq = PracticeQuestion::where("id", $key)->first();
 
-                        foreach ($cat as $catKey1 => $catId) {
-                            $tmp = $ctData[$key][$catId] ?? [];
-                            if (!in_array($catKey, $tmp)) {
-                                $ctData[$key][$catId][] = $catKey;
-                            }
+                            foreach ($cat as $catKey1 => $catId) {
+                                $tmp = $ctData[$key][$catId] ?? [];
+                                if (!in_array($catKey, $tmp)) {
+                                    $ctData[$key][$catId][] = $catKey;
+                                }
 
-                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] ?? 0;
-                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] ?? 0;
-                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] ?? 0;
-                            $count = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] ?? 0;
+                                $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] ?? 0;
+                                $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] ?? 0;
+                                $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] ?? 0;
+                                $count = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] ?? 0;
 
-                            $conceptCorrect = $checkboxData[$key][$catKey][$catKey1] ?? "0";
+                                $conceptCorrect = $checkboxData[$key][$catKey][$catKey1] ?? "0";
 
-                            if (empty($selected_answer)) {
-                                $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
-                            } else {
-                                if ($conceptCorrect == "1") {
-                                    $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] + 1;
+                                if (empty($selected_answer)) {
+                                    $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
                                 } else {
-                                    $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] + 1;
+                                    if ($conceptCorrect == "1") {
+                                        $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] + 1;
+                                    } else {
+                                        $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] + 1;
+                                    }
+                                }
+
+                                $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] = $count + 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            $catFinal = [];
+
+            $questionsCtPresent = [];
+            foreach ($ctData as $ctDataKey => $ctDataValue) {
+                $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
+
+                foreach ($ctDataUniqueValue as $uniqueData) {
+                    $ct = $questionsCtPresent[$uniqueData] ?? 0;
+                    $questionsCtPresent[$uniqueData] = $ct + 1;
+                }
+                foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
+                    $answer_arr = $answer_arr ?? [];
+                    $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
+                    if (empty($selectedAnswer) || $selectedAnswer != "-") {
+                        $answers = explode(",", $answer_arr[$ctDataKey] ?? '');
+                        $pq = PracticeQuestion::where("id", $ctDataKey)->first();
+                        foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
+                            $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
+                        $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+                        $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
+                        if (empty($selectedAnswer)) {
+                            $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
+                        } else {
+                            foreach ($conceptCorrect as $cp) {
+                                if ($cp === "1") {
+                                    $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+                                    $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
+                                } else {
+                                    $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
+                                    $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
                                 }
                             }
-
-                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] = $count + 1;
                         }
                     }
                 }
             }
-        }
 
-        $catFinal = [];
 
-        $questionsCtPresent = [];
+            // dump($checkData);
+            if (!empty($checkData)) {
+                foreach ($checkData as $key => $data) {
+                    $correct = $catFinal[$key]['correct'] ?? 0;
+                    $incorrect = $catFinal[$key]['incorrect'] ?? 0;
+                    $missed = $catFinal[$key]['missed'] ?? 0;
 
-        foreach ($ctData as $ctDataKey => $ctDataValue) {
-            $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
+                    $dataArray = [
+                        'ct' => $key,
+                        'correct' => $correct,
+                        'incorrect' => $incorrect,
+                        'missed' => $missed,
+                        'count' => $correct + $incorrect + $missed, // Include count here
+                    ];
 
-            foreach ($ctDataUniqueValue as $uniqueData) {
-                $ct = $questionsCtPresent[$uniqueData] ?? 0;
-                $questionsCtPresent[$uniqueData] = $ct + 1;
-            }
-            foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
-                $answer_arr = $answer_arr ?? [];
-                $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
-                if (empty($selectedAnswer) || $selectedAnswer != "-") {
-                    $answers = explode(",", $answer_arr[$ctDataKey] ?? '');
-                    $pq = PracticeQuestion::where("id", $ctDataKey)->first();
-                    foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
-                        $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
-                    $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
-                    $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
-                    if (empty($selectedAnswer)) {
-                        $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
-                    } else {
-                        foreach ($conceptCorrect as $cp) {
-                            if ($cp === "1") {
-                                $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
-                                $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
+                    $total_qts = 0;
+                    $total_incorrect_qts = 0;
+                    $total_correct_qts = 0;
+
+                    foreach ($data as $dt) {
+                        $total_incorrect_qts += $dt['incorrect'];
+                        $total_correct_qts += $dt['correct'];
+                        $total_qts += $dt['count'];
+                    }
+
+                    $dataArray['total_qts'] = $total_qts;
+                    $dataArray['total_incorrect_qts'] = $total_incorrect_qts;
+                    $dataArray['total_correct_qts'] = $total_correct_qts;
+
+                    // Check if an entry with the same 'ct' key already exists
+                    $existingKey = array_search($key, array_column($categoryAndQuestionTypeSummaryData, 'ct'));
+                    if ($existingKey !== false) {
+                        // Update the counts in the existing entry
+                        $categoryAndQuestionTypeSummaryData[$existingKey]['correct'] += $correct;
+                        $categoryAndQuestionTypeSummaryData[$existingKey]['incorrect'] += $incorrect;
+                        $categoryAndQuestionTypeSummaryData[$existingKey]['missed'] += $missed;
+                        $categoryAndQuestionTypeSummaryData[$existingKey]['total_qts'] += $total_qts;
+                        $categoryAndQuestionTypeSummaryData[$existingKey]['total_incorrect_qts'] += $total_incorrect_qts;
+                        $categoryAndQuestionTypeSummaryData[$existingKey]['total_correct_qts'] += $total_correct_qts;
+                        $categoryAndQuestionTypeSummaryData[$existingKey]['count'] += $dataArray['count']; // Update count
+
+                        // Append the new 'qt' data if it's not already present
+                        foreach ($data as $qtKey => $qtData) {
+                            if (!isset($categoryAndQuestionTypeSummaryData[$existingKey]['qt'][$qtKey])) {
+                                $categoryAndQuestionTypeSummaryData[$existingKey]['qt'][$qtKey] = $qtData;
                             } else {
-                                $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
-                                $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+                                // If the 'qt' data already exists, update it
+                                $categoryAndQuestionTypeSummaryData[$existingKey]['qt'][$qtKey]['correct'] += $qtData['correct'];
+                                $categoryAndQuestionTypeSummaryData[$existingKey]['qt'][$qtKey]['incorrect'] += $qtData['incorrect'];
+                                $categoryAndQuestionTypeSummaryData[$existingKey]['qt'][$qtKey]['missed'] += $qtData['missed'];
+                                $categoryAndQuestionTypeSummaryData[$existingKey]['qt'][$qtKey]['count'] += $qtData['count'];
                             }
                         }
+                    } else {
+                        // Append the new entry
+                        $dataArray['qt'] = $data; // Include 'qt' data
+                        $categoryAndQuestionTypeSummaryData[] = $dataArray;
                     }
                 }
-            }
-        }
 
-        $categoryAndQuestionTypeSummaryData = [];
-
-        if (!empty($checkData)) {
-            $i = 0;
-            foreach ($checkData as $key => $data) {
-                $correct = $catFinal[$key]['correct'] ?? 0;
-                $incorrect = $catFinal[$key]['incorrect'] ?? 0;
-                $missed = $catFinal[$key]['missed'] ?? 0;
-
-                $dataArray = [
-                    'ct' => $key,
-                    'qt' => $data,
-                    'count' => $correct + $incorrect + $missed,
-                    'correct' => $correct,
-                    'incorrect' => $incorrect,
-                    'missed' => $missed
-                ];
-                $total_qts = 0;
-                $total_incorrect_qts = 0;
-                $total_correct_qts = 0;
-                foreach ($data as $dt) {
-                    $total_incorrect_qts += $dt['incorrect'];
-                    $total_correct_qts += $dt['correct'];
-                    $total_qts += $dt['count'];
+                if (!empty($categoryAndQuestionTypeSummaryData)) {
+                    // Sort the array based on 'incorrect' count
+                    $keys = array_column($categoryAndQuestionTypeSummaryData, 'incorrect');
+                    array_multisort($keys, SORT_DESC, $categoryAndQuestionTypeSummaryData);
                 }
-                $dataArray['total_qts'] = $total_qts;
-                $dataArray['total_incorrect_qts'] = $total_incorrect_qts;
-                $dataArray['total_correct_qts'] = $total_correct_qts;
-                $categoryAndQuestionTypeSummaryData[$i] = $dataArray;
-                $i++;
-            }
-
-            if (!empty($categoryAndQuestionTypeSummaryData)) {
-                $keys = array_column($categoryAndQuestionTypeSummaryData, 'incorrect');
-                array_multisort($keys, SORT_DESC, $categoryAndQuestionTypeSummaryData);
             }
         }
+
+        // dd($categoryAndQuestionTypeSummaryData);
+
 
         $html = view('user.test-review.all',  [
             'category_data' => $category_data,
@@ -3750,6 +3727,7 @@ class TestPrepController extends Controller
         $count4 = 0;
         $whichSection = 0;
         // dump($compositeScore);
+        // dd($store_sections_details);
         foreach ($store_sections_details as $key => $singletestSections) {
             if (in_array($singletestSections['Sections'][0]['format'], ['DSAT', 'DPSAT'])) {
 
@@ -5740,6 +5718,77 @@ class TestPrepController extends Controller
         );
     }
 
+    public function getDSAAllTypes(Request $request)
+    {
+
+        $section_type = $request['section_type'];
+        $format = $request['test_type'];
+
+        if ($format == 'DSAT' || $format == 'DPSAT') {
+            if ($section_type == 'Reading / Writing') {
+                $section_type = ['Reading_And_Writing', 'Easy_Reading_And_Writing', 'Hard_Reading_And_Writing'];
+                $super_category = SuperCategory::where('format', $format)
+                    ->whereIn('section_type', $section_type)
+                    ->where('selfMade', 1)
+                    ->get();
+                $category = [];
+                $questionType = [];
+                foreach ($super_category as $super) {
+                    $superId = array($super->id);
+                    $category[$super->id] = PracticeCategoryType::whereIn('super_category_id', $superId)
+                        ->where('section_type', $section_type)
+                        ->where('selfMade', 1)
+                        ->get();
+
+                    foreach ($category[$super->id] as $categories) {
+                        $categoryId = array($categories['id']);
+                        $questionType[$categories['id']] = QuestionType::where('section_type', $section_type)
+                            ->where('selfMade', 1)
+                            ->whereIn('category_id', $categoryId)
+                            ->get();
+                    }
+                }
+                return response()->json(
+                    [
+                        'super_category' => $super_category,
+                        'category' => $category,
+                        'questionType' => $questionType
+                    ]
+                );
+            } elseif ($section_type == 'Math') {
+                $section_type = ['Math', 'Math_with_calculator', 'Math_no_calculator'];
+                $super_category = SuperCategory::where('format', $format)
+                    ->whereIn('section_type', $section_type)
+                    ->where('selfMade', 1)
+                    ->get();
+                $category = [];
+                $questionType = [];
+                foreach ($super_category as $super) {
+                    $superId = array($super->id);
+                    $category[$super->id] = PracticeCategoryType::whereIn('super_category_id', $superId)
+                        ->where('section_type', $section_type)
+                        ->where('selfMade', 1)
+                        ->get();
+                    foreach ($category[$super->id] as $categories) {
+                        $categoryId = array($categories['id']);
+                        $questionType[$categories['id']] = QuestionType::where('section_type', $section_type)
+                            ->where('selfMade', 1)
+                            ->whereIn('category_id', $categoryId)
+                            ->get();
+                    }
+                }
+                return response()->json(
+                    [
+                        'super_category' => $super_category,
+                        'category' => $category,
+                        'questionType' => $questionType
+                    ]
+                );
+            } else {
+            }
+        }
+    }
+
     public function gettypes(Request $request)
     {
         $format = $request['test_type'];
@@ -5772,12 +5821,13 @@ class TestPrepController extends Controller
         $all = 0;
         $allUnaswered = 0;
         $allUnasweredArray = [];
+        // dd($diff_ratings);
         foreach ($diff_ratings as $diff_rating) {
             $query = PracticeQuestion::query()->select('practice_questions.*', "practice_tests.test_source as test_source");
             $query->where('practice_questions.format', $format)
-                ->where('practice_questions.diff_rating', $diff_rating->id)
-                ->where('practice_questions.selfMade', '0')
-                ->where('practice_questions.test_source', 2);
+            ->where('practice_questions.diff_rating', $diff_rating->id)
+            ->where('practice_questions.selfMade', '0')
+            ->where('practice_questions.test_source', 2);
 
             if (!empty($diff_rating_value)) {
                 $query->whereIn("diff_rating", $diff_rating_value);
@@ -5787,7 +5837,16 @@ class TestPrepController extends Controller
             $query->leftJoin('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid');
             $no_section = false;
             if (isset($request['section_type']) && !empty($request['section_type'])) {
-                $query->where('practice_test_sections.practice_test_type', $request['section_type']);
+                if ($format == 'DSAT' || $format == 'DPSAT') {
+                    if ($request['section_type'] == 'Reading / Writing') {
+                        $query->whereIn('practice_test_sections.practice_test_type', ['Reading_And_Writing', 'Easy_Reading_And_Writing', 'Hard_Reading_And_Writing']);
+                    } elseif ($request['section_type'] == 'Math') {
+                        $query->where('practice_test_sections.practice_test_type', ['Math', 'Math_with_calculator', 'Math_no_calculator']);
+                    } else {
+                    }
+                } else {
+                    $query->where('practice_test_sections.practice_test_type', $request['section_type']);
+                }
             }
 
             if (count($super_category_value) == 0 && count($category_value) == 0 && count($question_type_value) == 0) {
@@ -5808,7 +5867,9 @@ class TestPrepController extends Controller
                 }
             });
 
+
             $userAnswers = UserAnswers::where("user_id", $user_id)->get();
+
 
             $allQuestionsAnswered = [];
 
@@ -5822,10 +5883,12 @@ class TestPrepController extends Controller
                     array_push($allQuestionsAnswered, ...$keys);
                 }
             }
-
             $questionsData = $query->inRandomOrder()->pluck('id');
+            // dd($questionsData);
             $questionsData = $questionsData->toArray() ?? [];
             $questions = array_unique($questionsData);
+
+
 
             foreach ($questions as $que) {
                 $pq = PracticeQuestion::select("id", "parent_id")->whereIn("id", $allQuestionsAnswered)->get();
@@ -5840,8 +5903,8 @@ class TestPrepController extends Controller
                     array_push($allUnasweredArray, $que);
                 }
             }
-
             $questions = array_values($questions);
+
 
             $questionsCount = count($questions);
             $all = $all + $questionsCount;
@@ -5863,7 +5926,6 @@ class TestPrepController extends Controller
             'questions' => '',
             'type' => 'all'
         ];
-
         return response()->json(
             [
                 'count' => $countQuestion
@@ -5875,7 +5937,7 @@ class TestPrepController extends Controller
     {
         $question_ids = $request['question_ids'] ?? [];
         $no_of_questions = $request['no_of_questions'] ?? [];
-
+        // dd($question_ids);
         if (empty($question_ids)) {
             return response()->json(['questions' => '', 'message' => 'No Questions Available', 'status' => false]);
         }
@@ -5898,12 +5960,37 @@ class TestPrepController extends Controller
                 'test_source' => 2
             ]);
 
-            $new_section = PracticeTestSection::create([
-                'format' => $request['test_type'],
-                'practice_test_type' => $request['section_type'][0],
-                'testid' => $new_test['id'],
-                'section_title' => $request['section_type'][0]
-            ]);
+            //    dd($request['test_type']);
+            if ($request['test_type'] == 'DSAT' || $request['test_type'] == 'DPSAT') {
+                if ($request['section_type'][0] == 'Reading / Writing') {
+                    $new_section = PracticeTestSection::create([
+                        'format' => $request['test_type'],
+                        'practice_test_type' => 'Reading_And_Writing',
+                        'testid' => $new_test['id'],
+                        'section_title' => $request['section_type'][0]
+                    ]);
+                } else {
+                    $new_section = PracticeTestSection::create([
+                        'format' => $request['test_type'],
+                        'practice_test_type' => $request['section_type'][0],
+                        'testid' => $new_test['id'],
+                        'section_title' => $request['section_type'][0]
+                    ]);
+                }
+            } else {
+                $new_section = PracticeTestSection::create([
+                    'format' => $request['test_type'],
+                    'practice_test_type' => $request['section_type'][0],
+                    'testid' => $new_test['id'],
+                    'section_title' => $request['section_type'][0]
+                ]);
+            }
+            // $new_section = PracticeTestSection::create([
+            //     'format' => $request['test_type'],
+            //     'practice_test_type' => $request['section_type'][0],
+            //     'testid' => $new_test['id'],
+            //     'section_title' => $request['section_type'][0]
+            // ]);
 
             $super = [];
             foreach ($questions as $index => $question) {
