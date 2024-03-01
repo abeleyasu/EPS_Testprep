@@ -120,7 +120,9 @@
                                         <div class="accordion accordionExample">
                                             @foreach ($categoryAndQuestionTypeSummaryData as $categoryAndQuestionTypeSummary)
                                                 @php
-                                                    $category_arr = Helper::getCategoryNameByID($categoryAndQuestionTypeSummary['ct']);
+                                                    $category_arr = Helper::getCategoryNameByID(
+                                                        $categoryAndQuestionTypeSummary['ct'],
+                                                    );
                                                     // dd($category_arr);
                                                 @endphp
                                                 @if ($category_arr)
@@ -218,20 +220,46 @@
                                                                         </div>
                                                                         <!-- END MODAL -->
                                                                         @php
-                                                                            $incorrect = $categoryAndQuestionTypeSummary['incorrect'] ?? 0;
-                                                                            $correct = $categoryAndQuestionTypeSummary['correct'] ?? 0;
-                                                                            $count = $categoryAndQuestionTypeSummary['count'] ?? 0;
-                                                                            $total_questions = $categoryAndQuestionTypeSummary['total_qts'] ?? 0;
-                                                                            $missed_ct = $categoryAndQuestionTypeSummary['missed'] ?? 0;
-                                                                            $percentage = ($incorrect / $categoryAndQuestionTypeSummary['count']) * 100;
+                                                                            $incorrect =
+                                                                                $categoryAndQuestionTypeSummary[
+                                                                                    'incorrect'
+                                                                                ] ?? 0;
+                                                                            $correct =
+                                                                                $categoryAndQuestionTypeSummary[
+                                                                                    'correct'
+                                                                                ] ?? 0;
+                                                                            $count =
+                                                                                $categoryAndQuestionTypeSummary[
+                                                                                    'count'
+                                                                                ] ?? 0;
+                                                                            $total_questions =
+                                                                                $categoryAndQuestionTypeSummary[
+                                                                                    'total_qts'
+                                                                                ] ?? 0;
+                                                                            $missed_ct =
+                                                                                $categoryAndQuestionTypeSummary[
+                                                                                    'missed'
+                                                                                ] ?? 0;
+                                                                            $percentage =
+                                                                                ($incorrect /
+                                                                                    $categoryAndQuestionTypeSummary[
+                                                                                        'count'
+                                                                                    ]) *
+                                                                                100;
                                                                             $percentage = $percentage . '%';
+                                                                            // dd(
+                                                                            //     $categoryAndQuestionTypeSummary[
+                                                                            //         'total_qts'
+                                                                            //     ],
+                                                                            // );
                                                                         @endphp
                                                                         <div class="row">
                                                                             <div class="col-md-12 text-center">
                                                                                 <p class="block-title m-0">
                                                                                     Tested
                                                                                     on
-                                                                                    {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
+                                                                                    {{-- {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }} --}}
+                                                                                    {{ $categoryAndQuestionTypeSummary['total_qts'] ?? 0 }}
                                                                                     questions
                                                                                 </p>
                                                                             </div>
@@ -309,17 +337,40 @@
                                                                         <div>
                                                                             @php
                                                                                 $qtArray = [];
-                                                                                if (!empty($categoryAndQuestionTypeSummary['qt'])) {
-                                                                                    $qtArray = $categoryAndQuestionTypeSummary['qt'];
+                                                                                if (
+                                                                                    !empty(
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'qt'
+                                                                                        ]
+                                                                                    )
+                                                                                ) {
+                                                                                    $qtArray =
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'qt'
+                                                                                        ];
                                                                                     $keys = array_keys($qtArray);
-                                                                                    array_multisort(array_column($qtArray, 'incorrect'), SORT_DESC, SORT_NUMERIC, $qtArray, $keys);
-                                                                                    $qtArray = array_combine($keys, $qtArray);
+                                                                                    array_multisort(
+                                                                                        array_column(
+                                                                                            $qtArray,
+                                                                                            'incorrect',
+                                                                                        ),
+                                                                                        SORT_DESC,
+                                                                                        SORT_NUMERIC,
+                                                                                        $qtArray,
+                                                                                        $keys,
+                                                                                    );
+                                                                                    $qtArray = array_combine(
+                                                                                        $keys,
+                                                                                        $qtArray,
+                                                                                    );
                                                                                 }
                                                                             @endphp
 
                                                                             @foreach ($qtArray as $qtDataKey => $qtData)
                                                                                 @php
-                                                                                    $question_arr = Helper::getQuestionNameByID($qtDataKey);
+                                                                                    $question_arr = Helper::getQuestionNameByID(
+                                                                                        $qtDataKey,
+                                                                                    );
                                                                                     // dump($question_arr);
                                                                                     // dd($question_arr);
                                                                                 @endphp
@@ -450,12 +501,21 @@
                                                                                         <!-- END MODAL -->
 
                                                                                         @php
-                                                                                            $incorrect = $qtData['incorrect'] ?? 0;
-                                                                                            $correct = $qtData['correct'] ?? 0;
-                                                                                            $missed_qt = $qtData['missed'] ?? 0;
-                                                                                            $count = $qtData['count'] ?? 0;
-                                                                                            $percentage = ($incorrect / $qtData['count']) * 100;
-                                                                                            $percentage = $percentage . '%';
+                                                                                            $incorrect =
+                                                                                                $qtData['incorrect'] ??
+                                                                                                0;
+                                                                                            $correct =
+                                                                                                $qtData['correct'] ?? 0;
+                                                                                            $missed_qt =
+                                                                                                $qtData['missed'] ?? 0;
+                                                                                            $count =
+                                                                                                $qtData['count'] ?? 0;
+                                                                                            $percentage =
+                                                                                                ($incorrect /
+                                                                                                    $qtData['count']) *
+                                                                                                100;
+                                                                                            $percentage =
+                                                                                                $percentage . '%';
                                                                                         @endphp
 
                                                                                         <div class="progress mt-2 {{ $percentage }}"

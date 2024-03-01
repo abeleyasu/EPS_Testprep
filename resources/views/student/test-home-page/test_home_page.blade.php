@@ -870,7 +870,9 @@
                                                                                             </button>
                                                                                         </td>
                                                                                         <td class="text-center">
+                                                                                            
                                                                                             @if (!@empty($getTest['total_question']))
+                                                                                           
                                                                                                 {{ $getTest['right_question'] ?? 0 }}/{{ $getTest['total_question'] }}
                                                                                             @endif
                                                                                             @php
