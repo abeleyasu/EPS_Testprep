@@ -52,28 +52,28 @@
                     <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
                         <ol class="breadcrumb breadcrumb-alt">
                             @if (isset($test_details) && !empty($test_details))
-                            @php
-                                $testType = request()->session()->get('testType');
-                                // dd($testType);
-                            @endphp
-                            @if($testType == "proctored" )
-                                <li class="breadcrumb-item" aria-current="page">
-                                    <a class="link-fx"
-                                        href="{{ url('user/practice-test-sections/' . $test_details->id . '?test_section=proctored') }}">College
-                                        Prep
-                                        System {{ isset($test_details->format) ? $test_details->format : '' }}
-                                        {{ isset($test_details->title) ? $test_details->title : '' }}
-                                    </a>
-                                </li>
+                                @php
+                                    $testType = request()->session()->get('testType');
+                                    // dd($testType);
+                                @endphp
+                                @if ($testType == 'proctored')
+                                    <li class="breadcrumb-item" aria-current="page">
+                                        <a class="link-fx"
+                                            href="{{ url('user/practice-test-sections/' . $test_details->id . '?test_section=proctored') }}">College
+                                            Prep
+                                            System {{ isset($test_details->format) ? $test_details->format : '' }}
+                                            {{ isset($test_details->title) ? $test_details->title : '' }}
+                                        </a>
+                                    </li>
                                 @else
-                                <li class="breadcrumb-item" aria-current="page">
-                                    <a class="link-fx"
-                                        href="{{ url('user/practice-test-sections/' . $test_details->id) }}">College
-                                        Prep
-                                        System {{ isset($test_details->format) ? $test_details->format : '' }}
-                                        {{ isset($test_details->title) ? $test_details->title : '' }}
-                                    </a>
-                                </li>
+                                    <li class="breadcrumb-item" aria-current="page">
+                                        <a class="link-fx"
+                                            href="{{ url('user/practice-test-sections/' . $test_details->id) }}">College
+                                            Prep
+                                            System {{ isset($test_details->format) ? $test_details->format : '' }}
+                                            {{ isset($test_details->title) ? $test_details->title : '' }}
+                                        </a>
+                                    </li>
                                 @endif
                                 <li class="breadcrumb-item">
                                     <a class="link-fx"
@@ -110,7 +110,8 @@
                     </div>
                 </div> --}}
                 <div class="position-fixed" style="top: 10rem; right: 20px; z-index: 1000;">
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#modal-test_type_selection" class="btn btn-primary fs-xs fw-semibold generate_custom_quiz_two">Generate Custom Quiz</button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#modal-test_type_selection"
+                        class="btn btn-primary fs-xs fw-semibold generate_custom_quiz_two">Generate Custom Quiz</button>
                 </div>
             </div>
             <div class="mt-3">
@@ -1801,10 +1802,24 @@
                                                                                                         Notes
                                                                                                     </div>
                                                                                                     @php
-                                                                                                        $notes = \DB::table('practice_question_notes')
-                                                                                                            ->where('user_id', Auth::user()->id)
-                                                                                                            ->where('practice_question_id', $single_user_selected_answers['get_question_details'][0]->question_id)
-                                                                                                            ->select('notes')
+                                                                                                        $notes = \DB::table(
+                                                                                                            'practice_question_notes',
+                                                                                                        )
+                                                                                                            ->where(
+                                                                                                                'user_id',
+                                                                                                                Auth::user()
+                                                                                                                    ->id,
+                                                                                                            )
+                                                                                                            ->where(
+                                                                                                                'practice_question_id',
+                                                                                                                $single_user_selected_answers[
+                                                                                                                    'get_question_details'
+                                                                                                                ][0]
+                                                                                                                    ->question_id,
+                                                                                                            )
+                                                                                                            ->select(
+                                                                                                                'notes',
+                                                                                                            )
                                                                                                             ->first();
                                                                                                         //    dump($notes);
                                                                                                     @endphp
@@ -1812,7 +1827,11 @@
                                                                                                         class="block-content">
                                                                                                         <textarea class="form-control"
                                                                                                             onchange="handleNotesChange(this,{{ $single_user_selected_answers['get_question_details'][0]->question_id }})"
-                                                                                                            placeholder="Enter your notes here...">@if (isset($notes)){{ $notes->notes }}@endif</textarea>
+                                                                                                            placeholder="Enter your notes here...">
+@if (isset($notes))
+{{ $notes->notes }}
+@endif
+</textarea>
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div
@@ -1887,33 +1906,69 @@
                                                                             </thead>
                                                                             <tbody>
                                                                                 @php
-                                                                                    $category_type_arr = $categoryTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
-                                                                                    $question_type_arr = $questionTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
-                                                                                    $checkbox_arr = $checkboxData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
-                                                                                    $user_selected_answer = $single_user_selected_answers['user_selected_answer'] ?? '';
-                                                                                    $question_id = $single_user_selected_answers['get_question_details'][0]->question_id ?? '';
+                                                                                    $category_type_arr =
+                                                                                        $categoryTypeData[
+                                                                                            $single_user_selected_answers[
+                                                                                                'get_question_details'
+                                                                                            ][0]->question_id
+                                                                                        ] ?? [];
+                                                                                    $question_type_arr =
+                                                                                        $questionTypeData[
+                                                                                            $single_user_selected_answers[
+                                                                                                'get_question_details'
+                                                                                            ][0]->question_id
+                                                                                        ] ?? [];
+                                                                                    $checkbox_arr =
+                                                                                        $checkboxData[
+                                                                                            $single_user_selected_answers[
+                                                                                                'get_question_details'
+                                                                                            ][0]->question_id
+                                                                                        ] ?? [];
+                                                                                    $user_selected_answer =
+                                                                                        $single_user_selected_answers[
+                                                                                            'user_selected_answer'
+                                                                                        ] ?? '';
+                                                                                    $question_id =
+                                                                                        $single_user_selected_answers[
+                                                                                            'get_question_details'
+                                                                                        ][0]->question_id ?? '';
                                                                                 @endphp
                                                                                 @if (empty($user_selected_answer) || $user_selected_answer === '-')
                                                                                     @php
                                                                                         $newcategory_type_arr = [];
-                                                                                        foreach ($category_type_arr as $key => $category_type):
-                                                                                            foreach ($category_type as $key2 => $v2):
+                                                                                        foreach (
+                                                                                            $category_type_arr
+                                                                                            as $key => $category_type
+                                                                                        ):
+                                                                                            foreach (
+                                                                                                $category_type
+                                                                                                as $key2 => $v2
+                                                                                            ):
                                                                                                 $flag = false;
-                                                                                                foreach ($newcategory_type_arr as $key3 => $v):
-                                                                                                    if (in_array($v2, $v)):
+                                                                                                foreach (
+                                                                                                    $newcategory_type_arr
+                                                                                                    as $key3 => $v
+                                                                                                ):
+                                                                                                    if (
+                                                                                                        in_array(
+                                                                                                            $v2,
+                                                                                                            $v,
+                                                                                                        )
+                                                                                                    ):
                                                                                                         $flag = true;
                                                                                                     endif;
                                                                                                 endforeach;
                                                                                                 if ($flag):
                                                                                                     break;
                                                                                                 endif;
-                                                                                                $newcategory_type_arr[$key][] = $v2;
+                                                                                                $newcategory_type_arr[
+                                                                                                    $key
+                                                                                                ][] = $v2;
                                                                                             endforeach;
                                                                                         endforeach;
                                                                                         $category_type_arr = $newcategory_type_arr;
                                                                                     @endphp
                                                                                     @foreach ($category_type_arr as $key => $category_type)
-                                                                                     
                                                                                         @for ($i = 0; $i < count($category_type); $i++)
                                                                                             <tr
                                                                                                 class="odd {{ $question_id }}">
@@ -2827,7 +2882,9 @@
                                                 <div class="accordion accordionExample">
                                                     @foreach ($categoryAndQuestionTypeSummaryData as $categoryAndQuestionTypeSummary)
                                                         @php
-                                                            $category_arr = Helper::getCategoryNameByID($categoryAndQuestionTypeSummary['ct']);
+                                                            $category_arr = Helper::getCategoryNameByID(
+                                                                $categoryAndQuestionTypeSummary['ct'],
+                                                            );
                                                             // dump($category_arr);
                                                         @endphp
                                                         @if ($category_arr)
@@ -2880,6 +2937,8 @@
                                                                                                     class="block-header block-header-default">
                                                                                                     <h3
                                                                                                         class="block-title set_category_title">
+                                                                                                        {{ isset($category_arr->category_type_title) ? $category_arr->category_type_title : '' }}
+
                                                                                                     </h3>
                                                                                                 </div>
                                                                                                 <div
@@ -2910,8 +2969,9 @@
                                                                                                             </div>
                                                                                                             <div
                                                                                                                 class="block-content">
-                                                                                                                <p>other
-                                                                                                                    words
+                                                                                                                <p>
+                                                                                                                    {!! isset($category_arr->category_type_description) ? $category_arr->category_type_description : '' !!}
+
                                                                                                                 </p>
                                                                                                             </div>
                                                                                                         </div>
@@ -2931,11 +2991,28 @@
                                                                                 </div>
                                                                                 <!-- END MODAL -->
                                                                                 @php
-                                                                                    $incorrect = $categoryAndQuestionTypeSummary['incorrect'] ?? 0;
-                                                                                    $count = $categoryAndQuestionTypeSummary['count'] ?? 0;
-                                                                                    $total_questions = $categoryAndQuestionTypeSummary['total_qts'] ?? 0;
-                                                                                    $missed_ct = $categoryAndQuestionTypeSummary['missed'] ?? 0;
-                                                                                    $percentage = ($incorrect / $categoryAndQuestionTypeSummary['count']) * 100;
+                                                                                    $incorrect =
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'incorrect'
+                                                                                        ] ?? 0;
+                                                                                    $count =
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'count'
+                                                                                        ] ?? 0;
+                                                                                    $total_questions =
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'total_qts'
+                                                                                        ] ?? 0;
+                                                                                    $missed_ct =
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'missed'
+                                                                                        ] ?? 0;
+                                                                                    $percentage =
+                                                                                        ($incorrect /
+                                                                                            $categoryAndQuestionTypeSummary[
+                                                                                                'count'
+                                                                                            ]) *
+                                                                                        100;
                                                                                     $percentage = $percentage . '%';
                                                                                 @endphp
                                                                                 <div class="row">
@@ -3022,17 +3099,42 @@
                                                                                 <div>
                                                                                     @php
                                                                                         $qtArray = [];
-                                                                                        if (!empty($categoryAndQuestionTypeSummary['qt'])) {
-                                                                                            $qtArray = $categoryAndQuestionTypeSummary['qt'];
-                                                                                            $keys = array_keys($qtArray);
-                                                                                            array_multisort(array_column($qtArray, 'incorrect'), SORT_DESC, SORT_NUMERIC, $qtArray, $keys);
-                                                                                            $qtArray = array_combine($keys, $qtArray);
+                                                                                        if (
+                                                                                            !empty(
+                                                                                                $categoryAndQuestionTypeSummary[
+                                                                                                    'qt'
+                                                                                                ]
+                                                                                            )
+                                                                                        ) {
+                                                                                            $qtArray =
+                                                                                                $categoryAndQuestionTypeSummary[
+                                                                                                    'qt'
+                                                                                                ];
+                                                                                            $keys = array_keys(
+                                                                                                $qtArray,
+                                                                                            );
+                                                                                            array_multisort(
+                                                                                                array_column(
+                                                                                                    $qtArray,
+                                                                                                    'incorrect',
+                                                                                                ),
+                                                                                                SORT_DESC,
+                                                                                                SORT_NUMERIC,
+                                                                                                $qtArray,
+                                                                                                $keys,
+                                                                                            );
+                                                                                            $qtArray = array_combine(
+                                                                                                $keys,
+                                                                                                $qtArray,
+                                                                                            );
                                                                                         }
                                                                                     @endphp
 
                                                                                     @foreach ($qtArray as $qtDataKey => $qtData)
                                                                                         @php
-                                                                                            $question_arr = Helper::getQuestionNameByID($qtDataKey);
+                                                                                            $question_arr = Helper::getQuestionNameByID(
+                                                                                                $qtDataKey,
+                                                                                            );
                                                                                             //dd($question_arr);
                                                                                         @endphp
                                                                                         <div class="odd p-3 ps-4">
@@ -3084,11 +3186,27 @@
                                                                                                         echo $question_arr->question_type_title;
                                                                                                     } ?></button>
                                                                                                 @php
-                                                                                                    $incorrect = $qtData['incorrect'] ?? 0;
-                                                                                                    $missed_qt = $qtData['missed'] ?? 0;
-                                                                                                    $count = $qtData['count'] ?? 0;
-                                                                                                    $percentage = ($incorrect / $qtData['count']) * 100;
-                                                                                                    $percentage = $percentage . '%';
+                                                                                                    $incorrect =
+                                                                                                        $qtData[
+                                                                                                            'incorrect'
+                                                                                                        ] ?? 0;
+                                                                                                    $missed_qt =
+                                                                                                        $qtData[
+                                                                                                            'missed'
+                                                                                                        ] ?? 0;
+                                                                                                    $count =
+                                                                                                        $qtData[
+                                                                                                            'count'
+                                                                                                        ] ?? 0;
+                                                                                                    $percentage =
+                                                                                                        ($incorrect /
+                                                                                                            $qtData[
+                                                                                                                'count'
+                                                                                                            ]) *
+                                                                                                        100;
+                                                                                                    $percentage =
+                                                                                                        $percentage .
+                                                                                                        '%';
                                                                                                 @endphp
 
                                                                                                 <div class="progress mt-2 {{ $percentage }}"
@@ -3153,8 +3271,8 @@
                                                                                                                     class="block-header block-header-default">
                                                                                                                     <h3
                                                                                                                         class="block-title">
-                                                                                                                        Arithmetic
-                                                                                                                        Operations
+                                                                                                                        {{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}
+
                                                                                                                     </h3>
                                                                                                                 </div>
                                                                                                                 <div
@@ -3185,7 +3303,8 @@
                                                                                                                             </div>
                                                                                                                             <div
                                                                                                                                 class="block-content">
-                                                                                                                                <p>words
+                                                                                                                                <p>
+                                                                                                                                    {!! isset($question_arr->question_type_description) ? $question_arr->question_type_description : '' !!}
                                                                                                                                 </p>
                                                                                                                             </div>
                                                                                                                         </div>
