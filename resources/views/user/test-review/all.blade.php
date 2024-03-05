@@ -8,9 +8,11 @@
                         All Tests Insight Reports
 
                     </h1>
+
                     @if (!@empty($test_details))
                         <input type="hidden" id="test_type" name="test_type" value="{{ $test_details->format }}" />
                         <input type="hidden" id="test_id" name="test_id" value="{{ $test_details->id }}" />
+
                     @endempty
 
                     @php
@@ -26,17 +28,22 @@
                         <input type="hidden" id="practice_test_type" name="practice_test_type"
                             value="{{ $user_selected_answers[0]['sections'][0]->practice_test_type }}" />
                     @endif
-                    <div class="d-flex align-items-center" style="overflow-wrap: break-word;">
-                        <div class="description-test"
-                            style="max-width: 100%; display: block; overflow-wrap: anywhere">
-                            <h2 class="fs-base lh-base fw-medium mb-0 description-test-review text-muted">
-                                {!! isset($test_details->description) ? $test_details->description : '' !!}
-                            </h2>
-                        </div>
-                        {{-- <div>
+                    @if ($test_det == 'single')
+                        <div class="d-flex align-items-center" style="overflow-wrap: break-word;">
+                            <div class="description-test"
+                                style="max-width: 100%; display: block; overflow-wrap: anywhere">
+                                <h2 class="fs-base lh-base fw-bold mb-2 description-test-review text-muted">
+                                    {!! isset($test_details->title) ? $test_details->title : '' !!}
+                                </h2>
+                                <h3 class="fs-base lh-base fw-medium mb-0 description-test-review text-muted">
+                                    {!! isset($test_details->description) ? $test_details->description : '' !!}
+                                </h3>
+                            </div>
+                            {{-- <div>
                                     <p class="ms-5 d-flex align-items-center mb-0 w-100">{{ isset($test_details->created_at) ? ' - '. date('F Y', strtotime($test_details->created_at)) : '' }}</p>
                                 </div> --}}
-                    </div>
+                        </div>
+                    @endif
             </div>
 
         </div>

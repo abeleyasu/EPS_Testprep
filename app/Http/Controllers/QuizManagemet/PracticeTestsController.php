@@ -48,8 +48,17 @@ class PracticeTestsController extends Controller
 
     public function index()
     {
-        // $tests = PracticeTest::where('test_source', '!=', 2)->orderBy('id', 'DESC')->get();
-        $tests = PracticeTest::orderBy('id', 'DESC')->get();
+        $tests1 = PracticeTest::where('test_source', '!=', 2)
+            ->orderBy('id', 'DESC')
+            ->get();
+        // dd($tests1);
+        $tests2 = PracticeTest::where('test_source', 2)
+            ->where('user_id', null)
+            ->orderBy('id', 'DESC')
+            ->get();
+            // dd($tests2);
+        $tests = $tests1->merge($tests2);
+        // $tests = PracticeTest::orderBy('id', 'DESC')->get();
         $getQuestionTypes = PracticeTest::get();
         return view('admin.quiz-management.practicetests.index', compact('tests'));
     }
