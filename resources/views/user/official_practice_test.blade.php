@@ -143,9 +143,9 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      height: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      background-color: blue;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      margin-right: 5px; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          height: 20px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          background-color: blue;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          margin-right: 5px; */
         }
     </style>
     @php
@@ -155,11 +155,23 @@
         // dd($test);
         $getTestSection = $testSections->where('id', $section_id)->first();
         // dd($testSections);
-        if ($getTestSection->practice_test_type == 'Hard_Reading_And_Writing' || $getTestSection->practice_test_type == 'Easy_Reading_And_Writing') {
-            $mareSections = $testSections->whereIn('practice_test_type', ['Easy_Reading_And_Writing', 'Hard_Reading_And_Writing']);
+        if (
+            $getTestSection->practice_test_type == 'Hard_Reading_And_Writing' ||
+            $getTestSection->practice_test_type == 'Easy_Reading_And_Writing'
+        ) {
+            $mareSections = $testSections->whereIn('practice_test_type', [
+                'Easy_Reading_And_Writing',
+                'Hard_Reading_And_Writing',
+            ]);
             // dd($mareSections);
-        } elseif ($getTestSection->practice_test_type == 'Math_no_calculator' || $getTestSection->practice_test_type == 'Math_with_calculator') {
-            $mareSections = $testSections->whereIn('practice_test_type', ['Math_no_calculator', 'Math_with_calculator']);
+        } elseif (
+            $getTestSection->practice_test_type == 'Math_no_calculator' ||
+            $getTestSection->practice_test_type == 'Math_with_calculator'
+        ) {
+            $mareSections = $testSections->whereIn('practice_test_type', [
+                'Math_no_calculator',
+                'Math_with_calculator',
+            ]);
             // dd($mareSections);
         } else {
         }
@@ -186,7 +198,10 @@
                 ->select('id', 'testid', 'practice_test_type')
                 ->where('testid', $test_id)
                 ->where(function ($query) {
-                    $query->where('practice_test_type', 'Reading_And_Writing')->orWhere('practice_test_type', 'Easy_Reading_And_Writing')->orWhere('practice_test_type', 'Hard_Reading_And_Writing');
+                    $query
+                        ->where('practice_test_type', 'Reading_And_Writing')
+                        ->orWhere('practice_test_type', 'Easy_Reading_And_Writing')
+                        ->orWhere('practice_test_type', 'Hard_Reading_And_Writing');
                 })
                 ->get();
 
@@ -226,14 +241,16 @@
                 if ($secondsValue !== null) {
                     $seconds = $secondsValue;
                 }
-               
             }
 
             $mathTest = DB::table('practice_test_sections')
                 ->select('id', 'testid', 'practice_test_type')
                 ->where('testid', $test_id)
                 ->where(function ($query) {
-                    $query->where('practice_test_type', 'Math')->orWhere('practice_test_type', 'Math_no_calculator')->orWhere('practice_test_type', 'Math_with_calculator');
+                    $query
+                        ->where('practice_test_type', 'Math')
+                        ->orWhere('practice_test_type', 'Math_no_calculator')
+                        ->orWhere('practice_test_type', 'Math_with_calculator');
                 })
                 ->get();
             $mathScore = null;
@@ -289,7 +306,11 @@
 
                             // dd($getTestSection);
                             $modifiedString = str_replace(['_'], [' '], $getTestSection->practice_test_type);
-                            $modifiedStrings = str_replace(['calculator', 'Easy', 'with', 'no', 'Hard'], '', $modifiedString);
+                            $modifiedStrings = str_replace(
+                                ['calculator', 'Easy', 'with', 'no', 'Hard'],
+                                '',
+                                $modifiedString,
+                            );
                             // dd($test_type);
                         @endphp
                         <li class="breadcrumb-item" aria-current="page">
@@ -392,7 +413,8 @@
                                         $optionValue = $_GET['time'] ?? null;
                                         $regularTime = optional($testSection[0])->regular_time ?? '00:00:00';
                                         $fiftyPerExtended = optional($testSection[0])->fifty_per_extended ?? '00:00:00';
-                                        $hundredPerExtended = optional($testSection[0])->hundred_per_extended ?? '00:00:00';
+                                        $hundredPerExtended =
+                                            optional($testSection[0])->hundred_per_extended ?? '00:00:00';
                                     @endphp
                                     {{ $optionValue == 'regular' ? $regularTime : ($optionValue == '50per' ? $fiftyPerExtended : ($optionValue == '100per' ? $hundredPerExtended : '00:00:00')) }}
                                 </span>
@@ -432,7 +454,11 @@
                                 <div class="form-check">
                                     <label class="form-check-label" for="easy">
                                         @php
-                                            $easyDelimiter = $mareSections->where('easy_section_determiner', '!=', null);
+                                            $easyDelimiter = $mareSections->where(
+                                                'easy_section_determiner',
+                                                '!=',
+                                                null,
+                                            );
                                         @endphp
                                         @if ($easyDelimiter)
                                             @foreach ($easyDelimiter as $easyDe)
@@ -449,7 +475,11 @@
                                 <div class="form-check">
                                     <label class="form-check-label" for="hard">
                                         @php
-                                            $hardDelimiter = $mareSections->where('hard_section_determiner', '!=', null);
+                                            $hardDelimiter = $mareSections->where(
+                                                'hard_section_determiner',
+                                                '!=',
+                                                null,
+                                            );
                                         @endphp
                                         @if ($hardDelimiter)
                                             @foreach ($hardDelimiter as $hardDe)
@@ -493,7 +523,10 @@
                         // dd($getTestSection->practice_test_type);
                         if (strpos($getTestSection->practice_test_type, 'Math') !== false) {
                             $testFor = 'Math';
-                        } elseif (strpos($getTestSection->practice_test_type, 'Reading') !== false || strpos($getTestSection->practice_test_type, 'Writing') !== false) {
+                        } elseif (
+                            strpos($getTestSection->practice_test_type, 'Reading') !== false ||
+                            strpos($getTestSection->practice_test_type, 'Writing') !== false
+                        ) {
                             $testFor = 'English';
                         } else {
                         }
@@ -556,7 +589,10 @@
                         // dd($getTestSection->practice_test_type);
                         if (strpos($getTestSection->practice_test_type, 'Math') !== false) {
                             $testFor = 'Math';
-                        } elseif (strpos($getTestSection->practice_test_type, 'Reading') !== false || strpos($getTestSection->practice_test_type, 'Writing') !== false) {
+                        } elseif (
+                            strpos($getTestSection->practice_test_type, 'Reading') !== false ||
+                            strpos($getTestSection->practice_test_type, 'Writing') !== false
+                        ) {
                             $testFor = 'English';
                         } else {
                         }
@@ -1921,7 +1957,7 @@
                 let userHour = $('#user_hours').val();
                 let userMinutes = $('#user_minutes').val();
                 let userSeconds = $('#user_seconds').val();
-                
+
                 let userMathHour = $('#user_math_hours').val();
                 let userMathMinutes = $('#user_math_minutes').val();
                 let userMathSeconds = $('#user_math_seconds').val();
@@ -2153,7 +2189,7 @@
                     userActualTime,
                     userHour,
                     userMinutes,
-                    userSeconds, 
+                    userSeconds,
                     userMathHour,
                     userMathMinutes,
                     userMathSeconds,
