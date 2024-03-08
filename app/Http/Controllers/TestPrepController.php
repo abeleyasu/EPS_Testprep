@@ -1021,11 +1021,25 @@ class TestPrepController extends Controller
 
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
+
+                if (isset($key) && isset($answer_arr[$key]) == "-") {
+                    // Replace "-" with $catKey value
+                    if ($catKey == 'F' || $catKey == 'G' || $catKey == 'H' || $catKey == 'J' || $catKey == 'K') {
+                        $answer_arr[$key] = 'f';
+                    } elseif ($catKey == 'A' || $catKey == 'B' || $catKey == 'C' || $catKey == 'D' || $catKey == 'E') {
+                        $answer_arr[$key] = 'a';
+                    }
+                }
+                // dd($answer_arr);
                 $selected_answer = $answer_arr[$key] ?? '';
 
                 if ($selected_answer != "-") {
+                    // dump($selected_answer.'_'.$key);
+
                     $answers = explode(",", $selected_answer);
 
+                    // dump($catKey);
+                    // dump($answers);
                     if (in_array(strtolower($catKey), $answers) || empty($selected_answer)) {
                         $pq = PracticeQuestion::where("id", $key)->first();
 
@@ -1100,6 +1114,10 @@ class TestPrepController extends Controller
             }
         }
 
+
+
+        // dump($checkData);
+        // dd($catFinal);
         $categoryAndQuestionTypeSummaryData = [];
 
         if (!empty($checkData)) {
@@ -1479,6 +1497,14 @@ class TestPrepController extends Controller
         foreach ($categoryTypeData as $key => $catData) {
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
+                if (isset($key) && isset($answer_arr[$key]) == "-") {
+                    // Replace "-" with $catKey value
+                    if ($catKey == 'F' || $catKey == 'G' || $catKey == 'H' || $catKey == 'J' || $catKey == 'K') {
+                        $answer_arr[$key] = 'f';
+                    } elseif ($catKey == 'A' || $catKey == 'B' || $catKey == 'C' || $catKey == 'D' || $catKey == 'E') {
+                        $answer_arr[$key] = 'a';
+                    }
+                }
                 $selected_answer = $answer_arr[$key] ?? '';
 
                 if ($selected_answer != "-") {
@@ -1851,6 +1877,15 @@ class TestPrepController extends Controller
             foreach ($categoryTypeData as $key => $catData) {
                 foreach ($catData as $catKey => $cat) {
                     $answer_arr = $answer_arr ?? [];
+
+                    if (isset($key) && isset($answer_arr[$key]) == "-") {
+                        // Replace "-" with $catKey value
+                        if ($catKey == 'F' || $catKey == 'G' || $catKey == 'H' || $catKey == 'J' || $catKey == 'K') {
+                            $answer_arr[$key] = 'f';
+                        } elseif ($catKey == 'A' || $catKey == 'B' || $catKey == 'C' || $catKey == 'D' || $catKey == 'E') {
+                            $answer_arr[$key] = 'a';
+                        }
+                    }
                     $selected_answer = $answer_arr[$key] ?? '';
 
                     if ($selected_answer != "-") {
@@ -5827,9 +5862,9 @@ class TestPrepController extends Controller
         foreach ($diff_ratings as $diff_rating) {
             $query = PracticeQuestion::query()->select('practice_questions.*', "practice_tests.test_source as test_source");
             $query->where('practice_questions.format', $format)
-            ->where('practice_questions.diff_rating', $diff_rating->id)
-            ->where('practice_questions.selfMade', '0')
-            ->where('practice_questions.test_source', 2);
+                ->where('practice_questions.diff_rating', $diff_rating->id)
+                ->where('practice_questions.selfMade', '0')
+                ->where('practice_questions.test_source', 2);
 
             if (!empty($diff_rating_value)) {
                 $query->whereIn("diff_rating", $diff_rating_value);
