@@ -1022,7 +1022,7 @@ class TestPrepController extends Controller
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
 
-                if (isset($key) && isset($answer_arr[$key]) == "-") {
+                if ($key && array_key_exists($key, $answer_arr) && $answer_arr[$key] == "-") {
                     // Replace "-" with $catKey value
                     if ($catKey == 'F' || $catKey == 'G' || $catKey == 'H' || $catKey == 'J' || $catKey == 'K') {
                         $answer_arr[$key] = 'f';
@@ -1497,7 +1497,7 @@ class TestPrepController extends Controller
         foreach ($categoryTypeData as $key => $catData) {
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
-                if (isset($key) && isset($answer_arr[$key]) == "-") {
+                if ($key && array_key_exists($key, $answer_arr) && $answer_arr[$key] == "-") {
                     // Replace "-" with $catKey value
                     if ($catKey == 'F' || $catKey == 'G' || $catKey == 'H' || $catKey == 'J' || $catKey == 'K') {
                         $answer_arr[$key] = 'f';
@@ -1878,7 +1878,7 @@ class TestPrepController extends Controller
                 foreach ($catData as $catKey => $cat) {
                     $answer_arr = $answer_arr ?? [];
 
-                    if (isset($key) && isset($answer_arr[$key]) == "-") {
+                    if ($key && array_key_exists($key, $answer_arr) && $answer_arr[$key] == "-") {
                         // Replace "-" with $catKey value
                         if ($catKey == 'F' || $catKey == 'G' || $catKey == 'H' || $catKey == 'J' || $catKey == 'K') {
                             $answer_arr[$key] = 'f';
