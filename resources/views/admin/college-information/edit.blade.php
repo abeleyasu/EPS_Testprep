@@ -338,6 +338,7 @@
             <label class="from-label">Early Decision Offered:</label>
             <div class="form-check">
               <input class="form-check-input" type="radio" id="early_decision_offerd1" name="early_decision_offerd" value="1" @if ($info->early_decision_offerd == '1') checked @endif>
+        'room_and_board',
               <label class="form-check-label" for="early_decision_offerd1">Yes</label>
             </div>
             <div class="form-check">
@@ -406,7 +407,7 @@
 
 
 
-                        <div class="">
+                        {{-- <div class="">
                             <label class="from-label">Early Action Deadline:</label>
                             <input type="text"
                                 class="date-own form-control {{ $errors->has('early_action_deadline') ? 'is-invalid' : '' }}"
@@ -415,7 +416,7 @@
                             @error('rolling_admission_deadline')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> --}}
                         {{-- <div class="col d-flex align-items-end">
                             <button class="btn btn-primary">Reset</button>
                         </div> --}}
