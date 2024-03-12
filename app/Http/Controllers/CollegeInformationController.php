@@ -517,7 +517,12 @@ class CollegeInformationController extends Controller
             'display_peterson_weighted_gpa',
             'display_peterson_unweighted_gpa',
             'display_peterson_pvt_coa',
-            'display_peterson_public_coa'
+            'display_peterson_public_coa',
+            'common_app',
+            'coalition_app',
+            'universal_app',
+            'college_system_app',
+            'apply_directly',
         );
 
         foreach($boolean_params as $bp){

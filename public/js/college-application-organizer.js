@@ -57,6 +57,59 @@ function getStatsOption(options, selectedvalue) {
     return option;
 }
 
+function getAvailableTypesOfApplication(collegeData) {
+    const type_of_application = ['common_app', 'coalition_app', 'universal_app', 'college_system_app', 'apply_directly']
+    const available_type_of_application = type_of_application.filter((item) => {
+        if (collegeData[item] == 1) {
+            return item
+        }
+    })
+    return available_type_of_application
+}
+
+function convertUnderscoredToSpace(str) {
+    return str.replace(/_/g, ' ')
+}
+
+function populateApplicationDeadline(collegeInformation){
+    if(collegeInformation.AP_DL_EACT_DAY && collegeInformation.AP_DL_EACT_MONTH){
+        // Function Name: generateDate
+        // Function Arguments: day, month 
+        // Return Type of Function: Date (dd/mm/yyyy) based on the day and month and if the year is not provided then it will take the current year and if the date has passed then it will take the next year   
+        function generateDate(day, month){
+            let year = new Date().getFullYear()
+            let date = new Date(year, month - 1, day)
+            if(date < new Date()){
+                year++
+                date = new Date(year, month - 1, day)
+            }
+            return date
+        }
+
+    }
+
+}
+function generateDate(day, month){
+    let year = new Date().getFullYear()
+    let date = new Date(year, month - 1, day)
+    if(date < new Date()){
+        year++
+        date = new Date(year, month - 1, day)
+    }
+    return date
+}
+
+function getDateInDMYFormat(date){
+    let d = new Date(date)
+    let month = d.getMonth() + 1
+    let day = d.getDate()
+    let year = d.getFullYear()
+    return `${day}/${month}/${year}`
+}
+
+
+
+
 function getSingleApplicationData(dataset, staticdata, elementid) {
     One.layout('header_loader_on');
     $.ajax({
@@ -71,6 +124,12 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
             $('#toggle' + dataset.id).removeClass('fa-angle-right').addClass('fa-angle-down');
             $('#' + elementid).html('')
             let content = '';
+            let availableTypesOfApplication = (getAvailableTypesOfApplication(data.college_details.college_information))
+            // console.log(data)
+            // console.log(getDateInDMYFormat(generateDate(15,9)))
+            // console.log(generateDate(15,1))
+
+            
 
             content += `
                 <div class="college-content-wrapper college-content">
@@ -78,7 +137,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                         <label class="form-label" for="type_of_application-${dataset.id}">Type of Application</label>
                         <div class="col-10">
                             <select class="form-select update-form" id="type_of_application-${dataset.id}" name="type_of_application" data-index="${dataset.id}">
-                                ${getStatsOption(staticdata.applications, data.type_of_application)}
+                                ${getStatsOption(availableTypesOfApplication, availableTypesOfApplication[0])}
                             </select>
                         </div>
                         <div class="col-2">
@@ -287,6 +346,30 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                         </div>
                     </div>
                 </div>
+                <script>
+                // console.log(${dataset.id})
+                $.ajax({
+                    url: core.getSingleApplicationOrganizer.replace(':id', ${dataset.id}),
+                    type: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                }).done((response) => {
+                    if (response.success) {
+                        const data = response.data;
+                        console.log(data);
+                    }
+                });
+
+                document.getElementById('admission_option-${dataset.id}').addEventListener('change', function(element){    
+                    console.log(
+                        element.target.value
+                    );
+                    if(element.target.value == 'Early Action'){
+                    }
+                });
+                // Attach Event Listener to admission_option
+                </script>
             `
             $('#' + elementid).append(content)
             $('.date-own').datepicker({

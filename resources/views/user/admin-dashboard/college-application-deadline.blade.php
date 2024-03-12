@@ -506,8 +506,26 @@
                     $('#add-notification-settings').modal('hide')
                     notificationDatatable.ajax.reload();
                 } else {
-                    toastr.error(response.message)
+                    toastr.error(response.message)  
                 }
+            })
+        }
+    })
+
+    // Wait for DOM conetnt to be fully loaded and then get all element with name attribute of admission_option
+    document.addEventListener('DOMContentLoaded', function () {
+        const admission_option = document.getElementsByName('admission_option');
+        // Loop through all the admission_option element and add event listener to each of them
+        console.log(admission_option)
+        for (let i = 0; i < admission_option.length; i++) {
+            admission_option[i].addEventListener('change', function (e) {
+                // Get the value of the element that was clicked
+                const value = e.target.value;
+                // Get the index of the element that was clicked
+                const index = e.target.dataset.index;
+                // Get the element with the id of admission_option_value and set the value of the element to the value of the element that was clicked
+                document.getElementById('admission_option_value-' + index).value = value;
+                // Call the saveform function and pass the index of the element that was clicked
             })
         }
     })
