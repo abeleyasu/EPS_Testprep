@@ -117,6 +117,9 @@ class CollegeInformation extends Model
         'early_action_month',
         'num_applications',
         'overall_admission_rate',
+        'early_decision_1_deadline',
+        'early_decision_2_deadline'
+
     ];
 
     protected $hidden = [
