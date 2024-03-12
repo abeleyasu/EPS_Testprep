@@ -52,28 +52,28 @@
                     <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
                         <ol class="breadcrumb breadcrumb-alt">
                             @if (isset($test_details) && !empty($test_details))
-                            @php
-                                $testType = request()->session()->get('testType');
-                                // dd($testType);
-                            @endphp
-                            @if($testType == "proctored" )
-                                <li class="breadcrumb-item" aria-current="page">
-                                    <a class="link-fx"
-                                        href="{{ url('user/practice-test-sections/' . $test_details->id . '?test_section=proctored') }}">College
-                                        Prep
-                                        System {{ isset($test_details->format) ? $test_details->format : '' }}
-                                        {{ isset($test_details->title) ? $test_details->title : '' }}
-                                    </a>
-                                </li>
+                                @php
+                                    $testType = request()->session()->get('testType');
+                                    // dd($testType);
+                                @endphp
+                                @if ($testType == 'proctored')
+                                    <li class="breadcrumb-item" aria-current="page">
+                                        <a class="link-fx"
+                                            href="{{ url('user/practice-test-sections/' . $test_details->id . '?test_section=proctored') }}">College
+                                            Prep
+                                            System {{ isset($test_details->format) ? $test_details->format : '' }}
+                                            {{ isset($test_details->title) ? $test_details->title : '' }}
+                                        </a>
+                                    </li>
                                 @else
-                                <li class="breadcrumb-item" aria-current="page">
-                                    <a class="link-fx"
-                                        href="{{ url('user/practice-test-sections/' . $test_details->id) }}">College
-                                        Prep
-                                        System {{ isset($test_details->format) ? $test_details->format : '' }}
-                                        {{ isset($test_details->title) ? $test_details->title : '' }}
-                                    </a>
-                                </li>
+                                    <li class="breadcrumb-item" aria-current="page">
+                                        <a class="link-fx"
+                                            href="{{ url('user/practice-test-sections/' . $test_details->id) }}">College
+                                            Prep
+                                            System {{ isset($test_details->format) ? $test_details->format : '' }}
+                                            {{ isset($test_details->title) ? $test_details->title : '' }}
+                                        </a>
+                                    </li>
                                 @endif
                                 <li class="breadcrumb-item">
                                     <a class="link-fx"
@@ -110,7 +110,8 @@
                     </div>
                 </div> --}}
                 <div class="position-fixed" style="top: 10rem; right: 20px; z-index: 1000;">
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#modal-test_type_selection" class="btn btn-primary fs-xs fw-semibold generate_custom_quiz_two">Generate Custom Quiz</button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#modal-test_type_selection"
+                        class="btn btn-primary fs-xs fw-semibold generate_custom_quiz_two">Generate Custom Quiz</button>
                 </div>
             </div>
             <div class="mt-3">
@@ -1801,10 +1802,24 @@
                                                                                                         Notes
                                                                                                     </div>
                                                                                                     @php
-                                                                                                        $notes = \DB::table('practice_question_notes')
-                                                                                                            ->where('user_id', Auth::user()->id)
-                                                                                                            ->where('practice_question_id', $single_user_selected_answers['get_question_details'][0]->question_id)
-                                                                                                            ->select('notes')
+                                                                                                        $notes = \DB::table(
+                                                                                                            'practice_question_notes',
+                                                                                                        )
+                                                                                                            ->where(
+                                                                                                                'user_id',
+                                                                                                                Auth::user()
+                                                                                                                    ->id,
+                                                                                                            )
+                                                                                                            ->where(
+                                                                                                                'practice_question_id',
+                                                                                                                $single_user_selected_answers[
+                                                                                                                    'get_question_details'
+                                                                                                                ][0]
+                                                                                                                    ->question_id,
+                                                                                                            )
+                                                                                                            ->select(
+                                                                                                                'notes',
+                                                                                                            )
                                                                                                             ->first();
                                                                                                         //    dump($notes);
                                                                                                     @endphp
@@ -1812,7 +1827,11 @@
                                                                                                         class="block-content">
                                                                                                         <textarea class="form-control"
                                                                                                             onchange="handleNotesChange(this,{{ $single_user_selected_answers['get_question_details'][0]->question_id }})"
-                                                                                                            placeholder="Enter your notes here...">@if (isset($notes)){{ $notes->notes }}@endif</textarea>
+                                                                                                            placeholder="Enter your notes here...">
+@if (isset($notes))
+{{ $notes->notes }}
+@endif
+</textarea>
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div
@@ -1887,33 +1906,69 @@
                                                                             </thead>
                                                                             <tbody>
                                                                                 @php
-                                                                                    $category_type_arr = $categoryTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
-                                                                                    $question_type_arr = $questionTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
-                                                                                    $checkbox_arr = $checkboxData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
-                                                                                    $user_selected_answer = $single_user_selected_answers['user_selected_answer'] ?? '';
-                                                                                    $question_id = $single_user_selected_answers['get_question_details'][0]->question_id ?? '';
+                                                                                    $category_type_arr =
+                                                                                        $categoryTypeData[
+                                                                                            $single_user_selected_answers[
+                                                                                                'get_question_details'
+                                                                                            ][0]->question_id
+                                                                                        ] ?? [];
+                                                                                    $question_type_arr =
+                                                                                        $questionTypeData[
+                                                                                            $single_user_selected_answers[
+                                                                                                'get_question_details'
+                                                                                            ][0]->question_id
+                                                                                        ] ?? [];
+                                                                                    $checkbox_arr =
+                                                                                        $checkboxData[
+                                                                                            $single_user_selected_answers[
+                                                                                                'get_question_details'
+                                                                                            ][0]->question_id
+                                                                                        ] ?? [];
+                                                                                    $user_selected_answer =
+                                                                                        $single_user_selected_answers[
+                                                                                            'user_selected_answer'
+                                                                                        ] ?? '';
+                                                                                    $question_id =
+                                                                                        $single_user_selected_answers[
+                                                                                            'get_question_details'
+                                                                                        ][0]->question_id ?? '';
                                                                                 @endphp
                                                                                 @if (empty($user_selected_answer) || $user_selected_answer === '-')
                                                                                     @php
                                                                                         $newcategory_type_arr = [];
-                                                                                        foreach ($category_type_arr as $key => $category_type):
-                                                                                            foreach ($category_type as $key2 => $v2):
+                                                                                        foreach (
+                                                                                            $category_type_arr
+                                                                                            as $key => $category_type
+                                                                                        ):
+                                                                                            foreach (
+                                                                                                $category_type
+                                                                                                as $key2 => $v2
+                                                                                            ):
                                                                                                 $flag = false;
-                                                                                                foreach ($newcategory_type_arr as $key3 => $v):
-                                                                                                    if (in_array($v2, $v)):
+                                                                                                foreach (
+                                                                                                    $newcategory_type_arr
+                                                                                                    as $key3 => $v
+                                                                                                ):
+                                                                                                    if (
+                                                                                                        in_array(
+                                                                                                            $v2,
+                                                                                                            $v,
+                                                                                                        )
+                                                                                                    ):
                                                                                                         $flag = true;
                                                                                                     endif;
                                                                                                 endforeach;
                                                                                                 if ($flag):
                                                                                                     break;
                                                                                                 endif;
-                                                                                                $newcategory_type_arr[$key][] = $v2;
+                                                                                                $newcategory_type_arr[
+                                                                                                    $key
+                                                                                                ][] = $v2;
                                                                                             endforeach;
                                                                                         endforeach;
                                                                                         $category_type_arr = $newcategory_type_arr;
                                                                                     @endphp
                                                                                     @foreach ($category_type_arr as $key => $category_type)
-                                                                                     
                                                                                         @for ($i = 0; $i < count($category_type); $i++)
                                                                                             <tr
                                                                                                 class="odd {{ $question_id }}">
@@ -2827,7 +2882,9 @@
                                                 <div class="accordion accordionExample">
                                                     @foreach ($categoryAndQuestionTypeSummaryData as $categoryAndQuestionTypeSummary)
                                                         @php
-                                                            $category_arr = Helper::getCategoryNameByID($categoryAndQuestionTypeSummary['ct']);
+                                                            $category_arr = Helper::getCategoryNameByID(
+                                                                $categoryAndQuestionTypeSummary['ct'],
+                                                            );
                                                             // dump($category_arr);
                                                         @endphp
                                                         @if ($category_arr)
@@ -2865,77 +2922,138 @@
                                                                                     class="btn btn-dark fs-xs fw-semibold me-1">{{ $category_arr->category_type_title }}</button>
 
                                                                                 <!-- MODAL -->
-                                                                                <div class="modal"
-                                                                                    id="modal-block-large-ct1_{{ $categoryAndQuestionTypeSummary['ct'] }}"
-                                                                                    tabindex="-1"
-                                                                                    aria-labelledby="modal-block-large-ct1"
-                                                                                    style="display: none;"
-                                                                                    aria-hidden="true">
-                                                                                    <div class="modal-dialog modal-lg"
-                                                                                        role="document">
+                                                                                <div class="modal" id="modal-block-large-ct1_{{ $categoryAndQuestionTypeSummary['ct'] }}" tabindex="-1" aria-labelledby="modal-block-large-ct1" style="display: none;" aria-hidden="true">
+                                                                                    <div class="modal-dialog modal-lg" role="document">
                                                                                         <div class="modal-content">
-                                                                                            <div
-                                                                                                class="block block-rounded">
-                                                                                                <div
-                                                                                                    class="block-header block-header-default">
-                                                                                                    <h3
-                                                                                                        class="block-title set_category_title">
+                                                                                            <div class="block block-rounded">
+                                                                                                <div class="block-header block-header-default">
+                                                                                                    <h3 class="block-title set_category_title">
+                                                                                                        {{ isset($category_arr->category_type_title) ? $category_arr->category_type_title : '' }}
                                                                                                     </h3>
                                                                                                 </div>
-                                                                                                <div
-                                                                                                    class="block-content">
-                                                                                                    <p
-                                                                                                        class="fs-sm mb-0">
-                                                                                                    </p>
-
-                                                                                                    <div
-                                                                                                        class="row items-push">
-                                                                                                        <div id="my-block"
-                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                            <div
-                                                                                                                class="block-header block-header-default">
-                                                                                                                <h3
-                                                                                                                    class="block-title">
+                                                                                                <div class="block-content">
+                                                                                                    <p class="fs-sm mb-0"></p>
+                                                                                
+                                                                                                    <div class="row items-push">
+                                                                                                        <div id="my-block" class="block block-rounded block-bordered p-0">
+                                                                                                            <div class="block-header block-header-default">
+                                                                                                                <h3 class="block-title">
                                                                                                                     Description
                                                                                                                 </h3>
-                                                                                                                <div
-                                                                                                                    class="block-options">
-                                                                                                                    <button
-                                                                                                                        type="button"
-                                                                                                                        class="btn-block-option"
-                                                                                                                        data-toggle="block-option"
-                                                                                                                        data-action="content_toggle"><i
-                                                                                                                            class="si si-arrow-up"></i></button>
+                                                                                                                <div class="block-options">
+                                                                                                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
                                                                                                                 </div>
                                                                                                             </div>
-                                                                                                            <div
-                                                                                                                class="block-content">
-                                                                                                                <p>other
-                                                                                                                    words
+                                                                                                            <div class="block-content">
+                                                                                                                <p>
+                                                                                                                    {!! isset($category_arr->category_type_description) ? $category_arr->category_type_description : '' !!}
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="row items-push">
+                                                                                                        <div id="my-block" class="block block-rounded block-bordered p-0">
+                                                                                                            <div class="block-header block-header-default">
+                                                                                                                <h3 class="block-title">
+                                                                                                                    Lesson
+                                                                                                                </h3>
+                                                                                                                <div class="block-options">
+                                                                                                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="block-content">
+                                                                                                                <p class="set_category_type_lesson">
+                                                                                                                    {!! isset($category_arr->category_type_lesson) ? $category_arr->category_type_lesson : '' !!}
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="row items-push">
+                                                                                                        <div id="my-block" class="block block-rounded block-bordered p-0">
+                                                                                                            <div class="block-header block-header-default">
+                                                                                                                <h3 class="block-title">
+                                                                                                                    Strategies
+                                                                                                                </h3>
+                                                                                                                <div class="block-options">
+                                                                                                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="block-content">
+                                                                                                                <p class="set_category_type_strategies">
+                                                                                                                    {!! isset($category_arr->category_type_strategies) ? $category_arr->category_type_strategies : '' !!}
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="row items-push">
+                                                                                                        <div id="my-block" class="block block-rounded block-bordered p-0">
+                                                                                                            <div class="block-header block-header-default">
+                                                                                                                <h3 class="block-title">
+                                                                                                                    Identification Methods
+                                                                                                                </h3>
+                                                                                                                <div class="block-options">
+                                                                                                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="block-content">
+                                                                                                                <p class="set_category_type_identification_methods">
+                                                                                                                    {!! isset($category_arr->category_type_identification_methods) ? $category_arr->category_type_identification_methods : '' !!}
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="row items-push">
+                                                                                                        <div id="my-block" class="block block-rounded block-bordered p-0">
+                                                                                                            <div class="block-header block-header-default">
+                                                                                                                <h3 class="block-title">
+                                                                                                                    Identification Activity
+                                                                                                                </h3>
+                                                                                                                <div class="block-options">
+                                                                                                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="block-content">
+                                                                                                                <p class="set_category_type_identification_activity">
+                                                                                                                    {!! isset($category_arr->category_type_identification_activity) ? $category_arr->category_type_identification_activity : '' !!}
                                                                                                                 </p>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
-
-                                                                                                <div
-                                                                                                    class="block-content block-content-full text-end bg-body">
-                                                                                                    <button
-                                                                                                        type="button"
-                                                                                                        class="btn btn-sm block-header-default text-white"
-                                                                                                        data-bs-dismiss="modal">Close</button>
+                                                                                
+                                                                                                <div class="block-content block-content-full text-end bg-body">
+                                                                                                    <button type="button" class="btn btn-sm block-header-default text-white" data-bs-dismiss="modal">Close</button>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                                
                                                                                 <!-- END MODAL -->
                                                                                 @php
-                                                                                    $incorrect = $categoryAndQuestionTypeSummary['incorrect'] ?? 0;
-                                                                                    $count = $categoryAndQuestionTypeSummary['count'] ?? 0;
-                                                                                    $total_questions = $categoryAndQuestionTypeSummary['total_qts'] ?? 0;
-                                                                                    $missed_ct = $categoryAndQuestionTypeSummary['missed'] ?? 0;
-                                                                                    $percentage = ($incorrect / $categoryAndQuestionTypeSummary['count']) * 100;
+                                                                                    $incorrect =
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'incorrect'
+                                                                                        ] ?? 0;
+                                                                                    $count =
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'count'
+                                                                                        ] ?? 0;
+                                                                                    $total_questions =
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'total_qts'
+                                                                                        ] ?? 0;
+                                                                                    $missed_ct =
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'missed'
+                                                                                        ] ?? 0;
+                                                                                    $percentage =
+                                                                                        ($incorrect /
+                                                                                            $categoryAndQuestionTypeSummary[
+                                                                                                'count'
+                                                                                            ]) *
+                                                                                        100;
+
                                                                                     $percentage = $percentage . '%';
                                                                                 @endphp
                                                                                 <div class="row">
@@ -3022,18 +3140,44 @@
                                                                                 <div>
                                                                                     @php
                                                                                         $qtArray = [];
-                                                                                        if (!empty($categoryAndQuestionTypeSummary['qt'])) {
-                                                                                            $qtArray = $categoryAndQuestionTypeSummary['qt'];
-                                                                                            $keys = array_keys($qtArray);
-                                                                                            array_multisort(array_column($qtArray, 'incorrect'), SORT_DESC, SORT_NUMERIC, $qtArray, $keys);
-                                                                                            $qtArray = array_combine($keys, $qtArray);
+                                                                                        if (
+                                                                                            !empty(
+                                                                                                $categoryAndQuestionTypeSummary[
+                                                                                                    'qt'
+                                                                                                ]
+                                                                                            )
+                                                                                        ) {
+                                                                                            $qtArray =
+                                                                                                $categoryAndQuestionTypeSummary[
+                                                                                                    'qt'
+                                                                                                ];
+                                                                                            $keys = array_keys(
+                                                                                                $qtArray,
+                                                                                            );
+                                                                                            array_multisort(
+                                                                                                array_column(
+                                                                                                    $qtArray,
+                                                                                                    'incorrect',
+                                                                                                ),
+                                                                                                SORT_DESC,
+                                                                                                SORT_NUMERIC,
+                                                                                                $qtArray,
+                                                                                                $keys,
+                                                                                            );
+                                                                                            $qtArray = array_combine(
+                                                                                                $keys,
+                                                                                                $qtArray,
+                                                                                            );
                                                                                         }
+                                                                                        // dd($qtArray);
                                                                                     @endphp
 
                                                                                     @foreach ($qtArray as $qtDataKey => $qtData)
                                                                                         @php
-                                                                                            $question_arr = Helper::getQuestionNameByID($qtDataKey);
-                                                                                            //dd($question_arr);
+                                                                                            $question_arr = Helper::getQuestionNameByID(
+                                                                                                $qtDataKey,
+                                                                                            );
+                                                                                            // dd($question_arr);
                                                                                         @endphp
                                                                                         <div class="odd p-3 ps-4">
                                                                                             <div></div>
@@ -3047,10 +3191,9 @@
                                                                                                     data-bs-placement="top"
                                                                                                     title=""
                                                                                                     data-bs-original-title="Question Type">QT</button>
-                                                                                                <button type="button"
-                                                                                                    data-bs-toggle="modal"
-                                                                                                    data-question_desc1="<?php //$question_arr->question_type_description ? $question_arr->question_type_description : '';
-                                                                                                    ?>"
+
+                                                                                                {{-- /* data-question_desc1="<?php //$question_arr->question_type_description ? $question_arr->question_type_description : '';
+                                                                                                ?>"
                                                                                                     data-question_desc="<?php if (isset($question_arr->question_type_description)) {
                                                                                                         echo $question_arr->question_type_description;
                                                                                                     } ?>"
@@ -3078,17 +3221,41 @@
                                                                                                     data-question_identification_methods1="<?php //$question_arr->question_type_identification_methods;
                                                                                                     ?>"
                                                                                                     data-question_identification_activity1="<?php //$question_arr->question_type_identification_activity;
-                                                                                                    ?>"
+                                                                                                    ?>" */ --}}
+
+
+
+                                                                                                <button type="button"
+                                                                                                    data-bs-toggle="modal"
                                                                                                     data-bs-target="#modal-block-large-cg1ct1_<?php echo $qtDataKey; ?>"
-                                                                                                    class="btn btn-dark fs-xs fw-semibold me-1 mb-3"><?php if (isset($question_arr->question_type_title)) {
+                                                                                                    class="btn btn-dark fs-xs fw-semibold me-1 mb-3">
+                                                                                                    <?php if (isset($question_arr->question_type_title)) {
                                                                                                         echo $question_arr->question_type_title;
-                                                                                                    } ?></button>
+                                                                                                    } ?>
+
+                                                                                                </button>
                                                                                                 @php
-                                                                                                    $incorrect = $qtData['incorrect'] ?? 0;
-                                                                                                    $missed_qt = $qtData['missed'] ?? 0;
-                                                                                                    $count = $qtData['count'] ?? 0;
-                                                                                                    $percentage = ($incorrect / $qtData['count']) * 100;
-                                                                                                    $percentage = $percentage . '%';
+                                                                                                    $incorrect =
+                                                                                                        $qtData[
+                                                                                                            'incorrect'
+                                                                                                        ] ?? 0;
+                                                                                                    $missed_qt =
+                                                                                                        $qtData[
+                                                                                                            'missed'
+                                                                                                        ] ?? 0;
+                                                                                                    $count =
+                                                                                                        $qtData[
+                                                                                                            'count'
+                                                                                                        ] ?? 0;
+                                                                                                    $percentage =
+                                                                                                        ($incorrect /
+                                                                                                            $qtData[
+                                                                                                                'count'
+                                                                                                            ]) *
+                                                                                                        100;
+                                                                                                    $percentage =
+                                                                                                        $percentage .
+                                                                                                        '%';
                                                                                                 @endphp
 
                                                                                                 <div class="progress mt-2 {{ $percentage }}"
@@ -3107,7 +3274,18 @@
                                                                                                 <div
                                                                                                     class="d-flex align-items-center justify-content-center gap-5">
                                                                                                     @if ($count != $missed_qt)
-                                                                                                        @if ($incorrect == 0 && $correct == $count)
+                                                                                                        {{-- @php
+                                                                                                            dump(
+                                                                                                                $incorrect
+                                                                                                            );
+                                                                                                            dump(
+                                                                                                                $qtData['correct']
+                                                                                                            );
+                                                                                                            dump(
+                                                                                                                $count
+                                                                                                            );
+                                                                                                        @endphp --}}
+                                                                                                        @if ($incorrect == 0 && $qtData['correct'] == $count)
                                                                                                             <div
                                                                                                                 class="text-success text-center">
                                                                                                                 All
@@ -3153,8 +3331,8 @@
                                                                                                                     class="block-header block-header-default">
                                                                                                                     <h3
                                                                                                                         class="block-title">
-                                                                                                                        Arithmetic
-                                                                                                                        Operations
+                                                                                                                        {{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}
+
                                                                                                                     </h3>
                                                                                                                 </div>
                                                                                                                 <div
@@ -3185,7 +3363,76 @@
                                                                                                                             </div>
                                                                                                                             <div
                                                                                                                                 class="block-content">
-                                                                                                                                <p>words
+                                                                                                                                <p>
+                                                                                                                                    {!! isset($question_arr->question_type_description) ? $question_arr->question_type_description : '' !!}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="row items-push">
+                                                                                                                        <div id="my-block" class="block block-rounded block-bordered p-0">
+                                                                                                                            <div class="block-header block-header-default">
+                                                                                                                                <h3 class="block-title">
+                                                                                                                                    Lesson
+                                                                                                                                </h3>
+                                                                                                                                <div class="block-options">
+                                                                                                                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div class="block-content">
+                                                                                                                                <p class="set_category_type_lesson">
+                                                                                                                                    {!! isset($question_arr->question_type_lesson) ? $question_arr->question_type_lesson : '' !!}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="row items-push">
+                                                                                                                        <div id="my-block" class="block block-rounded block-bordered p-0">
+                                                                                                                            <div class="block-header block-header-default">
+                                                                                                                                <h3 class="block-title">
+                                                                                                                                    Strategies
+                                                                                                                                </h3>
+                                                                                                                                <div class="block-options">
+                                                                                                                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div class="block-content">
+                                                                                                                                <p class="set_category_type_strategies">
+                                                                                                                                    {!! isset($question_arr->question_type_strategies) ? $question_arr->question_type_strategies : '' !!}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="row items-push">
+                                                                                                                        <div id="my-block" class="block block-rounded block-bordered p-0">
+                                                                                                                            <div class="block-header block-header-default">
+                                                                                                                                <h3 class="block-title">
+                                                                                                                                    Identification Methods
+                                                                                                                                </h3>
+                                                                                                                                <div class="block-options">
+                                                                                                                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div class="block-content">
+                                                                                                                                <p class="set_category_type_identification_methods">
+                                                                                                                                    {!! isset($question_arr->question_type_identification_methods) ? $question_arr->question_type_identification_methods : '' !!}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="row items-push">
+                                                                                                                        <div id="my-block" class="block block-rounded block-bordered p-0">
+                                                                                                                            <div class="block-header block-header-default">
+                                                                                                                                <h3 class="block-title">
+                                                                                                                                    Identification Activity
+                                                                                                                                </h3>
+                                                                                                                                <div class="block-options">
+                                                                                                                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div class="block-content">
+                                                                                                                                <p class="set_category_type_identification_activity">
+                                                                                                                                    {!! isset($question_arr->question_type_identification_activity) ? $question_arr->question_type_identification_activity : '' !!}
                                                                                                                                 </p>
                                                                                                                             </div>
                                                                                                                         </div>
@@ -3204,8 +3451,6 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <!-- END MODAL -->
-
-
                                                                                             </div>
                                                                                         </div>
                                                                                     @endforeach
