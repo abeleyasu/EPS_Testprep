@@ -444,7 +444,7 @@
                             @enderror
                         </div>
                         <div class="mb-4">
-                            <label class="form-label">Has National (Greek Letter) Fraternities on Campus:</label>
+                            <label class="form-label">Has National Fraternities:</label>
                             <select class="form-select" name="has_national_fraternities">
                                 <option value="1" {{ old('has_national_fraternities', $info->has_national_fraternities) ? 'selected' : '' }}>Yes</option>
                                 <option value="0" {{ !old('has_national_fraternities', $info->has_national_fraternities) ? 'selected' : '' }}>No</option>
@@ -452,7 +452,7 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Has Local Fraternities on Campus:</label>
+                            <label class="form-label">Has Local Fraternities:</label>
                             <select class="form-select" name="has_local_fraternities">
                                 <option value="1" {{ old('has_local_fraternities', $info->has_local_fraternities) ? 'selected' : '' }}>Yes</option>
                                 <option value="0" {{ !old('has_local_fraternities', $info->has_local_fraternities) ? 'selected' : '' }}>No</option>
@@ -460,62 +460,33 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Percent of Men First-time, First-year (Freshman) Students Who Joined Fraternities:</label>
-                            <input type="number" step="0.01" min="0" max="100"
-                                class="form-control {{ $errors->has('percent_freshmen_join_fraternities') ? 'is-invalid' : '' }}"
-                                name="percent_freshmen_join_fraternities"
-                                value="{{ old('percent_freshmen_join_fraternities', $info->percent_freshmen_join_fraternities) }}" />
-                            @error('percent_freshmen_join_fraternities')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <label class="form-label">Percent of Freshmen Joining Fraternities:</label>
+                            <input type="number" step="0.01" min="0" max="100" class="form-control" name="percent_freshmen_join_fraternities" value="{{ old('percent_freshmen_join_fraternities', $info->percent_freshmen_join_fraternities) }}" />
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Percent of Men who Join Fraternities:</label>
-                            <input type="number" step="0.01" min="0" max="100"
-                                class="form-control {{ $errors->has('percent_men_join_fraternities') ? 'is-invalid' : '' }}"
-                                name="percent_men_join_fraternities"
-                                value="{{ old('percent_men_join_fraternities', $info->percent_men_join_fraternities) }}" />
-                            @error('percent_men_join_fraternities')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <label class="form-label">Percent of Men Joining Fraternities:</label>
+                            <input type="number" step="0.01" min="0" max="100" class="form-control" name="percent_men_join_fraternities" value="{{ old('percent_men_join_fraternities', $info->percent_men_join_fraternities) }}" />
                         </div>
                         
+                        <!-- Sorority-related fields -->
                         <div class="mb-4">
                             <label class="form-label">Academic Calendar System:</label>
-                            <input type="text"
-                                class="form-control {{ $errors->has('academic_calendar_system') ? 'is-invalid' : '' }}"
-                                name="academic_calendar_system"
-                                value="{{ old('academic_calendar_system', $info->academic_calendar_system) }}" />
-                            @error('academic_calendar_system')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="text" class="form-control" name="academic_calendar_system" value="{{ old('academic_calendar_system', $info->academic_calendar_system) }}" />
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Percent of Women who Join Sororities:</label>
-                            <input type="number" step="0.01" min="0" max="100"
-                                class="form-control {{ $errors->has('percent_women_join_sororities') ? 'is-invalid' : '' }}"
-                                name="percent_women_join_sororities"
-                                value="{{ old('percent_women_join_sororities', $info->percent_women_join_sororities) }}" />
-                            @error('percent_women_join_sororities')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <label class="form-label">Percent of Women Joining Sororities:</label>
+                            <input type="number" step="0.01" min="0" max="100" class="form-control" name="percent_women_join_sororities" value="{{ old('percent_women_join_sororities', $info->percent_women_join_sororities) }}" />
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Percent of Women First-time, First-year (Freshman) Students Who Join Sororities:</label>
-                            <input type="number" step="0.01" min="0" max="100"
-                                class="form-control {{ $errors->has('percent_freshmen_join_sororities') ? 'is-invalid' : '' }}"
-                                name="percent_freshmen_join_sororities"
-                                value="{{ old('percent_freshmen_join_sororities', $info->percent_freshmen_join_sororities) }}" />
-                            @error('percent_freshmen_join_sororities')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <label class="form-label">Percent of Freshmen Joining Sororities:</label>
+                            <input type="number" step="0.01" min="0" max="100" class="form-control" name="percent_freshmen_join_sororities" value="{{ old('percent_freshmen_join_sororities', $info->percent_freshmen_join_sororities) }}" />
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Has Local Sororities on Campus:</label>
+                            <label class="form-label">Has Local Sororities:</label>
                             <select class="form-select" name="has_local_sororities">
                                 <option value="1" {{ old('has_local_sororities', $info->has_local_sororities) ? 'selected' : '' }}>Yes</option>
                                 <option value="0" {{ !old('has_local_sororities', $info->has_local_sororities) ? 'selected' : '' }}>No</option>
@@ -523,15 +494,16 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Has National (Greek Letter) Sororities on Campus:</label>
+                            <label class="form-label">Has National Sororities:</label>
                             <select class="form-select" name="has_national_sororities">
                                 <option value="1" {{ old('has_national_sororities', $info->has_national_sororities) ? 'selected' : '' }}>Yes</option>
                                 <option value="0" {{ !old('has_national_sororities', $info->has_national_sororities) ? 'selected' : '' }}>No</option>
                             </select>
                         </div>
                         
+                        <!-- Athletics-related fields -->
                         <div class="mb-4">
-                            <label class="form-label">National College Athletic Association:</label>
+                            <label class="form-label">NCAA:</label>
                             <select class="form-select" name="ncaa">
                                 <option value="1" {{ old('ncaa', $info->ncaa) ? 'selected' : '' }}>Yes</option>
                                 <option value="0" {{ !old('ncaa', $info->ncaa) ? 'selected' : '' }}>No</option>
@@ -539,7 +511,7 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">National Association of Intercollegiate Athletics:</label>
+                            <label class="form-label">NAIA:</label>
                             <select class="form-select" name="naia">
                                 <option value="1" {{ old('naia', $info->naia) ? 'selected' : '' }}>Yes</option>
                                 <option value="0" {{ !old('naia', $info->naia) ? 'selected' : '' }}>No</option>
@@ -547,7 +519,7 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">National Christian College Athletic Association:</label>
+                            <label class="form-label">NCCAA:</label>
                             <select class="form-select" name="nccaa">
                                 <option value="1" {{ old('nccaa', $info->nccaa) ? 'selected' : '' }}>Yes</option>
                                 <option value="0" {{ !old('nccaa', $info->nccaa) ? 'selected' : '' }}>No</option>
@@ -555,17 +527,17 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">National Junior College Athletic Association:</label>
+                            <label class="form-label">NJCAA:</label>
                             <select class="form-select" name="njcaa">
                                 <option value="1" {{ old('njcaa', $info->njcaa) ? 'selected' : '' }}>Yes</option>
                                 <option value="0" {{ !old('njcaa', $info->njcaa) ? 'selected' : '' }}>No</option>
                             </select>
                         </div>
                         
+                        <!-- Housing and Location fields -->
                         <div class="mb-4">
                             <label class="form-label">Number of Students in College Housing:</label>
-                            <input type="number" class="form-control" name="num_students_in_housing"
-                                value="{{ old('num_students_in_housing', $info->num_students_in_housing) }}" />
+                            <input type="number" class="form-control" name="num_students_in_housing" value="{{ old('num_students_in_housing', $info->num_students_in_housing) }}" />
                         </div>
                         
                         <div class="mb-4">
@@ -578,70 +550,54 @@
                         
                         <div class="mb-4">
                             <label class="form-label">Nearest Metropolitan Area:</label>
-                            <input type="text" class="form-control" name="nearest_metropolitan_area"
-                                value="{{ old('nearest_metropolitan_area', $info->nearest_metropolitan_area) }}" />
+                            <input type="text" class="form-control" name="nearest_metropolitan_area" value="{{ old('nearest_metropolitan_area', $info->nearest_metropolitan_area) }}" />
                         </div>
                         
                         <div class="mb-4">
                             <label class="form-label">City Population:</label>
-                            <input type="number" class="form-control" name="city_population"
-                                value="{{ old('city_population', $info->city_population) }}" />
+                            <input type="number" class="form-control" name="city_population" value="{{ old('city_population', $info->city_population) }}" />
                         </div>
                         
+                        <!-- Admission and GPA fields -->
                         <div class="mb-4">
-                            <label class="form-label">Entrance Difficulty out of State:</label>
-                            <input type="text" class="form-control" name="entrance_difficulty_out_of_state"
-                                value="{{ old('entrance_difficulty_out_of_state', $info->entrance_difficulty_out_of_state) }}" />
+                            <label class="form-label">Entrance Difficulty Out of State:</label>
+                            <input type="text" class="form-control" name="entrance_difficulty_out_of_state" value="{{ old('entrance_difficulty_out_of_state', $info->entrance_difficulty_out_of_state) }}" />
                         </div>
                         
                         <div class="mb-4">
                             <label class="form-label">Entrance Difficulty Overall:</label>
-                            <input type="text" class="form-control" name="entrance_difficulty_overall"
-                                value="{{ old('entrance_difficulty_overall', $info->entrance_difficulty_overall) }}" />
+                            <input type="text" class="form-control" name="entrance_difficulty_overall" value="{{ old('entrance_difficulty_overall', $info->entrance_difficulty_overall) }}" />
                         </div>
                         
                         <div class="mb-4">
                             <label class="form-label">Average Weighted GPA:</label>
-                            <input type="number" step="0.01" min="0" max="5"
-                                class="form-control {{ $errors->has('average_weighted_gpa') ? 'is-invalid' : '' }}"
-                                name="average_weighted_gpa"
-                                value="{{ old('average_weighted_gpa', $info->average_weighted_gpa) }}" />
-                            @error('average_weighted_gpa')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="number" step="0.01" class="form-control" name="average_weighted_gpa" value="{{ old('average_weighted_gpa', $info->average_weighted_gpa) }}" />
                         </div>
                         
                         <div class="mb-4">
                             <label class="form-label">Average Unweighted GPA:</label>
-                            <input type="number" step="0.01" min="0" max="4"
-                                class="form-control {{ $errors->has('average_unweighted_gpa') ? 'is-invalid' : '' }}"
-                                name="average_unweighted_gpa"
-                                value="{{ old('average_unweighted_gpa', $info->average_unweighted_gpa) }}" />
-                            @error('average_unweighted_gpa')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="number" step="0.01" class="form-control" name="average_unweighted_gpa" value="{{ old('average_unweighted_gpa', $info->average_unweighted_gpa) }}" />
                         </div>
                         
+                        <!-- Financial aid and Scholarship deadlines -->
                         <div class="mb-4">
                             <label class="form-label">CSS Profile Deadline:</label>
-                            <input type="text" class="form-control" name="css_profile_deadline"
-                                value="{{ old('css_profile_deadline', $info->css_profile_deadline) }}" />
+                            <input type="text" class="form-control" name="css_profile_deadline" value="{{ old('css_profile_deadline', $info->css_profile_deadline) }}" />
                         </div>
                         
                         <div class="mb-4">
                             <label class="form-label">FAFSA Deadline:</label>
-                            <input type="text" class="form-control" name="fafsa_deadline"
-                                value="{{ old('fafsa_deadline', $info->fafsa_deadline) }}" />
+                            <input type="text" class="form-control" name="fafsa_deadline" value="{{ old('fafsa_deadline', $info->fafsa_deadline) }}" />
                         </div>
                         
                         <div class="mb-4">
                             <label class="form-label">Competitive Scholarship Deadline:</label>
-                            <input type="text" class="form-control" name="competitive_scholarship_deadline"
-                                value="{{ old('competitive_scholarship_deadline', $info->competitive_scholarship_deadline) }}" />
+                            <input type="text" class="form-control" name="competitive_scholarship_deadline" value="{{ old('competitive_scholarship_deadline', $info->competitive_scholarship_deadline) }}" />
                         </div>
                         
+                        <!-- Admission deadlines -->
                         <div class="mb-4">
-                            <label class="form-label">Rolling Admission ("Continuous Admissions") Indicator:</label>
+                            <label class="form-label">Rolling Admission:</label>
                             <select class="form-select" name="rolling_admission">
                                 <option value="1" {{ old('rolling_admission', $info->rolling_admission) ? 'selected' : '' }}>Yes</option>
                                 <option value="0" {{ !old('rolling_admission', $info->rolling_admission) ? 'selected' : '' }}>No</option>
@@ -649,25 +605,22 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Rolling Admissions ("Continuous Admissions") Day:</label>
-                            <input type="text" class="form-control" name="rolling_admission_day"
-                                value="{{ old('rolling_admission_day', $info->rolling_admission_day) }}" />
+                            <label class="form-label">Rolling Admission Day:</label>
+                            <input type="text" class="form-control" name="rolling_admission_day" value="{{ old('rolling_admission_day', $info->rolling_admission_day) }}" />
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Rolling Admissions ("Continuous Admissions") Month:</label>
-                            <input type="text" class="form-control" name="rolling_admission_month"
-                                value="{{ old('rolling_admission_month', $info->rolling_admission_month) }}" />
+                            <label class="form-label">Rolling Admission Month:</label>
+                            <input type="text" class="form-control" name="rolling_admission_month" value="{{ old('rolling_admission_month', $info->rolling_admission_month) }}" />
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Rolling Admissions ("Continuous Admissions") Month-day:</label>
-                            <input type="text" class="form-control" name="rolling_admission_month_day"
-                                value="{{ old('rolling_admission_month_day', $info->rolling_admission_month_day) }}" />
+                            <label class="form-label">Rolling Admission Month-Day:</label>
+                            <input type="text" class="form-control" name="rolling_admission_month_day" value="{{ old('rolling_admission_month_day', $info->rolling_admission_month_day) }}" />
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Regular Decision Indicator:</label>
+                            <label class="form-label">Regular Decision:</label>
                             <select class="form-select" name="regular_decision">
                                 <option value="1" {{ old('regular_decision', $info->regular_decision) ? 'selected' : '' }}>Yes</option>
                                 <option value="0" {{ !old('regular_decision', $info->regular_decision) ? 'selected' : '' }}>No</option>
@@ -676,18 +629,16 @@
                         
                         <div class="mb-4">
                             <label class="form-label">Regular Decision Day:</label>
-                            <input type="text" class="form-control" name="regular_decision_day"
-                                value="{{ old('regular_decision_day', $info->regular_decision_day) }}" />
+                            <input type="text" class="form-control" name="regular_decision_day" value="{{ old('regular_decision_day', $info->regular_decision_day) }}" />
                         </div>
                         
                         <div class="mb-4">
                             <label class="form-label">Regular Decision Month:</label>
-                            <input type="text" class="form-control" name="regular_decision_month"
-                                value="{{ old('regular_decision_month', $info->regular_decision_month) }}" />
+                            <input type="text" class="form-control" name="regular_decision_month" value="{{ old('regular_decision_month', $info->regular_decision_month) }}" />
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Early Decision II Deadline Indicator:</label>
+                            <label class="form-label">Early Decision II:</label>
                             <select class="form-select" name="early_decision_ii">
                                 <option value="1" {{ old('early_decision_ii', $info->early_decision_ii) ? 'selected' : '' }}>Yes</option>
                                 <option value="0" {{ !old('early_decision_ii', $info->early_decision_ii) ? 'selected' : '' }}>No</option>
@@ -695,19 +646,17 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Early Decision II Deadline Day:</label>
-                            <input type="text" class="form-control" name="early_decision_ii_day"
-                                value="{{ old('early_decision_ii_day', $info->early_decision_ii_day) }}" />
+                            <label class="form-label">Early Decision II Day:</label>
+                            <input type="text" class="form-control" name="early_decision_ii_day" value="{{ old('early_decision_ii_day', $info->early_decision_ii_day) }}" />
                         </div>
                         
                         <div class="mb-4">
                             <label class="form-label">Early Decision II Month:</label>
-                            <input type="text" class="form-control" name="early_decision_ii_month"
-                                value="{{ old('early_decision_ii_month', $info->early_decision_ii_month) }}" />
+                            <input type="text" class="form-control" name="early_decision_ii_month" value="{{ old('early_decision_ii_month', $info->early_decision_ii_month) }}" />
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Early Decision I Indicator:</label>
+                            <label class="form-label">Early Decision I:</label>
                             <select class="form-select" name="early_decision_i">
                                 <option value="1" {{ old('early_decision_i', $info->early_decision_i) ? 'selected' : '' }}>Yes</option>
                                 <option value="0" {{ !old('early_decision_i', $info->early_decision_i) ? 'selected' : '' }}>No</option>
@@ -715,45 +664,45 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Early Decision I Month:</label>
-                            <input type="text" class="form-control" name="early_decision_i_month"
-                                value="{{ old('early_decision_i_month', $info->early_decision_i_month) }}" />
-                        </div>
-                        
-                        <div class="mb-4">
                             <label class="form-label">Early Decision I Day:</label>
-                            <input type="text" class="form-control" name="early_decision_i_day"
-                                value="{{ old('early_decision_i_day', $info->early_decision_i_day) }}" />
+                            <input type="text" class="form-control" name="early_decision_i_day" value="{{ old('early_decision_i_day', $info->early_decision_i_day) }}" />
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Early Action Deadline Day:</label>
-                            <input type="text" class="form-control" name="early_action_deadline_day"
-                                value="{{ old('early_action_deadline_day', $info->early_action_deadline_day) }}" />
+                            <label class="form-label">Early Decision I Month:</label>
+                            <input type="text" class="form-control" name="early_decision_i_month" value="{{ old('early_decision_i_month', $info->early_decision_i_month) }}" />
                         </div>
                         
                         <div class="mb-4">
-                            <label class="form-label">Early Action Deadline Month:</label>
-                            <input type="text" class="form-control" name="early_action_deadline_month"
-                                value="{{ old('early_action_deadline_month', $info->early_action_deadline_month) }}" />
+                            <label class="form-label">Early Action:</label>
+                            <select class="form-select" name="early_action">
+                                <option value="1" {{ old('early_action', $info->early_action) ? 'selected' : '' }}>Yes</option>
+                                <option value="0" {{ !old('early_action', $info->early_action) ? 'selected' : '' }}>No</option>
+                            </select>
                         </div>
                         
+                        <div class="mb-4">
+                            <label class="form-label">Early Action Day:</label>
+                            <input type="text" class="form-control" name="early_action_day" value="{{ old('early_action_day', $info->early_action_day) }}" />
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Early Action Month:</label>
+                            <input type="text" class="form-control" name="early_action_month" value="{{ old('early_action_month', $info->early_action_month) }}" />
+                        </div>
+                        
+                        <!-- Admission statistics -->
                         <div class="mb-4">
                             <label class="form-label">Number of Applications:</label>
-                            <input type="number" class="form-control" name="num_applications"
-                                value="{{ old('num_applications', $info->num_applications) }}" />
+                            <input type="number" class="form-control" name="num_applications" value="{{ old('num_applications', $info->num_applications) }}" />
                         </div>
                         
                         <div class="mb-4">
                             <label class="form-label">Overall Admission Rate:</label>
-                            <input type="number" step="0.01" min="0" max="100"
-                                class="form-control {{ $errors->has('overall_admission_rate') ? 'is-invalid' : '' }}"
-                                name="overall_admission_rate"
-                                value="{{ old('overall_admission_rate', $info->overall_admission_rate) }}" />
-                            @error('overall_admission_rate')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="number" step="0.01" class="form-control" name="overall_admission_rate" value="{{ old('overall_admission_rate', $info->overall_admission_rate) }}" />
                         </div>
+                        
+
                         
                         <div class="mb-4">
                             <label class="form-label">Room & Board:</label>
