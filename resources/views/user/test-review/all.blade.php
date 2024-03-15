@@ -333,11 +333,14 @@
                                                                                 <p class="block-title m-0">
                                                                                     Tested
                                                                                     on
+                                                                                    {{-- @php
+                                                                                        dd($categoryAndQuestionTypeSummary);
+                                                                                    @endphp --}}
                                                                                     @if ($test_det == 'single')
                                                                                         {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
                                                                                     @else
-                                                                                        {{-- {{ $categoryAndQuestionTypeSummary['total_qts'] ?? 0 }} --}}
-                                                                                        {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
+                                                                                        {{ $categoryAndQuestionTypeSummary['total_qts'] ?? 0 }}
+                                                                                        {{-- {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }} --}}
                                                                                     @endif
 
                                                                                     questions

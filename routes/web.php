@@ -524,6 +524,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
         Route::group(['middleware' => ['subscription_valid:access-test-home-page']], function () {
             Route::get('/test-home-page', [TestPrepController::class, 'testHomePage'])->name('test_home_page');
+            Route::get('/test-home-page-history', [TestPrepController::class, 'testHomePageHistory'])->name('test_home_page_history');
             Route::get('/select-test-page/{id}', [TestPrepController::class, 'selectTestPage'])->name('select-test');
             Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
             Route::get('/test-break/{id}', [TestPrepController::class, 'testBreak'])->name('testBreak');
