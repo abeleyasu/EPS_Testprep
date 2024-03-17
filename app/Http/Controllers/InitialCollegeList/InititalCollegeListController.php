@@ -731,8 +731,8 @@ class InititalCollegeListController extends Controller
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                // 'message' => 'Something went wrong',
-                'message' => $e->getMessage() . ' ' . $e->getLine() . ' ' . $e->getFile(),
+                'message' => 'Something went wrong',
+                'error' => env('APP_DEBUG') ?  $e->getMessage() . ' ' . $e->getLine() . ' ' . $e->getFile() : null,
             ], 200);
         }
     }

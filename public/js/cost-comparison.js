@@ -38,7 +38,7 @@ function getCollegeListForCostComparison(active_accordion = null) {
                     </tr>
                     <tr>
                       <td>Tuition & Fees ${inStateOutStateLabel(collegeInformation)}/ Year</td>
-                      <td class="td-width"><input type="text" name="direct_tuition_free_year"  data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_tuition_free_year-${i}" value="${detail.direct_tuition_free_year ? detail.direct_tuition_free_year : '0'}"></td>
+                      <td class="td-width"><input type="text" name="direct_tuition_free_year"  data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_tuition_free_year-${i}" value="${getTuitionAndFeesValue(costComparisonData)}"></td>
                       <td></td>
                     </tr>
                     <tr>
@@ -49,7 +49,7 @@ function getCollegeListForCostComparison(active_accordion = null) {
                     </tr>
                     <tr class="even table-success">
                       <td>DIRECT COSTS (Total Tuition, Fees, Room & Board / Year)</td>
-                      <td class="td-width" id="total_direct_cost-${i}">${costcomparison.total_direct_cost ? '$' + costcomparison.total_direct_cost : '$0'}</td>
+                      <td class="td-width" id="total_direct_cost-${i}">${getDirectCostTotal(costComparisonData)}</td>
                       <td></td>
                     </tr>
                   </tbody>
@@ -282,7 +282,7 @@ const isInStateCollege = (collegeInformation) => {
 }
 
 const isPrivateCollege = (collegeInformation) => {
-    return !collegeInformation.TUIT_STATE_FT_D
+    return collegeInformation.TUIT_OVERALL_FT_D
 }
 
 const inStateOutStateLabel = (collegeInformation) => {
@@ -293,4 +293,49 @@ const inStateOutStateLabel = (collegeInformation) => {
     } else {
         return isInStateCollege(collegeInformation) ? '(In-State) ' : '(Out-of-State) '
     }
+}
+
+const getTuitionAndFeesValue = (costComparisonData) => {
+    const collegeInformation = costComparisonData.college_information;
+    const costComparison = costComparisonData.costcomparison;
+    const detail = costComparison.costcomparisondetail;
+
+    // formulas
+    // private: TUT_OVERALL_FT_D + FEES_FT_D
+    // in state: TUT_STATE_FT_D + FEES_FT_D
+    // out of state: TUT_NRES_FT_D + FEES_FT_D
+
+    const tutOverrallFtD = collegeInformation.TUIT_OVERALL_FT_D ? parseFloat(collegeInformation.TUIT_OVERALL_FT_D) : 0
+    const tutStateFtD = collegeInformation.TUIT_STATE_FT_D ? parseFloat(collegeInformation.TUIT_STATE_FT_D) : 0
+    const tutNresFtD = collegeInformation.TUIT_NRES_FT_D ? parseFloat(collegeInformation.TUIT_NRES_FT_D) : 0
+    const feesFtD = costComparison.FEES_FT_D ? parseFloat(costComparison.FEES_FT_D) : 0
+
+    let result = 0
+    if (isPrivateCollege(collegeInformation)) {
+        result = tutOverrallFtD + feesFtD
+    } else {
+        if (isInStateCollege(collegeInformation)) {
+            result = tutStateFtD + feesFtD
+        } else {
+            result = tutNresFtD + feesFtD
+        }
+    }
+
+    if (!result) {
+        return parseFloat(detail.direct_tuition_free_year)
+    }
+
+    return result
+}
+
+const getDirectCostTotal = (costComparisonData) => {
+    const costComparison = costComparisonData.costcomparison;
+    const detail = costComparison.costcomparisondetail;
+
+    const tuitionAndFeesValue = getTuitionAndFeesValue(costComparisonData)
+    const roomBoardYear = detail.direct_room_board_year ? parseFloat(detail.direct_room_board_year) : 0
+
+    const total = tuitionAndFeesValue + roomBoardYear
+
+    return `$${total}`
 }
