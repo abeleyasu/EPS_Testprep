@@ -114,7 +114,7 @@
       </div>
 
       <div class="college-states px-3 my-3">
-        <label for="choose_state_options" class="form-label">Your State:</label>
+        <label for="choose_state_options" class="form-label">Choose State:</label>
         <select class="js-example-basic-single js-states form-control" id="choose_state_options" name="choose_state_options" style="width: 100%;" data-placeholder="Select One.">
             <option></option>
             @foreach($states as $st)
