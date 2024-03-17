@@ -1,32 +1,35 @@
 function getCollegeListForCostComparison(active_accordion = null) {
-  $.ajax({
-    url: core.costComparisonDetail,
-    method: 'GET',
-    headers: {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-  }).done(function (response) {
-    $('#userSelectedCollegeList').html('')
-    if (response.success) {
-      const data = response.data;
-      for (let i = 0;i < data.length;i++) { 
-        const costComparisonData = data[i];
-        const costcomparison = costComparisonData.costcomparison;
-        const detail = costcomparison.costcomparisondetail;
-        const otherscholership = costcomparison.costcomparisonotherscholarship
-        let html = `
+    $.ajax({
+        url: core.costComparisonDetail,
+        method: 'GET',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    }).done(function (response) {
+        $('#userSelectedCollegeList').html('')
+        if (response.success) {
+            const data = response.data;
+            console.log('response.data', data)
+            for (let i = 0; i < data.length; i++) {
+                const costComparisonData = data[i];
+                const costcomparison = costComparisonData.costcomparison;
+                const detail = costcomparison.costcomparisondetail;
+                const otherscholership = costcomparison.costcomparisonotherscholarship
+                const collegeInformation = costComparisonData.college_information;
+
+                let html = `
           <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${costComparisonData.id}">
             <div class="block-header block-header-tab">
               <a class="text-white fw-600 collapsed w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${i}" data-index="${i}" aria-expanded="true">
-                <i class="fa fa-2x ${active_accordion && active_accordion == costcomparison.id ? 'fa-angle-down' : 'fa-angle-right'}" id="toggle${i}"></i>
+                <i class="fa fa-2x ${isAccordionActive(costComparisonData, active_accordion) ? 'fa-angle-down' : 'fa-angle-right'}" id="toggle${i}"></i>
                 <i class="fa fa-2x fa-bars"></i>
                 <span id="college-name-${i}">${costComparisonData.college_name}</span>
-              </a> 
+              </a>
               <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list me-2" data-id="${costComparisonData.id}">Hide</button>
               <button type="button" class="btn btn-sm btn-alt-danger reset-cost-comparion-data me-2" data-id="${costcomparison.id}">Reset</button>
               <button type="button" class="btn btn-sm btn-alt-danger remove-user-college" data-type="cost-comparison" data-id="${costComparisonData.id}">Remove</button>
             </div>
-            <div id="collapse${i}" class="collapse ${active_accordion && active_accordion == costcomparison.id ? 'show' : ''}" aria-labelledby="headingOne" data-index="${i}" data-bs-parent=".accordionExample1">
+            <div id="collapse${i}" class="collapse ${isAccordionActive(costComparisonData, active_accordion) ? 'show' : ''}" aria-labelledby="headingOne" data-index="${i}" data-bs-parent=".accordionExample1">
               <div class="college-content-wrapper college-content">
                 <table class="table table-bordered table-striped table-vcenter">
                   <tbody>
@@ -34,7 +37,7 @@ function getCollegeListForCostComparison(active_accordion = null) {
                       <th colspan="3">DIRECT COST/YEAR</th>
                     </tr>
                     <tr>
-                      <td>Tuition & Fees / Year</td>
+                      <td>Tuition & Fees ${inStateOutStateLabel(collegeInformation)}/ Year</td>
                       <td class="td-width"><input type="text" name="direct_tuition_free_year"  data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_tuition_free_year-${i}" value="${detail.direct_tuition_free_year ? detail.direct_tuition_free_year : '0'}"></td>
                       <td></td>
                     </tr>
@@ -101,7 +104,7 @@ function getCollegeListForCostComparison(active_accordion = null) {
                     </tr>
                     <tr class="even table-success">
                       <td>Total Institutional Scholarship Aid / Year</td>
-                      <td class="td-width" id="total_merit_aid-${i}">${costcomparison.total_merit_aid ?'$'+ costcomparison.total_merit_aid : '$0'}</td>
+                      <td class="td-width" id="total_merit_aid-${i}">${costcomparison.total_merit_aid ? '$' + costcomparison.total_merit_aid : '$0'}</td>
                       <td></td>
                     </tr>
                   </tbody>
@@ -146,7 +149,7 @@ function getCollegeListForCostComparison(active_accordion = null) {
                     </tr>
                     <tr class="even table-success">
                       <td>Total Need-Based Aid / Year (Federal, State, & Institutional)</td>
-                      <td class="td-width" id="total_need_based_aid-${i}">${costcomparison.total_need_based_aid ?'$'+ costcomparison.total_need_based_aid : '$0'}</td>
+                      <td class="td-width" id="total_need_based_aid-${i}">${costcomparison.total_need_based_aid ? '$' + costcomparison.total_need_based_aid : '$0'}</td>
                       <td></td>
                     </tr>
                   </tbody>
@@ -156,12 +159,12 @@ function getCollegeListForCostComparison(active_accordion = null) {
                       <td colspan="2" class="text-end"><button class="btn btn-success add-cost" data-index="${i}" data-id="${detail.id}" data-costcomparisonid="${detail.cost_comparison_id}">+ Add Aid</button></td>
                     </tr>`
 
-                    if (otherscholership.length > 0) {
-                      $.each(otherscholership, function (index, item) {
+                if (otherscholership.length > 0) {
+                    $.each(otherscholership, function (index, item) {
                         html += `
                           <tr>
                             <td>${item.name}</td>
-                            <td class="td-width"> 
+                            <td class="td-width">
                               <input type="text" name="amount" class="form-control edit-outside-aid" data-index="${i}" data-id="${item.id}" id="amount-${i}" value="${item.amount ? item.amount : '0'}">
                             </td>
                             <td class="delete-option">
@@ -169,16 +172,16 @@ function getCollegeListForCostComparison(active_accordion = null) {
                             </td>
                           </tr>
                         `
-                      })
-                    } else {
-                      html += `<tr>
+                    })
+                } else {
+                    html += `<tr>
                         <td colspan="3"><div class="no-data">No data found</div></td>
                       </tr>`
-                    }
-                    
-                    html += `<tr class="even table-success">
+                }
+
+                html += `<tr class="even table-success">
                       <td>Total Outside Scholarship Aid / Year</td>
-                      <td id="total_outside_scholarship-${i}">${costcomparison.total_outside_scholarship ?'$'+ costcomparison.total_outside_scholarship : '$0'}</td>
+                      <td id="total_outside_scholarship-${i}">${costcomparison.total_outside_scholarship ? '$' + costcomparison.total_outside_scholarship : '$0'}</td>
                       <td></td>
                     </tr>
                   </tbody>
@@ -188,7 +191,7 @@ function getCollegeListForCostComparison(active_accordion = null) {
                     </tr>
                     <tr>
                       <td>Estimated Total Cost of Attendence / Year</td>
-                      <td class="td-width" id="total_cost_attendance-${i}">${costcomparison.total_cost_attendance ?'$'+ costcomparison.total_cost_attendance : '$0'}</td>
+                      <td class="td-width" id="total_cost_attendance-${i}">${costcomparison.total_cost_attendance ? '$' + costcomparison.total_cost_attendance : '$0'}</td>
                       <td></td>
                     </tr>
                   </tbody>
@@ -197,54 +200,91 @@ function getCollegeListForCostComparison(active_accordion = null) {
             </div>
           </div>
         `
-        $('#userSelectedCollegeList').append(html)
-      }
-    } else {
-      $('#userSelectedCollegeList').html('<div class="no-data">No data found</div>')
-    }
-  })
+                $('#userSelectedCollegeList').append(html)
+            }
+        } else {
+            $('#userSelectedCollegeList').html('<div class="no-data">No data found</div>')
+        }
+    })
 }
 
 $('#cost-form').validate({
-  rules: {
-    name: {
-      required: true
+    rules: {
+        name: {
+            required: true
+        },
+        amount: {
+            required: true,
+            number: true
+        }
     },
-    amount: {
-      required: true,
-      number: true
-    }
-  },
-  messages: {
-    name: {
-      required: 'Please enter scholarship name'
+    messages: {
+        name: {
+            required: 'Please enter scholarship name'
+        },
+        amount: {
+            required: 'Please enter scholarship amount',
+            number: 'Please enter valid number'
+        }
     },
-    amount: {
-      required: 'Please enter scholarship amount',
-      number: 'Please enter valid number'
+    errorElement: "em",
+    errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback");
+        if (element.prop("type") === "checkbox") {
+            error.insertAfter(element.parent("label"));
+        } else {
+            error.insertAfter(element);
+        }
+    },
+    highlight: function (element, errorClass, validClass) {
+        if (errorClass) {
+            $(element).closest('.form-control').addClass("is-invalid");
+        } else {
+            $(element).removeClass("is-valid");
+        }
+    },
+    unhighlight: function (element, errorClass, validClass) {
+        if (validClass) {
+            $(element).closest('.form-control').removeClass("is-invalid");
+        } else {
+            $(element).removeClass("is-invalid");
+        }
     }
-  },
-  errorElement: "em",
-  errorPlacement: function(error, element) {
-    error.addClass("invalid-feedback");
-    if (element.prop("type") === "checkbox") {
-      error.insertAfter(element.parent("label"));
-    } else {
-      error.insertAfter(element);
-    }
-  },
-  highlight: function(element, errorClass, validClass) {
-    if (errorClass) {
-      $(element).closest('.form-control').addClass("is-invalid");
-    } else {
-      $(element).removeClass("is-valid");
-    }
-  },
-  unhighlight: function(element, errorClass, validClass) {
-    if (validClass) {
-      $(element).closest('.form-control').removeClass("is-invalid");
-    } else {
-      $(element).removeClass("is-invalid");
-    }
-  }
 })
+
+
+$('select[name=choose_state_options]').on('change', function () {
+    const state = $(this).val();
+    const stateCode = $(this).find('option:selected').data('statecode');
+
+    // console.log('state', state)
+    // console.log('stateCode', stateCode)
+
+    // get active accrodion from data-id of its parent div that has class .collapse.show
+    const activeAccordion = $('#college-list-cost .collapse.show').parent().data('id')
+    // console.log('activeAccordion', activeAccordion)
+
+    getCollegeListForCostComparison(activeAccordion)
+})
+
+const isAccordionActive = (collegeData, activeIndex) => {
+    const costComparison = collegeData.costcomparison;
+    return (collegeData.id == activeIndex) || (costComparison.id == activeIndex) ? true : false
+}
+
+const isInStateCollege = (collegeInformation) => {
+    const stateCodeSelected = $('select[name=choose_state_options]').find('option:selected').data('statecode');
+    // console.log('===')
+    // console.log('stateCodeSelected', stateCodeSelected)
+    // console.log('collegeInformation.state', collegeInformation.state)
+    // console.log('===')
+    return collegeInformation.state == stateCodeSelected ? true : false
+}
+
+const isPrivateCollege = (collegeInformation) => {
+    return !collegeInformation.TUIT_STATE_FT_D ? true : false
+}
+
+const inStateOutStateLabel = (collegeInformation) => {
+    return isInStateCollege(collegeInformation) ? '(In-State)' : isPrivateCollege(collegeInformation) ? '(Private)' : '(Out-State)'
+}

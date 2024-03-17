@@ -21,6 +21,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Support\Facades\Http;
 use App\Models\CollegeMajorInformation;
 use App\Models\FieldsOfStudy;
+use App\Models\User;
 use App\Models\UserCollgeScore;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use DB;
@@ -103,61 +104,61 @@ class InititalCollegeListController extends Controller
                 if (isset($searchstring->average_annual_cost) && $searchstring->average_annual_cost && $searchstring->average_annual_cost != '0') {
                     $api = $api . '&latest.cost.avg_net_price.overall__range=..' . $searchstring->average_annual_cost * 1000;
                 }
-    
+
                 if (isset($searchstring->acceptance_rate) && $searchstring->acceptance_rate && $searchstring->acceptance_rate != '0') {
                     $api = $api . '&latest.admissions.admission_rate.consumer_rate__range=' . ($searchstring->acceptance_rate / 100) . '..1';
-                }   
-    
+                }
+
                 if (isset($searchstring->college_size_option) && count($searchstring->college_size_option) > 0) {
                     $api = $api . '&latest.student.size__range=' . Arr::join($searchstring->college_size_option, ',');
                 } else {
                     $api = $api . '&latest.student.size__range=1..';
                 }
-    
+
                 if (isset($searchstring->type_of_school) && count($searchstring->type_of_school) > 0) {
                     $api = $api . '&school.ownership=' . Arr::join($searchstring->type_of_school, ',');
                 }
-                
+
                 if (isset($searchstring->urbanicity) && count($searchstring->urbanicity) > 0) {
                     $api = $api . '&school.locale=' . Arr::join($searchstring->urbanicity, ',');
                 }
-    
+
                 if (isset($searchstring->degree) && count($searchstring->degree) > 0) {
                     $api = $api . '&latest.programs.cip_4_digit.credential.level=' . Arr::join($searchstring->degree, ',');
                 }
-    
+
                 if (isset($searchstring->college_majors_options)) {
                     $api = $api . '&latest.programs.cip_4_digit.code=' . $searchstring->college_majors_options;
                 }
-    
+
                 if (isset($searchstring->state) && count($searchstring->state) > 0) {
                     foreach ($searchstring->state as $option) {
                         $api = $api . '&school.state[]=' . $option;
                     }
                 }
-    
+
                 if (isset($searchstring->sat_math) && $searchstring->sat_math && $searchstring->sat_math != '0') {
                     $api = $api . '&latest.admissions.sat_scores.midpoint.math__range=..' . $searchstring->sat_math;
                 }
-    
+
                 if (isset($searchstring->sat_critical_reading) && $searchstring->sat_critical_reading && $searchstring->sat_critical_reading != '0') {
                     $api = $api . '&latest.admissions.sat_scores.midpoint.critical_reading__range=..' . $searchstring->sat_critical_reading;
                 }
-    
+
                 if (isset($searchstring->act_score) && $searchstring->act_score && $searchstring->act_score != '0') {
                     $api = $api . '&latest.admissions.act_scores.midpoint.cumulative__range=..' . $searchstring->act_score;
                 }
-    
+
                 if (isset($searchstring->specialized_mission) && !empty($searchstring->specialized_mission)) {
                     $api = $api . '&'.$searchstring->specialized_mission.'=1';
                 }
-    
+
                 if (isset($searchstring->religious_affiliation) && !empty($searchstring->religious_affiliation)) {
                     $api = $api . '&school.religious_affiliation=' . $searchstring->religious_affiliation;
                 }
-    
+
                 if (isset($searchstring->graduate_rate) && $searchstring->graduate_rate && $searchstring->graduate_rate != '0') {
-                    $api = $api . '&latest.completion.consumer_rate__range=' . ($searchstring->graduate_rate / 100) . '..';   
+                    $api = $api . '&latest.completion.consumer_rate__range=' . ($searchstring->graduate_rate / 100) . '..';
                 }
             }
 
@@ -279,10 +280,10 @@ class InititalCollegeListController extends Controller
         try {
             $rules = [];
             $customMessage = [];
-    
+
             $commonrules = 'nullable|numeric|min:1|max:36';
             $actSactRules = 'nullable|numeric|min:200|max:800';
-    
+
             switch ($score) {
                 case 'highschool':
                     // if ($request->high_school_test_type == 'ACT') {
@@ -392,7 +393,7 @@ class InititalCollegeListController extends Controller
                 $field = $score_type == 'goalscore' ? 'goal_act_score' : 'final_act_score';
             break;
 
-            case 'SAT': 
+            case 'SAT':
                 $field = $score_type == 'goalscore' ? 'goal_sat_score' : 'final_sat_score';
             break;
 
@@ -419,7 +420,7 @@ class InititalCollegeListController extends Controller
 
     public function step4(Request $request) {
         $college = CollegeList::where('user_id', Auth::id())->with(['userPastCurrentScore'])->first();
-        if ($college) { 
+        if ($college) {
             $college->update([
                 'active_step' => 4,
             ]);
@@ -549,18 +550,25 @@ class InititalCollegeListController extends Controller
     }
 
     public function viewCostComparisonPage() {
+        $id = Auth::id();
+        $user = User::where('role', '!=', 1)->find($id);
+
         $types = CostTypes::get();
         $college = CollegeList::where('user_id', Auth::id())->first();
+        $states = States::select('id', 'state_name', 'state_code')->get();
+
         return view('user.admin-dashboard.cost-comparison', [
             'types' => $types,
-            'college' => $college
+            'college' => $college,
+            'states' => $states,
+            'user' => $user,
         ]);
     }
 
     public function getCostComparisonSummary(Request $request) {
         $userid = Auth::user()->id;
-        $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->whereHas('college_list_details', function ($q) { 
-            $q->where('is_active', true); 
+        $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->whereHas('college_list_details', function ($q) {
+            $q->where('is_active', true);
         })->with(['college_list_details' => function ($query) {
             $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id', 'college_id')->orderBy('order_index')->with(['costcomparison' => function ($costquery) {
                 $costquery->with(['costcomparisondetail', 'costcomparisonotherscholarship']);
@@ -590,13 +598,13 @@ class InititalCollegeListController extends Controller
                     'total_outside_scholarship' => '$'.number_format($college_data['costcomparison']['total_outside_scholarship']),
                     'total_cost_attendance' => '$'.number_format($total_cost_attendance),
                 ];
-    
+
                 $totalCount = $totalCount + count($costcomparisonsummary['college_list_details']);
             }
         }
         $json_data = [
-            "draw"            => intval( $request->draw ),   
-            "recordsTotal"    => $totalCount,  
+            "draw"            => intval( $request->draw ),
+            "recordsTotal"    => $totalCount,
             "recordsFiltered" => $totalCount,
             "data"            => $data
         ];
@@ -606,14 +614,14 @@ class InititalCollegeListController extends Controller
     public function getCollegeWiseList() {
         try {
             $userid = Auth::user()->id;
-            $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->whereHas('college_list_details', function ($q) { 
-                $q->where('is_active', true); 
+            $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->whereHas('college_list_details', function ($q) {
+                $q->where('is_active', true);
             })->with(['college_list_details' => function ($query) {
                 $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id', 'college_id')->with(['costcomparison' => function ($costquery) {
                     $costquery->with(['costcomparisondetail', 'costcomparisonotherscholarship']);
                 }, 'collegeInformation'])->orderBy('order_index', 'asc');
             }])->first();
-    
+
             if ($costcomparisonsummary) {
                 $costcomparisonsummary = $costcomparisonsummary->toArray();
             } else {
@@ -630,12 +638,12 @@ class InititalCollegeListController extends Controller
                     unset($costcomparisonsummary[$key]['college_information']);
                 }
             }
-            
+
             return response()->json([
                 'success' => $costcomparisonsummary && count($costcomparisonsummary['college_list_details']) > 0 ? true : false,
                 'data' => $costcomparisonsummary ? $costcomparisonsummary['college_list_details'] : [],
             ]);
-        } catch (\Exception $e) { 
+        } catch (\Exception $e) {
             dd($e);
         }
     }
@@ -672,7 +680,7 @@ class InititalCollegeListController extends Controller
                         $cost_comparions->total_outside_scholarship = null;
                         $cost_comparions->total_cost_attendance = null;
                         $cost_comparions->save();
-        
+
                         $cost_comparion_detail = CostComparisonDetail::where('cost_comparison_id', $cost_comparions->id)->first();
                         $cost_comparion_detail->direct_tuition_free_year = null;
                         $cost_comparion_detail->direct_room_board_year = null;
@@ -792,7 +800,7 @@ class InititalCollegeListController extends Controller
         $room_and_board = $data['direct_room_board_year'] ? $data['direct_room_board_year'] : $college_information['room_and_board'];
 
         $total_direct_cost = $tution_and_fees + $room_and_board;
-        
+
         $total_merit_cost = $data['institutional_academic_merit_aid'] + $data['institutional_exchange_program_scho'] + $data['institutional_honors_col_program'] + $data['institutional_academic_department_scho'] + $data['institutional_atheletic_scho'] + $data['institutional_other_talent_scho'] + $data['institutional_diversity_scho'] + $data['institutional_legacy_scho'] + $data['institutional_other_scho'];
         $total_need_based_aid = $data['need_base_federal_grants'] + $data['need_base_institutional_grants'] + $data['need_base_state_grants'] + $data['need_base_work_study_grants'] + $data['need_base_student_loans_grants'] + $data['need_base_parent_plus_grants'] + $data['need_base_other_grants'];
 
@@ -927,7 +935,7 @@ class InititalCollegeListController extends Controller
                 'success' => false,
                 'message' => 'Something went wrong',
             ]);
-        } 
+        }
     }
 
     public function getPastCurrentScore($id) {
@@ -972,7 +980,7 @@ class InititalCollegeListController extends Controller
         $scorerules = 'required_if:test_type,ACT|numeric|min:1|max:36';
         $otherules = 'required|numeric|min:1|max:36';
 
-        if (isset($request->id)) { 
+        if (isset($request->id)) {
             $score = UserCollgeScore::where('id', $request->id)->first();
             if (!$score) {
                 return response()->json([

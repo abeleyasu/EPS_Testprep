@@ -49,7 +49,7 @@
 @section('user-content')
 @can('Access Cost Comparison Tool')
 <main id="main-container">
-  <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">  
+  <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
     <div class="bg-black-10">
       <div class="content content-full text-center">
         <br>
@@ -64,7 +64,7 @@
     </div>
   </div>
   <div class="college-application-wrapper">
-    Enter costs for each college <b><u>PER YEAR</u></b>. This is to calculate annual costs, NOT total 4-year costs. 
+    Enter costs for each college <b><u>PER YEAR</u></b>. This is to calculate annual costs, NOT total 4-year costs.
     <div class="block block-rounded">
       <div class="block-header block-header-default block-header-main">
         <h3 class="block-title">DIRECT COLLEGE COMPARISON: COST & AID</h3>
@@ -79,7 +79,7 @@
                     <i class="fa fa-2x fa-angle-down" id="toggle"></i>
                     <i class="fa fa-2x fa-bars"></i>
                     <span>COMPARISON SUMMARY</span>
-                  </a> 
+                  </a>
                 </div>
                 <div id="collapse" class="collapse show" aria-labelledby="headingOne" data-bs-parent=".accordionExample">
                   <div class="college-content-wrapper college-content">
@@ -112,6 +112,18 @@
         <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hidden Colleges</button>
         <button type="button" class="btn btn-sm btn-alt-danger ms-2" id="reset-all-cost-comparion-data" data-id="${costComparisonData.id}">Reset All</button>
       </div>
+
+      <div class="college-states px-3 my-3">
+        <label for="choose_state_options" class="form-label">Your State:</label>
+        <select class="js-example-basic-single js-states form-control" id="choose_state_options" name="choose_state_options" style="width: 100%;" data-placeholder="Select One.">
+            <option></option>
+            @foreach($states as $st)
+                <option value="{!! $st->id !!}" data-statecode="{{ $st->state_code }}"
+                    @if($st->id == $user->state_id) selected @endif>{!! $st->state_name !!}</option>
+            @endforeach
+        </select>
+      </div>
+
       <div class="block-content">
         <div class="tab-content" id="college-list-cost">
           <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
@@ -318,7 +330,7 @@
       }
     })
   })
-  
+
   $(document).on('click', '#save-cost', function (e) {
     e.preventDefault();
     if ($('#cost-form').valid()) {
@@ -478,7 +490,7 @@
     $('#total_outside_scholarship-' + index).html(response.data.total_outside_scholarship ? '$'+ response.data.total_outside_scholarship : '$0')
     $('#total_cost_attendance-' + index).html(response.data.total_cost_attendance ? '$'+ response.data.total_cost_attendance : '$0')
   }
-  
+
 
   $(document).on('focus', '.edit-value, .edit-outside-aid', function (e) {
     e.target.select();
