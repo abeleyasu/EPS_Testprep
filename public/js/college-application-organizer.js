@@ -30,13 +30,14 @@ function setApplicationHTML(records) {
 
                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                     <div class="block-header block-header-tab row ${data.college_deadline.is_application_checklist == 1 ? 'bg-success' : ''}" id="block-header-${i}">
-                        <div class="col-10" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true">
+                        <div class="col-9" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true">
                             <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle${i}"></i><i class="fa fa-bars fa-2x"></i>${data.college_name}</a>
                         </div>
-                        <div class="col-2">
+                        <div class="col-3 text-end">
                             <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list me-2" data-id="${data.id}">Hide</button>
+                            <button type="button" class="btn btn-sm btn-alt-danger deadline-college-btn--reset-one me-2" data-id="${data.id}">Reset</button>
                             <button type="button" class="btn btn-sm btn-alt-danger remove-user-college" data-type="college-application-deadline" data-id="${data.id}">Remove</button>
-                            ${data.college_deadline.is_application_checklist == 1 ? '<i class="fa fa-2x fa-circle-check text-white"></i>' : ''}
+                            ${data.college_deadline.is_application_checklist == 1 ? '<i class="fa fa-2x fa-circle-check text-white ms-2 me-0"></i>' : ''}
                         </div>
                     </div>
                     <div id="collapse${i}" class="collapse" aria-labelledby="headingOne" data-id="${i}" data-college="${data.college_deadline.id}" data-parent=".accordionExample">

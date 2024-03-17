@@ -64,6 +64,17 @@
                 </div>
             </div>
 
+            <div class="tab-content mt-4 mb-3" id="college-deadline-list">
+                <div class="block-header block-header-default block-header-main row">
+                    <div class="col-10">
+                        <h3 class="block-title">COLLEGE DEADLINE LIST</h3>
+                    </div>
+                    <div class="col-2 text-end">
+                        <button type="button" class="btn btn-sm btn-alt-danger" data-type="search-list" id="college-deadline-btn--reset-all">Reset All</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="tab-content" id="myTabContent">
                 <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
                     <div class="accordion accordionExample accordionExample2" id="userSelectedCollegeList" data-type="college-application-deadline" @if($college) data-collegeid="{{ $college->id }}" @endif>
