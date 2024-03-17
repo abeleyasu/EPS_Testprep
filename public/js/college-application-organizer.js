@@ -159,7 +159,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
 
             // filter typeOfApplications by data.college_details.college_information
             const filteredTypeOfApplications = typeOfApplications.filter((item) => {
-                if (data.college_details.college_information[item.name] === 1) {
+                if (data.college_details.college_information[item.name] == 1) {
                     return item
                 }
             })
