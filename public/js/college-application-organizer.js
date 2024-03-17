@@ -164,8 +164,12 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
             })
             // console.log('filteredTypeOfApplications', filteredTypeOfApplications)
 
+            const collegeInformationString = JSON.stringify(data.college_details.college_information)
+
+            onChangeAdminisionOption(dataset.id)
 
             content += `
+            <textarea name="colleg_information_${dataset.id}" class="d-none">${collegeInformationString}</textarea>
                 <div class="college-content-wrapper college-content">
                     <div class="row mb-3 list-content">
                         <label class="form-label" for="type_of_application-${dataset.id}">Type of Application</label>
@@ -178,9 +182,9 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                         </div>
                     </div>
                     <div class="row mb-3 list-content">
-                        <label class="form-label" for="admission_option-${dataset.id}">Admission Open</label>
+                        <label class="form-label" for="admission_option-${dataset.id}">Admission Option</label>
                         <div class="col-10">
-                            <select class="form-select update-form" id="admission_option-${dataset.id}" name="admission_option" data-index="${dataset.id}">
+                            <select class="form-select update-form" id="admission_option-${dataset.id}" name="admission_option" data-index="${dataset.id}" onchange="onChangeAdminisionOption(${dataset.id})">
                                 ${getStatsOption(staticdata.admision_option, data.admission_option)}
                             </select>
                         </div>
@@ -396,9 +400,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                 });
 
                 document.getElementById('admission_option-${dataset.id}').addEventListener('change', function(element){
-                    console.log(
-                        element.target.value
-                    );
+                    console.log(element.target.value);
                     if(element.target.value == 'Early Action'){
                     }
                 });
@@ -414,4 +416,74 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
             One.layout('header_loader_off');
         }
     })
+}
+
+const onChangeAdminisionOption = (datasetID) => {
+    // console.log('onChangeAdminisionOption', datasetID)
+
+    // get collegeInformationString from textarea
+    const collegeInformationString = $(`textarea[name="colleg_information_${datasetID}"]`).val()
+
+    // check if collegeInformationString is not empty
+    if (!collegeInformationString) return
+
+    const collegeInformation = JSON.parse(collegeInformationString)
+    // console.log('collegeInformation', collegeInformation)
+
+    // get admission_option value
+    const admissionOptionSelected = $(`#admission_option-${datasetID}`).val()
+    // console.log('admissionOptionSelected', admissionOptionSelected)
+
+    // admission deadline:
+    // Early Action: AP_DL_EACT_DAY, AP_DL_EACT_MON
+    // Early Decision 1: APL_DL_EDEC_1_DAY, APL_DL_EDEC_1_MON
+    // Early Decision 2: APL_DL_EDEC_2_DAY, APL_DL_EDEC_2_MON
+    // Regular Decision: APL_DL_FRSH_DAY, APL_DL_FRSH_MON
+    // Rolling Admission: No
+
+    let deadlineDay = 0
+    let deadlineMonth = 0
+
+    if (admissionOptionSelected === 'Early Action') {
+        // console.log('Early Action')
+        deadlineDay = collegeInformation.early_action_day ?? collegeInformation.AP_DL_EACT_DAY
+        deadlineMonth = collegeInformation.early_action_month ?? collegeInformation.AP_DL_EACT_MON
+    } else if (admissionOptionSelected === 'Early Decision') {
+        // console.log('Early Decision 1')
+        deadlineDay = collegeInformation.early_decision_i_day ?? collegeInformation.APL_DL_EDEC_1_DAY
+        deadlineMonth = collegeInformation.early_decision_i_month ?? collegeInformation.APL_DL_EDEC_1_MON
+    } else if (admissionOptionSelected === 'Early Decision 2') {
+        // console.log('Early Decision 2')
+        deadlineDay = collegeInformation.early_decision_ii_day ?? collegeInformation.APL_DL_EDEC_2_DAY
+        deadlineMonth = collegeInformation.early_decision_ii_month ?? collegeInformation.APL_DL_EDEC_2_MON
+    } else if (admissionOptionSelected === 'Regular Decision') {
+        // console.log('Regular Decision')
+        deadlineDay = collegeInformation.regular_decision_day ?? collegeInformation.APL_DL_FRSH_DAY
+        deadlineMonth = collegeInformation.regular_decision_month ?? collegeInformation.APL_DL_FRSH_MON
+    } else if (admissionOptionSelected === 'Rolling Admission') {
+        // console.log('Rolling Admission')
+        deadlineDay = 0
+        deadlineMonth = 0
+    }
+
+    // console.log('deadlineDay', deadlineDay)
+    // console.log('deadlineMonth', deadlineMonth)
+
+    let deadlineDate = ''
+
+    // set deadlineDate to YYYY-MM-DD format, MM from deadlineMonth, DD from deadlineDay
+    // if deadlineDate has been passed, then set deadlineDate to the next year
+    if (deadlineDay && deadlineMonth) {
+        const year = new Date().getFullYear()
+        const date = new Date(year, deadlineMonth - 1, deadlineDay)
+        if (date < new Date()) {
+            deadlineDate = `${deadlineMonth}-${deadlineDay}-${year + 1}`
+        } else {
+            deadlineDate = `${deadlineMonth}-${deadlineDay}-${year}`
+        }
+    }
+
+    console.log('deadlineDate', deadlineDate)
+
+    $(`#admissions_deadline-${datasetID}`).datepicker('setDate', deadlineDate)
 }
