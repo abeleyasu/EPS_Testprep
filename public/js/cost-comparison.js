@@ -282,7 +282,7 @@ const isInStateCollege = (collegeInformation) => {
 }
 
 const isPrivateCollege = (collegeInformation) => {
-    return !collegeInformation.TUIT_STATE_FT_D ? true : false
+    return !collegeInformation.TUIT_STATE_FT_D
 }
 
 const inStateOutStateLabel = (collegeInformation) => {

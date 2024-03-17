@@ -674,16 +674,24 @@ class InititalCollegeListController extends Controller
             if (count($cost_comparions) > 0) {
                 foreach ($cost_comparions as $key => $cost_comparions) {
                     if ($cost_comparions->user_id == Auth::id()) {
-                        $cost_comparions->total_direct_cost = null;
-                        $cost_comparions->total_merit_aid = null;
-                        $cost_comparions->total_need_based_aid = null;
-                        $cost_comparions->total_outside_scholarship = null;
-                        $cost_comparions->total_cost_attendance = null;
-                        $cost_comparions->save();
 
+                        // find college search add by college list id
+                        $collegeSearchAdd = CollegeSearchAdd::where('id', $cost_comparions->college_list_id)->first();
+
+                        $collegeInformation = null;
+                        if ($collegeSearchAdd) {
+                            // get college information by college id
+                            $collegeInformation = CollegeInformation::where('college_id', $collegeSearchAdd->college_id)->first();
+                        }
+
+                        # reset cost comparison detail
                         $cost_comparion_detail = CostComparisonDetail::where('cost_comparison_id', $cost_comparions->id)->first();
-                        $cost_comparion_detail->direct_tuition_free_year = null;
-                        $cost_comparion_detail->direct_room_board_year = null;
+
+                        // $cost_comparion_detail->direct_tuition_free_year = null;
+                        $cost_comparion_detail->direct_tuition_free_year = $collegeInformation?->tution_and_fess; // reset to system initial value
+                        // $cost_comparion_detail->direct_room_board_year = null;
+                        $cost_comparion_detail->direct_room_board_year = $collegeInformation?->room_and_board; // reset to system initial value
+
                         $cost_comparion_detail->institutional_academic_merit_aid = null;
                         $cost_comparion_detail->institutional_exchange_program_scho = null;
                         $cost_comparion_detail->institutional_honors_col_program = null;
@@ -701,6 +709,15 @@ class InititalCollegeListController extends Controller
                         $cost_comparion_detail->need_base_parent_plus_grants = null;
                         $cost_comparion_detail->need_base_other_grants = null;
                         $cost_comparion_detail->save();
+
+                        // reset cost comparison
+                        $cost_comparions->total_direct_cost = null;
+                        $cost_comparions->total_merit_aid = null;
+                        $cost_comparions->total_need_based_aid = null;
+                        $cost_comparions->total_outside_scholarship = null;
+                        $cost_comparions->total_cost_attendance = null;
+                        $cost_comparions->save();
+
                         $cost_comparions->costcomparisonotherscholarship()->delete();
                     }
                 }
@@ -714,7 +731,8 @@ class InititalCollegeListController extends Controller
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => 'Something went wrong',
+                // 'message' => 'Something went wrong',
+                'message' => $e->getMessage() . ' ' . $e->getLine() . ' ' . $e->getFile(),
             ], 200);
         }
     }
