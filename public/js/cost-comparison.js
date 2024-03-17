@@ -288,16 +288,9 @@ const isPrivateCollege = (collegeInformation) => {
 const inStateOutStateLabel = (collegeInformation) => {
     // return isInStateCollege(collegeInformation) ? '(In-State)' : isPrivateCollege(collegeInformation) ? '(Private)' : '(Out-of-State)'
 
-    if (isInStateCollege(collegeInformation)) {
-        if (isPrivateCollege(collegeInformation)) {
-            return '(In-State & Private)'
-        }
-        return '(In-State)'
+    if (isPrivateCollege(collegeInformation)) {
+        return ''
     } else {
-        if (isPrivateCollege(collegeInformation)) {
-            return '(Out-of-State & Private)'
-        } else {
-            return '(Out-of-State)'
-        }
+        return isInStateCollege(collegeInformation) ? '(In-State) ' : '(Out-of-State) '
     }
 }
