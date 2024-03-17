@@ -98,32 +98,32 @@ class CollegeInformationController extends Controller
             }
         }
 
-        
+
         $column_names = array(
-            'TUIT_STATE_FT_D' , 
-            'FEES_FT_D' , 
-            'BOOKS_RES_D', 
-            'TRANSPORT_RES_D', 
-            'TUIT_NRES_FT_D', 
+            'TUIT_STATE_FT_D' ,
+            'FEES_FT_D' ,
+            'BOOKS_RES_D',
+            'TRANSPORT_RES_D',
+            'TUIT_NRES_FT_D',
             'TUIT_OVERALL_FT_D',
             'RM_BD_D',
-            'MAIN_CALENDAR' , 
+            'MAIN_CALENDAR' ,
             'FRSH_GPA',
             'FRSH_GPA_WEIGHTED',
-            'LIFE_SOR_NAT', 
-            'LIFE_SOR_LOCAL', 
-            'LIFE_FRAT_NAT', 
-            'LIFE_FRAT_LOCAL', 
+            'LIFE_SOR_NAT',
+            'LIFE_SOR_LOCAL',
+            'LIFE_FRAT_NAT',
+            'LIFE_FRAT_LOCAL',
             'SORO_1ST_P',
             'FRAT_1ST_P',
             'CMPS_METRO_T',
             'HOUS_FRSH_POLICY',
             'HOUS_SPACES_OCCUP',
-            'AP_RECD_1ST_N' , 
-            'AD_DIFF_ALL' , 
-            'AP_DL_EACT_MON', 
-            'AP_DL_EACT_DAY', 
-            'AP_DL_FRSH_MON', 
+            'AP_RECD_1ST_N' ,
+            'AD_DIFF_ALL' ,
+            'AP_DL_EACT_MON',
+            'AP_DL_EACT_DAY',
+            'AP_DL_FRSH_MON',
             'AP_DL_FRSH_DAY',
             'AP_DL_EDEC_1_MON',
             'AP_DL_EDEC_1_DAY',
@@ -177,7 +177,7 @@ class CollegeInformationController extends Controller
 
     private function getColumnIndicesFromCSV($column_names, $csv_column_names){
         $column_names_ass_arr = array();
-        
+
         foreach($column_names as $column_name) {
             $result = array_search($column_name, $csv_column_names);
             $column_names_ass_arr[$column_name] = $result;
@@ -203,13 +203,13 @@ class CollegeInformationController extends Controller
 
     public function import_ug_expense_asgns(Request $request)
     {
-        
+
         $column_names = array(
-            'TUIT_STATE_FT_D' , 
-            'FEES_FT_D' , 
-            'BOOKS_RES_D', 
-            'TRANSPORT_RES_D', 
-            'TUIT_NRES_FT_D', 
+            'TUIT_STATE_FT_D' ,
+            'FEES_FT_D' ,
+            'BOOKS_RES_D',
+            'TRANSPORT_RES_D',
+            'TUIT_NRES_FT_D',
             'TUIT_OVERALL_FT_D',
             'RM_BD_D',
         );
@@ -251,9 +251,9 @@ class CollegeInformationController extends Controller
     }
     public function import_ux_inst(Request $request)
     {
-        
+
         $column_names = array(
-            'MAIN_CALENDAR' , 
+            'MAIN_CALENDAR' ,
         );
         $peterson_id_index = null;
         $file = $request->file('ux_inst');
@@ -282,7 +282,7 @@ class CollegeInformationController extends Controller
 
     public function import_ug_enroll(Request $request)
     {
-        
+
         $column_names = array(
             'FRSH_GPA',
             'FRSH_GPA_WEIGHTED'
@@ -313,18 +313,18 @@ class CollegeInformationController extends Controller
     }
     public function import_ug_campus(Request $request)
     {
-        
+
         $column_names = array(
-            'LIFE_SOR_NAT' , 
-            'LIFE_SOR_LOCAL', 
-            'LIFE_FRAT_NAT', 
-            'LIFE_FRAT_LOCAL', 
+            'LIFE_SOR_NAT' ,
+            'LIFE_SOR_LOCAL',
+            'LIFE_FRAT_NAT',
+            'LIFE_FRAT_LOCAL',
             'SORO_1ST_P',
             'FRAT_1ST_P',
             'CMPS_METRO_T',
             'HOUS_FRSH_POLICY',
             'HOUS_SPACES_OCCUP',
- 
+
         );
         $peterson_id_index = null;
         $file = $request->file('ug_campus');
@@ -353,25 +353,25 @@ class CollegeInformationController extends Controller
 
     public function import_ug_admis(Request $request){
          $column_names = array(
-            'AP_RECD_1ST_N' => -1, 
-            'AD_DIFF_ALL' => -1, 
-            'AP_DL_EACT_MON' => -1, 
-            'AP_DL_EACT_DAY' => -1, 
-            'AP_DL_FRSH_MON' => -1, 
+            'AP_RECD_1ST_N' => -1,
+            'AD_DIFF_ALL' => -1,
+            'AP_DL_EACT_MON' => -1,
+            'AP_DL_EACT_DAY' => -1,
+            'AP_DL_FRSH_MON' => -1,
             'AP_DL_FRSH_DAY' => -1,
             'AP_DL_EDEC_1_MON' => -1,
             'AP_DL_EDEC_1_DAY' => -1,
             'AP_DL_EDEC_2_DAY' => -1,
             'AP_DL_EDEC_2_MON' => -1,
          );
-        
+
         $file = $request->file('ug_admis');
         $fileContents = file($file->getPathname());
         $index = -1;
         foreach ($fileContents as $line) {
             $index++;
             $data = str_getcsv($line);
-            
+
             // Storing the indeces of Required Columns
             if ($index == 0) {
                 $j = 0;
@@ -389,7 +389,7 @@ class CollegeInformationController extends Controller
 
 
             $new_data = array();
-            
+
             $i = 0;
             foreach($column_names as $column_name => $column_name_index){
                 if(!empty($data[$column_name_index])){
@@ -399,7 +399,7 @@ class CollegeInformationController extends Controller
             }
             $collegeInfo = CollegeInformation::where('petersons_id', $data[2])
                 ->first();
-            
+
             if ($collegeInfo) {
                 $collegeInfo->update($new_data);
             }
@@ -450,7 +450,7 @@ class CollegeInformationController extends Controller
                 'title' => $fieldOfStudy->title ?? "No Title"
             ];
             array_push($api_data, $data);
-        
+
         }
         if($college_detail->fieldsOfStudy()->count() < 1){
             foreach($fieldsOfStudy as $fieldOfStudy){
@@ -466,15 +466,15 @@ class CollegeInformationController extends Controller
             }
         }
         if ($college_detail) {
-            $admin_editable_date_inputs = 
-                array( 
+            $admin_editable_date_inputs =
+                array(
                     'regular_admission_deadline' => "Regular Admission Deadline",
                     'early_decision_1_deadline' => "Early Decision 1 Deadline",
                     'early_decision_2_deadline' => "Early Decision 2 Deadline"
                 );
 
             $toggle_between_peterson_and_csv = array(
-                
+
             );
             return view('admin.college-information.edit', [
                 'info' => $college_detail,
@@ -509,7 +509,7 @@ class CollegeInformationController extends Controller
             // 'regular_admission_deadline' => 'required|date_format:m-d-Y',
         ];
 
-        // ddd($request->all());
+        // dd($request->all());
 
 
 

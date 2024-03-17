@@ -63,13 +63,13 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="tab-content" id="myTabContent">
                 <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
                     <div class="accordion accordionExample accordionExample2" id="userSelectedCollegeList" data-type="college-application-deadline" @if($college) data-collegeid="{{ $college->id }}" @endif>
                         @if(count($college_list_deadline) === 0)
                             <div class="no-data">No data found</div>
-                        @endif  
+                        @endif
                     </div>
                 </div>
             </div>
@@ -504,9 +504,9 @@
                     toastr.success(response.message)
                     $('#notification-form').trigger('reset');
                     $('#add-notification-settings').modal('hide')
-                    notificationDatatable.ajax.reload();
+                    // notificationDatatable.ajax.reload();
                 } else {
-                    toastr.error(response.message)  
+                    toastr.error(response.message)
                 }
             })
         }

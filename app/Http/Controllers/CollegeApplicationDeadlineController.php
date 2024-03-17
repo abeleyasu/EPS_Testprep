@@ -25,12 +25,13 @@ class CollegeApplicationDeadlineController extends Controller
 
     public function index()
     {
-        $college_list_deadline = CollegeDetails::where('user_id', '=', Auth::id())->whereHas('college_details', function ($q) { 
-            $q->where('is_active', true); 
+        $college_list_deadline = CollegeDetails::where('user_id', '=', Auth::id())->whereHas('college_details', function ($q) {
+            $q->where('is_active', true);
         })->with(['college_details'])->get();
         $selectedCollegeId = $college_list_deadline->pluck('college_details.college_id')->toArray();
         $college_list = CollegeInformation::orderBy('name')->whereNotIn('college_id', $selectedCollegeId)->get();
         $college = CollegeList::where('user_id', Auth::id())->first();
+
         return view('user.admin-dashboard.college-application-deadline', [
             'applications' => config('constants.types_of_application'),
             'admision_option' => config('constants.admission_options'),
@@ -99,7 +100,7 @@ class CollegeApplicationDeadlineController extends Controller
             $college_list_deadline = CollegeList::where('user_id', Auth::id())->with(['college_list_details'])->first();
             if ($college_list_deadline) {
                 $selectedCollegeId = $college_list_deadline->college_list_details->pluck('college_id')->toArray();
-                $college_list = $college_list->whereNotIn('college_id', $selectedCollegeId);       
+                $college_list = $college_list->whereNotIn('college_id', $selectedCollegeId);
             }
         }
 
@@ -267,7 +268,7 @@ class CollegeApplicationDeadlineController extends Controller
                         $this->setCalendarEvent($reminder, $date);
                     }
                 }
-            } 
+            }
         }
     }
 

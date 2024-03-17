@@ -5,11 +5,11 @@ function getApplicationDeadlineOrganizerData() {
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-    }).done(function(data){
+    }).done(function (data) {
         if (data.success) {
             if (data.data.length > 0) {
                 setApplicationHTML(data.data)
-            } else{
+            } else {
                 $('#userSelectedCollegeList').html('<div class="no-data">No record found.</div>')
             }
         }
@@ -31,12 +31,12 @@ function setApplicationHTML(records) {
                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                     <div class="block-header block-header-tab row ${data.college_deadline.is_application_checklist == 1 ? 'bg-success' : ''}" id="block-header-${i}">
                         <div class="col-10" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true">
-                            <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle${i}"></i><i class="fa fa-bars fa-2x"></i>${data.college_name}</a> 
+                            <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle${i}"></i><i class="fa fa-bars fa-2x"></i>${data.college_name}</a>
                         </div>
                         <div class="col-2">
                             <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list me-2" data-id="${data.id}">Hide</button>
                             <button type="button" class="btn btn-sm btn-alt-danger remove-user-college" data-type="college-application-deadline" data-id="${data.id}">Remove</button>
-                            ${data.college_deadline.is_application_checklist == 1 ? '<i class="fa fa-2x fa-circle-check text-white"></i>' : '' }
+                            ${data.college_deadline.is_application_checklist == 1 ? '<i class="fa fa-2x fa-circle-check text-white"></i>' : ''}
                         </div>
                     </div>
                     <div id="collapse${i}" class="collapse" aria-labelledby="headingOne" data-id="${i}" data-college="${data.college_deadline.id}" data-parent=".accordionExample">
@@ -50,7 +50,7 @@ function setApplicationHTML(records) {
 
 function getStatsOption(options, selectedvalue) {
     let option = '';
-    option += `<option value="">Select One</option>` 
+    option += `<option value="">Select One</option>`
     for (let i = 0; i < options.length; i++) {
         option += `<option value="${options[i]}" ${selectedvalue == options[i] ? 'selected' : ''}>${options[i]}</option>`
     }
@@ -67,19 +67,46 @@ function getAvailableTypesOfApplication(collegeData) {
     return available_type_of_application
 }
 
+const typeOfApplications = [{
+    name: 'common_app',
+    label: 'Common App'
+}, {
+    name: 'coalition_app',
+    label: 'Coalition App'
+}, {
+    name: 'universal_app',
+    label: 'Universal App'
+}, {
+    name: 'college_system_app',
+    label: 'College System App'
+}, {
+    name: 'apply_directly',
+    label: 'Apply Directly'
+}]
+
+const getOptionsTypeOfApplications = (options, selectedValue) => {
+    let option = '';
+    option += `<option value="">Select One</option>`
+    for (let i = 0; i < options.length; i++) {
+        const opt = options[i]
+        option += `<option value="${opt.name}" ${selectedValue == opt.name ? 'selected' : ''}>${opt.label}</option>`
+    }
+    return option;
+}
+
 function convertUnderscoredToSpace(str) {
     return str.replace(/_/g, ' ')
 }
 
-function populateApplicationDeadline(collegeInformation){
-    if(collegeInformation.AP_DL_EACT_DAY && collegeInformation.AP_DL_EACT_MONTH){
+function populateApplicationDeadline(collegeInformation) {
+    if (collegeInformation.AP_DL_EACT_DAY && collegeInformation.AP_DL_EACT_MONTH) {
         // Function Name: generateDate
-        // Function Arguments: day, month 
-        // Return Type of Function: Date (dd/mm/yyyy) based on the day and month and if the year is not provided then it will take the current year and if the date has passed then it will take the next year   
-        function generateDate(day, month){
+        // Function Arguments: day, month
+        // Return Type of Function: Date (dd/mm/yyyy) based on the day and month and if the year is not provided then it will take the current year and if the date has passed then it will take the next year
+        function generateDate(day, month) {
             let year = new Date().getFullYear()
             let date = new Date(year, month - 1, day)
-            if(date < new Date()){
+            if (date < new Date()) {
                 year++
                 date = new Date(year, month - 1, day)
             }
@@ -89,17 +116,17 @@ function populateApplicationDeadline(collegeInformation){
     }
 
 }
-function generateDate(day, month){
+function generateDate(day, month) {
     let year = new Date().getFullYear()
     let date = new Date(year, month - 1, day)
-    if(date < new Date()){
+    if (date < new Date()) {
         year++
         date = new Date(year, month - 1, day)
     }
     return date
 }
 
-function getDateInDMYFormat(date){
+function getDateInDMYFormat(date) {
     let d = new Date(date)
     let month = d.getMonth() + 1
     let day = d.getDate()
@@ -124,12 +151,19 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
             $('#toggle' + dataset.id).removeClass('fa-angle-right').addClass('fa-angle-down');
             $('#' + elementid).html('')
             let content = '';
-            let availableTypesOfApplication = (getAvailableTypesOfApplication(data.college_details.college_information))
-            // console.log(data)
+            // let availableTypesOfApplication = (getAvailableTypesOfApplication(data.college_details.college_information))
+            // console.log('getSingleApplicationData', data)
             // console.log(getDateInDMYFormat(generateDate(15,9)))
             // console.log(generateDate(15,1))
 
-            
+            // filter typeOfApplications by data.college_details.college_information
+            const filteredTypeOfApplications = typeOfApplications.filter((item) => {
+                if (data.college_details.college_information[item.name] === 1) {
+                    return item
+                }
+            })
+            // console.log('filteredTypeOfApplications', filteredTypeOfApplications)
+
 
             content += `
                 <div class="college-content-wrapper college-content">
@@ -137,7 +171,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                         <label class="form-label" for="type_of_application-${dataset.id}">Type of Application</label>
                         <div class="col-10">
                             <select class="form-select update-form" id="type_of_application-${dataset.id}" name="type_of_application" data-index="${dataset.id}">
-                                ${getStatsOption(availableTypesOfApplication, availableTypesOfApplication[0])}
+                                ${getOptionsTypeOfApplications(filteredTypeOfApplications, data.type_of_application)}
                             </select>
                         </div>
                         <div class="col-2">
@@ -157,7 +191,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                         <label class="form-label" for="number_of_essaya-${dataset.id}">Number of Essays</label>
                         <div class="col-10">
                             <select class="form-select update-form" id="number_of_essaya-${dataset.id}" name="number_of_essaya" data-index="${dataset.id}">
-                                ${getStatsOption([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], data.number_of_essaya)}
+                                ${getStatsOption([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], data.number_of_essaya)}
                             </select>
                         </div>
                         <div class="col-2">
@@ -361,7 +395,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                     }
                 });
 
-                document.getElementById('admission_option-${dataset.id}').addEventListener('change', function(element){    
+                document.getElementById('admission_option-${dataset.id}').addEventListener('change', function(element){
                     console.log(
                         element.target.value
                     );
