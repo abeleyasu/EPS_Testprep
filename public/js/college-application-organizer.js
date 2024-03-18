@@ -1,5 +1,5 @@
-function getApplicationDeadlineOrganizerData() {
-    $.ajax({
+async function getApplicationDeadlineOrganizerData() {
+    await $.ajax({
         url: core.applicationOrganizer,
         type: 'GET',
         headers: {
@@ -30,7 +30,7 @@ function setApplicationHTML(records) {
 
                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                     <div class="block-header block-header-tab row ${data.college_deadline.is_application_checklist == 1 ? 'bg-success' : ''}" id="block-header-${i}">
-                        <div class="col-9" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true">
+                        <div class="col-9" type="button" data-toggle="collapse" data-target="#collapse${i}" data-id="${data.id}" aria-expanded="true">
                             <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle${i}"></i><i class="fa fa-bars fa-2x"></i>${data.college_name}</a>
                         </div>
                         <div class="col-3 text-end">
@@ -134,9 +134,6 @@ function getDateInDMYFormat(date) {
     let year = d.getFullYear()
     return `${day}/${month}/${year}`
 }
-
-
-
 
 function getSingleApplicationData(dataset, staticdata, elementid) {
     One.layout('header_loader_on');
@@ -487,4 +484,32 @@ const onChangeAdminisionOption = (datasetID) => {
     console.log('deadlineDate', deadlineDate)
 
     $(`#admissions_deadline-${datasetID}`).datepicker('setDate', deadlineDate)
+}
+
+const resetApplicationDeadline = (id = null) => {
+    $.ajax({
+        url: core.resetApplicationDeadline,
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            id
+        }
+    }).done(async (response) => {
+        // console.log('resetApplicationDeadline', response)
+        if (response.success) {
+            await getApplicationDeadlineOrganizerData()
+
+            if (id) {
+                // get collapse index data by from data-toggle that has data-id attribute = id
+                const collapseTargetID = $(`[data-toggle="collapse"][data-id="${id}"]`).attr('data-target')
+
+                // show the collapseTargetID
+                if (collapseTargetID) {
+                    $(collapseTargetID).collapse('show')
+                }
+            }
+        }
+    })
 }

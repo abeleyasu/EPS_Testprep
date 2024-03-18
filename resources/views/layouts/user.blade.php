@@ -43,6 +43,7 @@
             collegelustUrl: "{{ route('admin-dashboard.collegeApplicationDeadline.collegeList') }}",
             applicationOrganizer: "{{ route('admin-dashboard.getApplicationDeadlineData') }}",
             getSingleApplicationOrganizer: "{{ route('admin-dashboard.getSingleApplicationData', [ 'id' => ':id' ]) }}",
+            resetApplicationDeadline: "{{ route('admin-dashboard.resetApplicationDeadlineData') }}",
             pastCurrentScore: "{{ route('admin-dashboard.initialCollegeList.getPastCurrentScore', [ 'id' => ':id' ]) }}",
             getSinglePastCurentScore: "{{ route('admin-dashboard.initialCollegeList.getSinglePastCurrentScore', [ 'id' => ':id' ]) }}",
             deletepastCurrentScore: "{{ route('admin-dashboard.initialCollegeList.deletePastCurrentScore', [ 'id' => ':id' ]) }}",

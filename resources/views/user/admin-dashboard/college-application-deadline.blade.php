@@ -340,6 +340,44 @@
         })
     })
 
+    $(document).on('click', '.deadline-college-btn--reset-one', function (e) {
+        Swal.fire({
+        title: 'Are you sure?',
+        text: "You want to reset this college deadline data?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, reset it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await resetApplicationDeadline(e.target.dataset.id);
+                if (response) {
+                    await getApplicationDeadlineOrganizerData();
+                }
+            }
+        })
+    })
+
+    $(document).on('click', '#college-deadline-btn--reset-all', function (e) {
+        Swal.fire({
+        title: 'Are you sure?',
+        text: "You want to reset all college deadline data?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, reset it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await resetApplicationDeadline(null);
+                if (response) {
+                    await getApplicationDeadlineOrganizerData();
+                }
+            }
+        })
+    })
+
     $(document).on('click', '.save-detail', function (e) {
         e.preventDefault();
     })

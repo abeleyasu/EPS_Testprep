@@ -452,6 +452,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
                 Route::get('/get-college-list', [CollegeApplicationDeadlineController::class, 'list'])->name('collegeApplicationDeadline.collegeList');
                 Route::post('/college_save', [InititalCollegeListController::class, 'collegeSave'])->name('collegeApplicationDeadline.college_save');
+
+                Route::post('reset-application-deadline', [CollegeApplicationDeadlineController::class, 'resetApplicationDeadlineData'])->name('resetApplicationDeadlineData');
             });
 
             Route::post('college-application-notification', [UserDeadlineNotificationSettingsController::class, 'create'])->name('college-application-notification');

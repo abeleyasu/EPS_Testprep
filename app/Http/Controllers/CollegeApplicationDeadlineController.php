@@ -19,7 +19,8 @@ class CollegeApplicationDeadlineController extends Controller
 {
     protected $googleService;
 
-    public function __construct(GoogleService $googleService) {
+    public function __construct(GoogleService $googleService)
+    {
         $this->googleService = $googleService;
     }
 
@@ -43,9 +44,11 @@ class CollegeApplicationDeadlineController extends Controller
         ]);
     }
 
-    public function getApplicationDeadlineData() {
+    public function getApplicationDeadlineData()
+    {
         try {
-            $college_list_deadline = CollegeList::where('user_id', Auth::id())->with(['college_list_details' => function ($detail) {
+            $college_list_deadline = CollegeList::where('user_id', Auth::id())
+            ->with(['college_list_details' => function ($detail) {
                 $detail->where('is_active', true)->orderBy('order_index')->with(['collegeDeadline']);
             }])->first();
 
@@ -61,7 +64,97 @@ class CollegeApplicationDeadlineController extends Controller
         }
     }
 
-    public function getSingleApplicationData($id) {
+    // reset to inital value (admin / peterson data)
+    public function resetApplicationDeadlineData(Request $request)
+    {
+
+        // validate the input data
+        $request->validate([
+            'id' => 'nullable|exists:college_search_adds,id',
+        ], [
+            'id.exists' => 'Data not found'
+        ]);
+
+        $collegDetailID = $request->id;
+
+        try {
+
+            if (!empty($collegDetailID)) {
+                $collegeListData = CollegeList::where('user_id', Auth::id())
+                    ->with(['college_list_details' => function ($detail) use ($collegDetailID) {
+                        return $detail
+                            ->where('is_active', true)
+                            ->where('id', $collegDetailID)
+                            ->orderBy('order_index')
+                            ->with(['collegeDeadline', 'collegeInformation']);
+                    }])
+                    ->first();
+
+                $collegeSearchAddsData = $collegeListData->college_list_details;
+            } else {
+                $collegeListData = CollegeList::where('user_id', Auth::id())
+                    ->with(['college_list_details' => function ($detail) {
+                        return $detail
+                            ->where('is_active', true)
+                            ->orderBy('order_index')
+                            ->with(['collegeDeadline', 'collegeInformation']);
+                    }])
+                    ->first();
+
+                $collegeSearchAddsData = $collegeListData->college_list_details;
+            }
+
+            // dd($collegeSearchAddsData);
+
+            if ($collegeSearchAddsData) {
+                foreach ($collegeSearchAddsData as $key => $value) {
+
+                    // update college details data (collegeDeadline) || im also confused with this naming table and model -__-
+                    $value->collegeDeadline->update([
+                        'type_of_application' => '',
+                        'admission_option' => '',
+                        'number_of_essaya' => $value->collegeInformation->number_of_essaya,
+                        'admissions_deadline' => $value->collegeInformation->regular_admission_deadline,
+                        'ad_status' => 0,
+                        'competitive_scholarship_deadline' => $value->collegeInformation->competitive_scholarship_deadline,
+                        'csd_status' => 0,
+                        'departmental_scholarship_deadline' => '',
+                        'dsd_status' => 0,
+                        'honors_college_deadline' => $value->collegeInformation->honors_college_deadline,
+                        'hcd_status' => 0,
+                        'fafsa_deadline' => $value->collegeInformation->fafsa_deadline,
+                        'fafsa_status' => 0,
+                        'css_profile_deadline' => $value->collegeInformation->css_profile_deadline,
+                        'css_status' => 0,
+                        'is_application_checklist' => 0,
+                        'is_completed_application' => 0,
+                        'is_request_pay' => 0,
+                        'is_high_school_transcript' => 0,
+                        'is_letter_of_recommedation' => 0,
+                        'is_your_offical_high_school_transcripts' => 0,
+                        'is_school_report_and_counselor' => 0,
+                        'is_test_scores_sent' => 0,
+                        'is_letters_of_recommendation_submitted' => 0,
+                        'is_pay_application_fee' => 0,
+                        'is_submit_application' => 0,
+                    ]);
+                }
+            }
+
+            return [
+                'success' => true,
+                'message' => 'Application deadline reset successfully',
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Oops! Something went wrong',
+            ];
+        }
+    }
+
+    public function getSingleApplicationData($id)
+    {
         try {
             $college_list_deadline = CollegeDetails::where('id', '=', $id)->first();
             if (!$college_list_deadline) {
@@ -89,7 +182,8 @@ class CollegeApplicationDeadlineController extends Controller
         }
     }
 
-    public function list(Request $request) {
+    public function list(Request $request)
+    {
         $page = isset($request->page) ? $request->page : 1;
         $search = isset($request->search) ? $request->search : null;
         $limit = $page * 25;
@@ -117,7 +211,8 @@ class CollegeApplicationDeadlineController extends Controller
         return $college_list;
     }
 
-    public function college_save(Request $request) {
+    public function college_save(Request $request)
+    {
         $id =  Auth::id();
         // Validate the input data
         $request->validate([
@@ -133,7 +228,8 @@ class CollegeApplicationDeadlineController extends Controller
         return redirect()->back()->with('success', 'College added successfully');
     }
 
-    public function create($request) {
+    public function create($request)
+    {
 
         $data = $request->all();
         $data['user_id'] = Auth::id();
@@ -141,7 +237,8 @@ class CollegeApplicationDeadlineController extends Controller
         $this->setReminderAndAddIntoCalendor($data);
     }
 
-    public function edit($request) {
+    public function edit($request)
+    {
 
         $data = [
             'type_of_application' => $request->type_of_application,
@@ -188,25 +285,25 @@ class CollegeApplicationDeadlineController extends Controller
         $college = CollegeDetails::where('id', $request->college_detail_id)->update($data);
 
         $this->setReminderAndAddIntoCalendor($request->college_detail_id);
-
     }
 
-    public function college_application_save(Request $request) {
+    public function college_application_save(Request $request)
+    {
 
         if ($request->college_detail_id) {
             $this->edit($request);
         } else {
             $this->create($request);
         }
-        $days="";
-        if($request->admissions_deadline){
+        $days = "";
+        if ($request->admissions_deadline) {
             $deadline = $request->admissions_deadline;
             try {
                 $date = Carbon::createFromFormat("m-d-Y", $deadline);
             } catch (\Throwable $th) {
                 $date = Carbon::createFromFormat("Y-m-d", $deadline);
             }
-            $days = 'Due in '. $date->diffInDays(Carbon::now()) . ' days';
+            $days = 'Due in ' . $date->diffInDays(Carbon::now()) . ' days';
         }
         return [
             'success' => true,
@@ -215,7 +312,8 @@ class CollegeApplicationDeadlineController extends Controller
         ];
     }
 
-    public function set_application_completed(Request $request) {
+    public function set_application_completed(Request $request)
+    {
         $data = [
             'is_completed_all_process' => $request->is_completed_all_process,
             'is_complete_application_type' => $request->is_completed_all_process,
@@ -232,11 +330,13 @@ class CollegeApplicationDeadlineController extends Controller
         return "success";
     }
 
-    public function modify($str) {
+    public function modify($str)
+    {
         return ucwords(str_replace("_", " ", $str));
     }
 
-    public function setReminderAndAddIntoCalendor($collegeAddId) {
+    public function setReminderAndAddIntoCalendor($collegeAddId)
+    {
         $college = CollegeDetails::where('id', $collegeAddId)->with(['college_details'])->first();
         $fields = ['admissions_deadline', 'competitive_scholarship_deadline', 'departmental_scholarship_deadline', 'honors_college_deadline', 'fafsa_deadline', 'css_profile_deadline'];
         if ($college) {
@@ -246,10 +346,10 @@ class CollegeApplicationDeadlineController extends Controller
                     $reminder = Reminder::where('college_id', $college['college_details']['id'])->where('field', $field)->first();
                     $date = Carbon::createFromFormat('m-d-Y', $college[$field]);
                     $time = $date->format('H:i:s');
-                    $type= ucwords(str_replace("_", " ", $field));
+                    $type = ucwords(str_replace("_", " ", $field));
                     $data = [
                         'user_id' => Auth::id(),
-                        'reminder_name' => $type. ' - ' .$college['college_details']['college_name'],
+                        'reminder_name' => $type . ' - ' . $college['college_details']['college_name'],
                         'frequency' => 'Once',
                         'method' => 'both',
                         'when_time' => $time,
@@ -272,7 +372,8 @@ class CollegeApplicationDeadlineController extends Controller
         }
     }
 
-    public function setCalendarEvent($reminder, $date) {
+    public function setCalendarEvent($reminder, $date)
+    {
         $event = CalendarEvent::where('reminders_id', $reminder->id)->first();
         if ($event) {
             $data = [
@@ -297,14 +398,14 @@ class CollegeApplicationDeadlineController extends Controller
             ]);
         } else {
             $data = [
-				"user_id" => Auth::id(),
-				"reminders_id" => $reminder->id,
-				"title" => $reminder->reminder_name,
-				"description" => '',
-				"color" => 'info',
-				"is_assigned" => 1,
-				'event_time' => $reminder->when_time,
-			];
+                "user_id" => Auth::id(),
+                "reminders_id" => $reminder->id,
+                "title" => $reminder->reminder_name,
+                "description" => '',
+                "color" => 'info',
+                "is_assigned" => 1,
+                'event_time' => $reminder->when_time,
+            ];
             if (isset($data['event_time']) && $data['event_time']) {
                 $time = strtotime($data['event_time']);
                 $event_time = date('H:i:s', $time);
