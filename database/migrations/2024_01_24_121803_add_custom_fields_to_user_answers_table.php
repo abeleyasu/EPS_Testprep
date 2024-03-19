@@ -14,12 +14,36 @@ return new class extends Migration
     public function up()
     {
         Schema::table('user_answers', function (Blueprint $table) {
-            $table->string('reading_and_writing_score')->nullable();
-            $table->string('math_score')->nullable();
-            $table->string('total_score')->nullable();
-            $table->string('hours')->nullable();
-            $table->string('minutes')->nullable();
-            $table->string('seconds')->nullable();
+            // $table->string('reading_and_writing_score')->nullable();
+            // $table->string('math_score')->nullable();
+            // $table->string('total_score')->nullable();
+            // $table->string('hours')->nullable();
+            // $table->string('minutes')->nullable();
+            // $table->string('seconds')->nullable();
+
+            if (!Schema::hasColumn('user_answers', 'reading_and_writing_score')) {
+                $table->string('reading_and_writing_score')->nullable();
+            }
+
+            if (!Schema::hasColumn('user_answers', 'math_score')) {
+                $table->string('math_score')->nullable();
+            }
+
+            if (!Schema::hasColumn('user_answers', 'total_score')) {
+                $table->string('total_score')->nullable();
+            }
+
+            if (!Schema::hasColumn('user_answers', 'hours')) {
+                $table->string('hours')->nullable();
+            }
+
+            if (!Schema::hasColumn('user_answers', 'minutes')) {
+                $table->string('minutes')->nullable();
+            }
+
+            if (!Schema::hasColumn('user_answers', 'seconds')) {
+                $table->string('seconds')->nullable();
+            }
         });
     }
 

@@ -14,7 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('practice_questions', function (Blueprint $table) {
-            $table->bigInteger('question_order')->change();
+            // $table->bigInteger('question_order')->change();
+            if (!Schema::hasColumn('practice_questions', 'question_order')) {
+                $table->tinyInteger('question_order')->change();
+            }
         });
     }
 

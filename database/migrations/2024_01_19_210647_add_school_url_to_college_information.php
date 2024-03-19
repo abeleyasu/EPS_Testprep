@@ -14,7 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('college_information', function (Blueprint $table) {
-            $table->string('school_url')->nullable()->after('college_icon');
+            // $table->string('school_url')->nullable()->after('college_icon');
+            if (!Schema::hasColumn('college_information', 'school_url'))  {
+                $table->string('school_url')->nullable()->after('college_icon');
+            }
         });
     }
 

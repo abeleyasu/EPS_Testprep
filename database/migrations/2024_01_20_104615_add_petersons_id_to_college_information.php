@@ -10,7 +10,10 @@ return new class extends Migration
     {
         Schema::table('college_information', function (Blueprint $table) {
             // Add the new column
-            $table->string('petersons_id')->nullable();
+            // $table->string('petersons_id')->nullable();
+            if (!Schema::hasColumn('college_information', 'petersons_id')) {
+                $table->string('petersons_id')->nullable();
+            }
         });
     }
 

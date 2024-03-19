@@ -14,7 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('user_answers', function (Blueprint $table) {
-            $table->boolean('is_proctored')->default(0)->nullable();
+            // $table->boolean('is_proctored')->default(0)->nullable();
+            if (!Schema::hasColumn('user_answers', 'is_proctored')) {
+                $table->boolean('is_proctored')->default(0)->nullable();
+            }
         });
     }
 

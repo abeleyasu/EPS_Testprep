@@ -14,8 +14,16 @@ return new class extends Migration
     public function up()
     {
         Schema::table('practice_test_sections', function (Blueprint $table) {
-            $table->string('lower_value')->nullable();
-            $table->string('upper_value')->nullable();
+            // $table->string('lower_value')->nullable();
+            // $table->string('upper_value')->nullable();
+
+            if (!Schema::hasColumn('practice_test_sections', 'lower_value')) {
+                $table->string('lower_value')->nullable();
+            }
+
+            if (!Schema::hasColumn('practice_test_sections', 'upper_value')) {
+                $table->string('upper_value')->nullable();
+            }
         });
     }
 
