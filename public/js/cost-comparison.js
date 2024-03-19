@@ -1,9 +1,13 @@
-function getCollegeListForCostComparison(active_accordion = null) {
-    $.ajax({
+async function getCollegeListForCostComparison(active_accordion = null, stateCode = null, stateChanged = false) {
+    await $.ajax({
         url: core.costComparisonDetail,
         method: 'GET',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            state: stateCode,
+            state_changed: stateChanged ? 1 : 0
         }
     }).done(function (response) {
         $('#userSelectedCollegeList').html('')
@@ -258,10 +262,15 @@ $('#cost-form').validate({
     }
 })
 
+var userState = $('#user_state_code').val();
+var currentSelectedState = $('select[name=choose_state_options]').find('option:selected').data('statecode');
+var stateChanged = false;
 
-$('select[name=choose_state_options]').on('change', function () {
+$('select[name=choose_state_options]').on('change', async function () {
     const state = $(this).val();
     const stateCode = $(this).find('option:selected').data('statecode');
+    currentSelectedState = stateCode;
+    stateChanged = true;
 
     // console.log('state', state)
     // console.log('stateCode', stateCode)
@@ -269,8 +278,15 @@ $('select[name=choose_state_options]').on('change', function () {
     // get active accrodion from data-id of its parent div that has class .collapse.show
     const activeAccordion = $('#college-list-cost .collapse.show').parent().data('id')
     // console.log('activeAccordion', activeAccordion)
+    await getCollegeListForCostComparison(activeAccordion, currentSelectedState, stateChanged);
 
-    getCollegeListForCostComparison(activeAccordion)
+    // trigger on change .edit-value in tuition and fees and room and board in current collapse show
+    // to update total direct cost
+    if (activeAccordion) {
+        $('#college-list-cost .collapse.show').find('[name=direct_tuition_free_year], [name=direct_room_board_year]').trigger('change')
+    } else {
+        $('#college-list-cost .collapse').first().find('[name=direct_tuition_free_year], [name=direct_room_board_year]').trigger('change')
+    }
 })
 
 const isAccordionActive = (collegeData, activeIndex) => {
@@ -317,10 +333,18 @@ const getTuitionAndFeesValue = (costComparisonData) => {
     const feesFtD = costComparison.FEES_FT_D ? parseFloat(costComparison.FEES_FT_D) : 0
 
     let result = 0
+
+    if (stateChanged) {
+        detail.direct_tuition_free_year = null
+        collegeInformation.tution_and_fess = null // ???
+    }
+
     if (detail.direct_tuition_free_year) {
         result = parseFloat(detail.direct_tuition_free_year)
     } else {
-        if (isPrivateCollege(collegeInformation)) {
+        if (collegeInformation.tution_and_fess) {
+            result = parseFloat(collegeInformation.tution_and_fess)
+        } else if (isPrivateCollege(collegeInformation)) {
             result = tutOverrallFtD + feesFtD
         } else {
             if (isInStateCollege(collegeInformation)) {
@@ -331,6 +355,8 @@ const getTuitionAndFeesValue = (costComparisonData) => {
         }
     }
 
+    // console.log('getTuitionAndFeesValue', result)
+
     return result
 }
 
@@ -338,17 +364,34 @@ const getRoomAndBoardValue = (costComparisonData) => {
     const detail = costComparisonData.costcomparison.costcomparisondetail;
     const collegeInformation = costComparisonData.college_information;
 
+    let result = 0;
+
+    if (stateChanged) {
+        detail.direct_room_board_year = null
+        collegeInformation.room_and_board = null // ???
+    }
+
+    if (costComparisonData.college_name == 'Drake University') {
+        // console.log('stateChanged', stateChanged)
+        // console.log('college', costComparisonData.college_name)
+        // console.log('detail.direct_room_board_year', detail.direct_room_board_year)
+    }
+
     if (detail.direct_room_board_year) {
-        return parseFloat(detail.direct_room_board_year)
+        result = parseFloat(detail.direct_room_board_year)
     } else {
         if (collegeInformation.room_and_board) {
-            return parseFloat(collegeInformation.room_and_board)
+            result = parseFloat(collegeInformation.room_and_board)
         } else if (collegeInformation.RM_BD_D) {
-            return parseFloat(collegeInformation.RM_BD_D)
+            result = parseFloat(collegeInformation.RM_BD_D)
         }
     }
 
-    return 0
+    if (costComparisonData.college_name == 'Drake University') {
+        // console.log('getRoomAndBoardValue', result)
+    }
+
+    return result;
 }
 
 const getDirectCostTotal = (costComparisonData) => {
@@ -356,7 +399,7 @@ const getDirectCostTotal = (costComparisonData) => {
     const detail = costComparison.costcomparisondetail;
 
     const tuitionAndFeesValue = getTuitionAndFeesValue(costComparisonData)
-    const roomBoardYear = detail.direct_room_board_year ? parseFloat(detail.direct_room_board_year) : 0
+    const roomBoardYear = getRoomAndBoardValue(costComparisonData)
     const miscellaneousYear = detail.direct_miscellaneous_year ? parseFloat(detail.direct_miscellaneous_year) : 0
 
     const total = tuitionAndFeesValue + roomBoardYear + miscellaneousYear

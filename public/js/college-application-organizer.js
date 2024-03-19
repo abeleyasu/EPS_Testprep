@@ -434,9 +434,9 @@ const onChangeAdminisionOption = (datasetID) => {
 
     // admission deadline:
     // Early Action: AP_DL_EACT_DAY, AP_DL_EACT_MON
-    // Early Decision 1: APL_DL_EDEC_1_DAY, APL_DL_EDEC_1_MON
-    // Early Decision 2: APL_DL_EDEC_2_DAY, APL_DL_EDEC_2_MON
-    // Regular Decision: APL_DL_FRSH_DAY, APL_DL_FRSH_MON
+    // Early Decision 1: AP_DL_EDEC_1_DAY, AP_DL_EDEC_1_MON
+    // Early Decision 2: AP_DL_EDEC_2_DAY, AP_DL_EDEC_2_MON
+    // Regular Decision: AP_DL_FRSH_DAY, AP_DL_FRSH_MON
     // Rolling Admission: No
 
     let deadlineDay = 0
@@ -448,16 +448,16 @@ const onChangeAdminisionOption = (datasetID) => {
         deadlineMonth = collegeInformation.early_action_month ?? collegeInformation.AP_DL_EACT_MON
     } else if (admissionOptionSelected === 'Early Decision') {
         // console.log('Early Decision 1')
-        deadlineDay = collegeInformation.early_decision_i_day ?? collegeInformation.APL_DL_EDEC_1_DAY
-        deadlineMonth = collegeInformation.early_decision_i_month ?? collegeInformation.APL_DL_EDEC_1_MON
+        deadlineDay = collegeInformation.early_decision_i_day ?? collegeInformation.AP_DL_EDEC_1_DAY
+        deadlineMonth = collegeInformation.early_decision_i_month ?? collegeInformation.AP_DL_EDEC_1_MON
     } else if (admissionOptionSelected === 'Early Decision 2') {
         // console.log('Early Decision 2')
-        deadlineDay = collegeInformation.early_decision_ii_day ?? collegeInformation.APL_DL_EDEC_2_DAY
-        deadlineMonth = collegeInformation.early_decision_ii_month ?? collegeInformation.APL_DL_EDEC_2_MON
+        deadlineDay = collegeInformation.early_decision_ii_day ?? collegeInformation.AP_DL_EDEC_2_DAY
+        deadlineMonth = collegeInformation.early_decision_ii_month ?? collegeInformation.AP_DL_EDEC_2_MON
     } else if (admissionOptionSelected === 'Regular Decision') {
         // console.log('Regular Decision')
-        deadlineDay = collegeInformation.regular_decision_day ?? collegeInformation.APL_DL_FRSH_DAY
-        deadlineMonth = collegeInformation.regular_decision_month ?? collegeInformation.APL_DL_FRSH_MON
+        deadlineDay = collegeInformation.regular_decision_day ?? collegeInformation.AP_DL_FRSH_DAY
+        deadlineMonth = collegeInformation.regular_decision_month ?? collegeInformation.AP_DL_FRSH_MON
     } else if (admissionOptionSelected === 'Rolling Admission') {
         // console.log('Rolling Admission')
         deadlineDay = 0

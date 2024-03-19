@@ -46,6 +46,10 @@
 </style>
 @endsection
 
+@php
+$stateActiveId = session('costComparisonActiveStateId') ?: $user->state_id;
+@endphp
+
 @section('user-content')
 @can('Access Cost Comparison Tool')
 <main id="main-container">
@@ -119,9 +123,11 @@
             <option></option>
             @foreach($states as $st)
                 <option value="{!! $st->id !!}" data-statecode="{{ $st->state_code }}"
-                    @if($st->id == $user->state_id) selected @endif>{!! $st->state_name !!}</option>
+                    @if($st->id == $stateActiveId) selected @endif>{!! $st->state_name !!}</option>
             @endforeach
         </select>
+        <input type="hidden" id="cost_comparison_active_state_id" value="{{ $stateActiveId }}">
+        <input type="hidden" id="user_state_code" value="{{ $user->state_code }}">
       </div>
 
       <div class="block-content">
