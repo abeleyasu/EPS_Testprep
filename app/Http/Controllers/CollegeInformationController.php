@@ -493,20 +493,20 @@ class CollegeInformationController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'entrance_difficulty' => 'required',
-            'gpa_average' => 'required',
-            'act_composite_average' => 'required',
-            'sat_math_average' => 'required',
-            'sat_reading_writing_average' => 'required',
-            'sat_composite_score' => 'required',
+            'entrance_difficulty' => 'nullable',
+            'gpa_average' => 'nullable',
+            'act_composite_average' => 'nullable',
+            'sat_math_average' => 'nullable',
+            'sat_reading_writing_average' => 'nullable',
+            'sat_composite_score' => 'nullable',
             'cost_of_attendance' => 'numeric',
-            'tution_and_fess' => 'required|numeric',
-            'room_and_board' => 'required|numeric',
-            'average_percent_of_need_met' => 'required',
-            'average_freshman_award' => 'required|numeric',
+            'tution_and_fess' => 'nullable|numeric',
+            'room_and_board' => 'nullable|numeric',
+            'average_percent_of_need_met' => 'nullable',
+            'average_freshman_award' => 'nullable|numeric',
             'early_action_offerd' => 'boolean',
             'early_decision_offerd' => 'boolean',
-            // 'regular_admission_deadline' => 'required|date_format:m-d-Y',
+            // 'regular_admission_deadline' => 'nullable|date_format:m-d-Y',
         ];
 
         // dd($request->all());
