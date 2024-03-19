@@ -44,7 +44,7 @@ function getCollegeListForCostComparison(active_accordion = null) {
                     <tr>
                       <td>Room & Board / Year</td>
                       <td class="td-width">
-                        <input type="text" name="direct_room_board_year" data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_room_board_year-${i}" value="${detail.direct_room_board_year ? detail.direct_room_board_year : '0'}"></td>
+                        <input type="text" name="direct_room_board_year" data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_room_board_year-${i}" value="${getRoomAndBoardValue(costComparisonData)}"></td>
                       <td></td>
                     </tr>
                     <tr>
@@ -317,21 +317,38 @@ const getTuitionAndFeesValue = (costComparisonData) => {
     const feesFtD = costComparison.FEES_FT_D ? parseFloat(costComparison.FEES_FT_D) : 0
 
     let result = 0
-    if (isPrivateCollege(collegeInformation)) {
-        result = tutOverrallFtD + feesFtD
+    if (detail.direct_tuition_free_year) {
+        result = parseFloat(detail.direct_tuition_free_year)
     } else {
-        if (isInStateCollege(collegeInformation)) {
-            result = tutStateFtD + feesFtD
+        if (isPrivateCollege(collegeInformation)) {
+            result = tutOverrallFtD + feesFtD
         } else {
-            result = tutNresFtD + feesFtD
+            if (isInStateCollege(collegeInformation)) {
+                result = tutStateFtD + feesFtD
+            } else {
+                result = tutNresFtD + feesFtD
+            }
         }
     }
 
-    if (!result) {
-        return parseFloat(detail.direct_tuition_free_year)
+    return result
+}
+
+const getRoomAndBoardValue = (costComparisonData) => {
+    const detail = costComparisonData.costcomparison.costcomparisondetail;
+    const collegeInformation = costComparisonData.college_information;
+
+    if (detail.direct_room_board_year) {
+        return parseFloat(detail.direct_room_board_year)
+    } else {
+        if (collegeInformation.room_and_board) {
+            return parseFloat(collegeInformation.room_and_board)
+        } else if (collegeInformation.RM_BD_D) {
+            return parseFloat(collegeInformation.RM_BD_D)
+        }
     }
 
-    return result
+    return 0
 }
 
 const getDirectCostTotal = (costComparisonData) => {

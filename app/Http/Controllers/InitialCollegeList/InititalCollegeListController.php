@@ -658,6 +658,28 @@ class InititalCollegeListController extends Controller
                     // Calculate total direct cost
                     $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: $college_information['tution_and_fess'];
                     $direct_room_board = $detailInformation['direct_room_board_year'] ?: $college_information['room_and_board'];
+
+                    if (empty($direct_tuition)) {
+                        if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
+                            $direct_tuition = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
+                        } else {
+                            // get user state code
+                            $user = Auth::user();
+                            $stateId = $user->state_id;
+                            $state = States::where('id', $stateId)->first();
+
+                            if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
+                                $direct_tuition = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
+                            } else {
+                                $direct_tuition = (float) $college_information['TUIT_NRES_FT_D'] + (float) $college_information['FEES_FT_D'];
+                            }
+                        }
+                    }
+
+                    if (empty($direct_room_board)) {
+                        $direct_room_board = (float) $college_information['RM_BD_D'];
+                    }
+
                     $direct_miscellaneous_year = $detailInformation['direct_miscellaneous_year'] ?: 0;
                     $total_direct_cost = $direct_tuition + $direct_room_board + $direct_miscellaneous_year;
 
@@ -728,13 +750,37 @@ class InititalCollegeListController extends Controller
                             $collegeInformation = CollegeInformation::where('college_id', $collegeSearchAdd->college_id)->first();
                         }
 
+                        $tution_and_fess = 0;
+                        $room_and_board = 0;
+
+                        if (!empty($collegeInformation)) {
+                            if (empty($tution_and_fees)) {
+                                if (\App\Helpers\Helper::isPrivateCollege($collegeInformation)) {
+                                    $tution_and_fees = (float) $collegeInformation['TUIT_OVERALL_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
+                                } else {
+                                    // get user state code
+                                    $user = Auth::user();
+                                    $stateId = $user->state_id;
+                                    $state = States::where('id', $stateId)->first();
+
+                                    if (\App\Helpers\Helper::isInStateCollege($collegeInformation, $state->state_code)) {
+                                        $tution_and_fees = (float) $collegeInformation['TUIT_STATE_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
+                                    } else {
+                                        $tution_and_fees = (float) $collegeInformation['TUIT_NRES_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
+                                    }
+                                }
+                            }
+
+                            if (empty($room_and_board)) {
+                                $room_and_board = (float) $collegeInformation['RM_BD_D'];
+                            }
+                        }
+
                         # reset cost comparison detail
                         $cost_comparion_detail = CostComparisonDetail::where('cost_comparison_id', $cost_comparions->id)->first();
 
-                        // $cost_comparion_detail->direct_tuition_free_year = null;
-                        $cost_comparion_detail->direct_tuition_free_year = $collegeInformation?->tution_and_fess; // reset to system initial value
-                        // $cost_comparion_detail->direct_room_board_year = null;
-                        $cost_comparion_detail->direct_room_board_year = $collegeInformation?->room_and_board; // reset to system initial value
+                        $cost_comparion_detail->direct_tuition_free_year = $tution_and_fess; // reset to system initial value
+                        $cost_comparion_detail->direct_room_board_year = $room_and_board; // reset to system initial value
                         $cost_comparion_detail->direct_miscellaneous_year = null;
 
                         $cost_comparion_detail->institutional_academic_merit_aid = null;
@@ -862,11 +908,40 @@ class InititalCollegeListController extends Controller
 
         $college_information = $data['cost_comparison']['college_search_add']['college_information'];
 
+        // print_r($college_information);
+        // print_r($data);
+
         $tution_and_fees = $data['direct_tuition_free_year'] ? $data['direct_tuition_free_year'] : $college_information['tution_and_fess'];
+
+        if (empty($tution_and_fees)) {
+            if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
+                $tution_and_fees = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
+            } else {
+                // get user state code
+                $user = Auth::user();
+                $stateId = $user->state_id;
+                $state = States::where('id', $stateId)->first();
+
+                if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
+                    $tution_and_fees = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
+                } else {
+                    $tution_and_fees = (float) $college_information['TUIT_NRES_FT_D'] + (float) $college_information['FEES_FT_D'];
+                }
+            }
+        }
+
         $room_and_board = $data['direct_room_board_year'] ? $data['direct_room_board_year'] : $college_information['room_and_board'];
         $direct_miscellaneous_year = $data['direct_miscellaneous_year'] ? $data['direct_miscellaneous_year'] : 0;
 
+        // echo 'tution_and_fees > ' . $tution_and_fees . PHP_EOL;
+        // echo 'room_and_board > ' . $room_and_board . PHP_EOL;
+        // echo 'direct_miscellaneous_year > ' . $direct_miscellaneous_year . PHP_EOL;
+
         $total_direct_cost = $tution_and_fees + $room_and_board + $direct_miscellaneous_year;
+        // echo 'total_direct_cost > ' . $total_direct_cost . PHP_EOL;
+
+        // die('test');
+
 
         $total_merit_cost = $data['institutional_academic_merit_aid'] + $data['institutional_exchange_program_scho'] + $data['institutional_honors_col_program'] + $data['institutional_academic_department_scho'] + $data['institutional_atheletic_scho'] + $data['institutional_other_talent_scho'] + $data['institutional_diversity_scho'] + $data['institutional_legacy_scho'] + $data['institutional_other_scho'];
         $total_need_based_aid = $data['need_base_federal_grants'] + $data['need_base_institutional_grants'] + $data['need_base_state_grants'] + $data['need_base_work_study_grants'] + $data['need_base_student_loans_grants'] + $data['need_base_parent_plus_grants'] + $data['need_base_other_grants'];
