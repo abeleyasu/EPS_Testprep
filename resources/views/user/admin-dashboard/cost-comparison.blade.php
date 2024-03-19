@@ -37,7 +37,7 @@
   }
 
   .td-width {
-    width: 10%
+    width: 15%
   }
 
   .delete-option {
