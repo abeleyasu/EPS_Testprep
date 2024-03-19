@@ -14,8 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::table('practice_test_sections', function (Blueprint $table) {
-            $table->text('easy_section_determiner')->nullable();
-            $table->text('hard_section_determiner')->nullable();
+            if (!Schema::hasColumn('practice_test_sections', 'easy_section_determiner')) {
+                $table->text('easy_section_determiner')->nullable();
+            }
+
+            if (!Schema::hasColumn('practice_test_sections', 'medium_section_determiner')) {
+                $table->text('medium_section_determiner')->nullable();
+            }
         });
     }
 
