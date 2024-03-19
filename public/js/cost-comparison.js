@@ -47,6 +47,12 @@ function getCollegeListForCostComparison(active_accordion = null) {
                         <input type="text" name="direct_room_board_year" data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_room_board_year-${i}" value="${detail.direct_room_board_year ? detail.direct_room_board_year : '0'}"></td>
                       <td></td>
                     </tr>
+                    <tr>
+                      <td>Miscellaneous</td>
+                      <td class="td-width">
+                        <input type="text" name="direct_miscellaneous_year" data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_miscellaneous_year-${i}" value="${detail.direct_miscellaneous_year ? detail.direct_miscellaneous_year : '0'}"></td>
+                      <td></td>
+                    </tr>
                     <tr class="even table-success">
                       <td>DIRECT COSTS (Total Tuition, Fees, Room & Board / Year)</td>
                       <td class="td-width" id="total_direct_cost-${i}">${getDirectCostTotal(costComparisonData)}</td>
@@ -334,8 +340,9 @@ const getDirectCostTotal = (costComparisonData) => {
 
     const tuitionAndFeesValue = getTuitionAndFeesValue(costComparisonData)
     const roomBoardYear = detail.direct_room_board_year ? parseFloat(detail.direct_room_board_year) : 0
+    const miscellaneousYear = detail.direct_miscellaneous_year ? parseFloat(detail.direct_miscellaneous_year) : 0
 
-    const total = tuitionAndFeesValue + roomBoardYear
+    const total = tuitionAndFeesValue + roomBoardYear + miscellaneousYear
 
     // return `$${total}`
     return getFormatMoney(total)

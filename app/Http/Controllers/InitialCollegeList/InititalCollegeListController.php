@@ -604,6 +604,10 @@ class InititalCollegeListController extends Controller
                 $total_direct_cost = 0;
                 if ($college_information) {
                     $total_direct_cost = ($detailInformation['direct_tuition_free_year'] ? $detailInformation['direct_tuition_free_year'] : $college_information['tution_and_fess']) + ($detailInformation['direct_room_board_year'] ? $detailInformation['direct_room_board_year'] : $college_information['room_and_board']);
+
+                    $direct_miscellaneous_year = $detailInformation['direct_miscellaneous_year'] ? $detailInformation['direct_miscellaneous_year'] : 0;
+
+                    $total_direct_cost = $total_direct_cost + $direct_miscellaneous_year;
                 }
                 $total_cost_attendance = $total_direct_cost - $college_data['costcomparison']['total_cost_attendance'];
                 $data[] = [
@@ -654,7 +658,8 @@ class InititalCollegeListController extends Controller
                     // Calculate total direct cost
                     $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: $college_information['tution_and_fess'];
                     $direct_room_board = $detailInformation['direct_room_board_year'] ?: $college_information['room_and_board'];
-                    $total_direct_cost = $direct_tuition + $direct_room_board;
+                    $direct_miscellaneous_year = $detailInformation['direct_miscellaneous_year'] ?: 0;
+                    $total_direct_cost = $direct_tuition + $direct_room_board + $direct_miscellaneous_year;
 
                     // Calculate total cost of attendance
                     $total_cost_attendance = $total_direct_cost - $costcomparison['costcomparison']['total_cost_attendance'];
@@ -730,6 +735,7 @@ class InititalCollegeListController extends Controller
                         $cost_comparion_detail->direct_tuition_free_year = $collegeInformation?->tution_and_fess; // reset to system initial value
                         // $cost_comparion_detail->direct_room_board_year = null;
                         $cost_comparion_detail->direct_room_board_year = $collegeInformation?->room_and_board; // reset to system initial value
+                        $cost_comparion_detail->direct_miscellaneous_year = null;
 
                         $cost_comparion_detail->institutional_academic_merit_aid = null;
                         $cost_comparion_detail->institutional_exchange_program_scho = null;
@@ -858,8 +864,9 @@ class InititalCollegeListController extends Controller
 
         $tution_and_fees = $data['direct_tuition_free_year'] ? $data['direct_tuition_free_year'] : $college_information['tution_and_fess'];
         $room_and_board = $data['direct_room_board_year'] ? $data['direct_room_board_year'] : $college_information['room_and_board'];
+        $direct_miscellaneous_year = $data['direct_miscellaneous_year'] ? $data['direct_miscellaneous_year'] : 0;
 
-        $total_direct_cost = $tution_and_fees + $room_and_board;
+        $total_direct_cost = $tution_and_fees + $room_and_board + $direct_miscellaneous_year;
 
         $total_merit_cost = $data['institutional_academic_merit_aid'] + $data['institutional_exchange_program_scho'] + $data['institutional_honors_col_program'] + $data['institutional_academic_department_scho'] + $data['institutional_atheletic_scho'] + $data['institutional_other_talent_scho'] + $data['institutional_diversity_scho'] + $data['institutional_legacy_scho'] + $data['institutional_other_scho'];
         $total_need_based_aid = $data['need_base_federal_grants'] + $data['need_base_institutional_grants'] + $data['need_base_state_grants'] + $data['need_base_work_study_grants'] + $data['need_base_student_loans_grants'] + $data['need_base_parent_plus_grants'] + $data['need_base_other_grants'];

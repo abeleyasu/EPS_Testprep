@@ -13,6 +13,7 @@ class CostComparisonDetail extends Model
         'cost_comparison_id',
         'direct_tuition_free_year',
         'direct_room_board_year',
+        'direct_miscellaneous_year',
         'institutional_academic_merit_aid',
         'institutional_exchange_program_scho',
         'institutional_honors_col_program',
