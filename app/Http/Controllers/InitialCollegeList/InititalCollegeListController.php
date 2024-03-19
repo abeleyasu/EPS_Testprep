@@ -603,11 +603,34 @@ class InititalCollegeListController extends Controller
                 $detailInformation = $college_data['costcomparison']['costcomparisondetail'];
                 $total_direct_cost = 0;
                 if ($college_information) {
-                    $total_direct_cost = ($detailInformation['direct_tuition_free_year'] ? $detailInformation['direct_tuition_free_year'] : $college_information['tution_and_fess']) + ($detailInformation['direct_room_board_year'] ? $detailInformation['direct_room_board_year'] : $college_information['room_and_board']);
+                    // $total_direct_cost = ($detailInformation['direct_tuition_free_year'] ? $detailInformation['direct_tuition_free_year'] : $college_information['tution_and_fess']) + ($detailInformation['direct_room_board_year'] ? $detailInformation['direct_room_board_year'] : $college_information['room_and_board']);
 
+                    $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: $college_information['tution_and_fess'];
+                    $direct_room_board = $detailInformation['direct_room_board_year'] ?: $college_information['room_and_board'];
                     $direct_miscellaneous_year = $detailInformation['direct_miscellaneous_year'] ? $detailInformation['direct_miscellaneous_year'] : 0;
 
-                    $total_direct_cost = $total_direct_cost + $direct_miscellaneous_year;
+                    if (empty($direct_tuition)) {
+                        if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
+                            $direct_tuition = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
+                        } else {
+                            // get user state code
+                            $user = Auth::user();
+                            $stateId = $user->state_id;
+                            $state = States::where('id', $stateId)->first();
+
+                            if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
+                                $direct_tuition = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
+                            } else {
+                                $direct_tuition = (float) $college_information['TUIT_NRES_FT_D'] + (float) $college_information['FEES_FT_D'];
+                            }
+                        }
+                    }
+
+                    if (empty($direct_room_board)) {
+                        $direct_room_board = (float) $college_information['RM_BD_D'];
+                    }
+
+                    $total_direct_cost = $direct_tuition + $direct_room_board + $direct_miscellaneous_year;
                 }
                 $total_cost_attendance = $total_direct_cost - $college_data['costcomparison']['total_cost_attendance'];
                 $data[] = [
