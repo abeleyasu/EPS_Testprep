@@ -74,9 +74,9 @@ class DashboardController extends Controller
             if (!empty($adminissionOptionSelected)) {
                 // admission deadline:
                 // Early Action: AP_DL_EACT_DAY, AP_DL_EACT_MON
-                // Early Decision 1: APL_DL_EDEC_1_DAY, APL_DL_EDEC_1_MON
-                // Early Decision 2: APL_DL_EDEC_2_DAY, APL_DL_EDEC_2_MON
-                // Regular Decision: APL_DL_FRSH_DAY, APL_DL_FRSH_MON
+                // Early Decision 1: AP_DL_EDEC_1_DAY, AP_DL_EDEC_1_MON
+                // Early Decision 2: AP_DL_EDEC_2_DAY, AP_DL_EDEC_2_MON
+                // Regular Decision: AP_DL_FRSH_DAY, AP_DL_FRSH_MON
                 // Rolling Admission: No
 
                 $collegeInformation = $deadline['college_information'];
@@ -89,19 +89,19 @@ class DashboardController extends Controller
                     $deadlineMonth = $collegeInformation['early_action_month'] ?: $collegeInformation['AP_DL_EACT_MON'];
                 } elseif ($adminissionOptionSelected == 'Early Decision 1') {
                     $deadlineDay =
-                        $collegeInformation['early_decision_i_day'] ?: $collegeInformation['APL_DL_EDEC_1_DAY'];
+                        $collegeInformation['early_decision_i_day'] ?: $collegeInformation['AP_DL_EDEC_1_DAY'];
                     $deadlineMonth =
-                        $collegeInformation['early_decision_i_month'] ?: $collegeInformation['APL_DL_EDEC_1_MON'];
+                        $collegeInformation['early_decision_i_month'] ?: $collegeInformation['AP_DL_EDEC_1_MON'];
                 } elseif ($adminissionOptionSelected == 'Early Decision 2') {
                     $deadlineDay =
-                        $collegeInformation['early_decision_ii_day'] ?: $collegeInformation['APL_DL_EDEC_2_DAY'];
+                        $collegeInformation['early_decision_ii_day'] ?: $collegeInformation['AP_DL_EDEC_2_DAY'];
                     $deadlineMonth =
-                        $collegeInformation['early_decision_ii_month'] ?: $collegeInformation['APL_DL_EDEC_2_MON'];
+                        $collegeInformation['early_decision_ii_month'] ?: $collegeInformation['AP_DL_EDEC_2_MON'];
                 } elseif ($adminissionOptionSelected == 'Regular Decision') {
                     $deadlineDay =
-                        $collegeInformation['regular_decision_day'] ?: $collegeInformation['APL_DL_FRSH_DAY'];
+                        $collegeInformation['regular_decision_day'] ?: $collegeInformation['AP_DL_FRSH_DAY'];
                     $deadlineMonth =
-                        $collegeInformation['regular_decision_month'] ?: $collegeInformation['APL_DL_FRSH_MON'];
+                        $collegeInformation['regular_decision_month'] ?: $collegeInformation['AP_DL_FRSH_MON'];
                 } elseif ($adminissionOptionSelected == 'Rolling Admission') {
                     //
                 }
