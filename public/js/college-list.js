@@ -122,6 +122,7 @@ function refreshResults(type) {
 Sortable.create(userSelectedCollegeList, {
   animation: 150,
   ghostClass: 'blue-background-class',
+  handle: '.drag-handle',
   onEnd: function (evt) {
     const payload = []
     for (let  i = 0; i < evt.from.children.length; i++) {
@@ -204,7 +205,7 @@ $(document).on('click', '.remove-user-college', function(e) {
         if (response.success) {
           toastr.success(response.message)
           refreshResults(e.target.dataset.type);
-          window.localStorage.setItem('APP-REFRESHED', Date.now()); 
+          window.localStorage.setItem('APP-REFRESHED', Date.now());
         } else {
           toastr.error(response.message)
         }

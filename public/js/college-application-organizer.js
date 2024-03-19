@@ -31,7 +31,7 @@ function setApplicationHTML(records) {
                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                     <div class="block-header block-header-tab row ${data.college_deadline.is_application_checklist == 1 ? 'bg-success' : ''}" id="block-header-${i}">
                         <div class="col-9" type="button" data-toggle="collapse" data-target="#collapse${i}" data-id="${data.id}" aria-expanded="true">
-                            <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle${i}"></i><i class="fa fa-bars fa-2x"></i>${data.college_name}</a>
+                            <a class="text-white fw-600 collapsed drag-handle"><i class="fa fa-2x fa-angle-right" id="toggle${i}"></i><i class="fa fa-bars fa-2x"></i>${data.college_name}</a>
                         </div>
                         <div class="col-3 text-end">
                             <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list me-2" data-id="${data.id}">Hide</button>
