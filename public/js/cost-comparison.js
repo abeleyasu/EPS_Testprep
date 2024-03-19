@@ -9,7 +9,7 @@ function getCollegeListForCostComparison(active_accordion = null) {
         $('#userSelectedCollegeList').html('')
         if (response.success) {
             const data = response.data;
-            console.log('response.data', data)
+            // console.log('response.data', data)
             for (let i = 0; i < data.length; i++) {
                 const costComparisonData = data[i];
                 const costcomparison = costComparisonData.costcomparison;
@@ -104,7 +104,7 @@ function getCollegeListForCostComparison(active_accordion = null) {
                     </tr>
                     <tr class="even table-success">
                       <td>Total Institutional Scholarship Aid / Year</td>
-                      <td class="td-width" id="total_merit_aid-${i}">${costcomparison.total_merit_aid ? '$' + costcomparison.total_merit_aid : '$0'}</td>
+                      <td class="td-width" id="total_merit_aid-${i}">${getFormatMoney(costcomparison.total_merit_aid)}</td>
                       <td></td>
                     </tr>
                   </tbody>
@@ -149,7 +149,7 @@ function getCollegeListForCostComparison(active_accordion = null) {
                     </tr>
                     <tr class="even table-success">
                       <td>Total Need-Based Aid / Year (Federal, State, & Institutional)</td>
-                      <td class="td-width" id="total_need_based_aid-${i}">${costcomparison.total_need_based_aid ? '$' + costcomparison.total_need_based_aid : '$0'}</td>
+                      <td class="td-width" id="total_need_based_aid-${i}">${getFormatMoney(costcomparison.total_need_based_aid)}</td>
                       <td></td>
                     </tr>
                   </tbody>
@@ -181,7 +181,7 @@ function getCollegeListForCostComparison(active_accordion = null) {
 
                 html += `<tr class="even table-success">
                       <td>Total Outside Scholarship Aid / Year</td>
-                      <td id="total_outside_scholarship-${i}">${costcomparison.total_outside_scholarship ? '$' + costcomparison.total_outside_scholarship : '$0'}</td>
+                      <td id="total_outside_scholarship-${i}">${getFormatMoney(costcomparison.total_outside_scholarship)}</td>
                       <td></td>
                     </tr>
                   </tbody>
@@ -191,7 +191,7 @@ function getCollegeListForCostComparison(active_accordion = null) {
                     </tr>
                     <tr>
                       <td>Estimated Total Cost of Attendence / Year</td>
-                      <td class="td-width" id="total_cost_attendance-${i}">${costcomparison.total_cost_attendance ? '$' + costcomparison.total_cost_attendance : '$0'}</td>
+                      <td class="td-width" id="total_cost_attendance-${i}">${getFormatMoney(costcomparison.total_cost_attendance)}</td>
                       <td></td>
                     </tr>
                   </tbody>
@@ -337,5 +337,6 @@ const getDirectCostTotal = (costComparisonData) => {
 
     const total = tuitionAndFeesValue + roomBoardYear
 
-    return `$${total}`
+    // return `$${total}`
+    return getFormatMoney(total)
 }

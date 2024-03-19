@@ -482,14 +482,24 @@
     })
   })
 
-  function refreshdata (index, response) {
+const getFormatMoney = (value) => {
+    return `$${(value || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+}
+
+function updateField(index, fieldName, data) {
+    const value = getFormatMoney(data[fieldName]);
+    $(`#${fieldName}-${index}`).html(value);
+}
+
+function refreshdata(index, response) {
     $('#costcomparison-summary').DataTable().ajax.reload();
-    $('#total_direct_cost-' + index).html(response.data.total_direct_cost ? '$'+ response.data.total_direct_cost : '$0')
-    $('#total_merit_aid-' + index).html(response.data.total_merit_aid ? '$'+ response.data.total_merit_aid : '$0')
-    $('#total_need_based_aid-' + index).html(response.data.total_need_based_aid ? '$'+ response.data.total_need_based_aid : '$0')
-    $('#total_outside_scholarship-' + index).html(response.data.total_outside_scholarship ? '$'+ response.data.total_outside_scholarship : '$0')
-    $('#total_cost_attendance-' + index).html(response.data.total_cost_attendance ? '$'+ response.data.total_cost_attendance : '$0')
-  }
+
+    updateField(index, 'total_direct_cost', response.data);
+    updateField(index, 'total_merit_aid', response.data);
+    updateField(index, 'total_need_based_aid', response.data);
+    updateField(index, 'total_outside_scholarship', response.data);
+    updateField(index, 'total_cost_attendance', response.data);
+}
 
 
   $(document).on('focus', '.edit-value, .edit-outside-aid', function (e) {
