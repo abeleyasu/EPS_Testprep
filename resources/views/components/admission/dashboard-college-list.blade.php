@@ -27,6 +27,8 @@
                             <span class="text-danger d-block">Not Published</span>
                         </div>
                         @endif
+                    @else
+                        <div class="deadline-div text-center"></div>
                     @endif
                     <button type="button" class="btn btn-sm btn-alt-secondary mt-2 manage-deadline"
                         data-bs-toggle="modal" data-bs-target="#deadline-modal"

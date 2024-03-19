@@ -308,7 +308,8 @@ class CollegeApplicationDeadlineController extends Controller
         return [
             'success' => true,
             'message' => 'College application deadline saved successfully',
-            'daysleft' => $days
+            'daysleft' => $days,
+            'dateLabel' => date('F d, Y', strtotime($date)),
         ];
     }
 

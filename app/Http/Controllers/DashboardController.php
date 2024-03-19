@@ -56,8 +56,17 @@ class DashboardController extends Controller
         ) {
             $deadlineDate = $deadline['college_deadline']['admissions_deadline']; // month-day-year
             // convert to Y-m-d
-            $dateExplode = explode('-', $deadlineDate);
-            $deadlineDate = $dateExplode[2] . '-' . $dateExplode[0] . '-' . $dateExplode[1];
+            // $dateExplode = explode('-', $deadlineDate);
+            // $deadlineDate = $dateExplode[2] . '-' . $dateExplode[0] . '-' . $dateExplode[1];
+
+            try {
+                $date = Carbon::createFromFormat("m-d-Y", $deadlineDate);
+            } catch (\Throwable $th) {
+                $date = Carbon::createFromFormat("Y-m-d", $deadlineDate);
+            }
+
+            $deadlineDate = $date->format('Y-m-d');
+
             // echo '0--> '. $deadlineDate . '<br>';
         } else {
             $adminissionOptionSelected = $deadline['college_deadline']['admission_option']; // Early Action, Early Decision 1, Early Decision 2, Regular Decision, Rolling Admission

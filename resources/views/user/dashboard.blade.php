@@ -39,7 +39,7 @@
           {{ session('error_google') }}
         </div>
       @endif
-        
+
       <section class="my-college-section border-class mb-0">
         <div class="block-header block-header-tab justify-content-center fs-4">
           My College
@@ -93,7 +93,7 @@
                   <div class="block block-rounded block-bordered overflow-hidden mb-1">
                     <div class="block-header block-header-tab" role="tab" id="faq12_h1">
                       <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#section-1" href="#notification-system" aria-expanded="true" aria-controls="notification-system">
-                        <i class="nav-main-link-icon fa fa-file"></i> 
+                        <i class="nav-main-link-icon fa fa-file"></i>
                         Notification System
                       </a>
                     </div>
@@ -106,7 +106,7 @@
                   <div class="block block-rounded block-bordered overflow-hidden mb-1">
                     <div class="block-header block-header-tab" role="tab" id="faq12_h1">
                       <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#section-1" href="#practice-calendar" aria-expanded="true" aria-controls="practice-calendar">
-                        <i class="nav-main-link-icon fa fa-file"></i> 
+                        <i class="nav-main-link-icon fa fa-file"></i>
                         Study & Practice Calendar
                       </a>
                     </div>
@@ -257,7 +257,7 @@
   let eventObj = @json($final_arr);
 
   pageCompCalendar.init(eventObj);
-		
+
   var testTypeDropdown = $('#testTypeDropdown').val();
   if(testTypeDropdown) {
     $.ajax({
@@ -308,7 +308,7 @@
 
             $('.selectedPrimaryTest').text(newTestType);
             $('.lastTestCls').text(response.scaled_score);
-            
+
             $('#editDropdownContainer').toggle();
             $('.selectedPrimaryTest').toggle();
 
@@ -532,10 +532,12 @@
                   $(`#${deadlineId} .deadline-div`).append(html);
                   // $(`#${deadlineId} .dead-line`).attr('class','text-danger').text('Not Published');
               }else{
-                  $(`#${deadlineId} .manage-deadline`).attr('data-dead-line', deadlineDate);
+                const dateLabel = response.dateLabel ? response.dateLabel : deadlineDate;
+
+                  $(`#${deadlineId} .manage-deadline`).attr('data-dead-line', dateLabel);
 
                   $(`#${deadlineId} .deadline-div`).empty();
-                  let html = `<span class="text-dark d-block">${deadlineDate}</span><span class="text-dark d-block">${response.daysleft}</span>`
+                  let html = `<span class="text-dark d-block">${dateLabel}</span><span class="text-dark d-block">${response.daysleft}</span>`
                   $(`#${deadlineId} .deadline-div`).append(html);
               }
           } else {
