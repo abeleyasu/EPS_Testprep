@@ -1617,6 +1617,9 @@ class TestPrepController extends Controller
                 array_multisort($keys, SORT_DESC, $categoryAndQuestionTypeSummaryData);
             }
         }
+        // dd($questionsCtPresent);
+
+        // dd($categoryAndQuestionTypeSummaryData);
 
         $html = view('user.test-review.all',  [
             'category_data' => $category_data,
@@ -1668,7 +1671,10 @@ class TestPrepController extends Controller
         }
         $user_tests = DB::table('user_answers')->where('user_id', $current_user_id)->pluck('test_id')->toArray();
 
-        $allTestsByUser = DB::table('practice_tests')->where('user_id', $current_user_id)->where('format', $testType)->whereIn('id', $user_tests)->pluck('id')->toArray();
+        $allTestsOfUser = DB::table('practice_tests')->where('user_id', $current_user_id)->where('format', $testType)->whereIn('id', $user_tests)->pluck('id')->toArray();
+
+        $allTestsByUser = DB::table('user_answers')->whereIn('test_id', $allTestsOfUser)->distinct()->pluck('test_id')->toArray();
+
         // dump($current_user_id);
         // dd($allTestsByUser);
         if (empty($allTestsByUser)) {
@@ -1677,6 +1683,8 @@ class TestPrepController extends Controller
             ]);
             // return to_route('test-prep-insights')->with('error', 'No test was found with this format!!!');
         }
+        $questionsCtPresent = [];
+        $catFinal = [];
 
         foreach ($allTestsByUser as $testid) {
             $test_id = $testid;
@@ -1923,12 +1931,10 @@ class TestPrepController extends Controller
                 }
             }
 
-            $catFinal = [];
-
-            $questionsCtPresent = [];
+            // dump($ctData);
             foreach ($ctData as $ctDataKey => $ctDataValue) {
                 $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
-
+                
                 foreach ($ctDataUniqueValue as $uniqueData) {
                     $ct = $questionsCtPresent[$uniqueData] ?? 0;
                     $questionsCtPresent[$uniqueData] = $ct + 1;
@@ -2000,7 +2006,7 @@ class TestPrepController extends Controller
                         $categoryAndQuestionTypeSummaryData[$existingKey]['total_qts'] += $total_qts;
                         $categoryAndQuestionTypeSummaryData[$existingKey]['total_incorrect_qts'] += $total_incorrect_qts;
                         $categoryAndQuestionTypeSummaryData[$existingKey]['total_correct_qts'] += $total_correct_qts;
-                        $categoryAndQuestionTypeSummaryData[$existingKey]['count'] += $dataArray['count']; // Update count
+                        $categoryAndQuestionTypeSummaryData[$existingKey]['count'] = $dataArray['count']; // Update count
 
                         // Append the new 'qt' data if it's not already present
                         foreach ($data as $qtKey => $qtData) {
@@ -2028,7 +2034,7 @@ class TestPrepController extends Controller
                 }
             }
         }
-
+// dd($questionsCtPresent);
         // dd($categoryAndQuestionTypeSummaryData);
 
 
@@ -4299,12 +4305,12 @@ class TestPrepController extends Controller
         $user_id = Auth::id();
 
 
-        $getCustomQuiz['SAT'] = PracticeTest::select('id','title')->where('user_id', $user_id)->where('format', 'SAT')->where('test_source', 2)->get();
-        $getCustomQuiz['ACT'] = PracticeTest::select('id','title')->where('user_id', $user_id)->where('format', 'ACT')->where('test_source', 2)->get();
+        $getCustomQuiz['SAT'] = PracticeTest::select('id', 'title')->where('user_id', $user_id)->where('format', 'SAT')->where('test_source', 2)->get();
+        $getCustomQuiz['ACT'] = PracticeTest::select('id', 'title')->where('user_id', $user_id)->where('format', 'ACT')->where('test_source', 2)->get();
         // dd($getCustomQuiz['ACT']);
-        $getCustomQuiz['PSAT'] = PracticeTest::select('id','title')->where('user_id', $user_id)->where('format', 'PSAT')->where('test_source', 2)->get();
-        $getCustomQuiz['DSAT'] = PracticeTest::select('id','title')->where('user_id', $user_id)->where('format', 'DSAT')->where('test_source', 2)->get();
-        $getCustomQuiz['DPSAT'] = PracticeTest::select('id','title')->where('user_id', $user_id)->where('format', 'DPSAT')->where('test_source', 2)->get();
+        $getCustomQuiz['PSAT'] = PracticeTest::select('id', 'title')->where('user_id', $user_id)->where('format', 'PSAT')->where('test_source', 2)->get();
+        $getCustomQuiz['DSAT'] = PracticeTest::select('id', 'title')->where('user_id', $user_id)->where('format', 'DSAT')->where('test_source', 2)->get();
+        $getCustomQuiz['DPSAT'] = PracticeTest::select('id', 'title')->where('user_id', $user_id)->where('format', 'DPSAT')->where('test_source', 2)->get();
 
         //SAT Custom Quiz
         $sat_custom_details = [];

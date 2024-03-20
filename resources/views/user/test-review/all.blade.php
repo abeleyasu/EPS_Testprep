@@ -213,70 +213,124 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <div class="row items-push">
-                                                                                                <div id="my-block" class="block block-rounded block-bordered p-0">
-                                                                                                    <div class="block-header block-header-default">
-                                                                                                        <h3 class="block-title">
+                                                                                            <div
+                                                                                                class="row items-push">
+                                                                                                <div id="my-block"
+                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                    <div
+                                                                                                        class="block-header block-header-default">
+                                                                                                        <h3
+                                                                                                            class="block-title">
                                                                                                             Lesson
                                                                                                         </h3>
-                                                                                                        <div class="block-options">
-                                                                                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                        <div
+                                                                                                            class="block-options">
+                                                                                                            <button
+                                                                                                                type="button"
+                                                                                                                class="btn-block-option"
+                                                                                                                data-toggle="block-option"
+                                                                                                                data-action="content_toggle"><i
+                                                                                                                    class="si si-arrow-up"></i></button>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div class="block-content">
-                                                                                                        <p class="set_category_type_lesson">
+                                                                                                    <div
+                                                                                                        class="block-content">
+                                                                                                        <p
+                                                                                                            class="set_category_type_lesson">
                                                                                                             {!! isset($category_arr->category_type_lesson) ? $category_arr->category_type_lesson : '' !!}
                                                                                                         </p>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <div class="row items-push">
-                                                                                                <div id="my-block" class="block block-rounded block-bordered p-0">
-                                                                                                    <div class="block-header block-header-default">
-                                                                                                        <h3 class="block-title">
+                                                                                            <div
+                                                                                                class="row items-push">
+                                                                                                <div id="my-block"
+                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                    <div
+                                                                                                        class="block-header block-header-default">
+                                                                                                        <h3
+                                                                                                            class="block-title">
                                                                                                             Strategies
                                                                                                         </h3>
-                                                                                                        <div class="block-options">
-                                                                                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                        <div
+                                                                                                            class="block-options">
+                                                                                                            <button
+                                                                                                                type="button"
+                                                                                                                class="btn-block-option"
+                                                                                                                data-toggle="block-option"
+                                                                                                                data-action="content_toggle"><i
+                                                                                                                    class="si si-arrow-up"></i></button>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div class="block-content">
-                                                                                                        <p class="set_category_type_strategies">
+                                                                                                    <div
+                                                                                                        class="block-content">
+                                                                                                        <p
+                                                                                                            class="set_category_type_strategies">
                                                                                                             {!! isset($category_arr->category_type_strategies) ? $category_arr->catgeory_type_strategies : '' !!}
                                                                                                         </p>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <div class="row items-push">
-                                                                                                <div id="my-block" class="block block-rounded block-bordered p-0">
-                                                                                                    <div class="block-header block-header-default">
-                                                                                                        <h3 class="block-title">
-                                                                                                            Identification Methods
+                                                                                            <div
+                                                                                                class="row items-push">
+                                                                                                <div id="my-block"
+                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                    <div
+                                                                                                        class="block-header block-header-default">
+                                                                                                        <h3
+                                                                                                            class="block-title">
+                                                                                                            Identification
+                                                                                                            Methods
                                                                                                         </h3>
-                                                                                                        <div class="block-options">
-                                                                                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                        <div
+                                                                                                            class="block-options">
+                                                                                                            <button
+                                                                                                                type="button"
+                                                                                                                class="btn-block-option"
+                                                                                                                data-toggle="block-option"
+                                                                                                                data-action="content_toggle"><i
+                                                                                                                    class="si si-arrow-up"></i></button>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div class="block-content">
-                                                                                                        <p class="set_category_type_identification_methods">
-                                                                                                            {!! isset($category_arr->category_type_identification_methods) ? $category_arr->category_type_identification_methods : '' !!}
+                                                                                                    <div
+                                                                                                        class="block-content">
+                                                                                                        <p
+                                                                                                            class="set_category_type_identification_methods">
+                                                                                                            {!! isset($category_arr->category_type_identification_methods)
+                                                                                                                ? $category_arr->category_type_identification_methods
+                                                                                                                : '' !!}
                                                                                                         </p>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <div class="row items-push">
-                                                                                                <div id="my-block" class="block block-rounded block-bordered p-0">
-                                                                                                    <div class="block-header block-header-default">
-                                                                                                        <h3 class="block-title">
-                                                                                                            Identification Activity
+                                                                                            <div
+                                                                                                class="row items-push">
+                                                                                                <div id="my-block"
+                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                    <div
+                                                                                                        class="block-header block-header-default">
+                                                                                                        <h3
+                                                                                                            class="block-title">
+                                                                                                            Identification
+                                                                                                            Activity
                                                                                                         </h3>
-                                                                                                        <div class="block-options">
-                                                                                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                        <div
+                                                                                                            class="block-options">
+                                                                                                            <button
+                                                                                                                type="button"
+                                                                                                                class="btn-block-option"
+                                                                                                                data-toggle="block-option"
+                                                                                                                data-action="content_toggle"><i
+                                                                                                                    class="si si-arrow-up"></i></button>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div class="block-content">
-                                                                                                        <p class="set_category_type_identification_activity">
-                                                                                                            {!! isset($category_arr->category_type_identification_activity) ? $category_arr->category_type_identification_activity : '' !!}
+                                                                                                    <div
+                                                                                                        class="block-content">
+                                                                                                        <p
+                                                                                                            class="set_category_type_identification_activity">
+                                                                                                            {!! isset($category_arr->category_type_identification_activity)
+                                                                                                                ? $category_arr->category_type_identification_activity
+                                                                                                                : '' !!}
                                                                                                         </p>
                                                                                                     </div>
                                                                                                 </div>
@@ -339,8 +393,8 @@
                                                                                     @if ($test_det == 'single')
                                                                                         {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
                                                                                     @else
-                                                                                        {{ $categoryAndQuestionTypeSummary['total_qts'] ?? 0 }}
-                                                                                        {{-- {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }} --}}
+                                                                                        {{-- {{ $categoryAndQuestionTypeSummary['total_qts'] ?? 0 }} --}}
+                                                                                        {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
                                                                                     @endif
 
                                                                                     questions
@@ -400,8 +454,13 @@
                                                                             @if ($missed_ct > 0)
                                                                                 <div
                                                                                     class="text-danger text-center">
-                                                                                    {{ $missed_ct }} /
-                                                                                    {{ $count }}
+                                                                                    @if ($test_det == 'single')
+                                                                                        {{ $missed_ct }} /
+                                                                                        {{ $count }}
+                                                                                    @else
+                                                                                        {{ $missed_ct }} /
+                                                                                        {{ $count }}
+                                                                                    @endif
                                                                                     Missed
                                                                                 </div>
                                                                             @endif
