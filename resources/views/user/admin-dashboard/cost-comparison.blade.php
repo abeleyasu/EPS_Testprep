@@ -239,6 +239,13 @@ $stateActiveId = session('costComparisonActiveStateId') ?: $user->state_id;
 <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 <script src="{{asset('js/college-list.js')}}"></script>
 <script>
+
+var global = {
+    userState: $('#user_state_code').val(),
+    currentSelectedState: $('select[name=choose_state_options]').find('option:selected').data('statecode'),
+    stateChanged: false
+  }
+
   toastr.options = {
     "closeButton": true,
     "newestOnTop": false,
@@ -407,6 +414,7 @@ $stateActiveId = session('costComparisonActiveStateId') ?: $user->state_id;
     if (!value) {
       return;
     }
+
     e.target.value = value;
     const data = {
       [e.target.name] : e.target.value,
@@ -613,6 +621,7 @@ function refreshdata(index, response) {
       }
     })
   }
+
 </script>
 
 @endsection

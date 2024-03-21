@@ -615,6 +615,10 @@ class InititalCollegeListController extends Controller
                 if ($college_information) {
                     // $total_direct_cost = ($detailInformation['direct_tuition_free_year'] ? $detailInformation['direct_tuition_free_year'] : $college_information['tution_and_fess']) + ($detailInformation['direct_room_board_year'] ? $detailInformation['direct_room_board_year'] : $college_information['room_and_board']);
 
+                    if ($college_data['college_name'] === 'Auburn University') {
+                        // print_r($detailInformation);
+                    }
+
                     $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: $college_information['tution_and_fess'];
                     $direct_room_board = $detailInformation['direct_room_board_year'] ?: $college_information['room_and_board'];
 
@@ -632,14 +636,14 @@ class InititalCollegeListController extends Controller
                         $direct_room_board = 0;
                     }
 
-                    if ($college_data['college_name'] === 'Drake University') {
+                    if ($college_data['college_name'] === 'Auburn University') {
                         // echo $direct_tuition . ' - ' . $direct_room_board . '<br>';
                     }
 
                     $direct_miscellaneous_year = $detailInformation['direct_miscellaneous_year'] ? $detailInformation['direct_miscellaneous_year'] : 0;
 
                     if (empty($direct_tuition)) {
-                        if ($college_data['college_name'] === 'Drake University') {
+                        if ($college_data['college_name'] === 'Auburn University') {
                             // echo 'empty tuition';
                         }
                         if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
@@ -663,7 +667,7 @@ class InititalCollegeListController extends Controller
                         $direct_room_board = (float) $college_information['RM_BD_D'];
                     }
 
-                    if ($college_data['college_name'] === 'Drake University') {
+                    if ($college_data['college_name'] === 'Auburn University') {
                         // echo $direct_tuition . ' - ' . $direct_room_board . ' - ' . $direct_miscellaneous_year . '<br>';
                     }
 
@@ -740,7 +744,7 @@ class InititalCollegeListController extends Controller
                     $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: $college_information['tution_and_fess'];
                     $direct_room_board = $detailInformation['direct_room_board_year'] ?: $college_information['room_and_board'];
 
-                    if ($costcomparison['college_name'] === 'Drake University') {
+                    if ($costcomparison['college_name'] === 'Auburn University') {
                         // echo $direct_tuition . ' - ' . $direct_room_board . '<br>';
                     }
 
@@ -757,7 +761,7 @@ class InititalCollegeListController extends Controller
 
                     // dd(session('costComparisonStateChanged'));
 
-                    if ($costcomparison['college_name'] === 'Drake University') {
+                    if ($costcomparison['college_name'] === 'Auburn University') {
                         // echo '2--> ' . $direct_tuition . ' - ' . $direct_room_board . '<br>';
                     }
 
@@ -783,8 +787,12 @@ class InititalCollegeListController extends Controller
                         $direct_room_board = (float) $college_information['RM_BD_D'];
                     }
 
+                    if ($costcomparison['college_name'] === 'Auburn University') {
+                        // echo 'miscellaneous: ' . $detailInformation['direct_miscellaneous_year'] . '<br>';
+                    }
+
                     $direct_miscellaneous_year = $detailInformation['direct_miscellaneous_year'] ?: 0;
-                    if ($costcomparison['college_name'] === 'Drake University') {
+                    if ($costcomparison['college_name'] === 'Auburn University') {
                         // echo '3--->' . $direct_tuition . ' - ' . $direct_room_board . ' - ' . $direct_miscellaneous_year . '<br>';
                     }
 
