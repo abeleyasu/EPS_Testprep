@@ -1905,6 +1905,7 @@
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
+
                                                                                 @php
                                                                                     $category_type_arr =
                                                                                         $categoryTypeData[
@@ -2181,8 +2182,13 @@
                                                                                                 </td>
                                                                                                 <td>
                                                                                                     <?php
-                                                                                                    $question_arr = Helper::getQuestionNameByID($question_type_arr[$key][$i]);
+                                                                                                    // dump($question_type_arr);
+                                                                                                    // dump($key);
+                                                                                                    // dump($i);
+                                                                                                    $question_arrs = \DB::table('question_types')->whereIn('id',$question_type_arr[$key])->get();
+                                                                                                    // dd($question_arrs);
                                                                                                     ?>
+                                                                                                    @foreach($question_arrs as $question_arr)
                                                                                                     <button
                                                                                                         type="button"
                                                                                                         data-bs-toggle="modal"
@@ -2383,6 +2389,7 @@
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
+                                                                                                    @endforeach
                                                                                                 </td>
                                                                                                 <td>
                                                                                                     <div
@@ -3031,7 +3038,7 @@
                                                                                 
                                                                                 <!-- END MODAL -->
                                                                                 @php
-                                                                                    $incorrect =
+                                                                                    $incorrect_ct =
                                                                                         $categoryAndQuestionTypeSummary[
                                                                                             'incorrect'
                                                                                         ] ?? 0;
@@ -3048,7 +3055,7 @@
                                                                                             'missed'
                                                                                         ] ?? 0;
                                                                                     $percentage =
-                                                                                        ($incorrect /
+                                                                                        ($incorrect_ct /
                                                                                             $categoryAndQuestionTypeSummary[
                                                                                                 'count'
                                                                                             ]) *
@@ -3082,7 +3089,7 @@
                                                                                 </div>
                                                                                 <div
                                                                                     class="d-flex gap-3 justify-content-center align-items-center m-3">
-                                                                                    {{-- @if ($incorrect == 0)
+                                                                                    {{-- @if ($incorrect_ct == 0)
                                                                                     <div
                                                                                         class="text-success text-center">
                                                                                         All Correct Answers,
@@ -3090,7 +3097,7 @@
                                                                                 @else
                                                                                     <div
                                                                                         class="text-danger text-center">
-                                                                                        {{ $incorrect }}
+                                                                                        {{ $incorrect_ct }}
                                                                                         /
                                                                                         {{ $count }}
                                                                                         Questions missed,
@@ -3121,7 +3128,8 @@
                                                                                         <div
                                                                                             class="text-danger text-center">
                                                                                             {{ $missed_ct }} /
-                                                                                            {{ $count }}
+                                                                                            {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
+                                                                                            {{-- {{ $count }} --}}
                                                                                             Missed
                                                                                         </div>
                                                                                     @endif
@@ -3235,6 +3243,7 @@
 
                                                                                                 </button>
                                                                                                 @php
+                                                                                              
                                                                                                     $incorrect =
                                                                                                         $qtData[
                                                                                                             'incorrect'
@@ -3256,6 +3265,8 @@
                                                                                                     $percentage =
                                                                                                         $percentage .
                                                                                                         '%';
+
+
                                                                                                 @endphp
 
                                                                                                 <div class="progress mt-2 {{ $percentage }}"
@@ -3295,7 +3306,8 @@
                                                                                                         @else
                                                                                                             <div
                                                                                                                 class="text-danger text-center">
-                                                                                                                {{ $incorrect }}
+
+                                                                                                                {{ $incorrect + $missed_qt }}
                                                                                                                 /
                                                                                                                 {{ $count }}
                                                                                                                 Incorrect
@@ -3303,7 +3315,7 @@
                                                                                                         @endif
                                                                                                     @endif
 
-                                                                                                    @if ($missed_qt > 0)
+                                                                                                    {{-- @if ($missed_qt > 0)
                                                                                                         <div
                                                                                                             class="text-danger text-center">
                                                                                                             {{ $missed_qt }}
@@ -3311,7 +3323,7 @@
                                                                                                             {{ $count }}
                                                                                                             Missed
                                                                                                         </div>
-                                                                                                    @endif
+                                                                                                    @endif --}}
                                                                                                 </div>
 
                                                                                                 <!-- MODAL -->
