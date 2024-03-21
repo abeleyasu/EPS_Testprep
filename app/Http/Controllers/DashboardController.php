@@ -183,8 +183,14 @@ class DashboardController extends Controller
 
     public function admission_dashboard()
     {
+        $college_list_deadlines = $this->dashboardService->college_list_deadline();
+
+        foreach ($college_list_deadlines as $key => $college_list_deadline) {
+            $college_list_deadlines[$key]['deadline_date'] = $this->__getDeadlineDate($college_list_deadline);
+        }
+
         return view('user.admin-dashboard.dashboard', [
-            'college_list_deadline' => $this->dashboardService->college_list_deadline(),
+            'college_list_deadline' => $college_list_deadlines,
             'worksheet_data' => $this->dashboardService->worksheet_data(),
             'milestones' => $this->dashboardService->milestones(),
         ]);
