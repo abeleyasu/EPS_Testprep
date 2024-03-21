@@ -814,7 +814,7 @@
                                                                                                 @else
                                                                                                     <div
                                                                                                         class="text-danger text-center">
-                                                                                                        {{ $incorrect }}
+                                                                                                        {{ $incorrect = $missed }}
                                                                                                         /
                                                                                                         {{ $count }}
                                                                                                         Incorrect
@@ -822,7 +822,7 @@
                                                                                                 @endif
                                                                                             @endif
 
-                                                                                            @if ($missed_qt > 0)
+                                                                                            {{-- @if ($missed_qt > 0)
                                                                                                 <div
                                                                                                     class="text-danger text-center">
                                                                                                     {{ $missed_qt }}
@@ -830,7 +830,7 @@
                                                                                                     {{ $count }}
                                                                                                     Missed
                                                                                                 </div>
-                                                                                            @endif
+                                                                                            @endif --}}
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>

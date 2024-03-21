@@ -1087,12 +1087,14 @@ class TestPrepController extends Controller
                 $ct = $questionsCtPresent[$uniqueData] ?? 0;
                 $questionsCtPresent[$uniqueData] = $ct + 1;
             }
+            // dump($questionsCtPresent);
             foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
                 $answer_arr = $answer_arr ?? [];
                 $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
                 if (empty($selectedAnswer) || $selectedAnswer != "-") {
                     $answers = explode(",", $answer_arr[$ctDataKey] ?? '');
                     $pq = PracticeQuestion::where("id", $ctDataKey)->first();
+
                     foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
                         $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
                     $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
@@ -1117,7 +1119,7 @@ class TestPrepController extends Controller
 
 
         // dump($checkData);
-        // dd($catFinal);
+        // dump($catFinal);
         $categoryAndQuestionTypeSummaryData = [];
 
         if (!empty($checkData)) {
@@ -1155,6 +1157,8 @@ class TestPrepController extends Controller
                 array_multisort($keys, SORT_DESC, $categoryAndQuestionTypeSummaryData);
             }
         }
+
+        // dd($categoryAndQuestioneTypeSummaryData);
 
         return view('user.test-review.question_concepts_review',  [
             'category_data' => $category_data,
