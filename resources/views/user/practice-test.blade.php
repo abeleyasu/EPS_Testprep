@@ -914,7 +914,7 @@
                 } else {
                     for (let index = 0; index < question_ids.length; index++) {
                         if (selected_answer.hasOwnProperty(question_ids[index])) {
-                            answer_details[question_ids[index]] = selected_answer[question_ids[index]] || '-';
+                            answer_details[question_ids[index]] = selected_answer[question_ids[index]];
                         } else {
                             answer_details[question_ids[index]] = '-';
                         }
@@ -922,10 +922,8 @@
                     answer_details = answer_details.filter(function(element, key) {
                         return element !== 'undefined';
                     });
-
                     answer_details = answer_details.associate(question_ids);
                 }
-                // console.log(answer_details)
                 // var new_answer_detail = [];
                 // answer_details.map(function(key,index){
                 //     if(key !== 'undefined'){

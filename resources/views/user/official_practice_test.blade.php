@@ -143,9 +143,9 @@
             background-color: #0d6efd !important;
             /* display: inline-block; */
             /* width: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          height: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          background-color: blue;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          margin-right: 5px; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              height: 20px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              background-color: blue;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              margin-right: 5px; */
         }
     </style>
     @php
@@ -1022,7 +1022,7 @@
                     selected_answer[get_question_id] = store_multi;
                     // selected_skip_details[get_question_id] = 'no';
                 } else {
-                    selected_answer[get_question_id] = '-';
+                    selected_answer[get_question_id] = '';
                     // selected_skip_details[get_question_id] = 'yes';
                 }
 
@@ -1647,7 +1647,7 @@
                         selected_answer[get_question_id] = store_multi;
                     } else {
                         // console.log('Question ID: ' + get_question_id + ', No option selected.');
-                        selected_answer[get_question_id] = '-';
+                        selected_answer[get_question_id] = '';
                     }
                 });
 
@@ -1673,10 +1673,16 @@
                     if (selected_answer.hasOwnProperty(question_ids[index])) {
                         answer_details[question_ids[index]] = selected_answer[question_ids[index]];
                     } else {
-                        answer_details[question_ids[index]] = '-';
+                        answer_details[question_ids[index]] = '';
                     }
                 }
 
+                answer_details = answer_details.filter(function(element, key) {
+                    return element !== 'undefined';
+                });
+                answer_details = answer_details.associate(question_ids);
+
+                console.log(answer_details);
                 let flag_detail = [];
                 // selected_flag_details = selected_flag_details.filter(function( element, key ) {
                 //     return element !== "undefined";
@@ -1725,10 +1731,8 @@
                     return result;
                 };
 
-                answer_details = answer_details.filter(function(element, key) {
-                    return element !== 'undefined';
-                });
-                answer_details = answer_details.associate(question_ids);
+
+
                 // // }
                 // var new_answer_detail = [];
                 // answer_details.map(function(key, index) {
@@ -2047,7 +2051,7 @@
                         selected_answer[get_question_id] = store_multi;
                     } else {
                         // console.log('Question ID: ' + get_question_id + ', No option selected.');
-                        selected_answer[get_question_id] = '-';
+                        selected_answer[get_question_id] = '';
                     }
                 });
 
@@ -2073,9 +2077,14 @@
                     if (selected_answer.hasOwnProperty(question_ids[index])) {
                         answer_details[question_ids[index]] = selected_answer[question_ids[index]];
                     } else {
-                        answer_details[question_ids[index]] = '-';
+                        answer_details[question_ids[index]] = '';
                     }
                 }
+
+                answer_details = answer_details.filter(function(element, key) {
+                    return element !== 'undefined';
+                });
+                answer_details = answer_details.associate(question_ids);
 
                 let flag_detail = [];
                 // selected_flag_details = selected_flag_details.filter(function( element, key ) {
@@ -2125,10 +2134,7 @@
                     return result;
                 };
 
-                answer_details = answer_details.filter(function(element, key) {
-                    return element !== 'undefined';
-                });
-                answer_details = answer_details.associate(question_ids);
+              
                 // // }
                 // var new_answer_detail = [];
                 // answer_details.map(function(key, index) {
@@ -3178,7 +3184,7 @@
                                 store_multi = $("input[name='example-textbox-default']").val();
                                 selected_answer[get_question_id] = store_multi;
                             } else {
-                                selected_answer[get_question_id] = '-';
+                                selected_answer[get_question_id] = '';
                             }
 
                             Array.prototype.associate = function(keys) {
@@ -3197,7 +3203,7 @@
                                         question_ids[
                                             index]];
                                 } else {
-                                    answer_details[question_ids[index]] = '-';
+                                    answer_details[question_ids[index]] = '';
                                 }
                             }
 
@@ -3357,7 +3363,7 @@
                 store_multi = $("input[name='example-textbox-default']").val();
                 selected_answer[get_question_id] = store_multi;
             } else {
-                selected_answer[get_question_id] = '-';
+                selected_answer[get_question_id] = '';
             }
 
             Array.prototype.associate = function(keys) {
@@ -3375,7 +3381,7 @@
                     answer_details[question_ids[index]] = selected_answer[question_ids[
                         index]];
                 } else {
-                    answer_details[question_ids[index]] = '-';
+                    answer_details[question_ids[index]] = '';
                 }
             }
 
