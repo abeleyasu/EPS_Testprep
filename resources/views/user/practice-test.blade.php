@@ -399,7 +399,7 @@
                     selected_answer[get_question_id] = store_multi;
                     // selected_skip_details[get_question_id] = 'no';
                 } else {
-                    selected_answer[get_question_id] = '-';
+                    selected_answer[get_question_id] = '';
                     // selected_skip_details[get_question_id] = 'yes';
                 }
 
@@ -856,7 +856,7 @@
                     store_multi = $("input[name='example-textbox-default']").val();
                     selected_answer[get_question_id] = store_multi;
                 } else {
-                    selected_answer[get_question_id] = '-';
+                    selected_answer[get_question_id] = '';
                 }
 
 
@@ -916,7 +916,7 @@
                         if (selected_answer.hasOwnProperty(question_ids[index])) {
                             answer_details[question_ids[index]] = selected_answer[question_ids[index]];
                         } else {
-                            answer_details[question_ids[index]] = '-';
+                            answer_details[question_ids[index]] = '';
                         }
                     }
                     answer_details = answer_details.filter(function(element, key) {
@@ -1806,7 +1806,7 @@
                             store_multi = $("input[name='example-textbox-default']").val();
                             selected_answer[get_question_id] = store_multi;
                         } else {
-                            selected_answer[get_question_id] = '-';
+                            selected_answer[get_question_id] = '';
                         }
 
                         Array.prototype.associate = function(keys) {
@@ -1824,7 +1824,7 @@
                                 answer_details[question_ids[index]] = selected_answer[question_ids[
                                     index]];
                             } else {
-                                answer_details[question_ids[index]] = '-';
+                                answer_details[question_ids[index]] = '';
                             }
                         }
 
@@ -1983,7 +1983,7 @@
                 store_multi = $("input[name='example-textbox-default']").val();
                 selected_answer[get_question_id] = store_multi;
             } else {
-                selected_answer[get_question_id] = '-';
+                selected_answer[get_question_id] = '';
             }
 
             Array.prototype.associate = function(keys) {
@@ -2001,7 +2001,7 @@
                     answer_details[question_ids[index]] = selected_answer[question_ids[
                         index]];
                 } else {
-                    answer_details[question_ids[index]] = '-';
+                    answer_details[question_ids[index]] = '';
                 }
             }
 
