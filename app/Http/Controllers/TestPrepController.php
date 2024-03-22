@@ -1018,18 +1018,19 @@ class TestPrepController extends Controller
         $ctData = [];
         // dd($categoryTypeData);
         foreach ($categoryTypeData as $key => $catData) {
+            $initializedValues = [];
 
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
 
-                if ($key && array_key_exists($key, $answer_arr) && $answer_arr[$key] == "-") {
-                    // Replace "-" with $catKey value
-                    if ($catKey == 'F' || $catKey == 'G' || $catKey == 'H' || $catKey == 'J' || $catKey == 'K') {
-                        $answer_arr[$key] = 'f';
-                    } elseif ($catKey == 'A' || $catKey == 'B' || $catKey == 'C' || $catKey == 'D' || $catKey == 'E') {
-                        $answer_arr[$key] = 'a';
-                    }
-                }
+                // if ($key && array_key_exists($key, $answer_arr) && $answer_arr[$key] == "-") {
+                //     // Replace "-" with $catKey value
+                //     if ($catKey == 'F' || $catKey == 'G' || $catKey == 'H' || $catKey == 'J' || $catKey == 'K') {
+                //         $answer_arr[$key] = 'f';
+                //     } elseif ($catKey == 'A' || $catKey == 'B' || $catKey == 'C' || $catKey == 'D' || $catKey == 'E') {
+                //         $answer_arr[$key] = 'a';
+                //     }
+                // }
                 // dd($answer_arr);
                 $selected_answer = $answer_arr[$key] ?? '';
 
@@ -1060,7 +1061,17 @@ class TestPrepController extends Controller
                             $conceptCorrect = $checkboxData[$key][$catKey][$catKey1] ?? "0";
 
                             if (empty($selected_answer)) {
-                                $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
+                                // $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
+                                $uniqueValue = $questionTypeData[$key][$catKey][$catKey1];
+
+                                // Check if initialization has occurred for this unique value across all iterations
+                                if (!isset($initializedValues[$uniqueValue])) {
+                                    // Perform the initialization
+                                    $checkData[$catId][$uniqueValue]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
+
+                                    // Set the flag to indicate that initialization has occurred for this unique value
+                                    $initializedValues[$uniqueValue] = true;
+                                }
                             } else {
                                 if ($conceptCorrect == "1") {
                                     $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] + 1;
@@ -1158,7 +1169,7 @@ class TestPrepController extends Controller
             }
         }
 
-        // dd($categoryAndQuestioneTypeSummaryData);
+        // dump($categoryAndQuestionTypeSummaryData);
 
         return view('user.test-review.question_concepts_review',  [
             'category_data' => $category_data,
@@ -1499,16 +1510,18 @@ class TestPrepController extends Controller
         $ctData = [];
 
         foreach ($categoryTypeData as $key => $catData) {
+            $initializedValues = [];
+
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
-                if ($key && array_key_exists($key, $answer_arr) && $answer_arr[$key] == "-") {
-                    // Replace "-" with $catKey value
-                    if ($catKey == 'F' || $catKey == 'G' || $catKey == 'H' || $catKey == 'J' || $catKey == 'K') {
-                        $answer_arr[$key] = 'f';
-                    } elseif ($catKey == 'A' || $catKey == 'B' || $catKey == 'C' || $catKey == 'D' || $catKey == 'E') {
-                        $answer_arr[$key] = 'a';
-                    }
-                }
+                // if ($key && array_key_exists($key, $answer_arr) && $answer_arr[$key] == "-") {
+                //     // Replace "-" with $catKey value
+                //     if ($catKey == 'F' || $catKey == 'G' || $catKey == 'H' || $catKey == 'J' || $catKey == 'K') {
+                //         $answer_arr[$key] = 'f';
+                //     } elseif ($catKey == 'A' || $catKey == 'B' || $catKey == 'C' || $catKey == 'D' || $catKey == 'E') {
+                //         $answer_arr[$key] = 'a';
+                //     }
+                // }
                 $selected_answer = $answer_arr[$key] ?? '';
 
                 if ($selected_answer != "-") {
@@ -1530,7 +1543,17 @@ class TestPrepController extends Controller
                             $conceptCorrect = $checkboxData[$key][$catKey][$catKey1] ?? "0";
 
                             if (empty($selected_answer)) {
-                                $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
+                                // $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
+                                $uniqueValue = $questionTypeData[$key][$catKey][$catKey1];
+
+                                // Check if initialization has occurred for this unique value across all iterations
+                                if (!isset($initializedValues[$uniqueValue])) {
+                                    // Perform the initialization
+                                    $checkData[$catId][$uniqueValue]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
+
+                                    // Set the flag to indicate that initialization has occurred for this unique value
+                                    $initializedValues[$uniqueValue] = true;
+                                }
                             } else {
                                 if ($conceptCorrect == "1") {
                                     $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] + 1;
@@ -1887,17 +1910,19 @@ class TestPrepController extends Controller
             // dump($categoryTypeData);
 
             foreach ($categoryTypeData as $key => $catData) {
+                $initializedValues = [];
+
                 foreach ($catData as $catKey => $cat) {
                     $answer_arr = $answer_arr ?? [];
 
-                    if ($key && array_key_exists($key, $answer_arr) && $answer_arr[$key] == "-") {
-                        // Replace "-" with $catKey value
-                        if ($catKey == 'F' || $catKey == 'G' || $catKey == 'H' || $catKey == 'J' || $catKey == 'K') {
-                            $answer_arr[$key] = 'f';
-                        } elseif ($catKey == 'A' || $catKey == 'B' || $catKey == 'C' || $catKey == 'D' || $catKey == 'E') {
-                            $answer_arr[$key] = 'a';
-                        }
-                    }
+                    // if ($key && array_key_exists($key, $answer_arr) && $answer_arr[$key] == "-") {
+                    //     // Replace "-" with $catKey value
+                    //     if ($catKey == 'F' || $catKey == 'G' || $catKey == 'H' || $catKey == 'J' || $catKey == 'K') {
+                    //         $answer_arr[$key] = 'f';
+                    //     } elseif ($catKey == 'A' || $catKey == 'B' || $catKey == 'C' || $catKey == 'D' || $catKey == 'E') {
+                    //         $answer_arr[$key] = 'a';
+                    //     }
+                    // }
                     $selected_answer = $answer_arr[$key] ?? '';
 
                     if ($selected_answer != "-") {
@@ -1919,7 +1944,18 @@ class TestPrepController extends Controller
                                 $conceptCorrect = $checkboxData[$key][$catKey][$catKey1] ?? "0";
 
                                 if (empty($selected_answer)) {
-                                    $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
+                                    // $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
+                                    // $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
+                                    $uniqueValue = $questionTypeData[$key][$catKey][$catKey1];
+
+                                    // Check if initialization has occurred for this unique value across all iterations
+                                    if (!isset($initializedValues[$uniqueValue])) {
+                                        // Perform the initialization
+                                        $checkData[$catId][$uniqueValue]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
+
+                                        // Set the flag to indicate that initialization has occurred for this unique value
+                                        $initializedValues[$uniqueValue] = true;
+                                    }
                                 } else {
                                     if ($conceptCorrect == "1") {
                                         $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] + 1;
@@ -1938,7 +1974,7 @@ class TestPrepController extends Controller
             // dump($ctData);
             foreach ($ctData as $ctDataKey => $ctDataValue) {
                 $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
-                
+
                 foreach ($ctDataUniqueValue as $uniqueData) {
                     $ct = $questionsCtPresent[$uniqueData] ?? 0;
                     $questionsCtPresent[$uniqueData] = $ct + 1;
@@ -2038,7 +2074,7 @@ class TestPrepController extends Controller
                 }
             }
         }
-// dd($questionsCtPresent);
+        // dd($questionsCtPresent);
         // dd($categoryAndQuestionTypeSummaryData);
 
 

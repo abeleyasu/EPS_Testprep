@@ -3203,7 +3203,8 @@
                                                                                                 class="text-danger text-center">
                                                                                                 {{ $categoryAndQuestionTypeSummary['total_incorrect_qts'] }}
                                                                                                 /
-                                                                                                {{ $categoryAndQuestionTypeSummary['total_qts'] }}
+                                                                                                {{-- {{ $categoryAndQuestionTypeSummary['total_qts'] }} --}}
+                                                                                                {{ count($categoryAndQuestionTypeSummary['qt']) }}
                                                                                                 Incorrect Question Types
                                                                                             </div>
                                                                                         @endif
@@ -3350,6 +3351,7 @@
                                                                                                     $percentage =
                                                                                                         $percentage .
                                                                                                         '%';
+                                                                                                    // dump($qtData);
                                                                                                 @endphp
 
                                                                                                 <div class="progress mt-2 {{ $percentage }}"
@@ -3392,7 +3394,8 @@
 
                                                                                                                 {{ $incorrect + $missed_qt }}
                                                                                                                 /
-                                                                                                                {{ $count }}
+                                                                                                                {{ $incorrect + $missed_qt + $qtData['correct'] }}
+                                                                                                                {{-- {{$count}} --}}
                                                                                                                 Incorrect
                                                                                                             </div>
                                                                                                         @endif

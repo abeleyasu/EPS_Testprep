@@ -445,7 +445,8 @@
                                                                                         class="text-danger text-center">
                                                                                         {{ $categoryAndQuestionTypeSummary['total_incorrect_qts'] }}
                                                                                         /
-                                                                                        {{ $categoryAndQuestionTypeSummary['total_qts'] }}
+                                                                                        {{-- {{ $categoryAndQuestionTypeSummary['total_qts'] }} --}}
+                                                                                        {{ count($categoryAndQuestionTypeSummary['qt']) }}
                                                                                         Incorrect Question Types
                                                                                     </div>
                                                                                 @endif
@@ -456,10 +457,12 @@
                                                                                     class="text-danger text-center">
                                                                                     @if ($test_det == 'single')
                                                                                         {{ $missed_ct }} /
-                                                                                        {{ $count }}
+                                                                                        {{-- {{ $count }} --}}
+                                                                                        {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
                                                                                     @else
                                                                                         {{ $missed_ct }} /
-                                                                                        {{ $count }}
+                                                                                        {{-- {{ $count }} --}}
+                                                                                        {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
                                                                                     @endif
                                                                                     Missed
                                                                                 </div>
@@ -814,9 +817,12 @@
                                                                                                 @else
                                                                                                     <div
                                                                                                         class="text-danger text-center">
-                                                                                                        {{ $incorrect = $missed }}
+                                                                                                        {{-- {{ $incorrect + $missed }}
                                                                                                         /
-                                                                                                        {{ $count }}
+                                                                                                        {{ $count }} --}}
+                                                                                                        {{ $incorrect + $missed_qt }}
+                                                                                                        /
+                                                                                                        {{ $incorrect + $missed_qt + $qtData['correct'] }}
                                                                                                         Incorrect
                                                                                                     </div>
                                                                                                 @endif
