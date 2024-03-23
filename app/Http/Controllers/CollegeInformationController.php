@@ -462,19 +462,19 @@ class CollegeInformationController extends Controller
         $data = Http::get($api);
         $data = json_decode($data->body());
         if (count($data->results) > 0) {
-            error_log('DATA VALUE');
-            error_log(json_encode($data));
-            $data = $data->results[0];
-            $college_info = CollegeInformation::where('college_id', $data->id)->first();
+            // error_log('DATA VALUE');
+            // error_log(json_encode($data));
+            $apiData = $data->results[0];
+            $college_info = CollegeInformation::where('college_id', $apiData->id)->first();
             if ($college_info) {
-                $data->latest->college_info = $college_info;
+                $apiData->latest->college_info = $college_info;
             }
         } else {
-            $data = null;
+            $apiData = null;
         }
-        if (isset($data->latest->programs->cip_4_digit)) {
+        if (isset($apiData->latest->programs->cip_4_digit)) {
         }
-        $programs = $data->latest->programs->cip_4_digit;
+        $programs = $apiData->latest->programs->cip_4_digit;
 
         $fieldsOfStudy = array_reduce($programs, function ($carry, $item) {
             // Check if the ID already exists in the associative array
@@ -484,16 +484,16 @@ class CollegeInformationController extends Controller
             }
             return $carry;
         }, []);
-        $api_data = [];
+        $programs_api_data = [];
         foreach ($fieldsOfStudy as $fieldOfStudy) {
-            $data = [
+            $fosTemp = [
                 'code' => $fieldOfStudy->code,
                 'description' => $fieldOfStudy->description ?? "",
                 'debt_after_graduation' => $fieldOfStudy->debt->parent_plus->all->all_inst->median ?? 0,
                 'median_earning' => $fieldOfStudy->earnings->highest->{'1_yr'}->overall_median_earnings ?? 0,
                 'title' => $fieldOfStudy->title ?? "No Title"
             ];
-            array_push($api_data, $data);
+            array_push($programs_api_data, $fosTemp);
         }
         if ($college_detail->fieldsOfStudy()->count() < 1) {
             foreach ($fieldsOfStudy as $fieldOfStudy) {
@@ -520,8 +520,9 @@ class CollegeInformationController extends Controller
             return view('admin.college-information.edit', [
                 'info' => $college_detail,
                 'date_inputs' => $admin_editable_date_inputs,
-                'data' => $college_detail->fieldsOfStudy,
-                'api_data' => $api_data
+                'programs_local_data' => $college_detail->fieldsOfStudy,
+                'programs_api_data' => $programs_api_data,
+                'apiData' => $apiData,
             ]);
         }
         return redirect()->route('admin.admission-management.college-information.index');
@@ -545,9 +546,50 @@ class CollegeInformationController extends Controller
             'room_and_board' => 'nullable|numeric',
             'average_percent_of_need_met' => 'nullable',
             'average_freshman_award' => 'nullable|numeric',
-            'early_action_offerd' => 'boolean',
-            'early_decision_offerd' => 'boolean',
+            // 'early_action_offerd' => 'boolean',
+            // 'early_decision_offerd' => 'boolean',
             // 'regular_admission_deadline' => 'nullable|date_format:m-d-Y',
+
+            'rolling_admission_month' => [
+                'nullable',
+                'date_format:m' // 01-12
+            ],
+            'rolling_admission_day' => [
+                'nullable',
+                'date_format:d' // 01-31
+            ],
+            'regular_decision_month' => [
+                'nullable',
+                'date_format:m' // 01-12
+            ],
+            'regular_decision_day' => [
+                'nullable',
+                'date_format:d' // 01-31
+            ],
+            'early_decision_ii_month' => [
+                'nullable',
+                'date_format:m' // 01-12
+            ],
+            'early_decision_ii_day' => [
+                'nullable',
+                'date_format:d' // 01-31
+            ],
+            'early_decision_i_month' => [
+                'nullable',
+                'date_format:m' // 01-12
+            ],
+            'early_decision_i_day' => [
+                'nullable',
+                'date_format:d' // 01-31
+            ],
+            'early_action_month' => [
+                'nullable',
+                'date_format:m' // 01-12
+            ],
+            'early_action_day' => [
+                'nullable',
+                'date_format:d' // 01-31
+            ],
         ];
 
         // dd($request->all());
@@ -594,12 +636,23 @@ class CollegeInformationController extends Controller
             'average_percent_of_need_met.required' => 'The average percent of need met field is required.',
             'average_freshman_award.required' => 'The average freshman award field is required.',
             'average_freshman_award.numeric' => 'The average freshman award field must be a number.',
-            'early_action_offerd.required' => 'The early action offered field is required.',
-            'early_action_offerd.boolean' => 'The early action offered field must be true or false.',
-            'early_decision_offerd.required' => 'The early decision offered field is required.',
-            'early_decision_offerd.boolean' => 'The early decision offered field must be true or false.',
-            'regular_admission_deadline.required' => 'The regular admission deadline field is required.',
-            'regular_admission_deadline.date' => 'The regular admission deadline field must be a date.',
+            // 'early_action_offerd.required' => 'The early action offered field is required.',
+            // 'early_action_offerd.boolean' => 'The early action offered field must be true or false.',
+            // 'early_decision_offerd.required' => 'The early decision offered field is required.',
+            // 'early_decision_offerd.boolean' => 'The early decision offered field must be true or false.',
+            // 'regular_admission_deadline.required' => 'The regular admission deadline field is required.',
+            // 'regular_admission_deadline.date' => 'The regular admission deadline field must be a date.',
+
+            'rolling_admission_month.date_format' => 'The rolling admission month field must be a valid month.',
+            'rolling_admission_day.date_format' => 'The rolling admission day field must be a valid day.',
+            'regular_decision_month.date_format' => 'The regular decision month field must be a valid month.',
+            'regular_decision_day.date_format' => 'The regular decision day field must be a valid day.',
+            'early_decision_ii_month.date_format' => 'The early decision II month field must be a valid month.',
+            'early_decision_ii_day.date_format' => 'The early decision II day field must be a valid day.',
+            'early_decision_i_month.date_format' => 'The early decision I month field must be a valid month.',
+            'early_decision_i_day.date_format' => 'The early decision I day field must be a valid day.',
+            'early_action_month.date_format' => 'The early action month field must be a valid month.',
+            'early_action_day.date_format' => 'The early action day field must be a valid day.',
         ];
         // ddd($request->all());
         foreach ($request->field_of_study as $program) {

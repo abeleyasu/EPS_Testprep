@@ -161,129 +161,187 @@
                             @enderror
                         </div>
 
-                        @if ($info->ownership == '2')
-                            <div class="form-check form-switch">
-                                <input name="display_peterson_pvt_coa"
-                                    id="display_peterson_pvt_coa"
-                                    {{ $info->display_peterson_pvt_coa ? 'checked' : '' }} class="form-check-input"
-                                    type="checkbox" role="switch" id="display_peterson_pvt_coa_switch"
-                                    {{ old('display_peterson_pvt_coa') ? 'checked' : ($info->display_peterson_pvt_coa ? 'checked' : '') }}
-                                    >
-                                <label class="form-check-label" for="flexSwitchCheckDefault">Display Peterson Cost of
-                                    Attendance</label>
-                                @error('display_peterson_pvt_coa')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            <div class="row">
-                                <div {{ $info->display_peterson_pvt_coa == "0" ? 'hidden' : ''}} id="pvt_coa_container" class="mb-4 col">
-                                    <label class="from-label">Cost of Attendance:</label>
-                                    <small>Peterson Data</small>
-                                    <input disabled type="text"
-                                        class="form-control {{ $errors->has('pvt_coa') ? 'is-invalid' : '' }}"
-                                        name="pvt_coa" value="{{ old('pvt_coa') ? old('pvt_coa') : $info->pvt_coa }}" />
-                                    @error('pvt_coa')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                        <div id="admission-cost">
+                            @if ($info->ownership == '1')
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label class="from-label">Cost of Attendance (In State):</label>
+                                                <input type="number"
+                                                    class="form-control {{ $errors->has('public_coa_in_state') ? 'is-invalid' : '' }}"
+                                                    name="public_coa_in_state"
+                                                    value="{{ old('public_coa_in_state') ? old('public_coa_in_state') : $info->public_coa_in_state }}"
+                                                    v-model="public_coa_in_state" />
+                                                @error('public_coa_in_state')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="mb-1">&nbsp;</div>
+                                                <div class="btn-group reset-button">
+                                                    <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Reset
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        {{-- <li><a class="dropdown-item" href="#">from Score Card API </a></li> --}}
+                                                        <li><a class="dropdown-item" href="#"
+                                                                @click.prevent="resetFromPetersonData('public_coa_in_state')">from
+                                                                Peterson CSV</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label class="from-label">Cost of Attendance (Out of State):</label>
+                                                <input type="number"
+                                                    class="form-control {{ $errors->has('public_coa_out_state') ? 'is-invalid' : '' }}"
+                                                    name="public_coa_out_state"
+                                                    value="{{ old('public_coa_out_state') ? old('public_coa_out_state') : $info->public_coa_out_state }}"
+                                                    v-model="public_coa_out_state" />
+                                                @error('public_coa_out_state')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="mb-1">&nbsp;</div>
+                                                <div class="btn-group reset-button">
+                                                    <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Reset
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        {{-- <li><a class="dropdown-item" href="#">from Score Card API </a></li> --}}
+                                                        <li><a class="dropdown-item" href="#"
+                                                                @click.prevent="resetFromPetersonData('public_coa_out_state')">from
+                                                                Peterson CSV</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div {{ $info->display_peterson_pvt_coa == "1" ? 'hidden' : '' }} id="pvt_coa_container_admin" class="mb-4 col">
-                                    <label class="from-label">Cost of Attendance:</label>
-                                    <small>Custom Cost Of Attendance</small>
-                                    <input type="text"
-                                        class="form-control {{ $errors->has('pvt_coa_admin') ? 'is-invalid' : '' }}"
-                                        name="pvt_coa_admin"
-                                        value="{{ old('pvt_coa_admin') ? old('pvt_coa_admin') : $info->pvt_coa_admin }}" />
-                                    @error('pvt_coa_admin')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                            @else
+                                <div class="row">
+                                    <div class="col-md-6 mb-4 col pvt_coa_container">
+                                        <label class="from-label">Cost of Attendance:</label>
+                                        <input type="number"
+                                            class="form-control {{ $errors->has('pvt_coa') ? 'is-invalid' : '' }}"
+                                            name="pvt_coa" value="{{ old('pvt_coa') ? old('pvt_coa') : $info->pvt_coa }}"
+                                            v-model="pvt_coa" />
+                                        @error('pvt_coa')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-1">&nbsp;</div>
+                                        <div class="btn-group reset-button">
+                                            <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                Reset
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                {{-- <li><a class="dropdown-item" href="#">from Score Card API </a></li> --}}
+                                                <li><a class="dropdown-item" href="#"
+                                                        @click.prevent="resetFromPetersonData('pvt_coa')">from
+                                                        Peterson CSV</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        @else
-                            <div class="mb-4 display_peterson_public_coa_container">
+                            @endif
 
-                              <div class="form-check form-switch">
-                                  <input name="display_peterson_public_coa"
-                                      id="display_peterson_public_coa"
-                                      {{ $info->display_peterson_public_coa ? 'checked' : '' }} class="form-check-input"
-                                      type="checkbox" role="switch" id="display_peterson_public_coa_switch"
-                                      {{ old('display_peterson_public_coa') ? 'checked' : ($info->display_peterson_public_coa ? 'checked' : '') }}
-                                      >
-                                  <label class="form-check-label" for="flexSwitchCheckDefault">Display Peterson Cost of
-                                      Attendance (Public) </label>
-                                  @error('display_peterson_public_coa')
-                                      <div class="invalid-feedback">{{ $message }}</div>
-                                  @enderror
-                              </div>
-                            </div>
-                            <div class="row">
-                                <div class="mb-4 col public_coa_container"
-                                {{ $info->display_peterson_public_coa == 1 ? '' : 'hidden'}}
-                                >
-                                    <label class="from-label">Cost of Attendance (In State):</label>
-                                    <input disabled type="text"
-                                        class="form-control {{ $errors->has('public_coa_in_state') ? 'is-invalid' : '' }}"
-                                        name="public_coa_in_state"
-                                        value="{{ old('public_coa_in_state') ? old('public_coa_in_state') : $info->public_coa_in_state }}" />
-                                    @error('public_coa_in_state')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                            @if ($info->ownership == '1')
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label class="from-label">Tuition and Fees (In-State):</label>
+                                                <input type="number"
+                                                    class="form-control {{ $errors->has('tuition_and_fee_instate') ? 'is-invalid' : '' }}"
+                                                    name="tuition_and_fee_instate"
+                                                    value="{{ old('tuition_and_fee_instate') ? old('tuition_and_fee_instate') : $info->tuition_and_fee_instate }}"
+                                                    v-model="tuition_and_fee_instate" />
+                                                @error('tuition_and_fee_instate')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="mb-1">&nbsp;</div>
+                                                <div class="btn-group reset-button">
+                                                    <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Reset
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="#"
+                                                                @click.prevent="resetFromScorecardData('tuition_and_fee_instate')">from
+                                                                Score Card API </a></li>
+                                                        <li><a class="dropdown-item" href="#"
+                                                                @click.prevent="resetFromPetersonData('tuition_and_fee_instate')">from
+                                                                Peterson CSV</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label class="from-label">Tuition and Fees (Out-of-State):</label>
+                                                <input type="number"
+                                                    class="form-control {{ $errors->has('tuition_and_fee_outstate') ? 'is-invalid' : '' }}"
+                                                    name="tuition_and_fee_outstate"
+                                                    value="{{ old('tuition_and_fee_outstate') ? old('tuition_and_fee_outstate') : $info->tuition_and_fee_outstate }}" v-model="tuition_and_fee_outstate" />
+                                                @error('tuition_and_fee_outstate')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="mb-1">&nbsp;</div>
+                                                <div class="btn-group reset-button">
+                                                    <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Reset
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="#"
+                                                                @click.prevent="resetFromScorecardData('tuition_and_fee_outstate')">from
+                                                                Score Card API </a></li>
+                                                        <li><a class="dropdown-item" href="#"
+                                                                @click.prevent="resetFromPetersonData('tuition_and_fee_outstate')">from
+                                                                Peterson CSV</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="mb-4 col public_coa_container_admin"
-                                {{ $info->display_peterson_public_coa == 0 ? '' : 'hidden'}}
-                                >
-                                    <label class="from-label">Cost of Attendance (In State):</label>
-                                    <input type="text"
-                                        class="form-control {{ $errors->has('public_coa_in_state_admin') ? 'is-invalid' : '' }}"
-                                        name="public_coa_in_state_admin"
-                                        value="{{ old('public_coa_in_state_admin') ? old('public_coa_in_state_admin') : $info->public_coa_in_state_admin }}" />
-                                    @error('public_coa_in_state_admin')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                            @else
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label class="from-label">Tuition and Fees:</label>
+                                        <input type="text"
+                                            class="form-control {{ $errors->has('tution_and_fess') ? 'is-invalid' : '' }}"
+                                            name="tution_and_fess"
+                                            value="{{ old('tution_and_fess') ? old('tution_and_fess') : $info->tution_and_fess }}" />
+                                        @error('tution_and_fess')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div
-                                {{ $info->display_peterson_public_coa == 1 ? '' : 'hidden'}}
-
-                                class="mb-4 col public_coa_container">
-                                    <label class="from-label">Cost of Attendance (Out of State):</label>
-                                    <input disabled type="text"
-                                        class="form-control {{ $errors->has('public_coa_out_state') ? 'is-invalid' : '' }}"
-                                        name="public_coa_out_state"
-                                        value="{{ old('public_coa_out_state') ? old('public_coa_out_state') : $info->public_coa_out_state }}" />
-                                    @error('public_coa_in_state')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="mb-4 col public_coa_container_admin"
-                                {{ $info->display_peterson_public_coa == 0 ? '' : 'hidden'}}
-
-                                >
-                                    <label class="from-label">Cost of Attendance (Out of State):</label>
-                                    <small>Admin Data</small>
-                                    <input type="text"
-                                        class="form-control {{ $errors->has('public_coa_out_state_admin') ? 'is-invalid' : '' }}"
-                                        name="public_coa_out_state_admin"
-                                        value="{{ old('public_coa_out_state_admin') ? old('public_coa_out_state_admin') : $info->public_coa_out_state_admin }}" />
-                                    @error('public_coa_in_state_admin')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        @endif
-
-                        <div class="mb-4">
-                            <label class="from-label">Tuition and Fees:</label>
-                            <input type="text"
-                                class="form-control {{ $errors->has('tution_and_fess') ? 'is-invalid' : '' }}"
-                                name="tution_and_fess"
-                                value="{{ old('tution_and_fess') ? old('tution_and_fess') : $info->tution_and_fess }}" />
-                            @error('tution_and_fess')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            @endif
                         </div>
+
 
                         <div class="mb-4">
                             <label class="from-label">Room and Board:</label>
@@ -319,46 +377,7 @@
                             @enderror
                         </div>
 
-                        {{-- <div class="mb-4 d-flex gap-3">
-            <label class="from-label">Early Action Offered:</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" id="early_action_offerd1" name="early_action_offerd" value="1" @if ($info->early_action_offerd == '1') checked @endif>
-              <label class="form-check-label" for="early_action_offerd1">Yes</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" id="early_action_offerd2" name="early_action_offerd" value="0" @if ($info->early_action_offerd == '0') checked @endif>
-              <label class="form-check-label" for="early_action_offerd2">No</label>
-            </div>
-            @error('early_action_offerd')
-              <div class="invalid-feedback">{{$message}}</div>
-            @enderror
-          </div> --}}
-
-                        {{-- <div class="mb-4 d-flex gap-3">
-            <label class="from-label">Early Decision Offered:</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" id="early_decision_offerd1" name="early_decision_offerd" value="1" @if ($info->early_decision_offerd == '1') checked @endif>
-        'room_and_board',
-              <label class="form-check-label" for="early_decision_offerd1">Yes</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" id="early_decision_offerd2" name="early_decision_offerd" value="0" @if ($info->early_decision_offerd == '0') checked @endif>
-              <label class="form-check-label" for="early_decision_offerd2">No</label>
-            </div>
-            @error('early_decision_offerd')
-              <div class="invalid-feedback">{{$message}}</div>
-            @enderror
-          </div> --}}
-
                         {{-- <div class="mb-4">
-            <label class="from-label">Regular Admission Deadline:</label>
-            <input type="text" class="date-own form-control {{$errors->has('regular_admission_deadline') ? 'is-invalid' : ''}}" name="regular_admission_deadline" value="{{ old('regular_admission_deadline') ? old('regular_admission_deadline') : $info->regular_admission_deadline }}"/>
-            @error('regular_admission_deadline')
-              <div class="invalid-feedback">{{$message}}</div>
-            @enderror
-          </div> --}}
-
-                        <div class="mb-4">
                             <label class="from-label">Rolling Admission Deadline:</label>
                             <input type="text"
                                 class="date-own form-control {{ $errors->has('rolling_admission_deadline') ? 'is-invalid' : '' }}"
@@ -367,18 +386,18 @@
                             @error('rolling_admission_deadline')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> --}}
 
 
-                        @foreach($date_inputs as $date_key => $date_value)
+                        {{-- @foreach ($date_inputs as $date_key => $date_value)
                             <div class="form-check form-switch">
-                                <input name="display_peterson_{{$date_key}}"
-                                    id="display_peterson_{{$date_key}}"
+                                <input name="display_peterson_{{ $date_key }}"
+                                    id="display_peterson_{{ $date_key }}"
                                     {{ $info['display_peterson_' . $date_key] ? 'checked' : '' }} class="form-check-input"
-                                    type="checkbox" role="switch" id="display_peterson_{{$date_key}}"
-                                    {{ old('display_peterson_' . $date_key) ? 'checked' : ($info['display_peterson_' . $date_key] ? 'checked' : '') }}
-                                    >
-                                <label class="form-check-label" for="flexSwitchCheckDefault">Display Peterson {{$date_value}} </label>
+                                    type="checkbox" role="switch" id="display_peterson_{{ $date_key }}"
+                                    {{ old('display_peterson_' . $date_key) ? 'checked' : ($info['display_peterson_' . $date_key] ? 'checked' : '') }}>
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Display Peterson
+                                    {{ $date_value }} </label>
                                 @error('display_peterson_' . $date_key)
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -387,23 +406,20 @@
                                 <label class="from-label">{{ $date_value }}:</label>
                                 <input type="text"
                                     class="date-own form-control {{ $errors->has('$date_key') ? 'is-invalid' : '' }}"
-                                    name="{{$date_key}}"
+                                    name="{{ $date_key }}"
                                     value="{{ old('$date_key') ? old('$date_key') : $info->$date_key }}" />
-                                @error('{{$date_key}}')
+                                @error('{{ $date_key }}')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                        @endforeach --}}
 
-                        @endforeach
 
-
-                        <div class="mb-4">
+                        {{-- <div class="mb-4">
                             <label class="from-label">Early Action Deadline (M/D/YY):</label>
-                            <input type="text"
-                                disabled
-                                class="date-own form-control"
-                                value="{{ $info->AP_DL_EACT_MON . "-" . $info->AP_DL_EACT_DAY  . "-" . "2024"}}" />
-                        </div>
+                            <input type="text" disabled class="date-own form-control"
+                                value="{{ $info->AP_DL_EACT_MON . '-' . $info->AP_DL_EACT_DAY . '-' . '2024' }}" />
+                        </div> --}}
 
 
 
@@ -446,58 +462,83 @@
                         <div class="mb-4">
                             <label class="form-label">Has National Fraternities:</label>
                             <select class="form-select" name="has_national_fraternities">
-                                <option value="1" {{ old('has_national_fraternities', $info->has_national_fraternities) ? 'selected' : '' }}>Yes</option>
-                                <option value="0" {{ !old('has_national_fraternities', $info->has_national_fraternities) ? 'selected' : '' }}>No</option>
+                                <option value="1"
+                                    {{ old('has_national_fraternities', $info->has_national_fraternities) ? 'selected' : '' }}>
+                                    Yes</option>
+                                <option value="0"
+                                    {{ !old('has_national_fraternities', $info->has_national_fraternities) ? 'selected' : '' }}>
+                                    No</option>
                             </select>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Has Local Fraternities:</label>
                             <select class="form-select" name="has_local_fraternities">
-                                <option value="1" {{ old('has_local_fraternities', $info->has_local_fraternities) ? 'selected' : '' }}>Yes</option>
-                                <option value="0" {{ !old('has_local_fraternities', $info->has_local_fraternities) ? 'selected' : '' }}>No</option>
+                                <option value="1"
+                                    {{ old('has_local_fraternities', $info->has_local_fraternities) ? 'selected' : '' }}>
+                                    Yes</option>
+                                <option value="0"
+                                    {{ !old('has_local_fraternities', $info->has_local_fraternities) ? 'selected' : '' }}>
+                                    No</option>
                             </select>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Percent of Freshmen Joining Fraternities:</label>
-                            <input type="number" step="0.01" min="0" max="100" class="form-control" name="percent_freshmen_join_fraternities" value="{{ old('percent_freshmen_join_fraternities', $info->percent_freshmen_join_fraternities) }}" />
+                            <input type="number" step="0.01" min="0" max="100" class="form-control"
+                                name="percent_freshmen_join_fraternities"
+                                value="{{ old('percent_freshmen_join_fraternities', $info->percent_freshmen_join_fraternities) }}" />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Percent of Men Joining Fraternities:</label>
-                            <input type="number" step="0.01" min="0" max="100" class="form-control" name="percent_men_join_fraternities" value="{{ old('percent_men_join_fraternities', $info->percent_men_join_fraternities) }}" />
+                            <input type="number" step="0.01" min="0" max="100" class="form-control"
+                                name="percent_men_join_fraternities"
+                                value="{{ old('percent_men_join_fraternities', $info->percent_men_join_fraternities) }}" />
                         </div>
 
                         <!-- Sorority-related fields -->
                         <div class="mb-4">
                             <label class="form-label">Academic Calendar System:</label>
-                            <input type="text" class="form-control" name="academic_calendar_system" value="{{ old('academic_calendar_system', $info->academic_calendar_system) }}" />
+                            <input type="text" class="form-control" name="academic_calendar_system"
+                                value="{{ old('academic_calendar_system', $info->academic_calendar_system) }}" />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Percent of Women Joining Sororities:</label>
-                            <input type="number" step="0.01" min="0" max="100" class="form-control" name="percent_women_join_sororities" value="{{ old('percent_women_join_sororities', $info->percent_women_join_sororities) }}" />
+                            <input type="number" step="0.01" min="0" max="100" class="form-control"
+                                name="percent_women_join_sororities"
+                                value="{{ old('percent_women_join_sororities', $info->percent_women_join_sororities) }}" />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Percent of Freshmen Joining Sororities:</label>
-                            <input type="number" step="0.01" min="0" max="100" class="form-control" name="percent_freshmen_join_sororities" value="{{ old('percent_freshmen_join_sororities', $info->percent_freshmen_join_sororities) }}" />
+                            <input type="number" step="0.01" min="0" max="100" class="form-control"
+                                name="percent_freshmen_join_sororities"
+                                value="{{ old('percent_freshmen_join_sororities', $info->percent_freshmen_join_sororities) }}" />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Has Local Sororities:</label>
                             <select class="form-select" name="has_local_sororities">
-                                <option value="1" {{ old('has_local_sororities', $info->has_local_sororities) ? 'selected' : '' }}>Yes</option>
-                                <option value="0" {{ !old('has_local_sororities', $info->has_local_sororities) ? 'selected' : '' }}>No</option>
+                                <option value="1"
+                                    {{ old('has_local_sororities', $info->has_local_sororities) ? 'selected' : '' }}>Yes
+                                </option>
+                                <option value="0"
+                                    {{ !old('has_local_sororities', $info->has_local_sororities) ? 'selected' : '' }}>No
+                                </option>
                             </select>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Has National Sororities:</label>
                             <select class="form-select" name="has_national_sororities">
-                                <option value="1" {{ old('has_national_sororities', $info->has_national_sororities) ? 'selected' : '' }}>Yes</option>
-                                <option value="0" {{ !old('has_national_sororities', $info->has_national_sororities) ? 'selected' : '' }}>No</option>
+                                <option value="1"
+                                    {{ old('has_national_sororities', $info->has_national_sororities) ? 'selected' : '' }}>
+                                    Yes</option>
+                                <option value="0"
+                                    {{ !old('has_national_sororities', $info->has_national_sororities) ? 'selected' : '' }}>
+                                    No</option>
                             </select>
                         </div>
 
@@ -537,169 +578,306 @@
                         <!-- Housing and Location fields -->
                         <div class="mb-4">
                             <label class="form-label">Number of Students in College Housing:</label>
-                            <input type="number" class="form-control" name="num_students_in_housing" value="{{ old('num_students_in_housing', $info->num_students_in_housing) }}" />
+                            <input type="number" class="form-control" name="num_students_in_housing"
+                                value="{{ old('num_students_in_housing', $info->num_students_in_housing) }}" />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Freshman Housing Guarantee:</label>
                             <select class="form-select" name="freshman_housing_guarantee">
-                                <option value="1" {{ old('freshman_housing_guarantee', $info->freshman_housing_guarantee) ? 'selected' : '' }}>Yes</option>
-                                <option value="0" {{ !old('freshman_housing_guarantee', $info->freshman_housing_guarantee) ? 'selected' : '' }}>No</option>
+                                <option value="1"
+                                    {{ old('freshman_housing_guarantee', $info->freshman_housing_guarantee) ? 'selected' : '' }}>
+                                    Yes</option>
+                                <option value="0"
+                                    {{ !old('freshman_housing_guarantee', $info->freshman_housing_guarantee) ? 'selected' : '' }}>
+                                    No</option>
                             </select>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Nearest Metropolitan Area:</label>
-                            <input type="text" class="form-control" name="nearest_metropolitan_area" value="{{ old('nearest_metropolitan_area', $info->nearest_metropolitan_area) }}" />
+                            <input type="text" class="form-control" name="nearest_metropolitan_area"
+                                value="{{ old('nearest_metropolitan_area', $info->nearest_metropolitan_area) }}" />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">City Population:</label>
-                            <input type="number" class="form-control" name="city_population" value="{{ old('city_population', $info->city_population) }}" />
+                            <input type="number" class="form-control" name="city_population"
+                                value="{{ old('city_population', $info->city_population) }}" />
                         </div>
 
                         <!-- Admission and GPA fields -->
                         <div class="mb-4">
                             <label class="form-label">Entrance Difficulty Out of State:</label>
-                            <input type="text" class="form-control" name="entrance_difficulty_out_of_state" value="{{ old('entrance_difficulty_out_of_state', $info->entrance_difficulty_out_of_state) }}" />
+                            <input type="text" class="form-control" name="entrance_difficulty_out_of_state"
+                                value="{{ old('entrance_difficulty_out_of_state', $info->entrance_difficulty_out_of_state) }}" />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Entrance Difficulty Overall:</label>
-                            <input type="text" class="form-control" name="entrance_difficulty_overall" value="{{ old('entrance_difficulty_overall', $info->entrance_difficulty_overall) }}" />
+                            <input type="text" class="form-control" name="entrance_difficulty_overall"
+                                value="{{ old('entrance_difficulty_overall', $info->entrance_difficulty_overall) }}" />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Average Weighted GPA:</label>
-                            <input type="number" step="0.01" class="form-control" name="average_weighted_gpa" value="{{ old('average_weighted_gpa', $info->average_weighted_gpa) }}" />
+                            <input type="number" step="0.01" class="form-control" name="average_weighted_gpa"
+                                value="{{ old('average_weighted_gpa', $info->average_weighted_gpa) }}" />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Average Unweighted GPA:</label>
-                            <input type="number" step="0.01" class="form-control" name="average_unweighted_gpa" value="{{ old('average_unweighted_gpa', $info->average_unweighted_gpa) }}" />
+                            <input type="number" step="0.01" class="form-control" name="average_unweighted_gpa"
+                                value="{{ old('average_unweighted_gpa', $info->average_unweighted_gpa) }}" />
                         </div>
 
                         <!-- Financial aid and Scholarship deadlines -->
                         <div class="mb-4">
                             <label class="form-label">CSS Profile Deadline:</label>
-                            <input type="text" class="form-control" name="css_profile_deadline" value="{{ old('css_profile_deadline', $info->css_profile_deadline) }}" />
+                            <input type="text" class="form-control" name="css_profile_deadline"
+                                value="{{ old('css_profile_deadline', $info->css_profile_deadline) }}" />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">FAFSA Deadline:</label>
-                            <input type="text" class="form-control" name="fafsa_deadline" value="{{ old('fafsa_deadline', $info->fafsa_deadline) }}" />
+                            <input type="text" class="form-control" name="fafsa_deadline"
+                                value="{{ old('fafsa_deadline', $info->fafsa_deadline) }}" />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Competitive Scholarship Deadline:</label>
-                            <input type="text" class="form-control" name="competitive_scholarship_deadline" value="{{ old('competitive_scholarship_deadline', $info->competitive_scholarship_deadline) }}" />
+                            <input type="text" class="form-control" name="competitive_scholarship_deadline"
+                                value="{{ old('competitive_scholarship_deadline', $info->competitive_scholarship_deadline) }}" />
                         </div>
 
                         <!-- Admission deadlines -->
-                        <div class="mb-4">
-                            <label class="form-label">Rolling Admission:</label>
-                            <select class="form-select" name="rolling_admission">
-                                <option value="1" {{ old('rolling_admission', $info->rolling_admission) ? 'selected' : '' }}>Yes</option>
-                                <option value="0" {{ !old('rolling_admission', $info->rolling_admission) ? 'selected' : '' }}>No</option>
-                            </select>
+
+                        <div id="admission-deadline">
+                            <div class="row align-items-start">
+                                <div class="col-md-12">
+                                    <label class="form-label">Rolling Admission</label>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    <label class="form-label">Month:</label>
+                                    <input type="number"
+                                        class="form-control {{ $errors->has('rolling_admission_month') ? 'is-invalid' : '' }}"
+                                        name="rolling_admission_month" v-model="rolling_admission_month" />
+                                    @error('rolling_admission_month')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    <label class="form-label">Day:</label>
+                                    <input type="number"
+                                        class="form-control {{ $errors->has('rolling_admission_day') ? 'is-invalid' : '' }}"
+                                        name="rolling_admission_day" v-model="rolling_admission_day" />
+                                    @error('rolling_admission_day')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-2 mb-4">
+                                    <div class="mb-1">&nbsp;</div>
+                                    {{-- <button class="btn btn-primary">Reset</button> --}}
+                                    <div class="btn-group reset-button">
+                                        <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            Reset
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            {{-- <li><a class="dropdown-item" href="#" @click="resetFromScorecardData('rolling_admission')">from Score Card API </a></li> --}}
+                                            <li><a class="dropdown-item" href="#"
+                                                    @click.prevent="resetFromPetersonData('rolling_admission')">from
+                                                    Peterson CSV</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row align-items-start">
+                                <div class="col-md-12">
+                                    <label class="form-label">Regular Decision</label>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    <label class="form-label small">Month:</label>
+                                    <input type="number"
+                                        class="form-control {{ $errors->has('regular_decision_month') ? 'is-invalid' : '' }}"
+                                        name="regular_decision_month"
+                                        value="{{ old('regular_decision_month', $info->regular_decision_month) }}"
+                                        v-model="regular_decision_month" />
+                                    @error('regular_decision_month')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    <label class="form-label small">Day:</label>
+                                    <input type="number"
+                                        class="form-control {{ $errors->has('regular_decision_day') ? 'is-invalid' : '' }}"
+                                        name="regular_decision_day"
+                                        value="{{ old('regular_decision_day', $info->regular_decision_day) }}"
+                                        v-model="regular_decision_day" />
+                                    @error('regular_decision_day')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-2 mb-4">
+                                    <div class="mb-1">&nbsp;</div>
+                                    <div class="btn-group reset-button">
+                                        <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            Reset
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            {{-- <li><a class="dropdown-item" href="#">from Score Card API </a></li> --}}
+                                            <li><a class="dropdown-item" href="#"
+                                                    @click.prevent="resetFromPetersonData('regular_decision')">from
+                                                    Peterson CSV</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row align-items-start">
+                                <div class="col-md-12">
+                                    <label class="form-label">Early Decision II</label>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    <label class="form-label small">Month:</label>
+                                    <input type="number"
+                                        class="form-control {{ $errors->has('early_decision_ii_month') ? 'is-invalid' : '' }}"
+                                        name="early_decision_ii_month"
+                                        value="{{ old('early_decision_ii_month', $info->early_decision_ii_month) }}"
+                                        v-model="early_decision_ii_month" />
+                                    @error('early_decision_ii_month')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    <label class="form-label small">Day:</label>
+                                    <input type="number"
+                                        class="form-control {{ $errors->has('early_decision_ii_day') ? 'is-invalid' : '' }}"
+                                        name="early_decision_ii_day"
+                                        value="{{ old('early_decision_ii_day', $info->early_decision_ii_day) }}"
+                                        v-model="early_decision_ii_day" />
+                                    @error('early_decision_ii_day')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-2 mb-4">
+                                    <div class="mb-1">&nbsp;</div>
+                                    <div class="btn-group reset-button">
+                                        <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            Reset
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            {{-- <li><a class="dropdown-item" href="#">from Score Card API </a></li> --}}
+                                            <li><a class="dropdown-item" href="#"
+                                                    @click.prevent="resetFromPetersonData('early_decision_ii')">from
+                                                    Peterson CSV</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row align-items-start">
+                                <div class="col-md-12">
+                                    <label class="form-label">Early Decision I</label>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    <label class="form-label small">Month:</label>
+                                    <input type="number"
+                                        class="form-control {{ $errors->has('early_decision_i_month') ? 'is-invalid' : '' }}"
+                                        name="early_decision_i_month"
+                                        value="{{ old('early_decision_i_month', $info->early_decision_i_month) }}"
+                                        v-model="early_decision_i_month" />
+                                    @error('early_decision_i_month')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    <label class="form-label small">Day:</label>
+                                    <input type="number"
+                                        class="form-control {{ $errors->has('early_decision_i_day') ? 'is-invalid' : '' }}"
+                                        name="early_decision_i_day"
+                                        value="{{ old('early_decision_i_day', $info->early_decision_i_day) }}"
+                                        v-model="early_decision_i_day" />
+                                    @error('early_decision_i_day')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-2 mb-4">
+                                    <div class="mb-1">&nbsp;</div>
+                                    <div class="btn-group reset-button">
+                                        <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            Reset
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            {{-- <li><a class="dropdown-item" href="#">from Score Card API </a></li> --}}
+                                            <li><a class="dropdown-item" href="#"
+                                                    @click.prevent="resetFromPetersonData('early_decision_i')">from
+                                                    Peterson CSV</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row align-items-start">
+                                <div class="col-md-12">
+                                    <label class="form-label">Early Action</label>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    <label class="form-label small">Month:</label>
+                                    <input type="number"
+                                        class="form-control {{ $errors->has('early_action_month') ? 'is-invalid' : '' }}"
+                                        name="early_action_month"
+                                        value="{{ old('early_action_month', $info->early_action_month) }}"
+                                        v-model="early_action_month" />
+                                    @error('early_action_month')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    <label class="form-label small">Day:</label>
+                                    <input type="number"
+                                        class="form-control {{ $errors->has('early_action_day') ? 'is-invalid' : '' }}"
+                                        name="early_action_day"
+                                        value="{{ old('early_action_day', $info->early_action_day) }}"
+                                        v-model="early_action_day" />
+                                    @error('early_action_day')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-2 mb-4">
+                                    <div class="mb-1">&nbsp;</div>
+                                    <div class="btn-group reset-button">
+                                        <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            Reset
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            {{-- <li><a class="dropdown-item" href="#">from Score Card API </a></li> --}}
+                                            <li><a class="dropdown-item" href="#"
+                                                    @click.prevent="resetFromPetersonData('early_action')">from Peterson
+                                                    CSV</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label">Rolling Admission Day:</label>
-                            <input type="text" class="form-control" name="rolling_admission_day" value="{{ old('rolling_admission_day', $info->rolling_admission_day) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Rolling Admission Month:</label>
-                            <input type="text" class="form-control" name="rolling_admission_month" value="{{ old('rolling_admission_month', $info->rolling_admission_month) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Rolling Admission Month-Day:</label>
-                            <input type="text" class="form-control" name="rolling_admission_month_day" value="{{ old('rolling_admission_month_day', $info->rolling_admission_month_day) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Regular Decision:</label>
-                            <select class="form-select" name="regular_decision">
-                                <option value="1" {{ old('regular_decision', $info->regular_decision) ? 'selected' : '' }}>Yes</option>
-                                <option value="0" {{ !old('regular_decision', $info->regular_decision) ? 'selected' : '' }}>No</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Regular Decision Day:</label>
-                            <input type="text" class="form-control" name="regular_decision_day" value="{{ old('regular_decision_day', $info->regular_decision_day) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Regular Decision Month:</label>
-                            <input type="text" class="form-control" name="regular_decision_month" value="{{ old('regular_decision_month', $info->regular_decision_month) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Early Decision II:</label>
-                            <select class="form-select" name="early_decision_ii">
-                                <option value="1" {{ old('early_decision_ii', $info->early_decision_ii) ? 'selected' : '' }}>Yes</option>
-                                <option value="0" {{ !old('early_decision_ii', $info->early_decision_ii) ? 'selected' : '' }}>No</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Early Decision II Day:</label>
-                            <input type="text" class="form-control" name="early_decision_ii_day" value="{{ old('early_decision_ii_day', $info->early_decision_ii_day) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Early Decision II Month:</label>
-                            <input type="text" class="form-control" name="early_decision_ii_month" value="{{ old('early_decision_ii_month', $info->early_decision_ii_month) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Early Decision I:</label>
-                            <select class="form-select" name="early_decision_i">
-                                <option value="1" {{ old('early_decision_i', $info->early_decision_i) ? 'selected' : '' }}>Yes</option>
-                                <option value="0" {{ !old('early_decision_i', $info->early_decision_i) ? 'selected' : '' }}>No</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Early Decision I Day:</label>
-                            <input type="text" class="form-control" name="early_decision_i_day" value="{{ old('early_decision_i_day', $info->early_decision_i_day) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Early Decision I Month:</label>
-                            <input type="text" class="form-control" name="early_decision_i_month" value="{{ old('early_decision_i_month', $info->early_decision_i_month) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Early Action:</label>
-                            <select class="form-select" name="early_action">
-                                <option value="1" {{ old('early_action', $info->early_action) ? 'selected' : '' }}>Yes</option>
-                                <option value="0" {{ !old('early_action', $info->early_action) ? 'selected' : '' }}>No</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Early Action Day:</label>
-                            <input type="text" class="form-control" name="early_action_day" value="{{ old('early_action_day', $info->early_action_day) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Early Action Month:</label>
-                            <input type="text" class="form-control" name="early_action_month" value="{{ old('early_action_month', $info->early_action_month) }}" />
-                        </div>
 
                         <!-- Admission statistics -->
                         <div class="mb-4">
                             <label class="form-label">Number of Applications:</label>
-                            <input type="number" class="form-control" name="num_applications" value="{{ old('num_applications', $info->num_applications) }}" />
+                            <input type="number" class="form-control" name="num_applications"
+                                value="{{ old('num_applications', $info->num_applications) }}" />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Overall Admission Rate:</label>
-                            <input type="number" step="0.01" class="form-control" name="overall_admission_rate" value="{{ old('overall_admission_rate', $info->overall_admission_rate) }}" />
+                            <input type="number" step="0.01" class="form-control" name="overall_admission_rate"
+                                value="{{ old('overall_admission_rate', $info->overall_admission_rate) }}" />
                         </div>
 
 
@@ -721,7 +899,7 @@
                                     class="form-check-input {{ $errors->has('common_app') ? 'is-invalid' : '' }}"
                                     name="common_app"
                                     {{ old('common_app') ? 'checked' : ($info->common_app ? 'checked' : '') }}>
-                                    Common App
+                                Common App
                             </label>
 
                             @error('common_app')
@@ -734,7 +912,7 @@
                                     class="form-check-input {{ $errors->has('coalition_app') ? 'is-invalid' : '' }}"
                                     name="coalition_app"
                                     {{ old('coalition_app') ? 'checked' : ($info->coalition_app ? 'checked' : '') }}>
-                                    Coalition App
+                                Coalition App
                             </label>
 
                             @error('coalition_app')
@@ -747,7 +925,7 @@
                                     class="form-check-input {{ $errors->has('universal_app') ? 'is-invalid' : '' }}"
                                     name="universal_app"
                                     {{ old('universal_app') ? 'checked' : ($info->universal_app ? 'checked' : '') }}>
-                                    Universal App
+                                Universal App
                             </label>
 
                             @error('universal_app')
@@ -760,7 +938,7 @@
                                     class="form-check-input {{ $errors->has('college_system_app') ? 'is-invalid' : '' }}"
                                     name="college_system_app"
                                     {{ old('college_system_app') ? 'checked' : ($info->college_system_app ? 'checked' : '') }}>
-                                    College System App
+                                College System App
                             </label>
 
                             @error('college_system_app')
@@ -773,7 +951,7 @@
                                     class="form-check-input {{ $errors->has('apply_directly') ? 'is-invalid' : '' }}"
                                     name="apply_directly"
                                     {{ old('apply_directly') ? 'checked' : ($info->apply_directly ? 'checked' : '') }}>
-                                    Apply Directly
+                                Apply Directly
                             </label>
 
                             @error('apply_directly')
@@ -786,105 +964,83 @@
                         <div class="mb-4">
                             <label class="from-label">Field of Studies:</label>
                             <div>
-                                @foreach($api_data as $program)
-                                    <input
-                                        type="number"
-                                        hidden
-                                        class="form-control"
-                                        value="{{ $program['code'] }}" />
+                                @foreach ($programs_api_data as $program)
+                                    <input type="number" hidden class="form-control" value="{{ $program['code'] }}" />
 
-                                    <input
-                                        type="text"
-                                        hidden
-                                        class="form-control"
+                                    <input type="text" hidden class="form-control"
                                         value="{{ $program['title'] }}" />
-                                    <input
-                                        type="text"
-                                        hidden
-                                        class="form-control"
+                                    <input type="text" hidden class="form-control"
                                         data-fos-description="{{ $program['code'] }}"
                                         value="{{ $program['description'] }}" />
-                                    <input
-                                        type="number"
-                                        hidden
-                                        class="form-control"
+                                    <input type="number" hidden class="form-control"
                                         data-fos-salary="{{ $program['code'] }}"
                                         value="{{ $program['median_earning'] }}" />
-                                    <input
-                                        type="number"
-                                        hidden
-                                        class="form-control"
+                                    <input type="number" hidden class="form-control"
                                         data-fos-debt="{{ $program['code'] }}"
                                         value="{{ $program['debt_after_graduation'] }}" />
                                 @endforeach
-                                @foreach($data as $program)
-
-                                <div class="mt-4">
-                                    <div class="bg-dark p-3 text-white">{{ $program->title }} </div>
-                                    <br/>
-                                    {{-- ID of Program --}}
-                                    <input type="number"
-                                        hidden
-                                        class="form-control"
-                                        name="field_of_study[{{ $program->code }}][id]"
-                                        id="field_of_study[{{ $program->code }}][id]"
-                                        value="{{ $program->id }}" />
-                                    <div class="mt-2">
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <label
-                                                for="field_of_study[{{ $program->code }}][description]"
-                                            >
-                                                Description
-                                            </label>
-                                            <div class="input-group-append">
-                                                <button class="btn btn-outline-secondary" type="button" data-fos-id="{{$program->code}}" id="resetDescription">Reset Description</button>
+                                @foreach ($programs_local_data as $program)
+                                    <div class="mt-4">
+                                        <div class="bg-dark p-3 text-white">{{ $program->title }} </div>
+                                        <br />
+                                        {{-- ID of Program --}}
+                                        <input type="number" hidden class="form-control"
+                                            name="field_of_study[{{ $program->code }}][id]"
+                                            id="field_of_study[{{ $program->code }}][id]"
+                                            value="{{ $program->id }}" />
+                                        <div class="mt-2">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <label for="field_of_study[{{ $program->code }}][description]">
+                                                    Description
+                                                </label>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button"
+                                                        data-fos-id="{{ $program->code }}" id="resetDescription">Reset
+                                                        Description</button>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <textarea type="text"
-                                            class="form-control"
-                                            name="field_of_study[{{ $program->code }}][description]"
-                                            id="field_of_study[{{ $program->code }}][description]"
-                                        >{{$program->description ?? ""}}</textarea>
-
-                                    </div>
-                                    <div class="mt-2">
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <label
-                                                for="field_of_study[{{ $program->code }}][salary_after_completing]"
-                                            >
-                                                Salary After Completing
-                                            </label>
-                                            <div class="input-group-append">
-                                                <button class="btn btn-outline-secondary" type="button" data-fos-id="{{$program->code}}" id="resetSalary">Reset Salary</button>
-                                            </div>
-                                        </div>
-                                        <input type="number"
-                                            class="form-control"
-                                            name="field_of_study[{{ $program->code }}][salary_after_completing]"
-                                            id="field_of_study[{{ $program->code }}][salary_after_completing]"
-                                            value="{{ $program->median_earning ?? '' }}" />
-
-                                    </div>
-                                    <div class="mt-2">
-                                        <div class="d-flex justify-content-between mb-2 ">
-                                            <label
-                                                for="field_of_study[{{ $program->code }}][median_debt_after_graduation]"
-                                            >
-                                                Median Debt After Graduation
-                                            </label>
-                                            <div class="input-group-append">
-                                                <button class="btn btn-outline-secondary" type="button" data-fos-id="{{$program->code}}" id="resetDebt">Reset Debt</button>
-                                            </div>
+                                            <textarea type="text" class="form-control" name="field_of_study[{{ $program->code }}][description]"
+                                                id="field_of_study[{{ $program->code }}][description]">{{ $program->description ?? '' }}</textarea>
 
                                         </div>
-                                        <input type="number"
-                                            class="form-control"
-                                            name="field_of_study[{{ $program->code }}][median_debt_after_graduation]"
-                                            id="field_of_study[{{ $program->code }}][median_debt_after_graduation]"
-                                            value="{{ $program->debt_after_graduation ?? "" }}" />
+                                        <div class="mt-2">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <label
+                                                    for="field_of_study[{{ $program->code }}][salary_after_completing]">
+                                                    Salary After Completing
+                                                </label>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button"
+                                                        data-fos-id="{{ $program->code }}" id="resetSalary">Reset
+                                                        Salary</button>
+                                                </div>
+                                            </div>
+                                            <input type="number" class="form-control"
+                                                name="field_of_study[{{ $program->code }}][salary_after_completing]"
+                                                id="field_of_study[{{ $program->code }}][salary_after_completing]"
+                                                value="{{ $program->median_earning ?? '' }}" />
 
+                                        </div>
+                                        <div class="mt-2">
+                                            <div class="d-flex justify-content-between mb-2 ">
+                                                <label
+                                                    for="field_of_study[{{ $program->code }}][median_debt_after_graduation]">
+                                                    Median Debt After Graduation
+                                                </label>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button"
+                                                        data-fos-id="{{ $program->code }}" id="resetDebt">Reset
+                                                        Debt</button>
+                                                </div>
+
+                                            </div>
+                                            <input type="number" class="form-control"
+                                                name="field_of_study[{{ $program->code }}][median_debt_after_graduation]"
+                                                id="field_of_study[{{ $program->code }}][median_debt_after_graduation]"
+                                                value="{{ $program->debt_after_graduation ?? '' }}" />
+
+                                        </div>
                                     </div>
-                                </div>
                                 @endforeach
                             </div>
                         </div>
@@ -908,33 +1064,35 @@
 
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/ion-rangeslider/css/ion.rangeSlider.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
 @endsection
 
 @section('admin-script')
     <script src="{{ asset('assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+
+    <script src="{{ asset('assets/js/lib/vue.global.min.js') }}"></script>
+
     <script>
-
-
         let resetButtons = $('[data-fos-id]');
         resetButtons.each(function() {
-            if($(this).attr('id') == 'resetDescription'){
-                $(this).on('click', function(){
+            if ($(this).attr('id') == 'resetDescription') {
+                $(this).on('click', function() {
                     let fosId = $(this).data('fos-id');
                     let description = $(`[data-fos-description="${fosId}"]`).val();
                     $(`#field_of_study\\[${fosId}\\]\\[description\\]`).val(description);
                 })
             }
-            if($(this).attr('id') == 'resetSalary'){
-                $(this).on('click', function(){
+            if ($(this).attr('id') == 'resetSalary') {
+                $(this).on('click', function() {
                     let fosId = $(this).data('fos-id');
                     let salary = $(`[data-fos-salary="${fosId}"]`).val();
                     $(`#field_of_study\\[${fosId}\\]\\[salary_after_completing\\]`).val(salary);
                 })
             }
-            if($(this).attr('id') == 'resetDebt'){
-                $(this).on('click', function(){
+            if ($(this).attr('id') == 'resetDebt') {
+                $(this).on('click', function() {
                     let fosId = $(this).data('fos-id');
                     let debt = $(`[data-fos-debt="${fosId}"]`).val();
                     $(`#field_of_study\\[${fosId}\\]\\[median_debt_after_graduation\\]`).val(debt);
@@ -967,20 +1125,135 @@
          * @param {string} checkboxSelector - The CSS selector for the checkbox element.
          * @param {string[]} selectorsOfElToHide - An array of CSS selectors for elements to hide when the checkbox is checked.
          * @param {string[]} selectorsOfElToShow - An array of CSS selectors for elements to show when the checkbox is checked.
-        */
-        function toggleBetweenAdminAndPetersonData(checkboxSelector, selectorsOfElToHide, selectorsOfElToShow){
-            $(checkboxSelector).change(function(){
-                if(this.checked){
-                    selectorsOfElToHide.forEach(element => $(element).prop('hidden', true) )
-                    selectorsOfElToShow.forEach(element => $(element).removeAttr('hidden') )
-                }else{
-                    selectorsOfElToShow.forEach(element => $(element).prop('hidden', true) )
-                    selectorsOfElToHide.forEach(element => $(element).removeAttr('hidden') )
+         */
+        function toggleBetweenAdminAndPetersonData(checkboxSelector, selectorsOfElToHide, selectorsOfElToShow) {
+            $(checkboxSelector).change(function() {
+                if (this.checked) {
+                    selectorsOfElToHide.forEach(element => $(element).prop('hidden', true))
+                    selectorsOfElToShow.forEach(element => $(element).removeAttr('hidden'))
+                } else {
+                    selectorsOfElToShow.forEach(element => $(element).prop('hidden', true))
+                    selectorsOfElToHide.forEach(element => $(element).removeAttr('hidden'))
                 }
             })
 
         }
-        toggleBetweenAdminAndPetersonData('#display_peterson_public_coa',['.public_coa_container_admin'] , ['.public_coa_container'])
-        toggleBetweenAdminAndPetersonData('#display_peterson_pvt_coa',['.pvt_coa_container_admin'] , ['.pvt_coa_container'])
+        // toggleBetweenAdminAndPetersonData('#display_peterson_public_coa',['.public_coa_container_admin'] , ['.public_coa_container'])
+        // toggleBetweenAdminAndPetersonData('#display_peterson_pvt_coa',['.pvt_coa_container_admin'] , ['.pvt_coa_container'])
+    </script>
+
+    <script>
+        const apiData = @json($apiData);
+        const collegeInfo = @json($info);
+
+        const rollingAdmissionDay = "{{ old('rolling_admission_day', $info->rolling_admission_day) }}";
+        const rollingAdmissionMonth = "{{ old('rolling_admission_month', $info->rolling_admission_month) }}";
+        const regularDecisionDay = "{{ old('regular_decision_day', $info->regular_decision_day) }}";
+        const regularDecisionMonth = "{{ old('regular_decision_month', $info->regular_decision_month) }}";
+        const earlyDecisionIIDay = "{{ old('early_decision_ii_day', $info->early_decision_ii_day) }}";
+        const earlyDecisionIIMonth = "{{ old('early_decision_ii_month', $info->early_decision_ii_month) }}";
+        const earlyDecisionIDay = "{{ old('early_decision_i_day', $info->early_decision_i_day) }}";
+        const earlyDecisionIMonth = "{{ old('early_decision_i_month', $info->early_decision_i_month) }}";
+        const earlyActionDay = "{{ old('early_action_day', $info->early_action_day) }}";
+        const earlyActionMonth = "{{ old('early_action_month', $info->early_action_month) }}";
+
+        // init vue3 instance
+        const admissionDeadlineVue = Vue.createApp({
+            data() {
+                return {
+                    rolling_admission_day: rollingAdmissionDay,
+                    rolling_admission_month: rollingAdmissionMonth,
+                    regular_decision_day: regularDecisionDay,
+                    regular_decision_month: regularDecisionMonth,
+                    early_decision_ii_day: earlyDecisionIIDay,
+                    early_decision_ii_month: earlyDecisionIIMonth,
+                    early_decision_i_day: earlyDecisionIDay,
+                    early_decision_i_month: earlyDecisionIMonth,
+                    early_action_day: earlyActionDay,
+                    early_action_month: earlyActionMonth,
+                }
+            },
+            methods: {
+                resetFromPetersonData(deadline) {
+                    console.log('deadline', deadline);
+                    if (deadline === 'rolling_admission') {
+                        this.rolling_admission_day = null;
+                        this.rolling_admission_month = null;
+                    } else if (deadline === 'regular_decision') {
+                        this.regular_decision_day = collegeInfo.AP_DL_FRSH_DAY;
+                        this.regular_decision_month = collegeInfo.AP_DL_FRSH_MON;
+                    } else if (deadline === 'early_decision_ii') {
+                        this.early_decision_ii_day = collegeInfo.AP_DL_EDEC_2_DAY
+                        this.early_decision_ii_month = collegeInfo.AP_DL_EDEC_2_MON
+                    } else if (deadline === 'early_decision_i') {
+                        this.early_decision_i_day = collegeInfo.AP_DL_EDEC_1_DAY
+                        this.early_decision_i_month = collegeInfo.AP_DL_EDEC_1_MON
+                    } else if (deadline === 'early_action') {
+                        this.early_action_day = collegeInfo.AP_DL_EACT_DAY
+                        this.early_action_month = collegeInfo.AP_DL_EACT_MON
+                    }
+                },
+            }
+        }).mount('#admission-deadline');
+
+        const publicCoaInState = "{{ old('public_coa_in_state', $info->public_coa_in_state) }}";
+        const publicCoaOutState = "{{ old('public_coa_out_state', $info->public_coa_out_state) }}";
+        const pvtCoa = "{{ old('pvt_coa', $info->pvt_coa) }}";
+        const tutionAndFess = "{{ old('tution_and_fess', $info->tution_and_fess) }}"; // "Tuition and Fee"
+        const tuitionAndFeeInstate = "{{ old('tuition_and_fee_instate', $info->tuition_and_fee_instate) }}";
+        const tuitionAndFeeOutstate = "{{ old('tuition_and_fee_outstate', $info->tuition_and_fee_outstate) }}";
+
+
+        const admissionCost = Vue.createApp({
+            data() {
+                return {
+                    public_coa_in_state: publicCoaInState,
+                    public_coa_out_state: publicCoaOutState,
+                    pvt_coa: pvtCoa,
+                    tution_and_fess: tutionAndFess, // "Tuition and Fee"
+                    tuition_and_fee_instate: tuitionAndFeeInstate,
+                    tuition_and_fee_outstate: tuitionAndFeeOutstate,
+                }
+            },
+            methods: {
+                resetFromScorecardData(costType) {
+                    console.log('costType', costType);
+
+                    const cost = apiData.latest.cost
+
+                    if (costType === 'tuition_and_fee_instate') {
+                        this.tuition_and_fee_instate = cost.tuition.in_state;
+                    } else if (costType === 'tuition_and_fee_outstate') {
+                        this.tuition_and_fee_outstate = cost.tuition.out_of_state;
+                    } else if (costType === 'tuition_and_fee_pvt') {
+                        this.tution_and_fess = cost.tuition.program_year;
+                    }
+
+                },
+                resetFromPetersonData(costType) {
+                    console.log('costType', costType);
+
+                    // for COA from UG_EXPENSE_ASGNS
+                    // in-state: TUIT_STATE_FT_D + FEES_FT_D + RM_BD_D + BOOKS_RES_D
+                    // out-of-state: TUIT_NRES_FT_D + FEES_OOS_FT_D + RM_BD_D + BOOKS_RES_D
+                    // private: TUIT_OVERALL_FT_D + FEES_FT_D + RM_BD_D + BOOKS_RES_D
+                    const tuitStateFtD = collegeInfo.TUIT_STATE_FT_D ? parseFloat(collegeInfo.TUIT_STATE_FT_D) : 0;
+                    const tuitOverallFtD = collegeInfo.TUIT_OVERALL_FT_D ? parseFloat(collegeInfo
+                        .TUIT_OVERALL_FT_D) : 0;
+                    const tuitNresFtD = collegeInfo.TUIT_NRES_FT_D ? parseFloat(collegeInfo.TUIT_NRES_FT_D) : 0;
+                    const feesFtD = collegeInfo.FEES_FT_D ? parseFloat(collegeInfo.FEES_FT_D) : 0;
+                    const rmBdD = collegeInfo.RM_BD_D ? parseFloat(collegeInfo.RM_BD_D) : 0;
+                    const booksResD = collegeInfo.BOOKS_RES_D ? parseFloat(collegeInfo.BOOKS_RES_D) : 0;
+
+                    if (costType === 'public_coa_in_state') {
+                        this.public_coa_in_state = tuitStateFtD + feesFtD + rmBdD + booksResD;
+                    } else if (costType === 'public_coa_out_state') {
+                        this.public_coa_out_state = tuitNresFtD + feesFtD + rmBdD + booksResD;
+                    } else if (costType === 'pvt_coa') {
+                        this.pvt_coa = tuitOverallFtD + feesFtD + rmBdD + booksResD;
+                    }
+                }
+            }
+        }).mount('#admission-cost');
     </script>
 @endsection

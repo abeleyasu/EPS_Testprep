@@ -18,9 +18,13 @@ class CollegeInformation extends Model
         'sat_math_average',
         'sat_reading_writing_average',
         'act_composite_average',
+
         'cost_of_attendance',
-        'tution_and_fess',
+        'tution_and_fess', // "Tuition and Fee"
+        'tuition_and_fee_instate',
+        'tuition_and_fee_outstate',
         'room_and_board',
+
         'average_percent_of_need_met',
         'average_freshman_award',
         'entrance_difficulty',
@@ -51,9 +55,9 @@ class CollegeInformation extends Model
         'AP_DL_EACT_DAY',
         'AP_DL_FRSH_MON',
         'AP_DL_FRSH_DAY',
-        'LIFE_SOR_NAT' , 
-        'LIFE_SOR_LOCAL', 
-        'LIFE_FRAT_NAT', 
+        'LIFE_SOR_NAT' ,
+        'LIFE_SOR_LOCAL',
+        'LIFE_FRAT_NAT',
         'LIFE_FRAT_LOCAL' ,
         'SORO_1ST_P',
         'FRAT_1ST_P',
@@ -66,9 +70,11 @@ class CollegeInformation extends Model
         'rolling_admission_deadline',
         'FRSH_GPA',
         'FRSH_GPA_WEIGHTED',
+
         'pvt_coa',
         'public_coa_in_state',
         'public_coa_out_state',
+
         'display_peterson_weighted_gpa',
         'display_peterson_unweighted_gpa',
         'AP_DL_EDEC_1_MON',
