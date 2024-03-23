@@ -472,9 +472,11 @@ class CollegeInformationController extends Controller
         } else {
             $apiData = null;
         }
+
+        $programs = [];
         if (isset($apiData->latest->programs->cip_4_digit)) {
+            $programs = $apiData->latest->programs->cip_4_digit;
         }
-        $programs = $apiData->latest->programs->cip_4_digit;
 
         $fieldsOfStudy = array_reduce($programs, function ($carry, $item) {
             // Check if the ID already exists in the associative array

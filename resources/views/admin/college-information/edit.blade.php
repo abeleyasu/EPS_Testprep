@@ -300,7 +300,8 @@
                                                 <input type="number"
                                                     class="form-control {{ $errors->has('tuition_and_fee_outstate') ? 'is-invalid' : '' }}"
                                                     name="tuition_and_fee_outstate"
-                                                    value="{{ old('tuition_and_fee_outstate') ? old('tuition_and_fee_outstate') : $info->tuition_and_fee_outstate }}" v-model="tuition_and_fee_outstate" />
+                                                    value="{{ old('tuition_and_fee_outstate') ? old('tuition_and_fee_outstate') : $info->tuition_and_fee_outstate }}"
+                                                    v-model="tuition_and_fee_outstate" />
                                                 @error('tuition_and_fee_outstate')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -329,30 +330,79 @@
                             @else
                                 <div class="row">
                                     <div class="col-md-6 mb-4">
-                                        <label class="from-label">Tuition and Fees:</label>
-                                        <input type="text"
-                                            class="form-control {{ $errors->has('tution_and_fess') ? 'is-invalid' : '' }}"
-                                            name="tution_and_fess"
-                                            value="{{ old('tution_and_fess') ? old('tution_and_fess') : $info->tution_and_fess }}" />
-                                        @error('tution_and_fess')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label class="from-label">Tuition and Fees:</label>
+                                                <input type="text"
+                                                    class="form-control {{ $errors->has('tution_and_fess') ? 'is-invalid' : '' }}"
+                                                    name="tution_and_fess"
+                                                    value="{{ old('tution_and_fess') ? old('tution_and_fess') : $info->tution_and_fess }}"
+                                                    v-model="tution_and_fess" />
+                                                @error('tution_and_fess')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="mb-1">&nbsp;</div>
+                                                <div class="btn-group reset-button">
+                                                    <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Reset
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="#"
+                                                                @click.prevent="resetFromScorecardData('tution_and_fess')">from
+                                                                Score Card API </a></li>
+                                                        <li><a class="dropdown-item" href="#"
+                                                                @click.prevent="resetFromPetersonData('tution_and_fess')">from
+                                                                Peterson CSV</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             @endif
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <label class="from-label">Room and Board:</label>
+                                            <input type="text"
+                                                class="form-control {{ $errors->has('room_and_board') ? 'is-invalid' : '' }}"
+                                                name="room_and_board"
+                                                value="{{ old('room_and_board') ? old('room_and_board') : $info->room_and_board }}"
+                                                v-model="room_and_board" />
+                                            @error('room_and_board')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="mb-1">&nbsp;</div>
+                                            <div class="btn-group reset-button">
+                                                <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Reset
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"
+                                                            @click.prevent="resetFromScorecardData('room_and_board')">from
+                                                            Score Card API </a></li>
+                                                    <li><a class="dropdown-item" href="#"
+                                                            @click.prevent="resetFromPetersonData('room_and_board')">from
+                                                            Peterson CSV</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
 
-                        <div class="mb-4">
-                            <label class="from-label">Room and Board:</label>
-                            <input type="text"
-                                class="form-control {{ $errors->has('room_and_board') ? 'is-invalid' : '' }}"
-                                name="room_and_board"
-                                value="{{ old('room_and_board') ? old('room_and_board') : $info->room_and_board }}" />
-                            @error('room_and_board')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
 
                         <div class="mb-4">
                             <label class="from-label">Average Percent of Need Met:</label>
@@ -1202,6 +1252,7 @@
         const tutionAndFess = "{{ old('tution_and_fess', $info->tution_and_fess) }}"; // "Tuition and Fee"
         const tuitionAndFeeInstate = "{{ old('tuition_and_fee_instate', $info->tuition_and_fee_instate) }}";
         const tuitionAndFeeOutstate = "{{ old('tuition_and_fee_outstate', $info->tuition_and_fee_outstate) }}";
+        const roomAndBoard = "{{ old('room_and_board', $info->room_and_board) }}";
 
 
         const admissionCost = Vue.createApp({
@@ -1213,6 +1264,7 @@
                     tution_and_fess: tutionAndFess, // "Tuition and Fee"
                     tuition_and_fee_instate: tuitionAndFeeInstate,
                     tuition_and_fee_outstate: tuitionAndFeeOutstate,
+                    room_and_board: roomAndBoard,
                 }
             },
             methods: {
@@ -1220,13 +1272,21 @@
                     console.log('costType', costType);
 
                     const cost = apiData.latest.cost
+                    const tuition = cost.tuition;
+                    const roomboard = cost.roomboard;
+
+                    // console.log('cost', cost);
+                    // console.log('tuition', tuition);
+                    // console.log('roomboard', roomboard);
 
                     if (costType === 'tuition_and_fee_instate') {
-                        this.tuition_and_fee_instate = cost.tuition.in_state;
+                        this.tuition_and_fee_instate = tuition.in_state ? tuition.in_state : null;
                     } else if (costType === 'tuition_and_fee_outstate') {
-                        this.tuition_and_fee_outstate = cost.tuition.out_of_state;
+                        this.tuition_and_fee_outstate = tuition.out_of_state ? tuition.out_of_state : null;
                     } else if (costType === 'tuition_and_fee_pvt') {
-                        this.tution_and_fess = cost.tuition.program_year;
+                        this.tution_and_fess = tuition.program_year ? tuition.program_year : null;
+                    } else if (costType === 'room_and_board') {
+                        this.room_and_board = roomboard.oncampus ? roomboard.oncampus : null;
                     }
 
                 },
@@ -1245,12 +1305,34 @@
                     const rmBdD = collegeInfo.RM_BD_D ? parseFloat(collegeInfo.RM_BD_D) : 0;
                     const booksResD = collegeInfo.BOOKS_RES_D ? parseFloat(collegeInfo.BOOKS_RES_D) : 0;
 
+                    // for Tuition Fee and Roomboard from UG_EXPENSE_ASGNS
+                    // in-state: TUIT_STATE_FT_D + FEES_FT_D
+                    // out-of-state: TUIT_NRES_FT_D + FEES_FT_D
+                    // private: TUIT_OVERALL_FT_D + FEES_FT_D
+                    // roomboard: RM_BD_D
+
+                    // console.log('tuitStateFtD', tuitStateFtD);
+                    // console.log('tuitOverallFtD', tuitOverallFtD);
+                    // console.log('tuitNresFtD', tuitNresFtD);
+                    // console.log('feesFtD', feesFtD);
+                    // console.log('rmBdD', rmBdD);
+                    // console.log('booksResD', booksResD);
+
+
                     if (costType === 'public_coa_in_state') {
-                        this.public_coa_in_state = tuitStateFtD + feesFtD + rmBdD + booksResD;
+                        this.public_coa_in_state = (tuitStateFtD + feesFtD + rmBdD + booksResD) || null;
                     } else if (costType === 'public_coa_out_state') {
-                        this.public_coa_out_state = tuitNresFtD + feesFtD + rmBdD + booksResD;
+                        this.public_coa_out_state = (tuitNresFtD + feesFtD + rmBdD + booksResD) || null;
                     } else if (costType === 'pvt_coa') {
-                        this.pvt_coa = tuitOverallFtD + feesFtD + rmBdD + booksResD;
+                        this.pvt_coa = (tuitOverallFtD + feesFtD + rmBdD + booksResD) || null;
+                    } else if (costType === 'tution_and_fess') {
+                        this.tution_and_fess = (tuitOverallFtD + feesFtD) || null;
+                    } else if (costType === 'tuition_and_fee_instate') {
+                        this.tuition_and_fee_instate = (tuitStateFtD + feesFtD) || null;
+                    } else if (costType === 'tuition_and_fee_outstate') {
+                        this.tuition_and_fee_outstate = (tuitNresFtD + feesFtD) || null;
+                    } else if (costType === 'room_and_board') {
+                        this.room_and_board = rmBdD;
                     }
                 }
             }
