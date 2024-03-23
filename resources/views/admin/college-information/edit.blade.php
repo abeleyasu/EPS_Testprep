@@ -1012,7 +1012,7 @@
 
 
                         <div class="mb-4">
-                            <label class="from-label">Field of Studies:</label>
+                            <label class="form-label mb-3">Field of Studies:</label>
                             <div>
                                 @foreach ($programs_api_data as $program)
                                     <input type="number" hidden class="form-control" value="{{ $program['code'] }}" />
@@ -1029,11 +1029,11 @@
                                         data-fos-debt="{{ $program['code'] }}"
                                         value="{{ $program['debt_after_graduation'] }}" />
                                 @endforeach
-                                @foreach ($programs_local_data as $program)
-                                    <div class="mt-4">
+
+                                {{-- @foreach ($programs_local_data as $pIndex => $program)
+                                    <div class="mt-4 d-none">
                                         <div class="bg-dark p-3 text-white">{{ $program->title }} </div>
                                         <br />
-                                        {{-- ID of Program --}}
                                         <input type="number" hidden class="form-control"
                                             name="field_of_study[{{ $program->code }}][id]"
                                             id="field_of_study[{{ $program->code }}][id]"
@@ -1045,7 +1045,8 @@
                                                 </label>
                                                 <div class="input-group-append">
                                                     <button class="btn btn-outline-secondary" type="button"
-                                                        data-fos-id="{{ $program->code }}" id="resetDescription">Reset
+                                                        data-fos-id="{{ $program->code }}"
+                                                        id="resetDescription">Reset
                                                         Description</button>
                                                 </div>
                                             </div>
@@ -1091,7 +1092,87 @@
 
                                         </div>
                                     </div>
-                                @endforeach
+                                @endforeach --}}
+
+                                <div class="accordion" id="accordionFieldOfStudy">
+                                    @foreach ($programs_local_data as $pIndex => $program)
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapse-{{ $pIndex }}" aria-expanded="{{ $pIndex === 0 ? 'true' : '' }}"
+                                                    aria-controls="collapse-{{ $pIndex }}">{{ ($pIndex+1) }}. {{ $program->title }}
+                                                </button>
+                                            </h2>
+                                            <div id="collapse-{{ $pIndex }}"
+                                                class="accordion-collapse collapse {{ $pIndex === 0 ? 'show' : '' }}"
+                                                data-bs-parentx="#accordionFieldOfStudy">
+                                                <div class="accordion-body">
+                                                    {{-- ID of Program --}}
+                                                    <input type="number" hidden class="form-control"
+                                                        name="field_of_study[{{ $program->code }}][id]"
+                                                        id="field_of_study[{{ $program->code }}][id]"
+                                                        value="{{ $program->id }}" />
+                                                    <div class="mt-2">
+                                                        <div class="d-flex justify-content-between mb-2">
+                                                            <label
+                                                                for="field_of_study[{{ $program->code }}][description]">
+                                                                Description
+                                                            </label>
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-outline-secondary" type="button"
+                                                                    data-fos-id="{{ $program->code }}"
+                                                                    id="resetDescription">Reset
+                                                                    Description</button>
+                                                            </div>
+                                                        </div>
+                                                        <textarea type="text" class="form-control" name="field_of_study[{{ $program->code }}][description]"
+                                                            id="field_of_study[{{ $program->code }}][description]">{{ $program->description ?? '' }}</textarea>
+
+                                                    </div>
+                                                    <div class="mt-2">
+                                                        <div class="d-flex justify-content-between mb-2">
+                                                            <label
+                                                                for="field_of_study[{{ $program->code }}][salary_after_completing]">
+                                                                Salary After Completing
+                                                            </label>
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-outline-secondary" type="button"
+                                                                    data-fos-id="{{ $program->code }}"
+                                                                    id="resetSalary">Reset
+                                                                    Salary</button>
+                                                            </div>
+                                                        </div>
+                                                        <input type="number" class="form-control"
+                                                            name="field_of_study[{{ $program->code }}][salary_after_completing]"
+                                                            id="field_of_study[{{ $program->code }}][salary_after_completing]"
+                                                            value="{{ $program->median_earning ?? '' }}" />
+
+                                                    </div>
+                                                    <div class="mt-2">
+                                                        <div class="d-flex justify-content-between mb-2 ">
+                                                            <label
+                                                                for="field_of_study[{{ $program->code }}][median_debt_after_graduation]">
+                                                                Median Debt After Graduation
+                                                            </label>
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-outline-secondary" type="button"
+                                                                    data-fos-id="{{ $program->code }}"
+                                                                    id="resetDebt">Reset
+                                                                    Debt</button>
+                                                            </div>
+
+                                                        </div>
+                                                        <input type="number" class="form-control"
+                                                            name="field_of_study[{{ $program->code }}][median_debt_after_graduation]"
+                                                            id="field_of_study[{{ $program->code }}][median_debt_after_graduation]"
+                                                            value="{{ $program->debt_after_graduation ?? '' }}" />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
 
@@ -1230,17 +1311,17 @@
                         this.rolling_admission_day = null;
                         this.rolling_admission_month = null;
                     } else if (deadline === 'regular_decision') {
-                        this.regular_decision_day = collegeInfo.AP_DL_FRSH_DAY;
-                        this.regular_decision_month = collegeInfo.AP_DL_FRSH_MON;
+                        this.regular_decision_day = collegeInfo.AP_DL_FRSH_DAY || null;
+                        this.regular_decision_month = collegeInfo.AP_DL_FRSH_MON || null;
                     } else if (deadline === 'early_decision_ii') {
-                        this.early_decision_ii_day = collegeInfo.AP_DL_EDEC_2_DAY
-                        this.early_decision_ii_month = collegeInfo.AP_DL_EDEC_2_MON
+                        this.early_decision_ii_day = collegeInfo.AP_DL_EDEC_2_DAY || null;
+                        this.early_decision_ii_month = collegeInfo.AP_DL_EDEC_2_MON || null;
                     } else if (deadline === 'early_decision_i') {
-                        this.early_decision_i_day = collegeInfo.AP_DL_EDEC_1_DAY
-                        this.early_decision_i_month = collegeInfo.AP_DL_EDEC_1_MON
+                        this.early_decision_i_day = collegeInfo.AP_DL_EDEC_1_DAY || null;
+                        this.early_decision_i_month = collegeInfo.AP_DL_EDEC_1_MON || null;
                     } else if (deadline === 'early_action') {
-                        this.early_action_day = collegeInfo.AP_DL_EACT_DAY
-                        this.early_action_month = collegeInfo.AP_DL_EACT_MON
+                        this.early_action_day = collegeInfo.AP_DL_EACT_DAY || null;
+                        this.early_action_month = collegeInfo.AP_DL_EACT_MON || null;
                     }
                 },
             }
