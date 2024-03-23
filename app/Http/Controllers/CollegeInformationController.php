@@ -79,25 +79,28 @@ class CollegeInformationController extends Controller
         $indeces = null;
 
         $index = -1;
+
         foreach ($fileContents as $line) {
             $index++;
             $data = str_getcsv($line);
+
             if ($index == 0) {
                 $indeces = $this->getColumnIndicesFromCSV(array('NAME', 'STATE_CODE', 'INUN_ID'), $data);
             } else {
-                $collegeInfo = CollegeInformation::where('name', $data[$indeces['NAME']])
-                    ->where('state', $data[$indeces['STATE_CODE']])
-                    ->first();
+                if (isset($indeces['NAME']) && isset($indeces['STATE_CODE']) && isset($indeces['INUN_ID'])) {
+                    $collegeInfo = CollegeInformation::where('name', $data[$indeces['NAME']])
+                        ->where('state', $data[$indeces['STATE_CODE']])
+                        ->first();
 
-                if ($collegeInfo) {
-                    $new_data = [
-                        'petersons_id' => $data[$indeces['INUN_ID']],
-                    ];
-                    $collegeInfo->update($new_data);
+                    if ($collegeInfo) {
+                        $new_data = [
+                            'petersons_id' => $data[$indeces['INUN_ID']],
+                        ];
+                        $collegeInfo->update($new_data);
+                    }
                 }
             }
         }
-
 
         $column_names = array(
             'TUIT_STATE_FT_D',
@@ -140,49 +143,50 @@ class CollegeInformationController extends Controller
         $fileContents = file($file->getPathname());
 
         $index = -1;
+
         foreach ($fileContents as $line) {
             $index++;
             $data = str_getcsv($line);
+            // dd($data);
             // Storing the indeces of Required Columns
             if ($index == 0) {
-                $peterson_id_index = $this->getColumnIndicesFromCSV(array('INUN_ID'), $data)['INUN_ID'];
+                $searchInColumn =  $this->getColumnIndicesFromCSV(array('INUN_ID'), $data);
+                if (isset($searchInColumn['INUN_ID'])) {
+                    $peterson_id_index = $searchInColumn['INUN_ID'];
+                }
                 $column_names = $this->getColumnIndicesFromCSV($column_names, $data);
                 continue;
             }
+
+            if ($peterson_id_index == null) {
+                // return redirect()->back()->with('error', 'Peterson ID not found in the CSV file.');
+                continue;
+            }
+
             $new_data = $this->get_column_values($column_names, $data);
 
-            // if(isset($new_data['FEES_FT_D']) && isset($new_data['BOOKS_RES_D']) && isset($new_data['TRANSPORT_RES_D'])){
-            //     if(isset($new_data['TUIT_OVERALL_FT_D'])){
-            //         $new_data['pvt_coa'] = $new_data['TUIT_OVERALL_FT_D'] + $new_data['FEES_FT_D'] + $new_data['BOOKS_RES_D'] + $new_data['TRANSPORT_RES_D'];
-            //     }
-            //     if(isset($new_data['TUIT_STATE_FT_D'])){
-            //         $new_data['public_coa_in_state'] = $new_data['TUIT_STATE_FT_D'] + $new_data['FEES_FT_D'] + $new_data['BOOKS_RES_D'] + $new_data['TRANSPORT_RES_D'];
-            //     }
-            //     if(isset($new_data['TUIT_NRES_FT_D'])){
-            //         $new_data['public_coa_out_state'] = $new_data['TUIT_NRES_FT_D'] + $new_data['FEES_FT_D'] + $new_data['BOOKS_RES_D'] + $new_data['TRANSPORT_RES_D'];
-            //     }
-            // }
+            if (isset($new_data['FEES_FT_D']) && isset($new_data['BOOKS_RES_D']) && isset($new_data['TRANSPORT_RES_D'])) {
+                $fees = (float) $new_data['FEES_FT_D'] ?: 0;
+                $books = (float) $new_data['BOOKS_RES_D'] ?: 0;
+                $transport = (float) $new_data['TRANSPORT_RES_D'] ?: 0;
 
-            // dd($new_data);
 
-            $fees = $new_data['FEES_FT_D'] ?? 0;
-            $books = $new_data['BOOKS_RES_D'] ?? 0;
-            $transport = $new_data['TRANSPORT_RES_D'] ?? 0;
+                if (isset($new_data['TUIT_OVERALL_FT_D'])) {
+                    $tuitionOverall = (float) $new_data['TUIT_OVERALL_FT_D'] ?: 0;
+                    $new_data['pvt_coa'] = $tuitionOverall + $fees + $books + $transport;
+                }
 
-            if (isset($new_data['TUIT_OVERALL_FT_D'])) {
-                $tuitionOverall = $new_data['TUIT_OVERALL_FT_D'];
-                $new_data['pvt_coa'] = $tuitionOverall + $fees + $books + $transport;
+                if (isset($new_data['TUIT_STATE_FT_D'])) {
+                    $tuitionState = (float) $new_data['TUIT_STATE_FT_D'] ?: 0;
+                    $new_data['public_coa_in_state'] = $tuitionState + $fees + $books + $transport;
+                }
+
+                if (isset($new_data['TUIT_NRES_FT_D'])) {
+                    $tuitionNonResident = (float) $new_data['TUIT_NRES_FT_D'] ?: 0;
+                    $new_data['public_coa_out_state'] = $tuitionNonResident + $fees + $books + $transport;
+                }
             }
 
-            if (isset($new_data['TUIT_STATE_FT_D'])) {
-                $tuitionState = $new_data['TUIT_STATE_FT_D'];
-                $new_data['public_coa_in_state'] = $tuitionState + $fees + $books + $transport;
-            }
-
-            if (isset($new_data['TUIT_NRES_FT_D'])) {
-                $tuitionNonResident = $new_data['TUIT_NRES_FT_D'];
-                $new_data['public_coa_out_state'] = $tuitionNonResident + $fees + $books + $transport;
-            }
 
             $collegeInfo = CollegeInformation::where('petersons_id', $data[$peterson_id_index])
                 ->first();
@@ -191,19 +195,18 @@ class CollegeInformationController extends Controller
             }
         }
 
-
-
-
         return redirect()->back()->with('success', 'CSV file imported successfully.');
     }
 
     private function getColumnIndicesFromCSV($column_names, $csv_column_names)
     {
-        $column_names_ass_arr = array();
 
+        $column_names_ass_arr = array();
         foreach ($column_names as $column_name) {
             $result = array_search($column_name, $csv_column_names);
-            $column_names_ass_arr[$column_name] = $result;
+            if ($result !== '' && $result !== false) {
+                $column_names_ass_arr[$column_name] = $result;
+            }
         }
 
         return ($column_names_ass_arr);
@@ -211,17 +214,11 @@ class CollegeInformationController extends Controller
 
     public function get_column_values($column_names, $data)
     {
-        $i = 0;
-
+        $new_data = [];
         foreach ($column_names as $column_name => $column_name_index) {
-            if (empty($data[$column_name_index])) {
-                $new_data[$column_name] = null;
-            }
-            if ($data[$column_name_index] == 0 || !empty($data[$column_name_index])) {
-                $new_data[$column_name] = $data[$column_name_index];
-            }
-            $i++;
+            $new_data[$column_name] = $data[$column_name_index] ?: null;
         }
+
         return $new_data;
     }
 
@@ -252,18 +249,6 @@ class CollegeInformationController extends Controller
                 continue;
             }
             $new_data = $this->get_column_values($column_names, $data);
-
-            // if (isset($new_data['FEES_FT_D']) && isset($new_data['BOOKS_RES_D']) && isset($new_data['TRANSPORT_RES_D'])) {
-            //     if (isset($new_data['TUIT_OVERALL_FT_D'])) {
-            //         $new_data['pvt_coa'] = $new_data['TUIT_OVERALL_FT_D'] + $new_data['FEES_FT_D'] + $new_data['BOOKS_RES_D'] + $new_data['TRANSPORT_RES_D'];
-            //     }
-            //     if (isset($new_data['TUIT_STATE_FT_D'])) {
-            //         $new_data['public_coa_in_state'] = $new_data['TUIT_STATE_FT_D'] + $new_data['FEES_FT_D'] + $new_data['BOOKS_RES_D'] + $new_data['TRANSPORT_RES_D'];
-            //     }
-            //     if (isset($new_data['TUIT_NRES_FT_D'])) {
-            //         $new_data['public_coa_out_state'] = $new_data['TUIT_NRES_FT_D'] + $new_data['FEES_FT_D'] + $new_data['BOOKS_RES_D'] + $new_data['TRANSPORT_RES_D'];
-            //     }
-            // }
 
             $fees = $new_data['FEES_FT_D'] ?? 0;
             $books = $new_data['BOOKS_RES_D'] ?? 0;
