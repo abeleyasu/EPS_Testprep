@@ -189,6 +189,8 @@ class DashboardController extends Controller
             $college_list_deadlines[$key]['deadline_date'] = $this->__getDeadlineDate($college_list_deadline);
         }
 
+        // dd($college_list_deadlines);
+
         return view('user.admin-dashboard.dashboard', [
             'college_list_deadline' => $college_list_deadlines,
             'worksheet_data' => $this->dashboardService->worksheet_data(),

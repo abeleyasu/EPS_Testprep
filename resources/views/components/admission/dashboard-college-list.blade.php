@@ -15,25 +15,28 @@
                     <div class="fs-sm fw-semibold text-muted text-uppercase">Choice #{{ $key + 1 }}</div>
                     <a class="text-dark text-center">{{ $deadline['college_name'] }}</a>
                     @if (!empty($deadline['deadline_date']['date']))
-                        @if($deadline['deadline_date']['date'])
-                        <div class="fs-sm fw-semibold text-muted text-uppercase">Admissions Deadline</div>
-                        <div class="fs-xs text-muted text-italic">{{ $deadline['college_deadline']['admission_option'] }}</div>
-                        <div class="deadline-div text-center">
-                            <span class="text-dark d-block">{{ $deadline['deadline_date']['dateLabel'] }}</span>
-                            <span class="text-dark d-block fs-xs {{ $deadline['deadline_date']['diff'] < 0 ? 'text-danger' : '' }}">{{ $deadline['deadline_date']['diffLabel'] }}</span>
-                        </div>
+                        @if ($deadline['deadline_date']['date'])
+                            <div class="fs-sm fw-semibold text-muted text-uppercase">Admissions Deadline</div>
+                            <div class="deadline-div text-center">
+                                <div class="fs-xs text-muted text-italic">{{ $deadline['college_deadline']['admission_option'] }}</div>
+                                <span class="text-dark d-block">{{ $deadline['deadline_date']['dateLabel'] }}</span>
+                                <span
+                                    class="text-dark d-block fs-xs {{ $deadline['deadline_date']['diff'] < 0 ? 'text-danger' : '' }}">{{ $deadline['deadline_date']['diffLabel'] }}</span>
+                            </div>
                         @else
-                        <div class="deadline-div text-center">
-                            <span class="text-danger d-block">Not Published</span>
-                        </div>
+                            <div class="deadline-div text-center">
+                                <span class="text-danger d-block">Not Published</span>
+                            </div>
                         @endif
                     @else
                         <div class="deadline-div text-center"></div>
                     @endif
                     <button type="button" class="btn btn-sm btn-alt-secondary mt-2 manage-deadline"
                         data-bs-toggle="modal" data-bs-target="#deadline-modal"
+                        data-admission-option="{{ $deadline['college_deadline']['admission_option'] }}"
                         data-dead-line="{{ @$deadline['deadline_date']['dateInput'] }}"
-                        data-deadline-id="{{ $deadline['college_deadline']['id'] }}">{{ !empty($deadline['deadline_date']['diff']) ? 'Edit' : 'Add' }} deadline</button>
+                        data-deadline-id="{{ $deadline['college_deadline']['id'] }}">{{ !empty($deadline['deadline_date']['diff']) ? 'Edit' : 'Add' }}
+                        deadline</button>
                 </div>
             </div>
         @endforeach
@@ -63,16 +66,26 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div>
-                    <label class="form-label" for="admissions_deadline-0">Admissions Deadline</label>
-                    <input type="text" class="deadline-date form-control update-form" data-index="0" value="mm/dd/yy"
+                <div class="mb-3">
+                    <label class="form-label" for="admissions_option">Admissions Option</label>
+                    <select id="admissions_option" class="admission-option form-select update-form">
+                        <option value="Early Action">Early Action</option>
+                        <option value="Regular Decision">Regular Decision</option>
+                        <option value="Rolling Admission">Rolling Admission</option>
+                        <option value="Early Decision">Early Decision</option>
+                        <option value="Early Decision II">Early Decision II</option>
+                    </select>
+                </div>
+                <div class="mb-3" id="admission_deadline_formgroup" style="display: none">
+                    <label class="form-label" for="admissions_deadline">Admissions Deadline</label>
+                    <input id="admissions_deadline" type="text" class="deadline-date form-control update-form" value="mm/dd/yy"
                         placeholder="mm/dd/yy" />
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary update-deadline"
-                    onclick="updateDeadline(this.dataset['id'], this.dataset['date'])">Save changes</button>
+                    onclick="updateDeadline(this.dataset)">Save changes</button>
             </div>
         </div>
     </div>

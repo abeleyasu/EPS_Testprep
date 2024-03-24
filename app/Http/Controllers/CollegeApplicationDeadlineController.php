@@ -281,6 +281,29 @@ class CollegeApplicationDeadlineController extends Controller
             'is_completed_all_process' => $request->is_completed_all_process ? $request->is_completed_all_process : 0,
         ];
 
+        $request->validate([
+            'admissions_deadline' => 'nullable|date_format:m-d-Y',
+            'competitive_scholarship_deadline' => 'nullable|date_format:m-d-Y',
+            'departmental_scholarship_deadline' => 'nullable|date_format:m-d-Y',
+            'honors_college_deadline' => 'nullable|date_format:m-d-Y',
+            'fafsa_deadline' => 'nullable|date_format:m-d-Y',
+            'css_profile_deadline' => 'nullable|date_format:m-d-Y',
+        ]);
+
+        // check if $request->admissions_deadline is already passed, then set to +1 year
+        if ($request->admissions_deadline) {
+            $deadline = $request->admissions_deadline;
+            try {
+                $date = Carbon::createFromFormat("m-d-Y", $deadline);
+            } catch (\Throwable $th) {
+                $date = Carbon::createFromFormat("Y-m-d", $deadline);
+            }
+            if ($date->isPast()) {
+                $date->addYear();
+            }
+            $data['admissions_deadline'] = $date->format('m-d-Y');
+        }
+
         // dd($data);
         $college = CollegeDetails::where('id', $request->college_detail_id)->update($data);
 
@@ -309,6 +332,7 @@ class CollegeApplicationDeadlineController extends Controller
             'success' => true,
             'message' => 'College application deadline saved successfully',
             'daysleft' => $days,
+            'date' => $date->format('m-d-Y'),
             'dateLabel' => date('F d, Y', strtotime($date)),
         ];
     }

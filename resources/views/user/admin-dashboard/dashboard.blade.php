@@ -277,9 +277,18 @@
         </script>
         <script>
             $(document).on('click', '.manage-deadline', function(e) {
+                if (e.target.dataset.deadLine === '') {
+                    $('#admission_deadline_formgroup').hide();
+                } else {
+                    $('#admission_deadline_formgroup').show();
+                }
+
                 $(".deadline-date").datepicker("setDate", e.target.dataset.deadLine);
                 $(".update-deadline").attr("data-id", e.target.dataset.deadlineId);
                 $(".update-deadline").attr("data-date", e.target.dataset.deadLine);
+
+                $(".update-deadline").attr("data-admission-option", e.target.dataset.admissionOption);
+                $(".admission-option").val(e.target.dataset.admissionOption);
             });
             $('.deadline-date').datepicker({
                 format: 'mm-dd-yyyy',
@@ -290,13 +299,27 @@
                 $(".update-deadline").attr("data-date", e.target.value);
             })
 
-            function updateDeadline(deadlineId, deadlineDate) {
+            $(document).on('change', '.admission-option', function(e) {
+                $(".update-deadline").attr("data-admission-option", e.target.value);
+
+                if (e.target.value === '') {
+                    $('#admission_deadline_formgroup').hide();
+                } else {
+                    $('#admission_deadline_formgroup').show();
+                }
+            })
+
+            function updateDeadline(dataset) {
+                const deadlineId = dataset.id;
+                const deadlineDate = dataset.date;
+                const admissionOption = dataset.admissionOption;
                 $.ajax({
                     url: "{{ route('admin-dashboard.college_application_save') }}",
                     type: 'POST',
                     data: {
                         college_detail_id: deadlineId,
-                        admissions_deadline: deadlineDate
+                        admissions_deadline: deadlineDate,
+                        admission_option: admissionOption
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -304,6 +327,8 @@
                 }).done(async (response) => {
                     if (response.success) {
                         toastr.success(response.message);
+                        const responseDate = response.date
+                        const responseDateLabel = response.dateLabel
                         if(response.daysleft === ""){
                             $(`#${deadlineId} .manage-deadline`).attr('data-dead-line', '');
 
@@ -312,12 +337,14 @@
                             $(`#${deadlineId} .deadline-div`).append(html);
                             // $(`#${deadlineId} .dead-line`).attr('class','text-danger').text('Not Published');
                         }else{
-                            $(`#${deadlineId} .manage-deadline`).attr('data-dead-line', deadlineDate);
+                            $(`#${deadlineId} .manage-deadline`).attr('data-dead-line', responseDate);
 
                             $(`#${deadlineId} .deadline-div`).empty();
-                            let html = `<span class="text-dark d-block">${deadlineDate}</span><span class="text-dark d-block">${response.daysleft}</span>`
+                            let html = `<div class="fs-xs text-muted text-italic">${admissionOption}</div><span class="text-dark d-block">${responseDateLabel}</span><span class="text-dark d-block fs-xs">${response.daysleft}</span>`
                             $(`#${deadlineId} .deadline-div`).append(html);
                         }
+
+                        $('#deadline-modal').modal('hide');
                     } else {
                         toastr.error(response.message);
                     }
