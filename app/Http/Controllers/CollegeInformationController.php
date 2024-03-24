@@ -138,6 +138,7 @@ class CollegeInformationController extends Controller
             'ASSN_ATHL_NJCAA',
             'ASSN_ATHL_CIAU'
         );
+
         $peterson_id_index = null;
         $file = $request->file('csv_file');
         $fileContents = file($file->getPathname());
@@ -163,36 +164,78 @@ class CollegeInformationController extends Controller
                 // continue;
             }
 
-            $new_data = $this->get_column_values($column_names, $data);
-
             // dd($new_data);
-
-            if (isset($new_data['FEES_FT_D']) && isset($new_data['BOOKS_RES_D']) && isset($new_data['TRANSPORT_RES_D'])) {
-                $fees = (float) $new_data['FEES_FT_D'] ?: 0;
-                $books = (float) $new_data['BOOKS_RES_D'] ?: 0;
-                $transport = (float) $new_data['TRANSPORT_RES_D'] ?: 0;
-
-
-                if (isset($new_data['TUIT_OVERALL_FT_D'])) {
-                    $tuitionOverall = (float) $new_data['TUIT_OVERALL_FT_D'] ?: 0;
-                    $new_data['pvt_coa'] = $tuitionOverall + $fees + $books + $transport;
-                }
-
-                if (isset($new_data['TUIT_STATE_FT_D'])) {
-                    $tuitionState = (float) $new_data['TUIT_STATE_FT_D'] ?: 0;
-                    $new_data['public_coa_in_state'] = $tuitionState + $fees + $books + $transport;
-                }
-
-                if (isset($new_data['TUIT_NRES_FT_D'])) {
-                    $tuitionNonResident = (float) $new_data['TUIT_NRES_FT_D'] ?: 0;
-                    $new_data['public_coa_out_state'] = $tuitionNonResident + $fees + $books + $transport;
-                }
-            }
-
 
             $collegeInfo = CollegeInformation::where('petersons_id', $data[$peterson_id_index])
                 ->first();
+
+            // dd($collegeInfo);
+
             if ($collegeInfo) {
+                $new_data = $this->get_column_values($column_names, $data);
+                // dd($new_data);
+
+                if (isset($new_data['FEES_FT_D']) && isset($new_data['BOOKS_RES_D']) && isset($new_data['TRANSPORT_RES_D'])) {
+                    $fees = (float) $new_data['FEES_FT_D'] ?: 0;
+                    $books = (float) $new_data['BOOKS_RES_D'] ?: 0;
+                    $transport = (float) $new_data['TRANSPORT_RES_D'] ?: 0;
+                    $tuitionOverall = (float) $new_data['TUIT_OVERALL_FT_D'] ?: 0;
+                    $tuitionState = (float) $new_data['TUIT_STATE_FT_D'] ?: 0;
+                    $tuitionNonResident = (float) $new_data['TUIT_NRES_FT_D'] ?: 0;
+
+                    if (isset($new_data['TUIT_OVERALL_FT_D'])) {
+                        $new_data['pvt_coa'] = $tuitionOverall + $fees + $books + $transport;
+
+                        if ($collegeInfo->tution_and_fess == null) {
+                            $new_data['tution_and_fess'] = $tuitionOverall + $fees;
+                        }
+                    }
+
+                    if (isset($new_data['TUIT_STATE_FT_D'])) {
+                        $new_data['public_coa_in_state'] = $tuitionState + $fees + $books + $transport;
+
+                        if ($collegeInfo->tuition_and_fee_instate == null) {
+                            $new_data['tuition_and_fee_instate'] = $tuitionState + $fees;
+                        }
+                    }
+
+                    if (isset($new_data['TUIT_NRES_FT_D'])) {
+                        $new_data['public_coa_out_state'] = $tuitionNonResident + $fees + $books + $transport;
+
+                        if ($collegeInfo->tuition_and_fee_outstate == null) {
+                            $new_data['tuition_and_fee_outstate'] = $tuitionNonResident + $fees;
+                        }
+                    }
+                }
+
+                if (isset($new_data['RM_BD_D']) && $collegeInfo->room_and_board == null) {
+                    $new_data['room_and_board'] = $new_data['RM_BD_D'];
+                }
+                if (isset($new_data['AP_DL_EACT_MON']) && $collegeInfo->early_action_month == null) {
+                    $new_data['early_action_month'] = $new_data['AP_DL_EACT_MON'];
+                }
+                if (isset($new_data['AP_DL_EACT_DAY']) && $collegeInfo->early_action_day == null) {
+                    $new_data['early_action_day'] = $new_data['AP_DL_EACT_DAY'];
+                }
+                if (isset($new_data['AP_DL_FRSH_MON']) && $collegeInfo->regular_decision_month == null) {
+                    $new_data['regular_decision_month'] = $new_data['AP_DL_FRSH_MON'];
+                }
+                if (isset($new_data['AP_DL_FRSH_DAY']) && $collegeInfo->regular_decision_day == null) {
+                    $new_data['regular_decision_day'] = $new_data['AP_DL_FRSH_DAY'];
+                }
+                if (isset($new_data['AP_DL_EDEC_1_MON']) && $collegeInfo->early_decision_i_month == null) {
+                    $new_data['early_decision_i_month'] = $new_data['AP_DL_EDEC_1_MON'];
+                }
+                if (isset($new_data['AP_DL_EDEC_1_DAY']) && $collegeInfo->early_decision_i_day == null) {
+                    $new_data['early_decision_i_day'] = $new_data['AP_DL_EDEC_1_DAY'];
+                }
+                if (isset($new_data['AP_DL_EDEC_2_MON']) && $collegeInfo->early_decision_ii_month == null) {
+                    $new_data['early_decision_ii_month'] = $new_data['AP_DL_EDEC_2_MON'];
+                }
+                if (isset($new_data['AP_DL_EDEC_2_DAY']) && $collegeInfo->early_decision_ii_day == null) {
+                    $new_data['early_decision_ii_day'] = $new_data['AP_DL_EDEC_2_DAY'];
+                }
+
                 $collegeInfo->update($new_data);
             }
         }
@@ -444,6 +487,9 @@ class CollegeInformationController extends Controller
     public function editView($id)
     {
         $college_detail = CollegeInformation::find($id);
+        if (!$college_detail) {
+            return redirect()->route('admin.admission-management.college-information.index');
+        }
         $api = env('COLLEGE_RECORD_API') . '?' . 'api_key=' . env('COLLEGE_RECORD_API_KEY') . '&id=' . $college_detail->college_id;
         error_log($api);
         $data = Http::get($api);
@@ -463,6 +509,28 @@ class CollegeInformationController extends Controller
         $programs = [];
         if (isset($apiData->latest->programs->cip_4_digit)) {
             $programs = $apiData->latest->programs->cip_4_digit;
+        }
+
+        if (isset($apiData->latest->cost)) {
+            $cost = $apiData->latest->cost;
+            $tuition = $cost->tuition;
+            $roomboard = $cost->roomboard;
+
+            if ($college_detail->tution_and_fess == null) {
+                $college_detail->tution_and_fess = $tuition->program_year ?: null;
+            }
+
+            if ($college_detail->tuition_and_fee_instate == null) {
+                $college_detail->tuition_and_fee_instate = $tuition->in_state ?: null;
+            }
+
+            if ($college_detail->tuition_and_fee_outstate == null) {
+                $college_detail->tuition_and_fee_outstate = $tuition->out_of_state ?: null;
+            }
+
+            if ($college_detail->room_and_board == null) {
+                $college_detail->room_and_board = $roomboard->oncampus ?: null;
+            }
         }
 
         $fieldsOfStudy = array_reduce($programs, function ($carry, $item) {
