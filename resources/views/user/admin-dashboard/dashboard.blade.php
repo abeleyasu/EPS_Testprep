@@ -338,6 +338,7 @@
                             // $(`#${deadlineId} .dead-line`).attr('class','text-danger').text('Not Published');
                         }else{
                             $(`#${deadlineId} .manage-deadline`).attr('data-dead-line', responseDate);
+                            $(`#${deadlineId} .manage-deadline`).attr('data-admission-option', admissionOption);
 
                             $(`#${deadlineId} .deadline-div`).empty();
                             let html = `<div class="fs-xs text-muted text-italic">${admissionOption}</div><span class="text-dark d-block">${responseDateLabel}</span><span class="text-dark d-block fs-xs">${response.daysleft}</span>`
