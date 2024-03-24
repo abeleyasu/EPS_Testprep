@@ -231,8 +231,33 @@ class CollegeApplicationDeadlineController extends Controller
     public function create($request)
     {
 
+        $request->validate([
+            'admissions_deadline' => 'nullable|date_format:m-d-Y',
+            'competitive_scholarship_deadline' => 'nullable|date_format:m-d-Y',
+            'departmental_scholarship_deadline' => 'nullable|date_format:m-d-Y',
+            'honors_college_deadline' => 'nullable|date_format:m-d-Y',
+            'fafsa_deadline' => 'nullable|date_format:m-d-Y',
+            'css_profile_deadline' => 'nullable|date_format:m-d-Y',
+        ]);
+
         $data = $request->all();
         $data['user_id'] = Auth::id();
+
+
+        if ($request->admissions_deadline) {
+            $deadline = $request->admissions_deadline;
+            try {
+                $date = Carbon::createFromFormat("m-d-Y", $deadline);
+            } catch (\Throwable $th) {
+                $date = Carbon::createFromFormat("Y-m-d", $deadline);
+            }
+            if ($date->isPast()) {
+                $date->addYear();
+            }
+            $data['admissions_deadline'] = $date->format('m-d-Y');
+            $request->admissions_deadline = $data['admissions_deadline'];
+        }
+
         $college = CollegeDetails::create($data);
         $this->setReminderAndAddIntoCalendor($data);
     }
@@ -302,6 +327,7 @@ class CollegeApplicationDeadlineController extends Controller
                 $date->addYear();
             }
             $data['admissions_deadline'] = $date->format('m-d-Y');
+            $request->admissions_deadline = $data['admissions_deadline'];
         }
 
         // dd($data);
@@ -319,6 +345,7 @@ class CollegeApplicationDeadlineController extends Controller
             $this->create($request);
         }
         $days = "";
+        $date = "";
         if ($request->admissions_deadline) {
             $deadline = $request->admissions_deadline;
             try {
@@ -332,8 +359,8 @@ class CollegeApplicationDeadlineController extends Controller
             'success' => true,
             'message' => 'College application deadline saved successfully',
             'daysleft' => $days,
-            'date' => $date->format('m-d-Y'),
-            'dateLabel' => date('F d, Y', strtotime($date)),
+            'date' => $date ? $date->format('m-d-Y') : '',
+            'dateLabel' => $date ? date('F d, Y', strtotime($date)) : '',
         ];
     }
 
