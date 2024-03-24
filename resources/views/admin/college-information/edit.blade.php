@@ -930,14 +930,6 @@
                                 value="{{ old('overall_admission_rate', $info->overall_admission_rate) }}" />
                         </div>
 
-
-
-                        <div class="mb-4">
-                            <label class="form-label">Room & Board:</label>
-                            <input type="text" class="form-control" name="room_and_board"
-                                value="{{ old('room_and_board', $info->room_and_board) }}" />
-                        </div>
-
                         {{-- Application Types --}}
                         <div class="mb-4">
                             <div class="mb-2">
@@ -1364,7 +1356,7 @@
                         this.tuition_and_fee_instate = tuition.in_state ? tuition.in_state : null;
                     } else if (costType === 'tuition_and_fee_outstate') {
                         this.tuition_and_fee_outstate = tuition.out_of_state ? tuition.out_of_state : null;
-                    } else if (costType === 'tuition_and_fee_pvt') {
+                    } else if (costType === 'tution_and_fess') {
                         this.tution_and_fess = tuition.program_year ? tuition.program_year : null;
                     } else if (costType === 'room_and_board') {
                         this.room_and_board = roomboard.oncampus ? roomboard.oncampus : null;
