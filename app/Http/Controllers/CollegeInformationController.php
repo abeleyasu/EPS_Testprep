@@ -147,7 +147,7 @@ class CollegeInformationController extends Controller
         foreach ($fileContents as $line) {
             $index++;
             $data = str_getcsv($line);
-            // dd($data);
+
             // Storing the indeces of Required Columns
             if ($index == 0) {
                 $searchInColumn =  $this->getColumnIndicesFromCSV(array('INUN_ID'), $data);
@@ -159,11 +159,13 @@ class CollegeInformationController extends Controller
             }
 
             if ($peterson_id_index == null) {
-                // return redirect()->back()->with('error', 'Peterson ID not found in the CSV file.');
-                continue;
+                return redirect()->back()->with('error', 'Peterson ID (INUN_ID) cannot be empty in the CSV file.');
+                // continue;
             }
 
             $new_data = $this->get_column_values($column_names, $data);
+
+            // dd($new_data);
 
             if (isset($new_data['FEES_FT_D']) && isset($new_data['BOOKS_RES_D']) && isset($new_data['TRANSPORT_RES_D'])) {
                 $fees = (float) $new_data['FEES_FT_D'] ?: 0;
