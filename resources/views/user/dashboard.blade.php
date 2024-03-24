@@ -520,6 +520,8 @@
                 $('#admission_deadline_formgroup').show();
             }
 
+            $("#deadline-modal").attr("data-id", e.target.dataset.deadlineId);
+
             $(".deadline-date").datepicker("setDate", e.target.dataset.deadLine);
             $(".update-deadline").attr("data-id", e.target.dataset.deadlineId);
             $(".update-deadline").attr("data-date", e.target.dataset.deadLine);
@@ -536,8 +538,38 @@
             $(".update-deadline").attr("data-date", e.target.value);
         })
 
+        var admissionOptionNeedAlert = false
         $(document).on('change', '.admission-option', function(e) {
-            $(".update-deadline").attr("data-admission-option", e.target.value);
+            const admissionOptionSelected = e.target.value
+
+            if (!admissionOptionNeedAlert) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Admission deadline will be updated according to its default value of the selected admission option!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, update it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setDeadlineOnAdmissionOptionChange(e)
+                        admissionOptionNeedAlert = true
+                    } else {
+                        console.log('cancel')
+                        // revert back to last selected admission option
+
+                        // get attribute data-admission-option
+                        const admissionOption = $(".update-deadline").attr("data-admission-option");
+                        // console.log('admissionOption', admissionOption)
+
+                        // set select option to the last selected admission option
+                        $("#admissions_option").val(admissionOption)
+                    }
+                });
+            } else {
+                setDeadlineOnAdmissionOptionChange(e)
+            }
 
             if (e.target.value === '') {
                 $('#admission_deadline_formgroup').hide();
@@ -546,47 +578,125 @@
             }
         })
 
-        function updateDeadline(dataset) {
-                const deadlineId = dataset.id;
-                const deadlineDate = dataset.date;
-                const admissionOption = dataset.admissionOption;
-                $.ajax({
-                    url: "{{ route('admin-dashboard.college_application_save') }}",
-                    type: 'POST',
-                    data: {
-                        college_detail_id: deadlineId,
-                        admissions_deadline: deadlineDate,
-                        admission_option: admissionOption
-                    },
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                }).done(async (response) => {
-                    if (response.success) {
-                        toastr.success(response.message);
-                        const responseDate = response.date
-                        const responseDateLabel = response.dateLabel
-                        if(response.daysleft === ""){
-                            $(`#${deadlineId} .manage-deadline`).attr('data-dead-line', '');
+        const setDeadlineOnAdmissionOptionChange = (e) => {
+            $(".update-deadline").attr("data-admission-option", e.target.value);
 
-                            $(`#${deadlineId} .deadline-div`).empty();
-                            let html = `<span class="text-danger d-block">Not Published</span>`;
-                            $(`#${deadlineId} .deadline-div`).append(html);
-                            // $(`#${deadlineId} .dead-line`).attr('class','text-danger').text('Not Published');
-                        }else{
-                            $(`#${deadlineId} .manage-deadline`).attr('data-dead-line', responseDate);
-                            $(`#${deadlineId} .manage-deadline`).attr('data-admission-option', admissionOption);
+            // get college id
+            const collegeId = $("#deadline-modal").attr("data-id");
+            // console.log('collegeId', collegeId);
 
-                            $(`#${deadlineId} .deadline-div`).empty();
-                            let html = `<div class="fs-xs text-muted text-italic">${admissionOption}</div><span class="text-dark d-block">${responseDateLabel}</span><span class="text-dark d-block fs-xs">${response.daysleft}</span>`
-                            $(`#${deadlineId} .deadline-div`).append(html);
-                        }
+            // get college_data from textarea[college_data[collegeId]
+            const collegeDataString = $(`textarea[name="college_data[${collegeId}]"]`).val();
+            if (collegeDataString) {
+                const collegeData = JSON.parse(collegeDataString);
+                // console.log('collegeData', collegeData);
 
-                        $('#deadline-modal').modal('hide');
-                    } else {
-                        toastr.error(response.message);
+                if (collegeData) {
+                    const admissionOptionSelected = e.target.value;
+                    const collegeInformation = collegeData.college_information;
+
+                    // admission deadline:
+                    // Early Action: AP_DL_EACT_DAY, AP_DL_EACT_MON
+                    // Early Decision 1: AP_DL_EDEC_1_DAY, AP_DL_EDEC_1_MON
+                    // Early Decision 2: AP_DL_EDEC_2_DAY, AP_DL_EDEC_2_MON
+                    // Regular Decision: AP_DL_FRSH_DAY, AP_DL_FRSH_MON
+                    // Rolling Admission: No
+
+                    let deadlineDay = null
+                    let deadlineMonth = null
+
+                    if (admissionOptionSelected === 'Early Action') {
+                        // console.log('Early Action')
+                        deadlineDay = collegeInformation.early_action_day ?? collegeInformation.AP_DL_EACT_DAY
+                        deadlineMonth = collegeInformation.early_action_month ?? collegeInformation.AP_DL_EACT_MON
+                    } else if (admissionOptionSelected === 'Early Decision') {
+                        // console.log('Early Decision 1')
+                        deadlineDay = collegeInformation.early_decision_i_day ?? collegeInformation.AP_DL_EDEC_1_DAY
+                        deadlineMonth = collegeInformation.early_decision_i_month ?? collegeInformation
+                            .AP_DL_EDEC_1_MON
+                    } else if (admissionOptionSelected === 'Early Decision 2') {
+                        // console.log('Early Decision 2')
+                        deadlineDay = collegeInformation.early_decision_ii_day ?? collegeInformation
+                            .AP_DL_EDEC_2_DAY
+                        deadlineMonth = collegeInformation.early_decision_ii_month ?? collegeInformation
+                            .AP_DL_EDEC_2_MON
+                    } else if (admissionOptionSelected === 'Regular Decision') {
+                        // console.log('Regular Decision')
+                        deadlineDay = collegeInformation.regular_decision_day ?? collegeInformation.AP_DL_FRSH_DAY
+                        deadlineMonth = collegeInformation.regular_decision_month ?? collegeInformation
+                            .AP_DL_FRSH_MON
+                    } else if (admissionOptionSelected === 'Rolling Admission') {
+                        // console.log('Rolling Admission')
+                        deadlineDay = null
+                        deadlineMonth = null
                     }
-                })
+
+                    let deadlineDate = ''
+
+                    // set deadlineDate to YYYY-MM-DD format, MM from deadlineMonth, DD from deadlineDay
+                    // if deadlineDate has been passed, then set deadlineDate to the next year
+                    if (deadlineDay && deadlineMonth) {
+                        const year = new Date().getFullYear()
+                        const date = new Date(year, deadlineMonth - 1, deadlineDay)
+                        if (date < new Date()) {
+                            deadlineDate = `${deadlineMonth}-${deadlineDay}-${year + 1}`
+                        } else {
+                            deadlineDate = `${deadlineMonth}-${deadlineDay}-${year}`
+                        }
+                    }
+
+                    console.log('default deadlineDate', deadlineDate)
+                    $('#admissions_deadline').datepicker('setDate', deadlineDate)
+                    // if (deadlineDate) {
+                    //     $('#admissions_deadline').datepicker('setDate', deadlineDate)
+                    // }
+                }
             }
+        }
+
+        function updateDeadline(dataset) {
+            const deadlineId = dataset.id;
+            const deadlineDate = dataset.date;
+            const admissionOption = dataset.admissionOption;
+            $.ajax({
+                url: "{{ route('admin-dashboard.college_application_save') }}",
+                type: 'POST',
+                data: {
+                    college_detail_id: deadlineId,
+                    admissions_deadline: deadlineDate,
+                    admission_option: admissionOption
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            }).done(async (response) => {
+                if (response.success) {
+                    toastr.success(response.message);
+                    const responseDate = response.date
+                    const responseDateLabel = response.dateLabel
+                    if (response.daysleft === "") {
+                        $(`#${deadlineId} .manage-deadline`).attr('data-dead-line', '');
+
+                        $(`#${deadlineId} .deadline-div`).empty();
+                        let html = `<span class="text-danger d-block">Not Published</span>`;
+                        $(`#${deadlineId} .deadline-div`).append(html);
+                        // $(`#${deadlineId} .dead-line`).attr('class','text-danger').text('Not Published');
+                    } else {
+                        $(`#${deadlineId} .manage-deadline`).attr('data-dead-line', responseDate);
+                        $(`#${deadlineId} .manage-deadline`).attr('data-admission-option', admissionOption);
+
+                        $(`#${deadlineId} .deadline-div`).empty();
+                        let html =
+                            `<div class="fs-xs text-muted text-italic">${admissionOption}</div><span class="text-dark d-block">${responseDateLabel}</span><span class="text-dark d-block fs-xs">${response.daysleft}</span>`
+                        $(`#${deadlineId} .deadline-div`).append(html);
+                    }
+
+                    $('#deadline-modal').modal('hide');
+                    admissionOptionNeedAlert = false
+                } else {
+                    toastr.error(response.message);
+                }
+            })
+        }
     </script>
 @endsection

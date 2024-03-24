@@ -31,6 +31,7 @@
                     @else
                         <div class="deadline-div text-center"></div>
                     @endif
+                    <textarea class="d-none" name="college_data[{{ $deadline['college_deadline']['id'] }}]">{{ @json_encode($deadline) }}</textarea>
                     <button type="button" class="btn btn-sm btn-alt-secondary mt-2 manage-deadline"
                         data-bs-toggle="modal" data-bs-target="#deadline-modal"
                         data-admission-option="{{ $deadline['college_deadline']['admission_option'] }}"
