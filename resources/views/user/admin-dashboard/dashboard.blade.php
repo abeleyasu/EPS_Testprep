@@ -253,6 +253,7 @@
         <script src="{{ asset('assets/js/owal-carousel/owl.carousel.min.js') }}"></script>
         <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
         <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
+        <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
         <script>
             $(".owl-carousel").owlCarousel({
                 margin: 20,
