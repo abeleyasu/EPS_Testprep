@@ -174,7 +174,7 @@ class Helper
     }
 
     public static function isPrivateCollege ($collegeInformation) {
-        return $collegeInformation['TUIT_OVERALL_FT_D'];
+        return (isset($collegeInformation['TUIT_OVERALL_FT_D']) && $collegeInformation['TUIT_OVERALL_FT_D'] > 0) || $collegeInformation['ownership'] !== 1;
     }
 
     public static function isInStateCollege ($collegeInformation, $stateCode) {

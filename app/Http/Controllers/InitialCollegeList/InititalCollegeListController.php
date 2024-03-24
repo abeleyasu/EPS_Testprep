@@ -605,6 +605,13 @@ class InititalCollegeListController extends Controller
         if ($costcomparisonsummary) {
             $costcomparisonsummary = $costcomparisonsummary->toArray();
         }
+
+        // get user state code
+        $user = Auth::user();
+        $stateId = $user->state_id;
+        $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
+        $state = States::where('id', $stateActiveId)->first();
+
         $totalCount = 0;
         $data = [];
         if ($costcomparisonsummary) {
@@ -619,8 +626,8 @@ class InititalCollegeListController extends Controller
                         // print_r($detailInformation);
                     }
 
-                    $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: $college_information['tution_and_fess'];
-                    $direct_room_board = $detailInformation['direct_room_board_year'] ?: $college_information['room_and_board'];
+                    $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: 0;
+                    $direct_room_board = $detailInformation['direct_room_board_year'] ?: 0;
 
                     // echo session('costComparisonStateChanged') ? 'true' : 'false';
 
@@ -646,25 +653,29 @@ class InititalCollegeListController extends Controller
                         if ($college_data['college_name'] === 'Auburn University') {
                             // echo 'empty tuition';
                         }
-                        if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
-                            $direct_tuition = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
-                        } else {
-                            // get user state code
-                            $user = Auth::user();
-                            $stateId = $user->state_id;
-                            $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
-                            $state = States::where('id', $stateActiveId)->first();
 
+                        if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
+                            $direct_tuition = (float) $college_information['tution_and_fess'];
+                            if (empty($direct_tuition)) {
+                                $direct_tuition = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
+                            }
+                        } else {
                             if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
-                                $direct_tuition = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
+                                $direct_tuition = (float) $college_information['tuition_and_fee_instate'];
+                                if (empty($direct_tuition)) {
+                                    $direct_tuition = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
+                                }
                             } else {
-                                $direct_tuition = (float) $college_information['TUIT_NRES_FT_D'] + (float) $college_information['FEES_FT_D'];
+                                $direct_tuition = (float) $college_information['tuition_and_fee_outstate'];
+                                if (empty($direct_tuition)) {
+                                    $direct_tuition = (float) $college_information['TUIT_NRES_FT_D'] + (float) $college_information['FEES_FT_D'];
+                                }
                             }
                         }
                     }
 
                     if (empty($direct_room_board)) {
-                        $direct_room_board = (float) $college_information['RM_BD_D'];
+                        $direct_room_board = (float) $college_information['room_and_board'] ?: (float) $college_information['RM_BD_D'];
                     }
 
                     if ($college_data['college_name'] === 'Auburn University') {
@@ -734,6 +745,13 @@ class InititalCollegeListController extends Controller
             } else {
                 $costcomparisonsummary = [];
             }
+
+            // get user state code
+            $user = Auth::user();
+            $stateId = $user->state_id;
+            $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
+            $state = States::where('id', $stateActiveId)->first();
+
             if (count($costcomparisonsummary) > 0) {
 
                 foreach ($costcomparisonsummary['college_list_details'] as $key => $costcomparison) {
@@ -741,8 +759,22 @@ class InititalCollegeListController extends Controller
                     $detailInformation = $costcomparison['costcomparison']['costcomparisondetail'];
 
                     // Calculate total direct cost
-                    $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: $college_information['tution_and_fess'];
-                    $direct_room_board = $detailInformation['direct_room_board_year'] ?: $college_information['room_and_board'];
+                    // $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: $college_information['tution_and_fess'];
+                    // $direct_room_board = $detailInformation['direct_room_board_year'] ?: $college_information['room_and_board'];
+
+                    $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: 0;
+                    $direct_room_board = $detailInformation['direct_room_board_year'] ?: 0;
+                    // if (empty($direct_tuition)) {
+                    //     if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
+                    //         $direct_tuition = $college_information['tution_and_fess'];
+                    //     } else {
+                    //         if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
+                    //             $direct_tuition = $college_information['tuition_and_fee_instate'];
+                    //         } else {
+                    //             $direct_tuition = $college_information['tuition_and_fee_outstate'];
+                    //         }
+                    //     }
+                    // }
 
                     if ($costcomparison['college_name'] === 'Auburn University') {
                         // echo $direct_tuition . ' - ' . $direct_room_board . '<br>';
@@ -767,24 +799,27 @@ class InititalCollegeListController extends Controller
 
                     if (empty($direct_tuition)) {
                         if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
-                            $direct_tuition = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
+                            $direct_tuition = (float) $college_information['tution_and_fess'];
+                            if (empty($direct_tuition)) {
+                                $direct_tuition = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
+                            }
                         } else {
-                            // get user state code
-                            $user = Auth::user();
-                            $stateId = $user->state_id;
-                            $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
-                            $state = States::where('id', $stateActiveId)->first();
-
                             if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
-                                $direct_tuition = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
+                                $direct_tuition = (float) $college_information['tuition_and_fee_instate'];
+                                if (empty($direct_tuition)) {
+                                    $direct_tuition = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
+                                }
                             } else {
-                                $direct_tuition = (float) $college_information['TUIT_NRES_FT_D'] + (float) $college_information['FEES_FT_D'];
+                                $direct_tuition = (float) $college_information['tuition_and_fee_outstate'];
+                                if (empty($direct_tuition)) {
+                                    $direct_tuition = (float) $college_information['TUIT_NRES_FT_D'] + (float) $college_information['FEES_FT_D'];
+                                }
                             }
                         }
                     }
 
                     if (empty($direct_room_board)) {
-                        $direct_room_board = (float) $college_information['RM_BD_D'];
+                        $direct_room_board = (float) $college_information['room_and_board'] ?: (float) $college_information['RM_BD_D'];
                     }
 
                     if ($costcomparison['college_name'] === 'Auburn University') {
@@ -831,7 +866,7 @@ class InititalCollegeListController extends Controller
     public function resetCostComparisonData(Request $request)
     {
         try {
-            DB::beginTransaction();
+            \DB::beginTransaction();
             $rules = [
                 'isall' => 'required',
                 'id' => 'required_if:isall,false',
@@ -852,6 +887,12 @@ class InititalCollegeListController extends Controller
                 $cost_comparions = CostComparison::where('id', $request->id)->get();
             }
 
+            // get user state code
+            $user = Auth::user();
+            $stateId = $user->state_id;
+            $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
+            $state = States::where('id', $stateActiveId)->first();
+
             if (count($cost_comparions) > 0) {
                 foreach ($cost_comparions as $key => $cost_comparions) {
                     if ($cost_comparions->user_id == Auth::id()) {
@@ -871,24 +912,27 @@ class InititalCollegeListController extends Controller
                         if (!empty($collegeInformation)) {
                             if (empty($tution_and_fees)) {
                                 if (\App\Helpers\Helper::isPrivateCollege($collegeInformation)) {
-                                    $tution_and_fees = (float) $collegeInformation['TUIT_OVERALL_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
+                                    $tution_and_fees = (float) $collegeInformation['tution_and_fess'];
+                                    if (empty($tution_and_fees)) {
+                                        $tution_and_fees = (float) $collegeInformation['TUIT_OVERALL_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
+                                    }
                                 } else {
-                                    // get user state code
-                                    $user = Auth::user();
-                                    $stateId = $user->state_id;
-                                    $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
-                                    $state = States::where('id', $stateActiveId)->first();
-
                                     if (\App\Helpers\Helper::isInStateCollege($collegeInformation, $state->state_code)) {
-                                        $tution_and_fees = (float) $collegeInformation['TUIT_STATE_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
+                                        $tution_and_fees = (float) $collegeInformation['tuition_and_fee_instate'];
+                                        if (empty($tution_and_fees)) {
+                                            $tution_and_fees = (float) $collegeInformation['TUIT_STATE_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
+                                        }
                                     } else {
-                                        $tution_and_fees = (float) $collegeInformation['TUIT_NRES_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
+                                        $tution_and_fees = (float) $collegeInformation['tuition_and_fee_outstate'];
+                                        if (empty($tution_and_fees)) {
+                                            $tution_and_fees = (float) $collegeInformation['TUIT_NRES_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
+                                        }
                                     }
                                 }
                             }
 
                             if (empty($room_and_board)) {
-                                $room_and_board = (float) $collegeInformation['RM_BD_D'];
+                                $room_and_board = (float) $collegeInformation['room_and_board'] ?: (float) $collegeInformation['RM_BD_D'];
                             }
                         }
 
@@ -1031,8 +1075,18 @@ class InititalCollegeListController extends Controller
         // print_r($college_information);
         // print_r($data);
 
-        $tution_and_fees = $data['direct_tuition_free_year'] ? $data['direct_tuition_free_year'] : $college_information['tution_and_fess'];
-        $room_and_board = $data['direct_room_board_year'] ? $data['direct_room_board_year'] : $college_information['room_and_board'];
+        // $tution_and_fees = $data['direct_tuition_free_year'] ? $data['direct_tuition_free_year'] : $college_information['tution_and_fess'];
+        // $room_and_board = $data['direct_room_board_year'] ? $data['direct_room_board_year'] : $college_information['room_and_board'];
+
+        // get user state code
+        $user = Auth::user();
+        $stateId = $user->state_id;
+        $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
+        $state = States::where('id', $stateActiveId)->first();
+
+        $tution_and_fees = $data['direct_tuition_free_year'] ?: 0;
+        $room_and_board = $data['direct_room_board_year'] ?: 0;
+
         $direct_miscellaneous_year = $data['direct_miscellaneous_year'] ? $data['direct_miscellaneous_year'] : 0;
 
         if (session('costComparisonStateChanged')) {
@@ -1049,24 +1103,27 @@ class InititalCollegeListController extends Controller
 
         if (empty($tution_and_fees)) {
             if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
-                $tution_and_fees = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
+                $tution_and_fees = (float) $college_information['tution_and_fess'];
+                if (empty($tution_and_fees)) {
+                    $tution_and_fees = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
+                }
             } else {
-                // get user state code
-                $user = Auth::user();
-                $stateId = $user->state_id;
-                $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
-                $state = States::where('id', $stateActiveId)->first();
-
                 if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
-                    $tution_and_fees = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
+                    $tution_and_fees = (float) $college_information['tuition_and_fee_instate'];
+                    if (empty($tution_and_fees)) {
+                        $tution_and_fees = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
+                    }
                 } else {
-                    $tution_and_fees = (float) $college_information['TUIT_NRES_FT_D'] + (float) $college_information['FEES_FT_D'];
+                    $tution_and_fees = (float) $college_information['tuition_and_fee_outstate'];
+                    if (empty($tution_and_fees)) {
+                        $tution_and_fees = (float) $college_information['TUIT_NRES_FT_D'] + (float) $college_information['FEES_FT_D'];
+                    }
                 }
             }
         }
 
-        if (empty($direct_room_board)) {
-            $direct_room_board = (float) $college_information['RM_BD_D'];
+        if (empty($room_and_board)) {
+            $room_and_board = (float) $college_information['room_and_board'] ?: (float) $college_information['RM_BD_D'];
         }
 
         // echo 'tution_and_fees > ' . $tution_and_fees . PHP_EOL;

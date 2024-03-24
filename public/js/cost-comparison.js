@@ -1,5 +1,5 @@
 async function getCollegeListForCostComparison(active_accordion = null) {
-    console.log('getCollegeListForCostComparison', global)
+    // console.log('getCollegeListForCostComparison', global)
     await $.ajax({
         url: core.costComparisonDetail,
         method: 'GET',
@@ -265,37 +265,66 @@ $('#cost-form').validate({
 })
 
 $('select[name=choose_state_options]').on('change', async function () {
-    const state = $(this).val();
-    const stateCode = $(this).find('option:selected').data('statecode');
-    global.currentSelectedState = stateCode;
-    global.stateChanged = true;
+    Swal.fire({
+        title: 'Are you sure?',
+        html: "You want to change the state? <span class=\"text-danger\">It will reset the cost comparison data for all colleges to its default value.</span>",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#23BF08',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, change it!',
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const state = $(this).val();
+            const stateCode = $(this).find('option:selected').data('statecode');
+            global.currentSelectedState = stateCode;
+            global.stateChanged = true;
 
-    // console.log('state', state)
-    // console.log('stateCode', stateCode)
+            // console.log('state', state)
+            // console.log('stateCode', stateCode)
 
-    // get active accrodion from data-id of its parent div that has class .collapse.show
-    const activeAccordion = $('#college-list-cost .collapse.show').parent().data('id')
-    // console.log('activeAccordion', activeAccordion)
-    await getCollegeListForCostComparison(activeAccordion);
+            // get active accrodion from data-id of its parent div that has class .collapse.show
+            const activeAccordion = $('#college-list-cost .collapse.show').parent().data('id')
+            // console.log('activeAccordion', activeAccordion)
+            await getCollegeListForCostComparison(activeAccordion);
 
-    // $('#costcomparison-summary').DataTable().ajax.reload();
+            // $('#costcomparison-summary').DataTable().ajax.reload();
 
-    // trigger on change .edit-value in tuition and fees and room and board in current collapse show
-    // to update total direct cost
-    if (activeAccordion) {
-        // $('#college-list-cost .collapse.show').find('[name=direct_tuition_free_year], [name=direct_room_board_year], [name=direct_miscellaneous_year]').trigger('change')
+            // trigger on change .edit-value in tuition and fees and room and board in current collapse show
+            // to update total direct cost
+            if (activeAccordion) {
+                // $('#college-list-cost .collapse.show').find('[name=direct_tuition_free_year], [name=direct_room_board_year], [name=direct_miscellaneous_year]').trigger('change')
 
-        $('#college-list-cost .collapse.show').find('[name=direct_tuition_free_year]').trigger('change')
-        $('#college-list-cost .collapse.show').find('[name=direct_room_board_year]').trigger('change')
-        $('#college-list-cost .collapse.show').find('[name=direct_miscellaneous_year]').trigger('change')
+                $('#college-list-cost .collapse.show').find('[name=direct_tuition_free_year]').trigger('change')
+                $('#college-list-cost .collapse.show').find('[name=direct_room_board_year]').trigger('change')
+                $('#college-list-cost .collapse.show').find('[name=direct_miscellaneous_year]').trigger('change')
 
-    } else {
-        // $('#college-list-cost .collapse').first().find('[name=direct_tuition_free_year], [name=direct_room_board_year], [name=direct_miscellaneous_year]').trigger('change')
+            } else {
+                // $('#college-list-cost .collapse').first().find('[name=direct_tuition_free_year], [name=direct_room_board_year], [name=direct_miscellaneous_year]').trigger('change')
 
-        $('#college-list-cost .collapse').first().find('[name=direct_tuition_free_year]').trigger('change')
-        $('#college-list-cost .collapse').first().find('[name=direct_room_board_year]').trigger('change')
-        $('#college-list-cost .collapse').first().find('[name=direct_miscellaneous_year]').trigger('change')
-    }
+                $('#college-list-cost .collapse').first().find('[name=direct_tuition_free_year]').trigger('change')
+                $('#college-list-cost .collapse').first().find('[name=direct_room_board_year]').trigger('change')
+                $('#college-list-cost .collapse').first().find('[name=direct_miscellaneous_year]').trigger('change')
+            }
+        } else {
+            console.log('cancel')
+            // revert back to last selected state
+
+            // Get the select element
+            const selectElement = document.querySelector('select[name=choose_state_options]');
+
+            // Get all options with data-statecode=X
+            const option = Array.from(selectElement.options).find(option => option.dataset.statecode === global.currentSelectedState);
+            // console.log('option', option)
+
+            // get value of its
+            let lastSelectedState = option.value;
+
+            // set the value of select[name=choose_state_options] to lastSelectedState
+            selectElement.value = lastSelectedState;
+        }
+    })
+
 })
 
 const isAccordionActive = (collegeData, activeIndex) => {
