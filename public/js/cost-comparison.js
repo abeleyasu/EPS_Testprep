@@ -381,7 +381,7 @@ const getTuitionAndFeesValue = (costComparisonData) => {
         // console.log('collegeInformation.tution_and_fess', collegeInformation.tution_and_fess)
     }
 
-    result = detail.direct_tuition_free_year ?? 0
+    result = detail.direct_tuition_free_year ? parseFloat(detail.direct_tuition_free_year) : 0
 
     // if (result) {
     //     result = parseFloat(result)
@@ -443,7 +443,7 @@ const getRoomAndBoardValue = (costComparisonData) => {
     }
 
     // result = detail.direct_room_board_year ?? collegeInformation.room_and_board
-    result = detail.direct_room_board_year ?? 0
+    result = detail.direct_room_board_year ? parseFloat(detail.direct_room_board_year) : 0
 
     // if (result) {
     //     result = parseFloat(result)
