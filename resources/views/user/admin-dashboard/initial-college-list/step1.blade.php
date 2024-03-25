@@ -62,7 +62,7 @@
                             <form method="get">
                                 <div class="college_wants-wrapper">
                                     <h6>
-                                        <span>Note:</span> 
+                                        <span>Note:</span>
                                         We suggest starting your search with no more than 3 of the following aspects selected, see which colleges show up in your results, then decide whether to choose more than 3 aspects to refine your results, if it feels necessary (or if too many colleges show up in your search). We suggest choosing the 1st 3 aspects, but feel free to choose different options that are important to you personally if you choose.
                                     </h6>
                                     <div class="college_wants_list">
@@ -81,7 +81,7 @@
                                                                     </label>
                                                                     <select class="js-example-basic-single js-states form-control" id="college_majors_options" name="college_majors_options" style="width: 100%;" data-placeholder="Select One.">
                                                                         <option></option>
-                                                                        @foreach($college_major_data as $option) 
+                                                                        @foreach($college_major_data as $option)
                                                                             <option value="{{ $option->code }}">{{ $option->title }}</option>
                                                                         @endforeach
                                                                     </select>
@@ -201,7 +201,7 @@
                                                                     </label>
                                                                     <select class="js-example-basic-single js-states form-control" id="specialized_mission" name="specialized_mission" style="width: 100%;" data-placeholder="Select One.">
                                                                         <option></option>
-                                                                        @foreach(config('constants.specialized_mission_options') as $option) 
+                                                                        @foreach(config('constants.specialized_mission_options') as $option)
                                                                             <option value="{{ $option['search_key'] }}">{{ $option['option'] }}</option>
                                                                         @endforeach
                                                                     </select>
@@ -212,7 +212,7 @@
                                                                     </label>
                                                                     <select class="js-example-basic-single js-states form-control" id="religious_affiliation" name="religious_affiliation" style="width: 100%;" data-placeholder="Select One.">
                                                                         <option></option>
-                                                                        @foreach(config('constants.religious_affiliation_options') as $option) 
+                                                                        @foreach(config('constants.religious_affiliation_options') as $option)
                                                                             <option value="{{ $option['value'] }}">{{ $option['option'] }}</option>
                                                                         @endforeach
                                                                     </select>
@@ -278,7 +278,7 @@
                                                                     </label>
                                                                     <input type="text" class="js-range-slider form-control" id="graduate_rate" name="graduate_rate" data-min="0" data-max="100" data-from="0" data-grid="true" data-postfix="%">
                                                                 </div>
-    
+
                                                                 <div class="mb-2">
                                                                     <label class="form-check-label bold-label mb-2" for="acceptance_rate">
                                                                         Acceptance rate
@@ -580,7 +580,7 @@
               const element = `
                 <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${data.id}">
                   <div class="block-header block-header-tab">
-                    <div class="d-flex align-items-center w-100 gap-3 text-white fw-600" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+                    <div class="d-flex align-items-center w-100 gap-3 text-white fw-600 drag-handle" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
                       <i class="fa fa-2x fa-angle-right" id="toggle${index}"></i>
                       <i class="fa fa-bars"></i>
                       <span>${index + 1}</span>
@@ -607,15 +607,15 @@
                             <tr>
                               <th>Average Admitted GPA:</th>
                               <th>${data.college_information.gpa_average ? data.college_information.gpa_average : '-'}</th>
-                            </tr>  
+                            </tr>
                             <tr>
                               <th>Average Accepted ACT:</th>
                               <th>${data.college_information.avg_act_score ? data.college_information.avg_act_score : '-'}</th>
-                            </tr>  
+                            </tr>
                             <tr>
                               <th>Average Accepted SAT:</th>
                               <th>${data.college_information.avg_sat_score ? data.college_information.avg_sat_score : '-'}</th>
-                            </tr>  
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -633,7 +633,7 @@
       }
     })
   }
-  
+
   $('#view-hide-college-btn').on('click', async function (e) {
     await getHideCollegeList('hide-college-list-modal')
   })
@@ -663,7 +663,7 @@
       }
     })
   })
-  
+
   $(document).on('click', '.hide-college-from-list', function (e) {
     Swal.fire({
       title: 'Are you sure?',

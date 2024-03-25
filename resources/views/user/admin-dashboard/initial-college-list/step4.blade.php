@@ -41,39 +41,39 @@
               <tr>
                 <th>Unweight GPA</th>
                 <th>{{ $score ? $score['unweighted_gpa'] : '-' }}</th>
-              </tr>  
+              </tr>
               <tr>
                 <th>Weight GPA</th>
                 <th>{{ $score ? $score['weighted_gpa'] : '-' }}</th>
-              </tr>  
+              </tr>
               <tr>
                 <th>Your Past/Current PSAT Score</th>
                 <th>{{ $score && $score['past_current_psat_score'] != 0 ? $score['past_current_psat_score'] : '-' }}</th>
-              </tr>  
+              </tr>
               <tr>
                 <th>Your Past/Current ACT Score</th>
                 <th>{{ $score && $score['past_current_act_score'] != 0 ? $score['past_current_act_score'] : '-' }}</th>
-              </tr>  
+              </tr>
               <tr>
                 <th>Your Past/Current SAT Score</th>
                 <th>{{ $score && $score['past_current_sat_score'] != 0 ? $score['past_current_sat_score'] : '-' }}</th>
-              </tr>  
+              </tr>
               <tr>
                 <th>Your Goal PSAT Score</th>
                 <th>{{ $score && $score['goal_test_type'] == 'PSAT' && $score['goal_composite_score'] ? $score['goal_composite_score'] : '-' }}</th>
-              </tr>  
+              </tr>
               <tr>
                 <th>Your Goal ACT Score</th>
                 <th>{{ $score && $score['goal_test_type'] == 'ACT' && $score['goal_composite_score'] ? $score['goal_composite_score'] : '-' }}</th>
-              </tr>  
+              </tr>
               <tr>
                 <th>Your Goal SAT Score</th>
                 <th>{{ $score && $score['goal_test_type'] == 'SAT' && $score['goal_composite_score'] ? $score['goal_composite_score'] : '-' }}</th>
-              </tr>  
+              </tr>
               <tr>
                 <th>Your Final ACT Score</th>
                 <th>{{ $score && $score['final_test_type'] == 'ACT' && $score['final_composite_score'] ? $score['final_composite_score'] : '-' }}</th>
-              </tr>  
+              </tr>
               <tr>
                 <th>Your Final SAT Score</th>
                 <th>{{ $score && $score['final_test_type'] == 'SAT' && $score['final_composite_score'] ? $score['final_composite_score'] : '-' }}</th>
@@ -310,7 +310,7 @@
               const element = `
                 <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${data.id}">
                   <div class="block-header block-header-tab">
-                    <div class="d-flex align-items-center w-100 gap-3 text-white fw-600" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+                    <div class="d-flex align-items-center w-100 gap-3 text-white fw-600 drag-handle" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
                       <i class="fa fa-2x fa-angle-right" id="toggle${index}"></i>
                       <i class="fa fa-bars"></i>
                       <span>${index + 1}</span>
@@ -337,15 +337,15 @@
                             <tr>
                               <th>Average Admitted GPA:</th>
                               <th>${data.college_information.gpa_average ? data.college_information.gpa_average : '-'}</th>
-                            </tr>  
+                            </tr>
                             <tr>
                               <th>Average Accepted ACT:</th>
                               <th>${data.college_information.avg_act_score ? data.college_information.avg_act_score : '-'}</th>
-                            </tr>  
+                            </tr>
                             <tr>
                               <th>Average Accepted SAT:</th>
                               <th>${data.college_information.avg_sat_score ? data.college_information.avg_sat_score : '-'}</th>
-                            </tr>  
+                            </tr>
                           </tbody>
                         </table>
                       </div>
