@@ -626,8 +626,8 @@ class InititalCollegeListController extends Controller
                         // print_r($detailInformation);
                     }
 
-                    $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: 0;
-                    $direct_room_board = $detailInformation['direct_room_board_year'] ?: 0;
+                    $direct_tuition = (float) ($detailInformation['direct_tuition_free_year'] ?: 0);
+                    $direct_room_board = (float) ($detailInformation['direct_room_board_year'] ?: 0);
 
                     // echo session('costComparisonStateChanged') ? 'true' : 'false';
 
@@ -762,8 +762,8 @@ class InititalCollegeListController extends Controller
                     // $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: $college_information['tution_and_fess'];
                     // $direct_room_board = $detailInformation['direct_room_board_year'] ?: $college_information['room_and_board'];
 
-                    $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: 0;
-                    $direct_room_board = $detailInformation['direct_room_board_year'] ?: 0;
+                    $direct_tuition = (float) ($detailInformation['direct_tuition_free_year'] ?: 0);
+                    $direct_room_board = (float) ($detailInformation['direct_room_board_year'] ?: 0);
                     // if (empty($direct_tuition)) {
                     //     if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
                     //         $direct_tuition = $college_information['tution_and_fess'];
@@ -1084,8 +1084,8 @@ class InititalCollegeListController extends Controller
         $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
         $state = States::where('id', $stateActiveId)->first();
 
-        $tution_and_fees = $data['direct_tuition_free_year'] ?: 0;
-        $room_and_board = $data['direct_room_board_year'] ?: 0;
+        $tution_and_fees = (float) ($data['direct_tuition_free_year'] ?: 0);
+        $room_and_board = (float) ($data['direct_room_board_year'] ?: 0);
 
         $direct_miscellaneous_year = $data['direct_miscellaneous_year'] ? $data['direct_miscellaneous_year'] : 0;
 

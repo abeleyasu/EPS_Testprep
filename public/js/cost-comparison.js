@@ -342,7 +342,7 @@ const isInStateCollege = (collegeInformation) => {
 }
 
 const isPrivateCollege = (collegeInformation) => {
-    return collegeInformation.TUIT_OVERALL_FT_D
+    return (collegeInformation.TUIT_OVERALL_FT_D && collegeInformation.TUIT_STATE_FT_D > 0) || collegeInformation.ownership != 1 ? true : false
 }
 
 const inStateOutStateLabel = (collegeInformation) => {
@@ -381,27 +381,48 @@ const getTuitionAndFeesValue = (costComparisonData) => {
         // console.log('collegeInformation.tution_and_fess', collegeInformation.tution_and_fess)
     }
 
-    result = detail.direct_tuition_free_year ?? collegeInformation.tution_and_fess
+    result = detail.direct_tuition_free_year ?? 0
 
-    if (result) {
-        result = parseFloat(result)
-    } else {
-        if (collegeInformation.tution_and_fess) {
-            result = parseFloat(collegeInformation.tution_and_fess)
-        } else if (isPrivateCollege(collegeInformation)) {
-            result = tutOverrallFtD + feesFtD
+    // if (result) {
+    //     result = parseFloat(result)
+    // } else {
+    //     if (collegeInformation.tution_and_fess) {
+    //         result = parseFloat(collegeInformation.tution_and_fess)
+    //     } else if (isPrivateCollege(collegeInformation)) {
+    //         result = tutOverrallFtD + feesFtD
+    //     } else {
+    //         if (isInStateCollege(collegeInformation)) {
+    //             result = tutStateFtD + feesFtD
+    //         } else {
+    //             result = tutNresFtD + feesFtD
+    //         }
+    //     }
+    // }
+
+    // console.log('getTuitionAndFeesValue', result)
+
+    if (!result) {
+        if (isPrivateCollege(collegeInformation)) {
+            result = collegeInformation.tution_and_fess ? parseFloat(collegeInformation.tution_and_fess) : 0
+            if (!result) {
+                result = tutOverrallFtD + feesFtD
+            }
         } else {
             if (isInStateCollege(collegeInformation)) {
-                result = tutStateFtD + feesFtD
+                result = collegeInformation.tuition_and_fee_instate ? parseFloat(collegeInformation.tuition_and_fee_instate) : 0
+                if (!result) {
+                    result = tutStateFtD + feesFtD
+                }
             } else {
-                result = tutNresFtD + feesFtD
+                result = collegeInformation.tuition_and_fee_outstate ? parseFloat(collegeInformation.tuition_and_fee_outstate) : 0
+                if (!result) {
+                    result = tutNresFtD + feesFtD
+                }
             }
         }
     }
 
-    // console.log('getTuitionAndFeesValue', result)
-
-    return result
+    return parseFloat(result)
 }
 
 const getRoomAndBoardValue = (costComparisonData) => {
@@ -421,21 +442,29 @@ const getRoomAndBoardValue = (costComparisonData) => {
         // console.log('detail.direct_room_board_year', detail.direct_room_board_year)
     }
 
-    result = detail.direct_room_board_year ?? collegeInformation.room_and_board
+    // result = detail.direct_room_board_year ?? collegeInformation.room_and_board
+    result = detail.direct_room_board_year ?? 0
 
-    if (result) {
-        result = parseFloat(result)
-    } else {
-        if (collegeInformation.RM_BD_D) {
-            result = parseFloat(collegeInformation.RM_BD_D)
-        }
-    }
+    // if (result) {
+    //     result = parseFloat(result)
+    // } else {
+    //     if (collegeInformation.RM_BD_D) {
+    //         result = parseFloat(collegeInformation.RM_BD_D)
+    //     }
+    // }
 
     if (costComparisonData.college_name == 'Auburn University') {
         // console.log('getRoomAndBoardValue', result)
     }
 
-    return result;
+    if (!result) {
+        result = collegeInformation.room_and_board ? parseFloat(collegeInformation.room_and_board) : 0
+        if (!result) {
+            result = collegeInformation.RM_BD_D ? parseFloat(collegeInformation.RM_BD_D) : 0
+        }
+    }
+
+    return parseFloat(result)
 }
 
 const getDirectCostTotal = (costComparisonData) => {
