@@ -3147,15 +3147,33 @@
                                                                                         100;
 
                                                                                     $percentage = $percentage . '%';
+                                                                                    $missedCounts = array_column($categoryAndQuestionTypeSummary['qt'], 'missed');
+                                                                                    $incorrectCounts = array_column($categoryAndQuestionTypeSummary['qt'], 'incorrect');
+                                                                                    $correctCounts = array_column($categoryAndQuestionTypeSummary['qt'], 'correct');
+                                                                                    $totalMissed = array_sum($missedCounts);
+                                                                                    $totalIncorrect = array_sum($incorrectCounts);
+                                                                                    $totalCorrect = array_sum($correctCounts);
+                                                                                    // dump($totalMissed);
+                                                                                    // dump($totalIncorrect);
+                                                                                    // dd($totalCorrect);
+                                                                                    // dd($categoryAndQuestionTypeSummary);
                                                                                 @endphp
                                                                                 <div class="row">
                                                                                     <div
                                                                                         class="col-md-12 text-center">
                                                                                         <p class="block-title m-0">
-                                                                                            Tested
-                                                                                            on
-                                                                                            {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
-                                                                                            questions
+                                                                                            @if ($missed_ct > 0)
+                                                                                                Missed
+                                                                                                on
+                                                                                                {{ $missed_ct }} /
+                                                                                                {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
+                                                                                                questions
+                                                                                            @else
+                                                                                                Tested
+                                                                                                on
+                                                                                                {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
+                                                                                                questions
+                                                                                            @endif
                                                                                         </p>
                                                                                     </div>
                                                                                 </div>
@@ -3198,27 +3216,48 @@
                                                                                                 All Question Types
                                                                                                 Correct
                                                                                             </div>
+                                                                                            @elseif($missed_ct > 0)
+                                                                                        <div
+                                                                                            class="text-danger text-center">
+                                                                                            {{ $totalMissed + $totalIncorrect }} /
+                                                                                            {{ $totalMissed + 
+                                                                                                $totalIncorrect +
+                                                                                                $totalCorrect }}
+                                                                                            Incorrect Question Types
+                                                                                        </div>
                                                                                         @else
                                                                                             <div
                                                                                                 class="text-danger text-center">
                                                                                                 {{ $categoryAndQuestionTypeSummary['total_incorrect_qts'] }}
                                                                                                 /
                                                                                                 {{-- {{ $categoryAndQuestionTypeSummary['total_qts'] }} --}}
-                                                                                                {{ count($categoryAndQuestionTypeSummary['qt']) }}
+                                                                                                {{-- {{ count($categoryAndQuestionTypeSummary['qt']) }} --}}
+                                                                                                {{ $totalMissed + 
+                                                                                                    $totalIncorrect +
+                                                                                                    $totalCorrect }}
                                                                                                 Incorrect Question Types
                                                                                             </div>
                                                                                         @endif
+                                                                                        @elseif($missed_ct > 0)
+                                                                                        <div
+                                                                                            class="text-danger text-center">
+                                                                                            {{ $totalMissed + $totalIncorrect }} /
+                                                                                            {{ $totalMissed + 
+                                                                                                $totalIncorrect +
+                                                                                                $totalCorrect }}
+                                                                                            Incorrect Question Types
+                                                                                        </div>
                                                                                     @endif
 
-                                                                                    @if ($missed_ct > 0)
+                                                                                    {{-- @if ($missed_ct > 0)
                                                                                         <div
                                                                                             class="text-danger text-center">
                                                                                             {{ $missed_ct }} /
                                                                                             {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
-                                                                                            {{-- {{ $count }} --}}
+                                                                                            {{ $count }}
                                                                                             Missed
                                                                                         </div>
-                                                                                    @endif
+                                                                                    @endif --}}
                                                                                 </div>
 
                                                                             </td>
