@@ -20,10 +20,12 @@
                             @if (!@empty($test_details))
                                 <input type="hidden" id="test_type" name="test_type" value="{{ $test_details->format }}" />
                                 <input type="hidden" id="test_id" name="test_id" value="{{ $test_details->id }}" />
+                                <input type="hidden" id="section_id" name="section_id" value="{{ $section_id }}" />
                             @endempty
 
                             @php
                                 // echo "<pre>";print_r($user_selected_answers);echo "</pre>";exit;
+                                // dd($section_id);
                             @endphp
                             @if (isset($user_selected_answers[0]['all_sections']) && !empty($user_selected_answers[0]['all_sections']))
                                 {{-- <input type="hidden" id="practice_test_type" name="practice_test_type"
@@ -54,7 +56,6 @@
                             @if (isset($test_details) && !empty($test_details))
                                 @php
                                     $testType = request()->session()->get('testType');
-                                    // dd($testType);
                                 @endphp
                                 @if ($testType == 'proctored')
                                     <li class="breadcrumb-item" aria-current="page">
@@ -415,6 +416,36 @@
                                         } else {
                                             $('#incorrect-message').text('');
                                             $('.correct-answers').parents('.hide-correct-answers').show();
+                                        }
+                                    }
+
+                                    function showAllModuleData(data) {
+                                        let is_checked = $(data).is(':checked');
+                                        let testid = $('#test_id').val();
+                                        let section_id = $('#section_id').val();
+                                        if (is_checked) {
+                                            $.ajax({
+                                                type: "GET",
+                                                url: "{{route('multiple_review')}}",
+                                                dataType:'json',
+                                                data:{
+                                                    testid:testid,
+                                                    section_id:section_id
+                                                },
+                                                beforeSend:function() {
+                                                    $('#myTabContentSingle').hide();
+                                                    $('.custom-loader-his').css('visibility', 'visible');
+                                                },
+                                                success: function(res) {
+                                                    $('.custom-loader-his').css('visibility', 'hidden');
+                                                    $('#myTabContentSingle').hide();
+                                                    $('#myTabContentMultiple').show();
+                                                    $('#myTabContentMultiple').html(res.html);
+                                                },
+                                            });
+                                        } else {
+                                            $('#myTabContentSingle').show();
+                                            $('#myTabContentMultiple').hide();
                                         }
                                     }
                                 </script>
@@ -2877,14 +2908,31 @@
                     {{-- Category & Question Type Summary tab --}}
                     <div class="tab-pane fade" id="btabs-animated-fade-profile" role="tabpanel"
                         aria-labelledby="btabs-animated-fade-profile-tab" tabindex="0">
+                        @if ($test_details->format == 'DSAT' || $test_details->format == 'DPSAT')
+                            <div class="col-md-12 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" value=""
+                                        onchange="showAllModuleData(this)" name="mega-settings-status"
+                                        id="showCombined">
+                                    <label class="form-check-label fs-sm" for="mega-settings-status">Show
+                                        Combined</label>
+                                </div>
+                            </div>
+                        @endif
+
+
+
+
+
                         <div class="block block-rounded">
                             <div class="block-header block-header-default">
                                 <h3 class="block-title">(BEST SO FAR..) QUESTION TYPE CATEGORIZATION</h3>
                             </div>
                             <div class="block-content">
                                 <div class="block-content p-0">
+                                    <div class="custom-loader-his"></div>
                                     @if (isset($categoryAndQuestionTypeSummaryData) && !empty($categoryAndQuestionTypeSummaryData))
-                                        <div class="tab-content" id="myTabContent">
+                                        <div class="tab-content" id="myTabContentSingle">
                                             @php
                                                 $test = 0;
                                             @endphp
@@ -3140,19 +3188,40 @@
                                                                                             'missed'
                                                                                         ] ?? 0;
                                                                                     $percentage =
-                                                                                        ($incorrect_ct /
+                                                                                        (($incorrect_ct + $missed_ct) /
                                                                                             $categoryAndQuestionTypeSummary[
                                                                                                 'count'
                                                                                             ]) *
                                                                                         100;
 
                                                                                     $percentage = $percentage . '%';
-                                                                                    $missedCounts = array_column($categoryAndQuestionTypeSummary['qt'], 'missed');
-                                                                                    $incorrectCounts = array_column($categoryAndQuestionTypeSummary['qt'], 'incorrect');
-                                                                                    $correctCounts = array_column($categoryAndQuestionTypeSummary['qt'], 'correct');
-                                                                                    $totalMissed = array_sum($missedCounts);
-                                                                                    $totalIncorrect = array_sum($incorrectCounts);
-                                                                                    $totalCorrect = array_sum($correctCounts);
+                                                                                    $missedCounts = array_column(
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'qt'
+                                                                                        ],
+                                                                                        'missed',
+                                                                                    );
+                                                                                    $incorrectCounts = array_column(
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'qt'
+                                                                                        ],
+                                                                                        'incorrect',
+                                                                                    );
+                                                                                    $correctCounts = array_column(
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'qt'
+                                                                                        ],
+                                                                                        'correct',
+                                                                                    );
+                                                                                    $totalMissed = array_sum(
+                                                                                        $missedCounts,
+                                                                                    );
+                                                                                    $totalIncorrect = array_sum(
+                                                                                        $incorrectCounts,
+                                                                                    );
+                                                                                    $totalCorrect = array_sum(
+                                                                                        $correctCounts,
+                                                                                    );
                                                                                     // dump($totalMissed);
                                                                                     // dump($totalIncorrect);
                                                                                     // dd($totalCorrect);
@@ -3162,18 +3231,14 @@
                                                                                     <div
                                                                                         class="col-md-12 text-center">
                                                                                         <p class="block-title m-0">
-                                                                                            @if ($missed_ct > 0)
-                                                                                                Missed
-                                                                                                on
-                                                                                                {{ $missed_ct }} /
-                                                                                                {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
-                                                                                                questions
-                                                                                            @else
-                                                                                                Tested
-                                                                                                on
-                                                                                                {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
-                                                                                                questions
-                                                                                            @endif
+                                                                                            {{-- @if ($missed_ct > 0) --}}
+                                                                                            Missed
+                                                                                            on
+                                                                                            {{ $missed_ct }} /
+                                                                                            {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
+                                                                                            questions
+
+                                                                                            {{-- @endif --}}
                                                                                         </p>
                                                                                     </div>
                                                                                 </div>
@@ -3216,15 +3281,14 @@
                                                                                                 All Question Types
                                                                                                 Correct
                                                                                             </div>
-                                                                                            @elseif($missed_ct > 0)
-                                                                                        <div
-                                                                                            class="text-danger text-center">
-                                                                                            {{ $totalMissed + $totalIncorrect }} /
-                                                                                            {{ $totalMissed + 
-                                                                                                $totalIncorrect +
-                                                                                                $totalCorrect }}
-                                                                                            Incorrect Question Types
-                                                                                        </div>
+                                                                                        @elseif($missed_ct > 0)
+                                                                                            <div
+                                                                                                class="text-danger text-center">
+                                                                                                {{ $totalMissed + $totalIncorrect }}
+                                                                                                /
+                                                                                                {{ $totalMissed + $totalIncorrect + $totalCorrect }}
+                                                                                                Incorrect Question Types
+                                                                                            </div>
                                                                                         @else
                                                                                             <div
                                                                                                 class="text-danger text-center">
@@ -3232,19 +3296,16 @@
                                                                                                 /
                                                                                                 {{-- {{ $categoryAndQuestionTypeSummary['total_qts'] }} --}}
                                                                                                 {{-- {{ count($categoryAndQuestionTypeSummary['qt']) }} --}}
-                                                                                                {{ $totalMissed + 
-                                                                                                    $totalIncorrect +
-                                                                                                    $totalCorrect }}
+                                                                                                {{ $totalMissed + $totalIncorrect + $totalCorrect }}
                                                                                                 Incorrect Question Types
                                                                                             </div>
                                                                                         @endif
-                                                                                        @elseif($missed_ct > 0)
+                                                                                    @elseif($missed_ct > 0)
                                                                                         <div
                                                                                             class="text-danger text-center">
-                                                                                            {{ $totalMissed + $totalIncorrect }} /
-                                                                                            {{ $totalMissed + 
-                                                                                                $totalIncorrect +
-                                                                                                $totalCorrect }}
+                                                                                            {{ $totalMissed + $totalIncorrect }}
+                                                                                            /
+                                                                                            {{ $totalMissed + $totalIncorrect + $totalCorrect }}
                                                                                             Incorrect Question Types
                                                                                         </div>
                                                                                     @endif
@@ -3381,11 +3442,20 @@
                                                                                                         $qtData[
                                                                                                             'count'
                                                                                                         ] ?? 0;
+                                                                                                    // $percentage =
+                                                                                                    //     (($incorrect ) /
+                                                                                                    //         $qtData[
+                                                                                                    //             'count'
+                                                                                                    //         ]) *
+                                                                                                    //     100;
                                                                                                     $percentage =
-                                                                                                        ($incorrect /
-                                                                                                            $qtData[
-                                                                                                                'count'
-                                                                                                            ]) *
+                                                                                                        (($incorrect +
+                                                                                                            $missed_qt) /
+                                                                                                            ($incorrect +
+                                                                                                                $missed_qt +
+                                                                                                                $qtData[
+                                                                                                                    'correct'
+                                                                                                                ])) *
                                                                                                         100;
                                                                                                     $percentage =
                                                                                                         $percentage .
@@ -3408,18 +3478,22 @@
                                                                                                 </div>
                                                                                                 <div
                                                                                                     class="d-flex align-items-center justify-content-center gap-5">
-                                                                                                    @if ($count != $missed_qt)
-                                                                                                        {{-- @php
-                                                                                                            dump(
-                                                                                                                $incorrect
-                                                                                                            );
-                                                                                                            dump(
-                                                                                                                $qtData['correct']
-                                                                                                            );
-                                                                                                            dump(
-                                                                                                                $count
-                                                                                                            );
-                                                                                                        @endphp --}}
+                                                                                                    {{-- @php
+                                                                                                    dump(
+                                                                                                        $incorrect
+                                                                                                    );
+                                                                                                    dump(
+                                                                                                        $qtData['correct']
+                                                                                                    );
+                                                                                                    dump(
+                                                                                                        $count
+                                                                                                    ); 
+                                                                                                    dump(
+                                                                                                        $missed_qt
+                                                                                                    );
+                                                                                                @endphp --}}
+                                                                                                    {{-- @if ($count != $missed_qt) --}}
+                                                                                                       
                                                                                                         @if ($incorrect == 0 && $qtData['correct'] == $count)
                                                                                                             <div
                                                                                                                 class="text-success text-center">
@@ -3438,7 +3512,7 @@
                                                                                                                 Incorrect
                                                                                                             </div>
                                                                                                         @endif
-                                                                                                    @endif
+                                                                                                    {{-- @endif --}}
 
                                                                                                     {{-- @if ($missed_qt > 0)
                                                                                                         <div
@@ -3659,6 +3733,12 @@
                                             </div>
                                         </div>
                                     @endif
+                                    <div class="tab-content" id="myTabContentMultiple" style="display: none">
+                                        @php
+                                            $test = 0;
+                                        @endphp
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -3979,6 +4059,42 @@
             overflow: scroll;
         }
     }
+    .custom-loader-his {
+            width: 50px;
+            height: 50px;
+            display: grid;
+            border-radius: 50%;
+            -webkit-mask: radial-gradient(farthest-side, #0000 40%, #000 41%);
+            background: linear-gradient(0deg, #766DF480 50%, #766DF4FF 0) center/4px 100%,
+                linear-gradient(90deg, #766DF440 50%, #766DF4BF 0) center/100% 4px;
+            background-repeat: no-repeat;
+            animation: s3 1s infinite steps(12);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            visibility: hidden;
+        }
+
+        .custom-loader-his::before,
+        .custom-loader-his::after {
+            content: "";
+            grid-area: 1/1;
+            border-radius: 50%;
+            background: inherit;
+            opacity: 0.915;
+            transform: rotate(30deg);
+        }
+
+        .custom-loader-his::after {
+            opacity: 0.83;
+            transform: rotate(60deg);
+        }
+
+        @keyframes s3 {
+            100% {
+                transform: rotate(1turn)
+            }
+        }
 </style>
 @endsection
 <link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">

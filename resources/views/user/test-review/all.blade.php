@@ -369,8 +369,14 @@
                                                                                 $categoryAndQuestionTypeSummary[
                                                                                     'missed'
                                                                                 ] ?? 0;
+                                                                            // $percentage =
+                                                                            //     ($incorrect /
+                                                                            //         $categoryAndQuestionTypeSummary[
+                                                                            //             'count'
+                                                                            //         ]) *
+                                                                            //     100;
                                                                             $percentage =
-                                                                                ($incorrect /
+                                                                                (($incorrect_ct + $missed_ct) /
                                                                                     $categoryAndQuestionTypeSummary[
                                                                                         'count'
                                                                                     ]) *
@@ -401,34 +407,25 @@
                                                                             //  dump($totalMissed);
                                                                             //         dump($totalIncorrect);
                                                                             //         dump($totalCorrect);
-                                                                                    // dd($categoryAndQuestionTypeSummary);
+                                                                            // dd($categoryAndQuestionTypeSummary);
                                                                         @endphp
                                                                         <div class="row">
                                                                             <div class="col-md-12 text-center">
                                                                                 <p class="block-title m-0">
-                                                                                    @if ($missed_ct > 0)
-                                                                                        Missed
-                                                                                        on
-                                                                                        @if ($test_det == 'single')
-                                                                                            {{ $missed_ct }} /
-                                                                                            {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
-                                                                                        @else
-                                                                                            {{-- {{ $categoryAndQuestionTypeSummary['total_qts'] ?? 0 }} --}}
-                                                                                            {{ $missed_ct }} /
-                                                                                            {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
-                                                                                        @endif
-                                                                                        questions
+                                                                                    {{-- @if ($missed_ct > 0) --}}
+                                                                                    Missed
+                                                                                    on
+                                                                                    @if ($test_det == 'single')
+                                                                                        {{ $missed_ct }} /
+                                                                                        {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
                                                                                     @else
-                                                                                        Tested
-                                                                                        on
-                                                                                        @if ($test_det == 'single')
-                                                                                            {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
-                                                                                        @else
-                                                                                            {{-- {{ $categoryAndQuestionTypeSummary['total_qts'] ?? 0 }} --}}
-                                                                                            {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
-                                                                                        @endif
-                                                                                        questions
+                                                                                        {{-- {{ $categoryAndQuestionTypeSummary['total_qts'] ?? 0 }} --}}
+                                                                                        {{ $missed_ct }} /
+                                                                                        {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
                                                                                     @endif
+                                                                                    questions
+
+                                                                                    {{-- @endif --}}
 
                                                                                 </p>
                                                                             </div>
@@ -462,7 +459,7 @@
                                                                                         Questions missed,
                                                                                     </div>
                                                                                 @endif --}}
-                                                                             
+
                                                                             @if ($missed_ct !== $count)
                                                                                 @if (
                                                                                     $categoryAndQuestionTypeSummary['total_incorrect_qts'] == 0 &&
@@ -487,9 +484,8 @@
                                                                                         {{ $categoryAndQuestionTypeSummary['total_incorrect_qts'] }}
                                                                                         /
                                                                                         {{-- {{ $categoryAndQuestionTypeSummary['total_qts'] }} --}}
-                                                                                        {{ $totalMissed + 
-                                                                                            $totalIncorrect +
-                                                                                            $totalCorrect }}                                                                                        Incorrect Question Types
+                                                                                        {{ $totalMissed + $totalIncorrect + $totalCorrect }}
+                                                                                        Incorrect Question Types
                                                                                     </div>
                                                                                 @endif
                                                                             @elseif($missed_ct > 0)
@@ -827,10 +823,21 @@
                                                                                                 $qtData['missed'] ?? 0;
                                                                                             $count =
                                                                                                 $qtData['count'] ?? 0;
+                                                                                            // $percentage =
+                                                                                            //     ($incorrect /
+                                                                                            //         $qtData['count']) *
+                                                                                            //     100;
                                                                                             $percentage =
-                                                                                                ($incorrect /
-                                                                                                    $qtData['count']) *
+                                                                                                (($incorrect +
+                                                                                                    $missed_qt) /
+                                                                                                    ($incorrect +
+                                                                                                        $missed_qt +
+                                                                                                        $qtData[
+                                                                                                            'correct'
+                                                                                                        ])) *
                                                                                                 100;
+                                                                                            $percentage =
+                                                                                                $percentage . '%';
                                                                                             $percentage =
                                                                                                 $percentage . '%';
                                                                                         @endphp
@@ -851,7 +858,7 @@
 
                                                                                         <div
                                                                                             class="d-flex align-items-center justify-content-center gap-5">
-                                                                                            @if ($count != $missed_qt)
+                                                                                            {{-- @if ($count != $missed_qt) --}}
                                                                                                 {{-- @php
                                                                                                 dump($incorrect);
                                                                                                 dump($correct);
@@ -876,7 +883,7 @@
                                                                                                         Incorrect
                                                                                                     </div>
                                                                                                 @endif
-                                                                                            @endif
+                                                                                            {{-- @endif --}}
 
                                                                                             {{-- @if ($missed_qt > 0)
                                                                                                 <div
