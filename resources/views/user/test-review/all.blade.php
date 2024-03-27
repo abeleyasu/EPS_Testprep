@@ -376,7 +376,7 @@
                                                                             //         ]) *
                                                                             //     100;
                                                                             $percentage =
-                                                                                (($incorrect_ct + $missed_ct) /
+                                                                                (($incorrect + $missed_ct) /
                                                                                     $categoryAndQuestionTypeSummary[
                                                                                         'count'
                                                                                     ]) *
@@ -838,8 +838,8 @@
                                                                                                 100;
                                                                                             $percentage =
                                                                                                 $percentage . '%';
-                                                                                            $percentage =
-                                                                                                $percentage . '%';
+                                                                                            // $percentage =
+                                                                                            //     $percentage . '%';
                                                                                         @endphp
 
                                                                                         <div class="progress mt-2 {{ $percentage }}"
