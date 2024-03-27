@@ -350,6 +350,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
         Route::view('student-view-dashboard', 'user/student-view-dashboard');
         Route::get('/practice-tests/{test}/{id}/review-page', [TestPrepController::class, 'singleReview'])->name('single_review');
+        Route::get('/practice-tests/multiple-sections-review-page', [TestPrepController::class, 'singleReviewShow'])->name('multiple_review');
         // new
         Route::get('/practice-tests/{testId}/{id}', [TestPrepController::class, 'resetSection'])->name('reset_section');
         Route::get('/practice-tests-proctored/{testId}/{id}', [TestPrepController::class, 'resetProctoredSection'])->name('reset_proc_section');

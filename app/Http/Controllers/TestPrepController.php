@@ -1194,6 +1194,478 @@ class TestPrepController extends Controller
             'categoryAndQuestionTypeSummaryData' => $categoryAndQuestionTypeSummaryData
         ]);
     }
+
+    public function singleReviewShow(Request $request)
+    {
+        $current_user_id = Auth::id();
+        // $practice_test_section_id = $id;
+        $get_test_name = 'name';
+        $category_data = array();
+        $percentage_arr_all = array();
+        $store_sections_details = array();
+        $categoryTypeData = [];
+        $questionTypeData = [];
+        $count = 0;
+        $checkboxData = [];
+        // $testid = 553;
+        $types = 'all';
+
+        if ($request->input('testid') != null) {
+            $testid = $request->query('testid');
+        } else {
+            return response()->json([
+                'error' => 'No test was found with this format!!!'
+            ]);
+        }
+        // $allTestsByUser = DB::table('practice_tests')->where('user_id', $current_user_id)->where('format', $testType)->pluck('id')->toArray();
+        // // dump($current_user_id);
+        // // dd($allTestsByUser);
+        // if (empty($allTestsByUser)) {
+        //     return to_route('test-prep-insights')->with('error', 'No test was found with this format!!!');
+        // }
+
+        $test_id = $testid;
+        // dd($testid);
+        $test_category_type = DB::table('practice_questions')
+            ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+            ->select('category_type', 'question_type_id')
+            ->where('practice_test_sections.testid', $test_id)
+            ->get();
+
+        $test_details = PracticeTest::find($test_id);
+
+        // dd($test_details);
+        // dd($request->input('section_id'));
+        $sectionId = $request->input('section_id');
+        $getTestSection = DB::table('practice_test_sections')->where('id', $sectionId)->first();
+        // dd($getTestSection);
+
+        if ($getTestSection->practice_test_type == 'Math' || $getTestSection->practice_test_type == 'Math_no_calculator' || $getTestSection->practice_test_type == 'Math_with_calculator') {
+            $mareSections =  DB::table('practice_test_sections')->where('testid', $test_id)->whereIn('practice_test_type', ['Math', 'Math_no_calculator', 'Math_with_calculator'])->pluck('id')->toArray();
+            // dd($mareSections);
+        } elseif ($getTestSection->practice_test_type == 'Reading_And_Writing' || $getTestSection->practice_test_type == 'Easy_Reading_And_Writing' || $getTestSection->practice_test_type == 'Hard_Reading_And_Writing') {
+            $mareSections = DB::table('practice_test_sections')->where('testid', $test_id)->whereIn('practice_test_type', ['Reading_And_Writing', 'Easy_Reading_And_Writing', 'Hard_Reading_And_Writing'])->pluck('id')->toArray();
+            // dd($mareSections);
+        } else {
+        }
+        if ($types == 'all') {
+            $store_all_data = array();
+            $question_tags_all = [];
+            $store_question_type_data = array();
+            $check_question_answers = [];
+            $get_test_questions = DB::table('practice_questions')
+                ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+                ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
+                ->select(
+                    'practice_questions.id as test_question_id',
+                    'practice_questions.question_type_id',
+                    'practice_questions.category_type',
+                    'practice_questions.mistake_type',
+                    'practice_questions.tags as tags',
+                    'practice_questions.answer as answer',
+                    'practice_questions.category_type_values as category_type_values',
+                    'practice_questions.question_type_values as question_type_values',
+                    'practice_questions.checkbox_values as checkbox_values'
+                )
+                ->where('practice_tests.id', $test_id)
+                ->whereIn('practice_test_sections.id', function ($query) use ($current_user_id, $test_id,$mareSections) {
+                    $query->select('section_id')
+                        ->from('user_answers')
+                        ->whereIn('section_id', $mareSections)
+                        ->where('user_id', $current_user_id)
+                        ->where('test_id', $test_id);
+                })
+                ->orderBy('practice_questions.question_order', 'ASC')
+                ->get();
+
+
+            // dd($get_test_questions);
+
+
+
+            foreach ($get_test_questions as $question) {
+                $questionDetails = QuestionDetails::where("question_id", $question->test_question_id)->get();
+                $questionTypeData[$question->test_question_id] = json_decode($question->question_type_values ?? '', true);
+                $categoryTypeData[$question->test_question_id] = json_decode($question->category_type_values ?? '', true);
+                $checkboxData[$question->test_question_id] = json_decode($question->checkbox_values ?? '', true);
+            }
+
+            $user_answers_data = DB::table('user_answers')
+                ->where('user_id', $current_user_id)
+                ->where('test_id', $test_id)
+                ->latest()
+                ->get();
+            // dd($user_answers_data);
+            $answer_arr = [];
+            foreach ($user_answers_data as $user_answer) {
+                $answers = json_decode($user_answer->answer, true);
+                $answer_arr[] = $answers;
+            }
+            $answer_arr = $this->array_flatten($answer_arr);
+            foreach ($get_test_questions as $question) {
+                if (isset($answer_arr[$question->test_question_id])  && !empty($answer_arr[$question->test_question_id])) {
+                    if ($answer_arr[$question->test_question_id] == $question->answer) {
+                        $check_question_answers[$question->test_question_id] = true;
+                    } else {
+                        $check_question_answers[$question->test_question_id] = false;
+                    }
+                }
+            }
+
+            if (!$get_test_questions->isEmpty()) {
+                $percentage_arr_all = [];
+
+                foreach ($get_test_questions as $get_single_test_questions) {
+                    $questionDetails = QuestionDetails::where("question_id", $get_single_test_questions->test_question_id)->get(['question_type', 'category_type'])->toArray();
+
+                    $array_ques_type = array_map(function ($item) {
+                        return $item['question_type'];
+                    }, $questionDetails);
+
+                    $array_cat_type = array_map(function ($item) {
+                        return $item['category_type'];
+                    }, $questionDetails);
+
+                    $percentage_arr = [];
+
+                    if (isset($array_cat_type) && !empty($array_cat_type) && isset($array_ques_type) && !empty($array_ques_type)) {
+                        $mergedArray = [];
+
+                        for ($i = 0; $i < count($array_ques_type); $i++) {
+                            $mergedArray[$i] = [
+                                'category_type' => $array_cat_type[$i],
+                                'question_type' => $array_ques_type[$i]
+                            ];
+                        }
+
+                        foreach ($check_question_answers as $q_id => $check_question_answer) {
+                            if ($get_single_test_questions->test_question_id == $q_id) {
+                                $percentage_arr = [
+                                    $q_id => $check_question_answer
+                                ];
+                            }
+                        }
+
+                        foreach ($mergedArray as $type) {
+                            $get_cat_name_by_id = DB::table('practice_category_types')
+                                ->where('id', $type['category_type'])
+                                ->get();
+
+                            $get_ques_type_name_by_id = DB::table('question_types')
+                                ->where('id', $type['question_type'])
+                                ->get();
+
+                            if (isset($get_cat_name_by_id[0]->category_type_title) && !empty($get_cat_name_by_id[0]->category_type_title)) {
+                                $percentage_arr_all[$get_cat_name_by_id[0]->category_type_title][] = $percentage_arr;
+                                $question_tags_all[$get_cat_name_by_id[0]->category_type_title][] = isset($get_single_test_questions->tags) ? explode(",", $get_single_test_questions->tags) : [];
+                            }
+                            if (isset($get_cat_name_by_id[0]->category_type_title) && !empty($get_cat_name_by_id[0]->category_type_title) && isset($get_ques_type_name_by_id[0]->question_type_title) && !empty($get_ques_type_name_by_id[0]->question_type_title)) {
+                                $store_all_data[$get_cat_name_by_id[0]->category_type_title][$get_ques_type_name_by_id[0]->question_type_title][] = array($get_single_test_questions->test_question_id, 'category_title' => $get_cat_name_by_id[0]->category_type_title, 'category_description' => $get_cat_name_by_id[0]->category_type_description, "category_type_lesson" => $get_cat_name_by_id[0]->category_type_lesson, "category_type_strategies" => $get_cat_name_by_id[0]->category_type_strategies, "category_type_identification_methods" => $get_cat_name_by_id[0]->category_type_identification_methods, "category_type_identification_activity" => $get_cat_name_by_id[0]->category_type_identification_activity, "question_desc" => $get_ques_type_name_by_id[0]->question_type_description, "question_type_title" => $get_ques_type_name_by_id[0]->question_type_title, "question_type_lesson" => $get_ques_type_name_by_id[0]->question_type_lesson, "question_type_strategies" => $get_ques_type_name_by_id[0]->question_type_strategies, "question_type_identification_methods" => $get_ques_type_name_by_id[0]->question_type_identification_methods, "question_type_identification_activity" => $get_ques_type_name_by_id[0]->question_type_identification_activity);
+                            }
+                        }
+                    }
+
+                    if (isset($array_ques_type) && !empty($array_ques_type)) {
+                        foreach ($array_ques_type as $single_ques_type) {
+                            $get_ques_type_name_by_id = DB::table('question_types')
+                                ->where('id', $single_ques_type)
+                                ->get();
+
+                            if (isset($get_ques_type_name_by_id[0]->question_type_title) && !empty($get_ques_type_name_by_id[0]->question_type_title) && isset($get_cat_name_by_id[0]->category_type_title) && !empty($get_cat_name_by_id[0]->category_type_title)) {
+                                $store_question_type_data[$get_ques_type_name_by_id[0]->question_type_title][] = array($get_single_test_questions->test_question_id, 'category_title' => $get_cat_name_by_id[0]->category_type_title, 'category_description' => $get_cat_name_by_id[0]->category_type_description, "category_type_lesson" => $get_cat_name_by_id[0]->category_type_lesson, "category_type_strategies" => $get_cat_name_by_id[0]->category_type_strategies, "category_type_identification_methods" => $get_cat_name_by_id[0]->category_type_identification_methods, "category_type_identification_activity" => $get_cat_name_by_id[0]->category_type_identification_activity, "question_desc" => $get_ques_type_name_by_id[0]->question_type_description, "question_type_title" => $get_ques_type_name_by_id[0]->question_type_title, "question_type_lesson" => $get_ques_type_name_by_id[0]->question_type_lesson, "question_type_strategies" => $get_ques_type_name_by_id[0]->question_type_strategies, "question_type_identification_methods" => $get_ques_type_name_by_id[0]->question_type_identification_methods, "question_type_identification_activity" => $get_ques_type_name_by_id[0]->question_type_identification_activity);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (isset($types) && !empty($types)) {
+            $helper = new Helper();
+            if ($types == 'all') {
+                $get_all_section = DB::table('practice_test_sections')
+                    ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
+                    ->select('practice_test_sections.*')
+                    ->where('practice_tests.id', $test_id)
+                    ->get();
+
+                if (!$get_all_section->isEmpty()) {
+                    foreach ($get_all_section as $get_single_section) {
+
+                        $user_selected_answers = DB::table('user_answers')
+                            ->where('user_id', $current_user_id)
+                            ->where('section_id', $get_single_section->id)
+                            ->latest()
+                            ->get();
+
+                        if (isset($user_selected_answers[0]) && !empty($user_selected_answers[0])) {
+                            $decoded_answers = [];
+                            $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
+                            $question_order = PracticeQuestion::where('practice_test_sections_id', $get_single_section->id)->orderBy('question_order', 'ASC')->pluck('id')->toArray();
+
+                            if (isset($question_order) && !empty($question_order)) {
+                                foreach ($question_order as $order) {
+                                    if (isset($json_decoded_answers->{$order})) {
+                                        $decoded_answers[$order] = $json_decoded_answers->{$order};
+                                    } else {
+                                        $decoded_answers[$order] = '';
+                                    }
+                                }
+                            }
+                            $json_decoded_guess = json_decode($user_selected_answers[0]->guess);
+                            $json_decoded_flag = json_decode($user_selected_answers[0]->flag);
+                            $json_decoded_skip = json_decode($user_selected_answers[0]->skip);
+
+                            foreach ($decoded_answers as $question_id => $json_decoded_single_answers) {
+                                $get_question_details = DB::table('practice_questions')
+                                    // ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
+                                    ->select(
+                                        'practice_questions.id as question_id',
+                                        'practice_questions.practice_test_sections_id as section_id',
+                                        'practice_questions.title as question_title',
+                                        'practice_questions.type as practice_type',
+                                        'practice_questions.mistake_type as mistake_type',
+                                        'practice_questions.answer as question_answer',
+                                        'practice_questions.answer_content as question_answer_options',
+                                        'practice_questions.multiChoice as is_multiple_choice',
+                                        'practice_questions.question_order',
+                                        'practice_questions.passages_id',
+                                        'practice_questions.tags',
+                                        'passages.title',
+                                        // 'practice_questions.notes',
+                                        'passages.description',
+                                        'practice_questions.category_type as category_type',
+                                        'practice_questions.question_type_id as question_type_id',
+                                        'practice_questions.answer_exp as answer_exp'
+                                    )
+                                    ->where('practice_questions.id', $question_id)
+                                    ->leftJoin("passages", "passages.id", "=", "practice_questions.passages_id")
+                                    ->orderBy('practice_questions.question_order', 'ASC')
+                                    ->get();
+
+
+                                $store_sections_details[] = array(
+                                    'user_selected_answer' => $json_decoded_single_answers,
+                                    'user_selected_guess' => $json_decoded_guess->$question_id ?? '',
+                                    'user_selected_flag' => $json_decoded_flag->$question_id ?? '',
+                                    'user_selected_skip' => $json_decoded_skip->$question_id ?? '',
+                                    'get_question_details' => $get_question_details,
+                                    'all_sections' => $get_all_section,
+                                    'date_taken' => $user_selected_answers,
+                                    'type' => $types
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // if ($types == 'all') {
+        //     $question_tags = [];
+        //     foreach ($question_tags_all as $key => $question_tag) {
+        //         $question_tags[$key] = array_unique(Arr::flatten($question_tag));
+        //     }
+        // }
+        foreach ($percentage_arr_all as $key => $percentage) {
+            $correct_ans = 0;
+            $wrong_ans = 0;
+            $total_question = $this->array_flatten(array_map("unserialize", array_unique(array_map("serialize", $percentage))));
+            // dump($total_question);
+            $count = count($total_question);
+
+            $allCorrect = true;
+            foreach ($total_question as $value) {
+                if ($value == true) {
+                    $correct_ans++;
+                }
+
+                if ($value == false) {
+                    $allCorrect = false;
+                    $wrong_ans++;
+                }
+            }
+            if ($count !== 0) {
+                $percentage_arr_all[$key] = [
+                    "correct_ans" => $correct_ans,
+                    "wrong_ans" => $wrong_ans,
+                    "percentage" => 100 * $wrong_ans / $count . '%',
+                    "percentage_label" => ($correct_ans > $wrong_ans ? $correct_ans : $wrong_ans) . "/" . $count . ($correct_ans > $wrong_ans ? ' Correct' : ' Incorrect'),
+                    "all_correct" => $allCorrect
+                ];
+                if ($allCorrect) {
+                    $percentage_arr_all[$key]['percentage_label'] = 'No Incorrect Answer';
+                }
+            }
+        }
+
+        $checkData = [];
+        $ctData = [];
+
+        foreach ($categoryTypeData as $key => $catData) {
+            $initializedValues = [];
+
+            foreach ($catData as $catKey => $cat) {
+                $answer_arr = $answer_arr ?? [];
+                // if ($key && array_key_exists($key, $answer_arr) && $answer_arr[$key] == "-") {
+                //     // Replace "-" with $catKey value
+                //     if ($catKey == 'F' || $catKey == 'G' || $catKey == 'H' || $catKey == 'J' || $catKey == 'K') {
+                //         $answer_arr[$key] = 'f';
+                //     } elseif ($catKey == 'A' || $catKey == 'B' || $catKey == 'C' || $catKey == 'D' || $catKey == 'E') {
+                //         $answer_arr[$key] = 'a';
+                //     }
+                // }
+                $selected_answer = $answer_arr[$key] ?? '';
+
+                if ($selected_answer != "-") {
+                    $answers = explode(",", $selected_answer);
+                    if (in_array(strtolower($catKey), $answers) || empty($selected_answer)) {
+                        $pq = PracticeQuestion::where("id", $key)->first();
+
+                        foreach ($cat as $catKey1 => $catId) {
+                            $tmp = $ctData[$key][$catId] ?? [];
+                            if (!in_array($catKey, $tmp)) {
+                                $ctData[$key][$catId][] = $catKey;
+                            }
+
+                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] ?? 0;
+                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] ?? 0;
+                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] ?? 0;
+                            $count = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] ?? 0;
+
+                            $conceptCorrect = $checkboxData[$key][$catKey][$catKey1] ?? "0";
+
+                            if (empty($selected_answer)) {
+                                // $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
+                                $uniqueValue = $questionTypeData[$key][$catKey][$catKey1];
+
+                                // Check if initialization has occurred for this unique value across all iterations
+                                if (!isset($initializedValues[$uniqueValue])) {
+                                    // Perform the initialization
+                                    $checkData[$catId][$uniqueValue]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
+
+                                    // Set the flag to indicate that initialization has occurred for this unique value
+                                    $initializedValues[$uniqueValue] = true;
+                                }
+                            } else {
+                                if ($conceptCorrect == "1") {
+                                    $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] + 1;
+                                } else {
+                                    $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] + 1;
+                                }
+                            }
+
+                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] = $count + 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        $catFinal = [];
+
+        $questionsCtPresent = [];
+
+        foreach ($ctData as $ctDataKey => $ctDataValue) {
+            $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
+
+            foreach ($ctDataUniqueValue as $uniqueData) {
+                $ct = $questionsCtPresent[$uniqueData] ?? 0;
+                $questionsCtPresent[$uniqueData] = $ct + 1;
+            }
+            foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
+                $answer_arr = $answer_arr ?? [];
+                $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
+                if (empty($selectedAnswer) || $selectedAnswer != "-") {
+                    $answers = explode(",", $answer_arr[$ctDataKey] ?? '');
+                    $pq = PracticeQuestion::where("id", $ctDataKey)->first();
+                    foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
+                        $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
+                    $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+                    $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
+                    if (empty($selectedAnswer)) {
+                        $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
+                    } else {
+                        foreach ($conceptCorrect as $cp) {
+                            if ($cp === "1") {
+                                $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+                                $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
+                            } else {
+                                $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
+                                $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $categoryAndQuestionTypeSummaryDataMultiple = [];
+
+        if (!empty($checkData)) {
+            $i = 0;
+            foreach ($checkData as $key => $data) {
+                $correct = $catFinal[$key]['correct'] ?? 0;
+                $incorrect = $catFinal[$key]['incorrect'] ?? 0;
+                $missed = $catFinal[$key]['missed'] ?? 0;
+
+                $dataArray = [
+                    'ct' => $key,
+                    'qt' => $data,
+                    'count' => $correct + $incorrect + $missed,
+                    'correct' => $correct,
+                    'incorrect' => $incorrect,
+                    'missed' => $missed
+                ];
+                $total_qts = 0;
+                $total_incorrect_qts = 0;
+                $total_correct_qts = 0;
+                foreach ($data as $dt) {
+                    $total_incorrect_qts += $dt['incorrect'];
+                    $total_correct_qts += $dt['correct'];
+                    $total_qts += $dt['count'];
+                }
+                $dataArray['total_qts'] = $total_qts;
+                $dataArray['total_incorrect_qts'] = $total_incorrect_qts;
+                $dataArray['total_correct_qts'] = $total_correct_qts;
+                $categoryAndQuestionTypeSummaryDataMultiple[$i] = $dataArray;
+                $i++;
+            }
+
+            if (!empty($categoryAndQuestionTypeSummaryDataMultiple)) {
+                $keys = array_column($categoryAndQuestionTypeSummaryDataMultiple, 'incorrect');
+                array_multisort($keys, SORT_DESC, $categoryAndQuestionTypeSummaryDataMultiple);
+            }
+        }
+        // dd($questionsCtPresent);
+
+        // dd($categoryAndQuestionTypeSummaryDataMultiple);
+
+        $html = view('user.test-review.question_concept_review_multiple',  [
+            'category_data' => $category_data,
+            'questionTypeData' => $questionTypeData,
+            'questionsCtPresent' => $questionsCtPresent,
+            'categoryTypeData' => $categoryTypeData,
+            'checkboxData' => $checkboxData,
+            'test_details' => $test_details,
+            'section_id' => $sectionId,
+            'user_selected_answers' => $store_sections_details,
+            'get_test_name' => $get_test_name,
+            'store_all_data' => $store_all_data,
+            'store_question_type_data' => $store_question_type_data,
+            // 'question_tags' => $question_tags,
+            'percentage_arr_all' => $percentage_arr_all,
+            'test_det' => 'single',
+            // 'right_answers' => $right_answers,
+            // 'total_questions' => $total_questions,
+            // 'scaled_score' => $scaled_score,
+            // 'high_score' => $high_score,
+            // 'low_score' => $low_score,
+            // 'practice_test_section_id' => $practice_test_section_id,
+            'categoryAndQuestionTypeSummaryDataMultiple' => $categoryAndQuestionTypeSummaryDataMultiple
+        ])->render();
+        return response()->json(['html' => $html]);
+    }
+
     public function selectFormat()
     {
         return view('user.test-review.select_qt');
