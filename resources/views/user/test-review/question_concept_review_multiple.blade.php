@@ -220,7 +220,7 @@
                                                     {{-- @if ($missed_ct > 0) --}}
                                                     Missed
                                                     on
-                                                    {{ $missed_ct }} /
+                                                    {{ $incorrect_ct + $missed_ct }} /
                                                     {{ $questionsCtPresent[$categoryAndQuestionTypeSummaryMultiple['ct']] ?? 0 }}
                                                     questions
 
