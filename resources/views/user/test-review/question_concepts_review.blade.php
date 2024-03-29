@@ -426,13 +426,13 @@
                                         if (is_checked) {
                                             $.ajax({
                                                 type: "GET",
-                                                url: "{{route('multiple_review')}}",
-                                                dataType:'json',
-                                                data:{
-                                                    testid:testid,
-                                                    section_id:section_id
+                                                url: "{{ route('multiple_review') }}",
+                                                dataType: 'json',
+                                                data: {
+                                                    testid: testid,
+                                                    section_id: section_id
                                                 },
-                                                beforeSend:function() {
+                                                beforeSend: function() {
                                                     $('#myTabContentSingle').hide();
                                                     $('.custom-loader-his').css('visibility', 'visible');
                                                 },
@@ -3234,7 +3234,8 @@
                                                                                             {{-- @if ($missed_ct > 0) --}}
                                                                                             Missed
                                                                                             on
-                                                                                            {{ $missed_ct }} /
+                                                                                            {{ $incorrect_ct + $missed_ct }}
+                                                                                            /
                                                                                             {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
                                                                                             questions
 
@@ -3493,25 +3494,25 @@
                                                                                                     );
                                                                                                 @endphp --}}
                                                                                                     {{-- @if ($count != $missed_qt) --}}
-                                                                                                       
-                                                                                                        @if ($incorrect == 0 && $qtData['correct'] == $count)
-                                                                                                            <div
-                                                                                                                class="text-success text-center">
-                                                                                                                All
-                                                                                                                Correct
-                                                                                                                Answers
-                                                                                                            </div>
-                                                                                                        @else
-                                                                                                            <div
-                                                                                                                class="text-danger text-center">
 
-                                                                                                                {{ $incorrect + $missed_qt }}
-                                                                                                                /
-                                                                                                                {{ $incorrect + $missed_qt + $qtData['correct'] }}
-                                                                                                                {{-- {{$count}} --}}
-                                                                                                                Incorrect
-                                                                                                            </div>
-                                                                                                        @endif
+                                                                                                    @if ($incorrect == 0 && $qtData['correct'] == $count)
+                                                                                                        <div
+                                                                                                            class="text-success text-center">
+                                                                                                            All
+                                                                                                            Correct
+                                                                                                            Answers
+                                                                                                        </div>
+                                                                                                    @else
+                                                                                                        <div
+                                                                                                            class="text-danger text-center">
+
+                                                                                                            {{ $incorrect + $missed_qt }}
+                                                                                                            /
+                                                                                                            {{ $incorrect + $missed_qt + $qtData['correct'] }}
+                                                                                                            {{-- {{$count}} --}}
+                                                                                                            Incorrect
+                                                                                                        </div>
+                                                                                                    @endif
                                                                                                     {{-- @endif --}}
 
                                                                                                     {{-- @if ($missed_qt > 0)
@@ -4059,42 +4060,43 @@
             overflow: scroll;
         }
     }
+
     .custom-loader-his {
-            width: 50px;
-            height: 50px;
-            display: grid;
-            border-radius: 50%;
-            -webkit-mask: radial-gradient(farthest-side, #0000 40%, #000 41%);
-            background: linear-gradient(0deg, #766DF480 50%, #766DF4FF 0) center/4px 100%,
-                linear-gradient(90deg, #766DF440 50%, #766DF4BF 0) center/100% 4px;
-            background-repeat: no-repeat;
-            animation: s3 1s infinite steps(12);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            visibility: hidden;
-        }
+        width: 50px;
+        height: 50px;
+        display: grid;
+        border-radius: 50%;
+        -webkit-mask: radial-gradient(farthest-side, #0000 40%, #000 41%);
+        background: linear-gradient(0deg, #766DF480 50%, #766DF4FF 0) center/4px 100%,
+            linear-gradient(90deg, #766DF440 50%, #766DF4BF 0) center/100% 4px;
+        background-repeat: no-repeat;
+        animation: s3 1s infinite steps(12);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        visibility: hidden;
+    }
 
-        .custom-loader-his::before,
-        .custom-loader-his::after {
-            content: "";
-            grid-area: 1/1;
-            border-radius: 50%;
-            background: inherit;
-            opacity: 0.915;
-            transform: rotate(30deg);
-        }
+    .custom-loader-his::before,
+    .custom-loader-his::after {
+        content: "";
+        grid-area: 1/1;
+        border-radius: 50%;
+        background: inherit;
+        opacity: 0.915;
+        transform: rotate(30deg);
+    }
 
-        .custom-loader-his::after {
-            opacity: 0.83;
-            transform: rotate(60deg);
-        }
+    .custom-loader-his::after {
+        opacity: 0.83;
+        transform: rotate(60deg);
+    }
 
-        @keyframes s3 {
-            100% {
-                transform: rotate(1turn)
-            }
+    @keyframes s3 {
+        100% {
+            transform: rotate(1turn)
         }
+    }
 </style>
 @endsection
 <link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
