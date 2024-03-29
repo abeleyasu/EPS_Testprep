@@ -416,11 +416,13 @@
                                                                                     Missed
                                                                                     on
                                                                                     @if ($test_det == 'single')
-                                                                                        {{ $missed_ct }} /
+                                                                                        {{ $incorrect + $missed_ct }}
+                                                                                        /
                                                                                         {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
                                                                                     @else
                                                                                         {{-- {{ $categoryAndQuestionTypeSummary['total_qts'] ?? 0 }} --}}
-                                                                                        {{ $missed_ct }} /
+                                                                                        {{ $incorrect + $missed_ct }}
+                                                                                        /
                                                                                         {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
                                                                                     @endif
                                                                                     questions
@@ -859,30 +861,30 @@
                                                                                         <div
                                                                                             class="d-flex align-items-center justify-content-center gap-5">
                                                                                             {{-- @if ($count != $missed_qt) --}}
-                                                                                                {{-- @php
+                                                                                            {{-- @php
                                                                                                 dump($incorrect);
                                                                                                 dump($correct);
                                                                                                 dump($count);
                                                                                             @endphp --}}
-                                                                                                @if ($incorrect == 0 && $correct == $count)
-                                                                                                    <div
-                                                                                                        class="text-success text-center">
-                                                                                                        All
-                                                                                                        Correct
-                                                                                                        Answers
-                                                                                                    </div>
-                                                                                                @else
-                                                                                                    <div
-                                                                                                        class="text-danger text-center">
-                                                                                                        {{-- {{ $incorrect + $missed }}
+                                                                                            @if ($incorrect == 0 && $correct == $count)
+                                                                                                <div
+                                                                                                    class="text-success text-center">
+                                                                                                    All
+                                                                                                    Correct
+                                                                                                    Answers
+                                                                                                </div>
+                                                                                            @else
+                                                                                                <div
+                                                                                                    class="text-danger text-center">
+                                                                                                    {{-- {{ $incorrect + $missed }}
                                                                                                         /
                                                                                                         {{ $count }} --}}
-                                                                                                        {{ $incorrect + $missed_qt }}
-                                                                                                        /
-                                                                                                        {{ $incorrect + $missed_qt + $qtData['correct'] }}
-                                                                                                        Incorrect
-                                                                                                    </div>
-                                                                                                @endif
+                                                                                                    {{ $incorrect + $missed_qt }}
+                                                                                                    /
+                                                                                                    {{ $incorrect + $missed_qt + $qtData['correct'] }}
+                                                                                                    Incorrect
+                                                                                                </div>
+                                                                                            @endif
                                                                                             {{-- @endif --}}
 
                                                                                             {{-- @if ($missed_qt > 0)
