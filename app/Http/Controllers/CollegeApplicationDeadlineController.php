@@ -113,8 +113,8 @@ class CollegeApplicationDeadlineController extends Controller
                     $value->collegeDeadline->update([
                         'type_of_application' => '',
                         'admission_option' => '',
+                        'admissions_deadline' => '',
                         'number_of_essaya' => $value->collegeInformation->number_of_essaya,
-                        'admissions_deadline' => $value->collegeInformation->regular_admission_deadline,
                         'ad_status' => 0,
                         'competitive_scholarship_deadline' => $value->collegeInformation->competitive_scholarship_deadline,
                         'csd_status' => 0,

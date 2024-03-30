@@ -3,13 +3,13 @@
 @section('title', 'Initial College List : CPS')
 
 @section('user-content')
-@php 
+@php
 $current_user_state_code = (
     DB::table('states')
 ->select('id', 'state_code')
 ->where('id', '=' , Auth::user()
 ->state_id)
-->first() 
+->first()
 )
 @endphp
 <main id="main-container">
@@ -146,10 +146,10 @@ $current_user_state_code = (
                                         <div class="col-lg-4">
                                             <div class="college-text">
                                                 <p>
-                                                    <b>Acceptance Rate:</b> 
+                                                    <b>Acceptance Rate:</b>
                                                     @if($college['latest.admissions.admission_rate.overall'])
                                                         {{ number_format($college['latest.admissions.admission_rate.overall'] * 100, 0) . '%' }}
-                                                    @else    
+                                                    @else
                                                         N/A
                                                     @endif
                                                 </p>
@@ -190,7 +190,7 @@ $current_user_state_code = (
                                                                 }
 
                                                             @endphp
-                                                        
+
                                                     @break
                                                     @case(2)
                                                         @php
@@ -391,7 +391,7 @@ $current_user_state_code = (
                                                     <div><small>Range of middle 50%</small></div>
                                                     <small id="avg-sat-middle"></small>
                                                 </div>
-                                                
+
                                                 <div class="block-title mb-2">
                                                     <div>SAT Reading/Writing</div>
                                                     <div><small>Average SAT Reading/Writing</small></div>
@@ -399,7 +399,7 @@ $current_user_state_code = (
                                                     <div><small>Range of middle 50%</small></div>
                                                     <small id="avg-sat-reading-writing-middle"></small>
                                                 </div>
-    
+
                                                 <div class="block-title mb-2">
                                                     <div>ACT Composite</div>
                                                     <div><small>Average ACT Composite</small></div>
@@ -482,7 +482,7 @@ $current_user_state_code = (
                                                         </tr><tr>
                                                             <td class="text-center"><p>$30,001-$48,000</p></td>
                                                             <td class="fw-semibold"><p><strong>$27,303</strong></p></td>
-                                                            
+
                                                         </tr><tr>
                                                             <td class="text-center"><p>$48,001-$75,000</p></td>
                                                             <td class="fw-semibold"><p><strong>$31,754</strong></p></td>
@@ -677,7 +677,7 @@ $current_user_state_code = (
                                                             <div><small>Range of middle 50%</small></div>
                                                             <small id="avg-sat-middle-2"></small>
                                                         </div>
-                                                        
+
                                                         <div class="block-title mb-2">
                                                             <div>SAT Reading/Writing</div>
                                                             <div><small>Average SAT Reading/Writing</small></div>
@@ -685,7 +685,7 @@ $current_user_state_code = (
                                                             <div><small>Range of middle 50%</small></div>
                                                             <small id="avg-sat-reading-writing-middle-2"></small>
                                                         </div>
-            
+
                                                         <div class="block-title mb-2">
                                                             <div>ACT Composite</div>
                                                             <div><small>Average ACT Composite</small></div>
@@ -725,7 +725,7 @@ $current_user_state_code = (
                                                             'ASSN_ATHL_NAIA' => 'National Association of Intercollegiate Athletics',
                                                             'ASSN_ATHL_NCCAA' => 'National Christian College Athletic Association',
                                                             'ASSN_ATHL_NJCAA' => ' National Small College Athletic Association (NSCAA)',
-                                                            'ASSN_ATHL_CIAU' => 'National Junior College Athletic Association' 
+                                                            'ASSN_ATHL_CIAU' => 'National Junior College Athletic Association'
                                                         );
                                                         foreach ($athletic_divisions as $key => $value) {
                                                             echo "<div hidden id='$key-container'>";
@@ -744,14 +744,31 @@ $current_user_state_code = (
                                                 <div class="block-content">
                                                     <div class="block block-rounded block-link-shadow">
                                                         <h2 class="block-title">2. Greek Life (Sororities & Fraternities)</h2>
-                                                        <div>LIFE_SOR_NAT</div>
+                                                        {{-- <div>LIFE_SOR_NAT</div>
                                                         <small id="life_sor_nat"></small>
                                                         <div>LIFE_SOR_LOCAL</div>
                                                         <small id="life_sor_local"></small>
                                                         <div>LIFE_FRAT_NAT</div>
                                                         <small id="life_frat_nat"></small>
                                                         <div>LIFE_FRAT_LOCAL</div>
-                                                        <small id="life_frat_local"></small>
+                                                        <small id="life_frat_local"></small> --}}
+
+                                                        <div class="mb-2">
+                                                            <div class="fw-semibold">Has National Sororities</div>
+                                                            <small id="life_sor_nat"></small>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div class="fw-semibold">Has Local Sororities</div>
+                                                            <small id="life_sor_local"></small>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div class="fw-semibold">Has National Fraternities</div>
+                                                            <small id="life_frat_nat"></small>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div class="fw-semibold">Has Local Fraternities</div>
+                                                            <small id="life_frat_local"></small>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1054,7 +1071,7 @@ $current_user_state_code = (
                 } else {
                     $('#avg-sat-middle-2').html('-')
                 }
-                
+
                 const firstactscore = data.latest.admissions.act_scores['25th_percentile'].cumulative
                 const secondactscore = data.latest.admissions.act_scores['75th_percentile'].cumulative
 
@@ -1145,24 +1162,47 @@ $current_user_state_code = (
                     $('#c-private-cost-of-attendance').html((data.latest.college_info.pvt_coa && data.latest.college_info.pvt_coa !== '0' ? '$'+data.latest.college_info.pvt_coa : '-'))
                     // $('#c-pvt-tuition-and-fees').html((data.latest.college_info.TUIT_OVERALL_FT_D && data.latest.college_info.TUIT_OVERALL_FT_D !== '0' && data.latest_college_info.FEES_FT_D ? '$'+(  parseInt(data.latest.college_info.TUIT_NRES_FT_D) +  parseInt(data.latest.college_info.FEES_FT_D) )   : '-'))
                 }
-                $('#c-tution-and-fees').html((data.latest.college_info.tution_and_fess && data.latest.college_info.tution_and_fess !== '0' ? '$'+data.latest.college_info.tution_and_fess : '-'))
-                $('#c-room-and-board').html((data.latest.college_info.RM_BD_D && data.latest.college_info.RM_BD_D !== '0' ? '$'+data.latest.college_info.RM_BD_D : '-'))
+                // $('#c-tution-and-fees').html((data.latest.college_info.tution_and_fess && data.latest.college_info.tution_and_fess !== '0' ? '$'+data.latest.college_info.tution_and_fess : '-'))
+                // $('#c-room-and-board').html((data.latest.college_info.RM_BD_D && data.latest.college_info.RM_BD_D !== '0' ? '$'+data.latest.college_info.RM_BD_D : '-'))
+
+                const collegeInfo =  data.latest.college_info
+                // console.log('collegeInfo', collegeInfo)
+
+                let roomAndBoard = null;
+
+                roomAndBoard = collegeInfo.room_and_board ? collegeInfo.room_and_board : null
+                if (roomAndBoard == null || roomAndBoard == '') {
+                    roomAndBoard = collegeInfo.RM_BD_D ? collegeInfo.RM_BD_D : null
+                }
+
+                $('#c-room-and-board').html(`${roomAndBoard ? '$'+roomAndBoard : '-'}`)
+
                 $('#c-average-percent-of-need-met').html((data.latest.college_info.average_percent_of_need_met && data.latest.college_info.average_percent_of_need_met !== '0' ? data.latest.college_info.average_percent_of_need_met+ '%' : '-'))
                 $('#c-average-freshman-award').html((data.latest.college_info.average_freshman_award && data.latest.college_info.average_freshman_award !== '0' ? '$'+data.latest.college_info.average_freshman_award : '-'))
 
-                console.log("HAyE")
-                console.log(data)
                 // $('#c-entrance-difficulty').html((data.latest.college_info.entrance_difficulty ? data.latest.college_info.entrance_difficulty : '-'))
                 $('#c-entrance-difficulty').html((data.latest.college_info.AD_DIFF_ALL ? data.latest.college_info.AD_DIFF_ALL : '-'))
                 $('#c-number-of-applicants').html((data.latest.college_info.AP_RECD_1ST_N ? data.latest.college_info.AP_RECD_1ST_N : '-'))
 
 
                 // Campus Accordion Data
-                displayYesOrNo = (input) => input.toLowerCase() == 'y' ? 'Yes' : 'No'
-                $('#life_sor_nat').html((data.latest.college_info.LIFE_SOR_NAT ? displayYesOrNo(data.latest.college_info.LIFE_SOR_NAT) : '-'))
-                $('#life_sor_local').html((data.latest.college_info.LIFE_SOR_LOCAL ? displayYesOrNo(data.latest.college_info.LIFE_SOR_LOCAL) : '-'))
-                $('#life_frat_nat').html((data.latest.college_info.LIFE_FRAT_NAT ? displayYesOrNo(data.latest.college_info.LIFE_FRAT_NAT) : '-'))
-                $('#life_frat_local').html((data.latest.college_info.LIFE_FRAT_LOCAL ? displayYesOrNo(data.latest.college_info.LIFE_FRAT_LOCAL): '-'))
+                // displayYesOrNo = (input) => input.toLowerCase() == 'y' ? 'Yes' : 'No'
+                // $('#life_sor_nat').html((data.latest.college_info.LIFE_SOR_NAT ? displayYesOrNo(data.latest.college_info.LIFE_SOR_NAT) : '-'))
+                // $('#life_sor_local').html((data.latest.college_info.LIFE_SOR_LOCAL ? displayYesOrNo(data.latest.college_info.LIFE_SOR_LOCAL) : '-'))
+                // $('#life_frat_nat').html((data.latest.college_info.LIFE_FRAT_NAT ? displayYesOrNo(data.latest.college_info.LIFE_FRAT_NAT) : '-'))
+                // $('#life_frat_local').html((data.latest.college_info.LIFE_FRAT_LOCAL ? displayYesOrNo(data.latest.college_info.LIFE_FRAT_LOCAL): '-'))
+
+                const lifeSorNat = collegeInfo.has_national_sororities ? 1 : (collegeInfo.LIFE_SOR_NAT == 'Y' ? 1 : 0)
+                const lifeSorLocal = collegeInfo.has_local_sororities ? 1 : (collegeInfo.LIFE_SOR_LOCAL == 'Y' ? 1 : 0)
+                const lifeFratNat = collegeInfo.has_national_fraternities ? 1 : (collegeInfo.LIFE_FRAT_NAT == 'Y' ? 1 : 0)
+                const lifeFratLocal = collegeInfo.has_local_fraternities ? 1 : (collegeInfo.LIFE_FRAT_LOCAL == 'Y' ? 1 : 0)
+
+                const displayGuarantedOrNot = (input) => input == 1 ? 'Guaranteed' : 'Not Guaranteed'
+                $('#life_sor_nat').html(displayGuarantedOrNot(lifeSorNat))
+                $('#life_sor_local').html(displayGuarantedOrNot(lifeSorLocal))
+                $('#life_frat_nat').html(displayGuarantedOrNot(lifeFratNat))
+                $('#life_frat_local').html(displayGuarantedOrNot(lifeFratLocal))
+
                 $('#SORO_1ST_P').html((data.latest.college_info.SORO_1ST_P ? (data.latest.college_info.SORO_1ST_P): '-'))
                 $('#FRAT_1ST_P').html((data.latest.college_info.FRAT_1ST_P ? (data.latest.college_info.FRAT_1ST_P + '%'): '-'))
                 $('#CMPS_METRO_T').html((data.latest.college_info.CMPS_METRO_T ? (data.latest.college_info.CMPS_METRO_T) : '-'))
@@ -1175,7 +1215,7 @@ $current_user_state_code = (
                 let earlyDeadlineDay = data.latest.college_info.AP_DL_EACT_DAY;
                 let regAdmissionDeadlineDay = data.latest.college_info.AP_DL_FRSH_DAY
                 let regAdmissionDeadlineMon = data.latest.college_info.AP_DL_FRSH_MON
-                let collegeInfo = data.latest.college_info
+                // let collegeInfo = data.latest.college_info
                 let earlyDecision1DeadlineMon = collegeInfo.AP_DL_EDEC_1_MON
                 let earlyDecision1DeadlineDay = collegeInfo.AP_DL_EDEC_1_DAY
                 let earlyDecision2DeadlineMon = collegeInfo.AP_DL_EDEC_2_MON
@@ -1268,7 +1308,7 @@ $current_user_state_code = (
                 // Athletic Division
 
 
-                let ASSN_ATHL_NCAA = data.latest.college_info.ASSN_ATHL_NCAA 
+                let ASSN_ATHL_NCAA = data.latest.college_info.ASSN_ATHL_NCAA
                 ASSN_ATHL_NCAA != null ? $('#ASSN_ATHL_NCAA' + '-container').removeAttr('hidden') : ''
                 $('#ASSN_ATHL_NCAA').html('NCAA Division ' + ASSN_ATHL_NCAA)
                 ASSN_ATHL_NCAA != null ? $('athletic-division-no-data').prop('hidden' , true) : ''
@@ -1277,7 +1317,7 @@ $current_user_state_code = (
                     'ASSN_ATHL_NAIA' ,
                     'ASSN_ATHL_NCCAA',
                     'ASSN_ATHL_NJCAA',
-                    'ASSN_ATHL_CIAU' 
+                    'ASSN_ATHL_CIAU'
                 ];
 
                 athleticDivisionIDs.forEach( (ad) => {
