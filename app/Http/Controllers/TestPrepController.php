@@ -1090,36 +1090,97 @@ class TestPrepController extends Controller
         $catFinal = [];
 
         $questionsCtPresent = [];
+        // foreach ($ctData as $ctDataKey => $ctDataValue) {
+        //     // dump($ctDataValue);
+        //     $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
+        //     foreach ($ctDataUniqueValue as $uniqueData) {
+        //         $ct = $questionsCtPresent[$uniqueData] ?? 0;
+        //         $questionsCtPresent[$uniqueData] = $ct + 1;
+        //     }
+        //     // dump($questionsCtPresent[$uniqueData]);
+        //     foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
+        //         $answer_arr = $answer_arr ?? [];
+        //         $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
+        //         if (empty($selectedAnswer) || $selectedAnswer != "-") {
+        //             $answers = explode(",", $answer_arr[$ctDataKey] ?? '');
+        //             $pq = PracticeQuestion::where("id", $ctDataKey)->first();
 
+        //             foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
+        //                 $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
+        //             $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+        //             $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
+        //             if (empty($selectedAnswer)) {
+        //                 $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
+        //             } else {
+        //                 foreach ($conceptCorrect as $cp) {
+        //                     if ($cp === "1") {
+        //                         $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+        //                         $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
+        //                     } else {
+        //                         $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
+        //                         $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+
+
+
+
+        // }
         foreach ($ctData as $ctDataKey => $ctDataValue) {
             $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
 
             foreach ($ctDataUniqueValue as $uniqueData) {
-                $ct = $questionsCtPresent[$uniqueData] ?? 0;
-                $questionsCtPresent[$uniqueData] = $ct + 1;
+                $ct = $questionsCtPresent[$uniqueData] ?? ['count' => 0, 'missed' => [], 'incorrect' => []];
+                $questionsCtPresent[$uniqueData] = $ct;
+                $questionsCtPresent[$uniqueData]['count']++;
+
+                // Initialize missed and incorrect arrays if they don't exist
+                if (!isset($questionsCtPresent[$uniqueData]['missed'])) {
+                    $questionsCtPresent[$uniqueData]['missed'] = [];
+                }
+                if (!isset($questionsCtPresent[$uniqueData]['incorrect'])) {
+                    $questionsCtPresent[$uniqueData]['incorrect'] = [];
+                }
             }
-            // dump($questionsCtPresent);
+
             foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
                 $answer_arr = $answer_arr ?? [];
                 $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
+
                 if (empty($selectedAnswer) || $selectedAnswer != "-") {
                     $answers = explode(",", $answer_arr[$ctDataKey] ?? '');
                     $pq = PracticeQuestion::where("id", $ctDataKey)->first();
 
-                    foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
+                    foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue) {
                         $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
-                    $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
-                    $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
-                    if (empty($selectedAnswer)) {
-                        $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
-                    } else {
-                        foreach ($conceptCorrect as $cp) {
-                            if ($cp === "1") {
-                                $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
-                                $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
-                            } else {
-                                $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
-                                $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+                        $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
+                        if (empty($selectedAnswer)) {
+                            $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
+                        } else {
+                            foreach ($conceptCorrect as $cp) {
+                                if ($cp === "1") {
+                                    $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+                                    $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
+                                } else {
+                                    $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
+                                    $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+                                }
+                            }
+                        }
+
+                        // Track missed or incorrect questions
+                        if (empty($selectedAnswer)) {
+                            if (!in_array($ctDataKey, $questionsCtPresent[$ctDataValueKey]['missed'])) {
+                                $questionsCtPresent[$ctDataValueKey]['missed'][] = $ctDataKey;
+                            }
+                        } else {
+                            if (in_array("0", $conceptCorrect)) {
+                                // if (!in_array($ctDataKey, $questionsCtPresent[$ctDataValueKey]['incorrect'])) {
+                                $questionsCtPresent[$ctDataValueKey]['incorrect'][] = $ctDataKey;
+                                // }
                             }
                         }
                     }
@@ -1127,6 +1188,7 @@ class TestPrepController extends Controller
             }
         }
 
+        // dd($questionsCtPresent);
 
 
         // dump($checkData);
@@ -1169,7 +1231,7 @@ class TestPrepController extends Controller
             }
         }
 
-        // dump($categoryAndQuestionTypeSummaryData);
+        // dd($categoryAndQuestionTypeSummaryData);
 
         return view('user.test-review.question_concepts_review',  [
             'category_data' => $category_data,
@@ -1268,7 +1330,7 @@ class TestPrepController extends Controller
                     'practice_questions.checkbox_values as checkbox_values'
                 )
                 ->where('practice_tests.id', $test_id)
-                ->whereIn('practice_test_sections.id', function ($query) use ($current_user_id, $test_id,$mareSections) {
+                ->whereIn('practice_test_sections.id', function ($query) use ($current_user_id, $test_id, $mareSections) {
                     $query->select('section_id')
                         ->from('user_answers')
                         ->whereIn('section_id', $mareSections)
@@ -1565,33 +1627,92 @@ class TestPrepController extends Controller
 
         $questionsCtPresent = [];
 
+        // foreach ($ctData as $ctDataKey => $ctDataValue) {
+        //     $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
+
+        //     foreach ($ctDataUniqueValue as $uniqueData) {
+        //         $ct = $questionsCtPresent[$uniqueData] ?? 0;
+        //         $questionsCtPresent[$uniqueData] = $ct + 1;
+        //     }
+        //     foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
+        //         $answer_arr = $answer_arr ?? [];
+        //         $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
+        //         if (empty($selectedAnswer) || $selectedAnswer != "-") {
+        //             $answers = explode(",", $answer_arr[$ctDataKey] ?? '');
+        //             $pq = PracticeQuestion::where("id", $ctDataKey)->first();
+        //             foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
+        //                 $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
+        //             $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+        //             $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
+        //             if (empty($selectedAnswer)) {
+        //                 $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
+        //             } else {
+        //                 foreach ($conceptCorrect as $cp) {
+        //                     if ($cp === "1") {
+        //                         $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+        //                         $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
+        //                     } else {
+        //                         $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
+        //                         $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+
         foreach ($ctData as $ctDataKey => $ctDataValue) {
             $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
 
             foreach ($ctDataUniqueValue as $uniqueData) {
-                $ct = $questionsCtPresent[$uniqueData] ?? 0;
-                $questionsCtPresent[$uniqueData] = $ct + 1;
+                $ct = $questionsCtPresent[$uniqueData] ?? ['count' => 0, 'missed' => [], 'incorrect' => []];
+                $questionsCtPresent[$uniqueData] = $ct;
+                $questionsCtPresent[$uniqueData]['count']++;
+
+                // Initialize missed and incorrect arrays if they don't exist
+                if (!isset($questionsCtPresent[$uniqueData]['missed'])) {
+                    $questionsCtPresent[$uniqueData]['missed'] = [];
+                }
+                if (!isset($questionsCtPresent[$uniqueData]['incorrect'])) {
+                    $questionsCtPresent[$uniqueData]['incorrect'] = [];
+                }
             }
+
             foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
                 $answer_arr = $answer_arr ?? [];
                 $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
+
                 if (empty($selectedAnswer) || $selectedAnswer != "-") {
                     $answers = explode(",", $answer_arr[$ctDataKey] ?? '');
                     $pq = PracticeQuestion::where("id", $ctDataKey)->first();
-                    foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
+
+                    foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue) {
                         $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
-                    $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
-                    $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
-                    if (empty($selectedAnswer)) {
-                        $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
-                    } else {
-                        foreach ($conceptCorrect as $cp) {
-                            if ($cp === "1") {
-                                $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
-                                $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
-                            } else {
-                                $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
-                                $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+                        $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
+                        if (empty($selectedAnswer)) {
+                            $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
+                        } else {
+                            foreach ($conceptCorrect as $cp) {
+                                if ($cp === "1") {
+                                    $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+                                    $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
+                                } else {
+                                    $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
+                                    $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+                                }
+                            }
+                        }
+
+                        // Track missed or incorrect questions
+                        if (empty($selectedAnswer)) {
+                            if (!in_array($ctDataKey, $questionsCtPresent[$ctDataValueKey]['missed'])) {
+                                $questionsCtPresent[$ctDataValueKey]['missed'][] = $ctDataKey;
+                            }
+                        } else {
+                            if (in_array("0", $conceptCorrect)) {
+                                // if (!in_array($ctDataKey, $questionsCtPresent[$ctDataValueKey]['incorrect'])) {
+                                $questionsCtPresent[$ctDataValueKey]['incorrect'][] = $ctDataKey;
+                                // }
                             }
                         }
                     }
@@ -2045,33 +2166,92 @@ class TestPrepController extends Controller
 
         $questionsCtPresent = [];
 
+        // foreach ($ctData as $ctDataKey => $ctDataValue) {
+        //     $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
+
+        //     foreach ($ctDataUniqueValue as $uniqueData) {
+        //         $ct = $questionsCtPresent[$uniqueData] ?? 0;
+        //         $questionsCtPresent[$uniqueData] = $ct + 1;
+        //     }
+        //     foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
+        //         $answer_arr = $answer_arr ?? [];
+        //         $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
+        //         if (empty($selectedAnswer) || $selectedAnswer != "-") {
+        //             $answers = explode(",", $answer_arr[$ctDataKey] ?? '');
+        //             $pq = PracticeQuestion::where("id", $ctDataKey)->first();
+        //             foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
+        //                 $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
+        //             $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+        //             $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
+        //             if (empty($selectedAnswer)) {
+        //                 $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
+        //             } else {
+        //                 foreach ($conceptCorrect as $cp) {
+        //                     if ($cp === "1") {
+        //                         $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+        //                         $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
+        //                     } else {
+        //                         $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
+        //                         $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+
         foreach ($ctData as $ctDataKey => $ctDataValue) {
             $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
 
             foreach ($ctDataUniqueValue as $uniqueData) {
-                $ct = $questionsCtPresent[$uniqueData] ?? 0;
-                $questionsCtPresent[$uniqueData] = $ct + 1;
+                $ct = $questionsCtPresent[$uniqueData] ?? ['count' => 0, 'missed' => [], 'incorrect' => []];
+                $questionsCtPresent[$uniqueData] = $ct;
+                $questionsCtPresent[$uniqueData]['count']++;
+
+                // Initialize missed and incorrect arrays if they don't exist
+                if (!isset($questionsCtPresent[$uniqueData]['missed'])) {
+                    $questionsCtPresent[$uniqueData]['missed'] = [];
+                }
+                if (!isset($questionsCtPresent[$uniqueData]['incorrect'])) {
+                    $questionsCtPresent[$uniqueData]['incorrect'] = [];
+                }
             }
+
             foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
                 $answer_arr = $answer_arr ?? [];
                 $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
+
                 if (empty($selectedAnswer) || $selectedAnswer != "-") {
                     $answers = explode(",", $answer_arr[$ctDataKey] ?? '');
                     $pq = PracticeQuestion::where("id", $ctDataKey)->first();
-                    foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
+
+                    foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue) {
                         $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
-                    $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
-                    $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
-                    if (empty($selectedAnswer)) {
-                        $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
-                    } else {
-                        foreach ($conceptCorrect as $cp) {
-                            if ($cp === "1") {
-                                $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
-                                $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
-                            } else {
-                                $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
-                                $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+                        $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
+                        if (empty($selectedAnswer)) {
+                            $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
+                        } else {
+                            foreach ($conceptCorrect as $cp) {
+                                if ($cp === "1") {
+                                    $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+                                    $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
+                                } else {
+                                    $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
+                                    $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+                                }
+                            }
+                        }
+
+                        // Track missed or incorrect questions
+                        if (empty($selectedAnswer)) {
+                            if (!in_array($ctDataKey, $questionsCtPresent[$ctDataValueKey]['missed'])) {
+                                $questionsCtPresent[$ctDataValueKey]['missed'][] = $ctDataKey;
+                            }
+                        } else {
+                            if (in_array("0", $conceptCorrect)) {
+                                // if (!in_array($ctDataKey, $questionsCtPresent[$ctDataValueKey]['incorrect'])) {
+                                $questionsCtPresent[$ctDataValueKey]['incorrect'][] = $ctDataKey;
+                                // }
                             }
                         }
                     }
@@ -2444,33 +2624,92 @@ class TestPrepController extends Controller
             }
 
             // dump($ctData);
+            // foreach ($ctData as $ctDataKey => $ctDataValue) {
+            //     $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
+
+            //     foreach ($ctDataUniqueValue as $uniqueData) {
+            //         $ct = $questionsCtPresent[$uniqueData] ?? 0;
+            //         $questionsCtPresent[$uniqueData] = $ct + 1;
+            //     }
+            //     foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
+            //         $answer_arr = $answer_arr ?? [];
+            //         $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
+            //         if (empty($selectedAnswer) || $selectedAnswer != "-") {
+            //             $answers = explode(",", $answer_arr[$ctDataKey] ?? '');
+            //             $pq = PracticeQuestion::where("id", $ctDataKey)->first();
+            //             foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
+            //                 $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
+            //             $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+            //             $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
+            //             if (empty($selectedAnswer)) {
+            //                 $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
+            //             } else {
+            //                 foreach ($conceptCorrect as $cp) {
+            //                     if ($cp === "1") {
+            //                         $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+            //                         $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
+            //                     } else {
+            //                         $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
+            //                         $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
+
             foreach ($ctData as $ctDataKey => $ctDataValue) {
                 $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
 
                 foreach ($ctDataUniqueValue as $uniqueData) {
-                    $ct = $questionsCtPresent[$uniqueData] ?? 0;
-                    $questionsCtPresent[$uniqueData] = $ct + 1;
+                    $ct = $questionsCtPresent[$uniqueData] ?? ['count' => 0, 'missed' => [], 'incorrect' => []];
+                    $questionsCtPresent[$uniqueData] = $ct;
+                    $questionsCtPresent[$uniqueData]['count']++;
+
+                    // Initialize missed and incorrect arrays if they don't exist
+                    if (!isset($questionsCtPresent[$uniqueData]['missed'])) {
+                        $questionsCtPresent[$uniqueData]['missed'] = [];
+                    }
+                    if (!isset($questionsCtPresent[$uniqueData]['incorrect'])) {
+                        $questionsCtPresent[$uniqueData]['incorrect'] = [];
+                    }
                 }
+
                 foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
                     $answer_arr = $answer_arr ?? [];
                     $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
+
                     if (empty($selectedAnswer) || $selectedAnswer != "-") {
                         $answers = explode(",", $answer_arr[$ctDataKey] ?? '');
                         $pq = PracticeQuestion::where("id", $ctDataKey)->first();
-                        foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
+
+                        foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue) {
                             $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
-                        $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
-                        $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
-                        if (empty($selectedAnswer)) {
-                            $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
-                        } else {
-                            foreach ($conceptCorrect as $cp) {
-                                if ($cp === "1") {
-                                    $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
-                                    $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
-                                } else {
-                                    $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
-                                    $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+                            $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
+                            if (empty($selectedAnswer)) {
+                                $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
+                            } else {
+                                foreach ($conceptCorrect as $cp) {
+                                    if ($cp === "1") {
+                                        $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+                                        $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
+                                    } else {
+                                        $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
+                                        $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+                                    }
+                                }
+                            }
+
+                            // Track missed or incorrect questions
+                            if (empty($selectedAnswer)) {
+                                if (!in_array($ctDataKey, $questionsCtPresent[$ctDataValueKey]['missed'])) {
+                                    $questionsCtPresent[$ctDataValueKey]['missed'][] = $ctDataKey;
+                                }
+                            } else {
+                                if (in_array("0", $conceptCorrect)) {
+                                    // if (!in_array($ctDataKey, $questionsCtPresent[$ctDataValueKey]['incorrect'])) {
+                                    $questionsCtPresent[$ctDataValueKey]['incorrect'][] = $ctDataKey;
+                                    // }
                                 }
                             }
                         }

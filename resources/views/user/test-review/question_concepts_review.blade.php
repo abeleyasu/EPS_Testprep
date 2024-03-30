@@ -3224,22 +3224,32 @@
                                                                                     );
                                                                                     // dump($totalMissed);
                                                                                     // dump($totalIncorrect);
-                                                                                    // dd($totalCorrect);
-                                                                                    // dd($categoryAndQuestionTypeSummary);
+                                                                                    // dd($questionsCtPresent);
+                                                                                    // dump($categoryAndQuestionTypeSummary);
                                                                                 @endphp
                                                                                 <div class="row">
                                                                                     <div
                                                                                         class="col-md-12 text-center">
                                                                                         <p class="block-title m-0">
                                                                                             {{-- @if ($missed_ct > 0) --}}
-                                                                                            Missed
+                                                                                            {{-- Missed
                                                                                             on
                                                                                             {{ $incorrect_ct + $missed_ct }}
                                                                                             /
-                                                                                            {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
-                                                                                            questions
+                                                                                            {{ $questionsCtPresent[$categoryAndQuestionTypeSummary] ?? 0 }}
+                                                                                            questions --}}
 
                                                                                             {{-- @endif --}}
+
+                                                                                            Missed on
+                                                                                            @foreach ($questionsCtPresent as $key => $question)
+                                                                                                @if ($key == $categoryAndQuestionTypeSummary['ct'])
+                                                                                                    {{ count($question['incorrect']) + count($question['missed']) }}
+                                                                                                    /
+                                                                                                    {{ $question['count'] ?? 0 }}
+                                                                                                    questions
+                                                                                                @endif
+                                                                                            @endforeach
                                                                                         </p>
                                                                                     </div>
                                                                                 </div>

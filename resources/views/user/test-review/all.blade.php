@@ -413,19 +413,41 @@
                                                                             <div class="col-md-12 text-center">
                                                                                 <p class="block-title m-0">
                                                                                     {{-- @if ($missed_ct > 0) --}}
-                                                                                    Missed
+                                                                                    {{-- Missed
                                                                                     on
                                                                                     @if ($test_det == 'single')
                                                                                         {{ $incorrect + $missed_ct }}
                                                                                         /
                                                                                         {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
                                                                                     @else
-                                                                                        {{-- {{ $categoryAndQuestionTypeSummary['total_qts'] ?? 0 }} --}}
+                                                                                        {{ $categoryAndQuestionTypeSummary['total_qts'] ?? 0 }}
                                                                                         {{ $incorrect + $missed_ct }}
                                                                                         /
                                                                                         {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
                                                                                     @endif
-                                                                                    questions
+                                                                                    questions --}}
+
+
+                                                                                    Missed on
+                                                                                    @if ($test_det == 'single')
+                                                                                        @foreach ($questionsCtPresent as $key => $question)
+                                                                                            @if ($key == $categoryAndQuestionTypeSummary['ct'])
+                                                                                                {{ count($question['incorrect']) + count($question['missed']) }}
+                                                                                                /
+                                                                                                {{ $question['count'] ?? 0 }}
+                                                                                                questions
+                                                                                            @endif
+                                                                                        @endforeach
+                                                                                    @else
+                                                                                        @foreach ($questionsCtPresent as $key => $question)
+                                                                                            @if ($key == $categoryAndQuestionTypeSummary['ct'])
+                                                                                                {{ count($question['incorrect']) + count($question['missed']) }}
+                                                                                                /
+                                                                                                {{ $question['count'] ?? 0 }}
+                                                                                                questions
+                                                                                            @endif
+                                                                                        @endforeach
+                                                                                    @endif
 
                                                                                     {{-- @endif --}}
 
