@@ -626,8 +626,8 @@ class InititalCollegeListController extends Controller
                         // print_r($detailInformation);
                     }
 
-                    $direct_tuition = (float) ($detailInformation['direct_tuition_free_year'] ?: 0);
-                    $direct_room_board = (float) ($detailInformation['direct_room_board_year'] ?: 0);
+                    $direct_tuition = (float) ($detailInformation['direct_tuition_free_year'] ?: null);
+                    $direct_room_board = (float) ($detailInformation['direct_room_board_year'] ?: null);
 
                     // echo session('costComparisonStateChanged') ? 'true' : 'false';
 
@@ -639,8 +639,8 @@ class InititalCollegeListController extends Controller
                         // if (empty(@$college_information['room_and_board'])) {
                         //     $direct_room_board = 0;
                         // }
-                        $direct_tuition = 0;
-                        $direct_room_board = 0;
+                        $direct_tuition = null;
+                        $direct_room_board = null;
                     }
 
                     if ($college_data['college_name'] === 'Auburn University') {
@@ -649,33 +649,37 @@ class InititalCollegeListController extends Controller
 
                     $direct_miscellaneous_year = $detailInformation['direct_miscellaneous_year'] ? $detailInformation['direct_miscellaneous_year'] : 0;
 
-                    if (empty($direct_tuition)) {
+                    if ($direct_tuition === null || $direct_tuition === '') {
                         if ($college_data['college_name'] === 'Auburn University') {
                             // echo 'empty tuition';
                         }
 
                         if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
                             $direct_tuition = (float) $college_information['tution_and_fess'];
-                            if (empty($direct_tuition)) {
+                            if ($direct_tuition === null || $direct_tuition === '') {
                                 $direct_tuition = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
                             }
                         } else {
                             if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
                                 $direct_tuition = (float) $college_information['tuition_and_fee_instate'];
-                                if (empty($direct_tuition)) {
+                                if ($direct_tuition === null || $direct_tuition === '') {
                                     $direct_tuition = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
                                 }
                             } else {
                                 $direct_tuition = (float) $college_information['tuition_and_fee_outstate'];
-                                if (empty($direct_tuition)) {
+                                if ($direct_tuition === null || $direct_tuition === '') {
                                     $direct_tuition = (float) $college_information['TUIT_NRES_FT_D'] + (float) $college_information['FEES_FT_D'];
                                 }
                             }
                         }
                     }
 
-                    if (empty($direct_room_board)) {
-                        $direct_room_board = (float) $college_information['room_and_board'] ?: (float) $college_information['RM_BD_D'];
+                    if ($direct_room_board === null || $direct_room_board === '') {
+                        //  $direct_room_board = (float) $college_information['room_and_board'] ?: (float) $college_information['RM_BD_D'];
+                        $direct_room_board = $college_information['room_and_board'] ?: null;
+                        if ($direct_room_board === null || $direct_room_board === '') {
+                            $direct_room_board = (float) $college_information['RM_BD_D'];
+                        }
                     }
 
                     if ($college_data['college_name'] === 'Auburn University') {
@@ -762,9 +766,9 @@ class InititalCollegeListController extends Controller
                     // $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: $college_information['tution_and_fess'];
                     // $direct_room_board = $detailInformation['direct_room_board_year'] ?: $college_information['room_and_board'];
 
-                    $direct_tuition = (float) ($detailInformation['direct_tuition_free_year'] ?: 0);
-                    $direct_room_board = (float) ($detailInformation['direct_room_board_year'] ?: 0);
-                    // if (empty($direct_tuition)) {
+                    $direct_tuition = (float) ($detailInformation['direct_tuition_free_year'] ?: null);
+                    $direct_room_board = (float) ($detailInformation['direct_room_board_year'] ?: null);
+                    // if ($direct_tuition === null || $direct_tuition === '') {
                     //     if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
                     //         $direct_tuition = $college_information['tution_and_fess'];
                     //     } else {
@@ -787,8 +791,8 @@ class InititalCollegeListController extends Controller
                         // if (empty(@$college_information['room_and_board'])) {
                         //     $direct_room_board = 0;
                         // }
-                        $direct_tuition = 0;
-                        $direct_room_board = 0;
+                        $direct_tuition = null;
+                        $direct_room_board = null;
                     }
 
                     // dd(session('costComparisonStateChanged'));
@@ -797,28 +801,28 @@ class InititalCollegeListController extends Controller
                         // echo '2--> ' . $direct_tuition . ' - ' . $direct_room_board . '<br>';
                     }
 
-                    if (empty($direct_tuition)) {
+                    if ($direct_tuition === null || $direct_tuition === '') {
                         if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
                             $direct_tuition = (float) $college_information['tution_and_fess'];
-                            if (empty($direct_tuition)) {
+                            if ($direct_tuition === null || $direct_tuition === '') {
                                 $direct_tuition = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
                             }
                         } else {
                             if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
                                 $direct_tuition = (float) $college_information['tuition_and_fee_instate'];
-                                if (empty($direct_tuition)) {
+                                if ($direct_tuition === null || $direct_tuition === '') {
                                     $direct_tuition = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
                                 }
                             } else {
                                 $direct_tuition = (float) $college_information['tuition_and_fee_outstate'];
-                                if (empty($direct_tuition)) {
+                                if ($direct_tuition === null || $direct_tuition === '') {
                                     $direct_tuition = (float) $college_information['TUIT_NRES_FT_D'] + (float) $college_information['FEES_FT_D'];
                                 }
                             }
                         }
                     }
 
-                    if (empty($direct_room_board)) {
+                    if ($direct_room_board === null || $direct_room_board === '') {
                         $direct_room_board = (float) $college_information['room_and_board'] ?: (float) $college_information['RM_BD_D'];
                     }
 
@@ -826,7 +830,7 @@ class InititalCollegeListController extends Controller
                         // echo 'miscellaneous: ' . $detailInformation['direct_miscellaneous_year'] . '<br>';
                     }
 
-                    $direct_miscellaneous_year = $detailInformation['direct_miscellaneous_year'] ?: 0;
+                    $direct_miscellaneous_year = $detailInformation['direct_miscellaneous_year'] ?: null;
                     if ($costcomparison['college_name'] === 'Auburn University') {
                         // echo '3--->' . $direct_tuition . ' - ' . $direct_room_board . ' - ' . $direct_miscellaneous_year . '<br>';
                     }
@@ -906,34 +910,45 @@ class InititalCollegeListController extends Controller
                             $collegeInformation = CollegeInformation::where('college_id', $collegeSearchAdd->college_id)->first();
                         }
 
-                        $tution_and_fess = 0;
-                        $room_and_board = 0;
+                        $tution_and_fess = null;
+                        $room_and_board = null;
 
                         if (!empty($collegeInformation)) {
-                            if (empty($tution_and_fees)) {
+                            if ($tution_and_fess === null || $tution_and_fess === '') {
                                 if (\App\Helpers\Helper::isPrivateCollege($collegeInformation)) {
-                                    $tution_and_fees = (float) $collegeInformation['tution_and_fess'];
-                                    if (empty($tution_and_fees)) {
-                                        $tution_and_fees = (float) $collegeInformation['TUIT_OVERALL_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
+                                    $tution_and_fess = $collegeInformation['tution_and_fess'] ?: null;
+                                    if ($tution_and_fess === null || $tution_and_fess === '') {
+                                        $tution_and_fess = (float) $collegeInformation['TUIT_OVERALL_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
                                     }
                                 } else {
                                     if (\App\Helpers\Helper::isInStateCollege($collegeInformation, $state->state_code)) {
-                                        $tution_and_fees = (float) $collegeInformation['tuition_and_fee_instate'];
-                                        if (empty($tution_and_fees)) {
-                                            $tution_and_fees = (float) $collegeInformation['TUIT_STATE_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
+                                        $tution_and_fess = $collegeInformation['tuition_and_fee_instate'] ?: null;
+                                        if ($tution_and_fess === null || $tution_and_fess === '') {
+                                            $tution_and_fess = (float) $collegeInformation['TUIT_STATE_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
                                         }
                                     } else {
-                                        $tution_and_fees = (float) $collegeInformation['tuition_and_fee_outstate'];
-                                        if (empty($tution_and_fees)) {
-                                            $tution_and_fees = (float) $collegeInformation['TUIT_NRES_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
+                                        $tution_and_fess = $collegeInformation['tuition_and_fee_outstate'] ?: null;
+                                        if ($tution_and_fess === null || $tution_and_fess === '') {
+                                            $tution_and_fess = (float) $collegeInformation['TUIT_NRES_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
                                         }
                                     }
                                 }
                             }
 
-                            if (empty($room_and_board)) {
-                                $room_and_board = (float) $collegeInformation['room_and_board'] ?: (float) $collegeInformation['RM_BD_D'];
+                            if ($room_and_board === null || $room_and_board === '') {
+                                // $room_and_board = (float) $collegeInformation['room_and_board'] ?: (float) $collegeInformation['RM_BD_D'];
+                                $room_and_board = $collegeInformation['room_and_board'] ?: null;
+                                if ($room_and_board === null || $room_and_board === '') {
+                                    $room_and_board = (float) $collegeInformation['RM_BD_D'];
+                                }
                             }
+                        }
+
+                        if ($collegeSearchAdd !== null && $collegeSearchAdd->college_name === 'Auburn University') {
+                            // dd(\App\Helpers\Helper::isInStateCollege($collegeInformation, $state->state_code));
+                            // dd($collegeInformation);
+
+                            // dd($tution_and_fess, $room_and_board);
                         }
 
                         # reset cost comparison detail
@@ -959,6 +974,7 @@ class InititalCollegeListController extends Controller
                         $cost_comparion_detail->need_base_student_loans_grants = null;
                         $cost_comparion_detail->need_base_parent_plus_grants = null;
                         $cost_comparion_detail->need_base_other_grants = null;
+
                         $cost_comparion_detail->save();
 
                         // reset cost comparison
@@ -1084,8 +1100,8 @@ class InititalCollegeListController extends Controller
         $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
         $state = States::where('id', $stateActiveId)->first();
 
-        $tution_and_fees = (float) ($data['direct_tuition_free_year'] ?: 0);
-        $room_and_board = (float) ($data['direct_room_board_year'] ?: 0);
+        $tution_and_fees = (float) ($data['direct_tuition_free_year'] ?: null);
+        $room_and_board = (float) ($data['direct_room_board_year'] ?: null);
 
         $direct_miscellaneous_year = $data['direct_miscellaneous_year'] ? $data['direct_miscellaneous_year'] : 0;
 
@@ -1097,33 +1113,37 @@ class InititalCollegeListController extends Controller
             //     $room_and_board = 0;
             // }
 
-            $tution_and_fees = 0;
-            $room_and_board = 0;
+            $tution_and_fees = null;
+            $room_and_board = null;
         }
 
-        if (empty($tution_and_fees)) {
+        if ($tution_and_fees === null || $tution_and_fees === '') {
             if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
                 $tution_and_fees = (float) $college_information['tution_and_fess'];
-                if (empty($tution_and_fees)) {
+                if ($tution_and_fees === null || $tution_and_fees === '') {
                     $tution_and_fees = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
                 }
             } else {
                 if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
                     $tution_and_fees = (float) $college_information['tuition_and_fee_instate'];
-                    if (empty($tution_and_fees)) {
+                    if ($tution_and_fees === null || $tution_and_fees === '') {
                         $tution_and_fees = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
                     }
                 } else {
                     $tution_and_fees = (float) $college_information['tuition_and_fee_outstate'];
-                    if (empty($tution_and_fees)) {
+                    if ($tution_and_fees === null || $tution_and_fees === '') {
                         $tution_and_fees = (float) $college_information['TUIT_NRES_FT_D'] + (float) $college_information['FEES_FT_D'];
                     }
                 }
             }
         }
 
-        if (empty($room_and_board)) {
-            $room_and_board = (float) $college_information['room_and_board'] ?: (float) $college_information['RM_BD_D'];
+        if ($room_and_board === null || $room_and_board === '') {
+            // $room_and_board = (float) $college_information['room_and_board'] ?: (float) $college_information['RM_BD_D'];
+            $room_and_board = $college_information['room_and_board'] ?: null;
+            if ($room_and_board === null || $room_and_board === '') {
+                $room_and_board = (float) $college_information['RM_BD_D'];
+            }
         }
 
         // echo 'tution_and_fees > ' . $tution_and_fees . PHP_EOL;

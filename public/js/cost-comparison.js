@@ -8,8 +8,8 @@ async function getCollegeListForCostComparison(active_accordion = null) {
         },
         data: {
             state: global.currentSelectedState,
-            // state_changed: global.stateChanged ? 1 : 0
-            state_changed: 0
+            state_changed: global.stateChanged ? 1 : 0,
+            // state_changed: 0
         }
     }).done(function (response) {
         $('#userSelectedCollegeList').html('')
@@ -334,6 +334,7 @@ const isAccordionActive = (collegeData, activeIndex) => {
 
 const isInStateCollege = (collegeInformation) => {
     const stateCodeSelected = $('select[name=choose_state_options]').find('option:selected').data('statecode');
+    // const stateCodeSelected = global.currentSelectedState
     // console.log('===')
     // console.log('stateCodeSelected', stateCodeSelected)
     // console.log('collegeInformation.state', collegeInformation.state)
@@ -373,7 +374,7 @@ const getTuitionAndFeesValue = (costComparisonData) => {
 
     if (global.stateChanged) {
         detail.direct_tuition_free_year = null
-        collegeInformation.tution_and_fess = null // ???
+        // collegeInformation.tution_and_fess = null // ???
     }
 
     if (costComparisonData.college_name == 'Auburn University') {
@@ -381,48 +382,48 @@ const getTuitionAndFeesValue = (costComparisonData) => {
         // console.log('collegeInformation.tution_and_fess', collegeInformation.tution_and_fess)
     }
 
-    result = detail.direct_tuition_free_year ? parseFloat(detail.direct_tuition_free_year) : 0
+    result = detail.direct_tuition_free_year ? parseFloat(detail.direct_tuition_free_year) : null
 
-    // if (result) {
-    //     result = parseFloat(result)
-    // } else {
-    //     if (collegeInformation.tution_and_fess) {
-    //         result = parseFloat(collegeInformation.tution_and_fess)
-    //     } else if (isPrivateCollege(collegeInformation)) {
-    //         result = tutOverrallFtD + feesFtD
-    //     } else {
-    //         if (isInStateCollege(collegeInformation)) {
-    //             result = tutStateFtD + feesFtD
-    //         } else {
-    //             result = tutNresFtD + feesFtD
-    //         }
-    //     }
-    // }
+    if (costComparisonData.college_name == 'Auburn University') {
+        // console.log('getTuitionAndFeesValue result', result)
+        // console.log('===')
+        // console.log('collegeInformation', collegeInformation)
+        // console.log('isPrivateCollege', isPrivateCollege(collegeInformation))
+        // console.log('isInStateCollege', isInStateCollege(collegeInformation))
+        // console.log('===')
+    }
 
-    // console.log('getTuitionAndFeesValue', result)
-
-    if (!result) {
+    if (result === null || result === '') {
         if (isPrivateCollege(collegeInformation)) {
-            result = collegeInformation.tution_and_fess ? parseFloat(collegeInformation.tution_and_fess) : 0
-            if (!result) {
+            result = collegeInformation.tution_and_fess ? parseFloat(collegeInformation.tution_and_fess) : null
+            if (result === null || result === '') {
                 result = tutOverrallFtD + feesFtD
             }
         } else {
+            if (costComparisonData.college_name == 'Auburn University') {
+                console.log('is state', isInStateCollege(collegeInformation))
+            }
             if (isInStateCollege(collegeInformation)) {
-                result = collegeInformation.tuition_and_fee_instate ? parseFloat(collegeInformation.tuition_and_fee_instate) : 0
-                if (!result) {
+                result = collegeInformation.tuition_and_fee_instate ? parseFloat(collegeInformation.tuition_and_fee_instate) : null
+                if (result === null || result === '') {
                     result = tutStateFtD + feesFtD
                 }
             } else {
-                result = collegeInformation.tuition_and_fee_outstate ? parseFloat(collegeInformation.tuition_and_fee_outstate) : 0
-                if (!result) {
+                result = collegeInformation.tuition_and_fee_outstate ? parseFloat(collegeInformation.tuition_and_fee_outstate) : null
+                if (result === null || result === '') {
                     result = tutNresFtD + feesFtD
                 }
             }
+            if (costComparisonData.college_name == 'Auburn University') {
+                console.log('tution fee 2', result)
+            }
         }
     }
+    if (costComparisonData.college_name == 'Auburn University') {
+        console.log('tution fee', result)
+    }
 
-    return parseFloat(result)
+    return result ? parseFloat(result) : 0
 }
 
 const getRoomAndBoardValue = (costComparisonData) => {
@@ -433,7 +434,7 @@ const getRoomAndBoardValue = (costComparisonData) => {
 
     if (global.stateChanged) {
         detail.direct_room_board_year = null
-        collegeInformation.room_and_board = null // ???
+        // collegeInformation.room_and_board = null // ???
     }
 
     if (costComparisonData.college_name == 'Auburn University') {
@@ -443,7 +444,7 @@ const getRoomAndBoardValue = (costComparisonData) => {
     }
 
     // result = detail.direct_room_board_year ?? collegeInformation.room_and_board
-    result = detail.direct_room_board_year ? parseFloat(detail.direct_room_board_year) : 0
+    result = detail.direct_room_board_year ? parseFloat(detail.direct_room_board_year) : null
 
     // if (result) {
     //     result = parseFloat(result)
@@ -457,14 +458,14 @@ const getRoomAndBoardValue = (costComparisonData) => {
         // console.log('getRoomAndBoardValue', result)
     }
 
-    if (!result) {
+    if (result === null || result === '') {
         result = collegeInformation.room_and_board ? parseFloat(collegeInformation.room_and_board) : 0
-        if (!result) {
+        if (result === null || result === '') {
             result = collegeInformation.RM_BD_D ? parseFloat(collegeInformation.RM_BD_D) : 0
         }
     }
 
-    return parseFloat(result)
+    return result ? parseFloat(result) : 0
 }
 
 const getDirectCostTotal = (costComparisonData) => {
