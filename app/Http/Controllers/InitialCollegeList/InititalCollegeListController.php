@@ -692,7 +692,7 @@ class InititalCollegeListController extends Controller
                 $data[] = [
                     'id' => $college_data['id'],
                     'college_name' => $college_data['college_name'],
-                    'total_direct_cost' => '$' . $total_direct_cost,
+                    'total_direct_cost' => '$' . number_format($total_direct_cost),
                     'total_merit_cost' => '$' . number_format($college_data['costcomparison']['total_merit_aid']),
                     'total_need_based_aid' => '$' . number_format($college_data['costcomparison']['total_need_based_aid']),
                     'total_outside_scholarship' => '$' . number_format($college_data['costcomparison']['total_outside_scholarship']),
