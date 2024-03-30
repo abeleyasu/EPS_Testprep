@@ -218,11 +218,21 @@
                                             <div class="col-md-12 text-center">
                                                 <p class="block-title m-0">
                                                     {{-- @if ($missed_ct > 0) --}}
-                                                    Missed
+                                                    {{-- Missed
                                                     on
                                                     {{ $incorrect_ct + $missed_ct }} /
                                                     {{ $questionsCtPresent[$categoryAndQuestionTypeSummaryMultiple['ct']] ?? 0 }}
-                                                    questions
+                                                    questions --}}
+
+                                                    Missed on
+                                                    @foreach ($questionsCtPresent as $key => $question)
+                                                        @if ($key == $categoryAndQuestionTypeSummaryMultiple['ct'])
+                                                            {{ count($question['incorrect']) + count($question['missed']) }}
+                                                            /
+                                                            {{ $question['count'] ?? 0 }}
+                                                            questions
+                                                        @endif
+                                                    @endforeach
 
                                                     {{-- @endif --}}
                                                 </p>
