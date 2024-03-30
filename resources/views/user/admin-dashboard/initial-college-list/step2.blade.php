@@ -744,14 +744,31 @@ $current_user_state_code = (
                                                 <div class="block-content">
                                                     <div class="block block-rounded block-link-shadow">
                                                         <h2 class="block-title">2. Greek Life (Sororities & Fraternities)</h2>
-                                                        <div>LIFE_SOR_NAT</div>
+                                                        {{-- <div>LIFE_SOR_NAT</div>
                                                         <small id="life_sor_nat"></small>
                                                         <div>LIFE_SOR_LOCAL</div>
                                                         <small id="life_sor_local"></small>
                                                         <div>LIFE_FRAT_NAT</div>
                                                         <small id="life_frat_nat"></small>
                                                         <div>LIFE_FRAT_LOCAL</div>
-                                                        <small id="life_frat_local"></small>
+                                                        <small id="life_frat_local"></small> --}}
+
+                                                        <div class="mb-2">
+                                                            <div class="fw-semibold">Has National Sororities</div>
+                                                            <small id="life_sor_nat"></small>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div class="fw-semibold">Has Local Sororities</div>
+                                                            <small id="life_sor_local"></small>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div class="fw-semibold">Has National Fraternities</div>
+                                                            <small id="life_frat_nat"></small>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div class="fw-semibold">Has Local Fraternities</div>
+                                                            <small id="life_frat_local"></small>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1169,11 +1186,23 @@ $current_user_state_code = (
 
 
                 // Campus Accordion Data
-                displayYesOrNo = (input) => input.toLowerCase() == 'y' ? 'Yes' : 'No'
-                $('#life_sor_nat').html((data.latest.college_info.LIFE_SOR_NAT ? displayYesOrNo(data.latest.college_info.LIFE_SOR_NAT) : '-'))
-                $('#life_sor_local').html((data.latest.college_info.LIFE_SOR_LOCAL ? displayYesOrNo(data.latest.college_info.LIFE_SOR_LOCAL) : '-'))
-                $('#life_frat_nat').html((data.latest.college_info.LIFE_FRAT_NAT ? displayYesOrNo(data.latest.college_info.LIFE_FRAT_NAT) : '-'))
-                $('#life_frat_local').html((data.latest.college_info.LIFE_FRAT_LOCAL ? displayYesOrNo(data.latest.college_info.LIFE_FRAT_LOCAL): '-'))
+                // displayYesOrNo = (input) => input.toLowerCase() == 'y' ? 'Yes' : 'No'
+                // $('#life_sor_nat').html((data.latest.college_info.LIFE_SOR_NAT ? displayYesOrNo(data.latest.college_info.LIFE_SOR_NAT) : '-'))
+                // $('#life_sor_local').html((data.latest.college_info.LIFE_SOR_LOCAL ? displayYesOrNo(data.latest.college_info.LIFE_SOR_LOCAL) : '-'))
+                // $('#life_frat_nat').html((data.latest.college_info.LIFE_FRAT_NAT ? displayYesOrNo(data.latest.college_info.LIFE_FRAT_NAT) : '-'))
+                // $('#life_frat_local').html((data.latest.college_info.LIFE_FRAT_LOCAL ? displayYesOrNo(data.latest.college_info.LIFE_FRAT_LOCAL): '-'))
+
+                const lifeSorNat = collegeInfo.has_national_sororities ? 1 : (collegeInfo.LIFE_SOR_NAT == 'Y' ? 1 : 0)
+                const lifeSorLocal = collegeInfo.has_local_sororities ? 1 : (collegeInfo.LIFE_SOR_LOCAL == 'Y' ? 1 : 0)
+                const lifeFratNat = collegeInfo.has_national_fraternities ? 1 : (collegeInfo.LIFE_FRAT_NAT == 'Y' ? 1 : 0)
+                const lifeFratLocal = collegeInfo.has_local_fraternities ? 1 : (collegeInfo.LIFE_FRAT_LOCAL == 'Y' ? 1 : 0)
+
+                const displayGuarantedOrNot = (input) => input == 1 ? 'Guaranteed' : 'Not Guaranteed'
+                $('#life_sor_nat').html(displayGuarantedOrNot(lifeSorNat))
+                $('#life_sor_local').html(displayGuarantedOrNot(lifeSorLocal))
+                $('#life_frat_nat').html(displayGuarantedOrNot(lifeFratNat))
+                $('#life_frat_local').html(displayGuarantedOrNot(lifeFratLocal))
+
                 $('#SORO_1ST_P').html((data.latest.college_info.SORO_1ST_P ? (data.latest.college_info.SORO_1ST_P): '-'))
                 $('#FRAT_1ST_P').html((data.latest.college_info.FRAT_1ST_P ? (data.latest.college_info.FRAT_1ST_P + '%'): '-'))
                 $('#CMPS_METRO_T').html((data.latest.college_info.CMPS_METRO_T ? (data.latest.college_info.CMPS_METRO_T) : '-'))
