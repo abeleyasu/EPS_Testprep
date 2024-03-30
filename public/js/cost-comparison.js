@@ -401,7 +401,7 @@ const getTuitionAndFeesValue = (costComparisonData) => {
             }
         } else {
             if (costComparisonData.college_name == 'Auburn University') {
-                console.log('is state', isInStateCollege(collegeInformation))
+                // console.log('is state', isInStateCollege(collegeInformation))
             }
             if (isInStateCollege(collegeInformation)) {
                 result = collegeInformation.tuition_and_fee_instate ? parseFloat(collegeInformation.tuition_and_fee_instate) : null
@@ -420,7 +420,7 @@ const getTuitionAndFeesValue = (costComparisonData) => {
         }
     }
     if (costComparisonData.college_name == 'Auburn University') {
-        console.log('tution fee', result)
+        // console.log('tution fee', result)
     }
 
     return result ? parseFloat(result) : 0
