@@ -262,13 +262,18 @@
                                                                                                                     class="si si-arrow-up"></i></button>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div
-                                                                                                        class="block-content">
-                                                                                                        <p
-                                                                                                            class="set_category_type_strategies">
-                                                                                                            {!! isset($category_arr->category_type_strategies) ? $category_arr->catgeory_type_strategies : '' !!}
-                                                                                                        </p>
-                                                                                                    </div>
+                                                                                                    @if (isset($category_arr))
+                                                                                                        <div
+                                                                                                            class="block-content">
+
+                                                                                                            <p
+                                                                                                                class="set_category_type_strategies">
+                                                                                                                {{-- {!! isset($category_arr->category_type_strategies) ? $category_arr->catgeory_type_strategies : '' !!} --}}
+                                                                                                                {!! isset($category_arr->category_type_strategies) ? $category_arr->category_type_strategies : '' !!}
+
+                                                                                                            </p>
+                                                                                                        </div>
+                                                                                                    @endif
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div
