@@ -113,7 +113,8 @@ function refreshResults(type) {
   } else if (type === 'college-application-deadline') {
     getApplicationDeadlineOrganizerData();
   } else if (type === 'search-step-1') {
-    getStep1CollegeList();
+    // getStep1CollegeList();
+    getCollegeList()
   } else if (type === 'step-4') {
     getCollegeList();
   }
