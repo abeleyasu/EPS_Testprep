@@ -577,7 +577,11 @@ class InititalCollegeListController extends Controller
         // get user state code
         $stateId = $user->state_id;
         $userState = States::where('id', $stateId)->first();
-        $user->state_code = $userState->state_code;
+        if ($userState) {
+            $user->state_code = $userState->state_code;
+        } else {
+            $user->state_code = '';
+        }
 
         // reset session
         // session(['costComparisonActiveStateId' => $stateId]);
