@@ -34,8 +34,6 @@ class DashboardController extends Controller
             $college_list_deadlines[$key]['deadline_date'] = $this->__getDeadlineDate($college_list_deadline);
         }
 
-        // dd($college_list_deadlines);
-
         return view('user.dashboard', [
             'getTestScores' => $this->dashboardService->get_test_scores(),
             'events' => $this->dashboardService->events(),
@@ -188,8 +186,6 @@ class DashboardController extends Controller
         foreach ($college_list_deadlines as $key => $college_list_deadline) {
             $college_list_deadlines[$key]['deadline_date'] = $this->__getDeadlineDate($college_list_deadline);
         }
-
-        // dd($college_list_deadlines);
 
         return view('user.admin-dashboard.dashboard', [
             'college_list_deadline' => $college_list_deadlines,
