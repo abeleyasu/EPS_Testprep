@@ -1192,12 +1192,12 @@ $current_user_state_code = (
                 // $('#life_frat_nat').html((data.latest.college_info.LIFE_FRAT_NAT ? displayYesOrNo(data.latest.college_info.LIFE_FRAT_NAT) : '-'))
                 // $('#life_frat_local').html((data.latest.college_info.LIFE_FRAT_LOCAL ? displayYesOrNo(data.latest.college_info.LIFE_FRAT_LOCAL): '-'))
 
-                const lifeSorNat = collegeInfo.has_national_sororities ? 1 : (collegeInfo.LIFE_SOR_NAT == 'Y' ? 1 : 0)
-                const lifeSorLocal = collegeInfo.has_local_sororities ? 1 : (collegeInfo.LIFE_SOR_LOCAL == 'Y' ? 1 : 0)
-                const lifeFratNat = collegeInfo.has_national_fraternities ? 1 : (collegeInfo.LIFE_FRAT_NAT == 'Y' ? 1 : 0)
-                const lifeFratLocal = collegeInfo.has_local_fraternities ? 1 : (collegeInfo.LIFE_FRAT_LOCAL == 'Y' ? 1 : 0)
+                const lifeSorNat = collegeInfo.has_national_sororities ? parseInt(collegeInfo.has_national_sororities) : (collegeInfo.LIFE_SOR_NAT == 'Y' ? 1 : 0)
+                const lifeSorLocal = collegeInfo.has_local_sororities ? parseInt(collegeInfo.has_local_sororities) : (collegeInfo.LIFE_SOR_LOCAL == 'Y' ? 1 : 0)
+                const lifeFratNat = collegeInfo.has_national_fraternities ? parseInt(collegeInfo.has_national_fraternities) : (collegeInfo.LIFE_FRAT_NAT == 'Y' ? 1 : 0)
+                const lifeFratLocal = collegeInfo.has_local_fraternities ? parseInt(collegeInfo.has_local_fraternities) : (collegeInfo.LIFE_FRAT_LOCAL == 'Y' ? 1 : 0)
 
-                const displayGuarantedOrNot = (input) => input == 1 ? 'Guaranteed' : 'Not Guaranteed'
+                const displayGuarantedOrNot = (input) => parseInt(input) === 1 ? 'Guaranteed' : 'Not Guaranteed'
                 $('#life_sor_nat').html(displayGuarantedOrNot(lifeSorNat))
                 $('#life_sor_local').html(displayGuarantedOrNot(lifeSorLocal))
                 $('#life_frat_nat').html(displayGuarantedOrNot(lifeFratNat))
