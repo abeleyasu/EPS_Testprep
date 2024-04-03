@@ -164,9 +164,9 @@ class CollegeApplicationDeadlineController extends Controller
                 ]);
             }
             // return $college_list_deadline;
-            // $deadline_date = null;
+            $deadline_date = null;
             if ($college_list_deadline->college_details->collegeInformation) {
-                $deadline_date = $college_list_deadline->college_details->collegeInformation->regular_admission_deadline;
+                // $deadline_date = $college_list_deadline->college_details->collegeInformation->regular_admission_deadline;
             }
             $college_list_deadline = $college_list_deadline->toArray();
             $college_list_deadline['admissions_deadline'] = $college_list_deadline['admissions_deadline'] ? $college_list_deadline['admissions_deadline'] : $deadline_date;

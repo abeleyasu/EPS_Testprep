@@ -113,13 +113,13 @@ class DashboardController extends Controller
                         $deadlineDate = $deadlineMonth . '-' . $deadlineDay . '-' . $year;
                     }
                 } else {
-                    $deadlineDate = isset($collegeInformation['regular_admission_deadline'])
-                        ? $collegeInformation['regular_admission_deadline']
-                        : '';
+                    // $deadlineDate = isset($collegeInformation['regular_admission_deadline'])
+                    //     ? $collegeInformation['regular_admission_deadline']
+                    //     : '';
 
-                    if (!empty($deadlineDate)) {
-                        $deadlineDate = date('Y-m-d', strtotime($deadlineDate));
-                    }
+                    // if (!empty($deadlineDate)) {
+                    //     $deadlineDate = date('Y-m-d', strtotime($deadlineDate));
+                    // }
                 }
             }
         }
