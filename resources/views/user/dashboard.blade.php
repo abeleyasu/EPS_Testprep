@@ -514,7 +514,8 @@
     </script>
     <script>
         $(document).on('click', '.manage-deadline', function(e) {
-            if (e.target.dataset.deadLine === '') {
+            // if (e.target.dataset.deadLine === '') {
+            if (!e.target.dataset.admissionOption) {
                 $('#admission_deadline_formgroup').hide();
             } else {
                 $('#admission_deadline_formgroup').show();

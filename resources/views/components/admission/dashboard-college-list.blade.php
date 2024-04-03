@@ -18,7 +18,8 @@
                         @if ($deadline['deadline_date']['date'])
                             <div class="fs-sm fw-semibold text-muted text-uppercase">Admissions Deadline</div>
                             <div class="deadline-div text-center">
-                                <div class="fs-xs text-muted text-italic">{{ $deadline['college_deadline']['admission_option'] }}</div>
+                                <div class="fs-xs text-muted text-italic">
+                                    {{ $deadline['college_deadline']['admission_option'] }}</div>
                                 <span class="text-dark d-block">{{ $deadline['deadline_date']['dateLabel'] }}</span>
                                 <span
                                     class="text-dark d-block fs-xs {{ $deadline['deadline_date']['diff'] < 0 ? 'text-danger' : '' }}">{{ $deadline['deadline_date']['diffLabel'] }}</span>
@@ -28,6 +29,10 @@
                                 <span class="text-danger d-block">Not Published</span>
                             </div>
                         @endif
+                    @elseif (!empty($deadline['college_deadline']['admission_option']))
+                        <div class="deadline-div text-center">
+                            <span class="text-danger d-block">Not Published</span>
+                        </div>
                     @else
                         <div class="deadline-div text-center"></div>
                     @endif
@@ -79,8 +84,8 @@
                 </div>
                 <div class="mb-3" id="admission_deadline_formgroup" style="display: none">
                     <label class="form-label" for="admissions_deadline">Admissions Deadline</label>
-                    <input id="admissions_deadline" type="text" class="deadline-date form-control update-form" value="mm/dd/yy"
-                        placeholder="mm/dd/yy" />
+                    <input id="admissions_deadline" type="text" class="deadline-date form-control update-form"
+                        value="mm/dd/yy" placeholder="mm/dd/yy" />
                 </div>
             </div>
             <div class="modal-footer">

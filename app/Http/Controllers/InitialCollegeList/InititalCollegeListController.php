@@ -577,7 +577,11 @@ class InititalCollegeListController extends Controller
         // get user state code
         $stateId = $user->state_id;
         $userState = States::where('id', $stateId)->first();
-        $user->state_code = $userState->state_code;
+        if ($userState) {
+            $user->state_code = $userState->state_code;
+        } else {
+            $user->state_code = '';
+        }
 
         // reset session
         // session(['costComparisonActiveStateId' => $stateId]);
@@ -778,6 +782,7 @@ class InititalCollegeListController extends Controller
                     $direct_tuition = isset($detailInformation['direct_tuition_free_year']) ? (float) $detailInformation['direct_tuition_free_year'] : null;
                     // $direct_room_board = (float) ($detailInformation['direct_room_board_year'] ?: null);
                     $direct_room_board = isset($detailInformation['direct_room_board_year']) ? (float) $detailInformation['direct_room_board_year'] : null;
+
                     // if ($direct_tuition === null || $direct_tuition === '') {
                     //     if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
                     //         $direct_tuition = $college_information['tution_and_fess'];

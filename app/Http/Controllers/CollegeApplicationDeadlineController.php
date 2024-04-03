@@ -256,6 +256,8 @@ class CollegeApplicationDeadlineController extends Controller
             }
             $data['admissions_deadline'] = $date->format('m-d-Y');
             $request->admissions_deadline = $data['admissions_deadline'];
+        } else {
+            $data['admissions_deadline'] = null;
         }
 
         $college = CollegeDetails::create($data);
@@ -328,6 +330,8 @@ class CollegeApplicationDeadlineController extends Controller
             }
             $data['admissions_deadline'] = $date->format('m-d-Y');
             $request->admissions_deadline = $data['admissions_deadline'];
+        } else {
+            $data['admissions_deadline'] = null;
         }
 
         // dd($data);
