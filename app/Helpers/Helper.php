@@ -178,7 +178,7 @@ class Helper
         return (isset($collegeInformation['TUIT_OVERALL_FT_D']) && $collegeInformation['TUIT_OVERALL_FT_D'] > 0) || $collegeInformation['ownership'] != 1;
     }
 
-    public static function isInStateCollege ($collegeInformation, $stateCode) {
+    public static function isInStateCollege ($collegeInformation, $stateCode = '') {
         return $collegeInformation['state'] === $stateCode;
     }
 

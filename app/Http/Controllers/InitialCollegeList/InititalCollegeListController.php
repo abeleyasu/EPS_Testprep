@@ -615,6 +615,10 @@ class InititalCollegeListController extends Controller
         $stateId = $user->state_id;
         $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
         $state = States::where('id', $stateActiveId)->first();
+        $stateCode = '';
+        if ($state) {
+            $stateCode = $state->state_code;
+        }
 
         $totalCount = 0;
         $data = [];
@@ -666,7 +670,7 @@ class InititalCollegeListController extends Controller
                                 $direct_tuition = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
                             }
                         } else {
-                            if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
+                            if (\App\Helpers\Helper::isInStateCollege($college_information, $stateCode)) {
                                 $direct_tuition = (float) $college_information['tuition_and_fee_instate'];
                                 if ($direct_tuition === null || $direct_tuition === '') {
                                     $direct_tuition = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
@@ -767,6 +771,10 @@ class InititalCollegeListController extends Controller
             $stateId = $user->state_id;
             $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
             $state = States::where('id', $stateActiveId)->first();
+            $stateCode = '';
+            if ($state) {
+                $stateCode = $state->state_code;
+            }
 
             if (count($costcomparisonsummary) > 0) {
 
@@ -787,7 +795,7 @@ class InititalCollegeListController extends Controller
                     //     if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
                     //         $direct_tuition = $college_information['tution_and_fess'];
                     //     } else {
-                    //         if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
+                    //         if (\App\Helpers\Helper::isInStateCollege($college_information, $stateCode)) {
                     //             $direct_tuition = $college_information['tuition_and_fee_instate'];
                     //         } else {
                     //             $direct_tuition = $college_information['tuition_and_fee_outstate'];
@@ -823,7 +831,7 @@ class InititalCollegeListController extends Controller
                                 $direct_tuition = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
                             }
                         } else {
-                            if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
+                            if (\App\Helpers\Helper::isInStateCollege($college_information, $stateCode)) {
                                 $direct_tuition = (float) $college_information['tuition_and_fee_instate'];
                                 if ($direct_tuition === null || $direct_tuition === '') {
                                     $direct_tuition = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
@@ -911,6 +919,10 @@ class InititalCollegeListController extends Controller
             $stateId = $user->state_id;
             $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
             $state = States::where('id', $stateActiveId)->first();
+            $stateCode = '';
+            if ($state) {
+                $stateCode = $state->state_code;
+            }
 
             if (count($cost_comparions) > 0) {
                 foreach ($cost_comparions as $key => $cost_comparions) {
@@ -936,7 +948,7 @@ class InititalCollegeListController extends Controller
                                         $tution_and_fess = (float) $collegeInformation['TUIT_OVERALL_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
                                     }
                                 } else {
-                                    if (\App\Helpers\Helper::isInStateCollege($collegeInformation, $state->state_code)) {
+                                    if (\App\Helpers\Helper::isInStateCollege($collegeInformation, $stateCode)) {
                                         $tution_and_fess = $collegeInformation['tuition_and_fee_instate'] ?: null;
                                         if ($tution_and_fess === null || $tution_and_fess === '') {
                                             $tution_and_fess = (float) $collegeInformation['TUIT_STATE_FT_D'] + (float) $collegeInformation['FEES_FT_D'];
@@ -960,7 +972,7 @@ class InititalCollegeListController extends Controller
                         }
 
                         if ($collegeSearchAdd !== null && $collegeSearchAdd->college_name === 'Auburn University') {
-                            // dd(\App\Helpers\Helper::isInStateCollege($collegeInformation, $state->state_code));
+                            // dd(\App\Helpers\Helper::isInStateCollege($collegeInformation, $stateCode));
                             // dd($collegeInformation);
 
                             // dd($tution_and_fess, $room_and_board);
@@ -1117,6 +1129,10 @@ class InititalCollegeListController extends Controller
         $stateId = $user->state_id;
         $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
         $state = States::where('id', $stateActiveId)->first();
+        $stateCode = '';
+        if ($state) {
+            $stateCode = $state->state_code;
+        }
 
         // $tution_and_fees = (float) ($data['direct_tuition_free_year'] ?: null);
         $tution_and_fees = isset($data['direct_tuition_free_year']) ? (float) $data['direct_tuition_free_year'] : null;
@@ -1144,7 +1160,7 @@ class InititalCollegeListController extends Controller
                     $tution_and_fees = (float) $college_information['TUIT_OVERALL_FT_D'] + (float) $college_information['FEES_FT_D'];
                 }
             } else {
-                if (\App\Helpers\Helper::isInStateCollege($college_information, $state->state_code)) {
+                if (\App\Helpers\Helper::isInStateCollege($college_information, $stateCode)) {
                     $tution_and_fees = (float) $college_information['tuition_and_fee_instate'];
                     if ($tution_and_fees === null || $tution_and_fees === '') {
                         $tution_and_fees = (float) $college_information['TUIT_STATE_FT_D'] + (float) $college_information['FEES_FT_D'];
