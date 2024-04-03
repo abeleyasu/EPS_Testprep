@@ -288,23 +288,23 @@ $('select[name=choose_state_options]').on('change', async function () {
             // console.log('activeAccordion', activeAccordion)
             await getCollegeListForCostComparison(activeAccordion);
 
-            // $('#costcomparison-summary').DataTable().ajax.reload();
+            $('#costcomparison-summary').DataTable().ajax.reload();
 
             // trigger on change .edit-value in tuition and fees and room and board in current collapse show
             // to update total direct cost
             if (activeAccordion) {
                 // $('#college-list-cost .collapse.show').find('[name=direct_tuition_free_year], [name=direct_room_board_year], [name=direct_miscellaneous_year]').trigger('change')
 
-                $('#college-list-cost .collapse.show').find('[name=direct_tuition_free_year]').trigger('change')
-                $('#college-list-cost .collapse.show').find('[name=direct_room_board_year]').trigger('change')
-                $('#college-list-cost .collapse.show').find('[name=direct_miscellaneous_year]').trigger('change')
+                // $('#college-list-cost .collapse.show').find('[name=direct_tuition_free_year]').trigger('change')
+                // $('#college-list-cost .collapse.show').find('[name=direct_room_board_year]').trigger('change')
+                // $('#college-list-cost .collapse.show').find('[name=direct_miscellaneous_year]').trigger('change')
 
             } else {
                 // $('#college-list-cost .collapse').first().find('[name=direct_tuition_free_year], [name=direct_room_board_year], [name=direct_miscellaneous_year]').trigger('change')
 
-                $('#college-list-cost .collapse').first().find('[name=direct_tuition_free_year]').trigger('change')
-                $('#college-list-cost .collapse').first().find('[name=direct_room_board_year]').trigger('change')
-                $('#college-list-cost .collapse').first().find('[name=direct_miscellaneous_year]').trigger('change')
+                // $('#college-list-cost .collapse').first().find('[name=direct_tuition_free_year]').trigger('change')
+                // $('#college-list-cost .collapse').first().find('[name=direct_room_board_year]').trigger('change')
+                // $('#college-list-cost .collapse').first().find('[name=direct_miscellaneous_year]').trigger('change')
             }
         } else {
             console.log('cancel')
