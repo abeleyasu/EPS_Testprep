@@ -509,87 +509,94 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="mb-4">
-                            <label class="form-label">Has National Fraternities:</label>
-                            <select class="form-select" name="has_national_fraternities">
-                                <option value="1"
-                                    {{ old('has_national_fraternities', $info->has_national_fraternities) ? 'selected' : '' }}>
-                                    Yes</option>
-                                <option value="0"
-                                    {{ !old('has_national_fraternities', $info->has_national_fraternities) ? 'selected' : '' }}>
-                                    No</option>
-                            </select>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!-- Sorority-related fields -->
+                                <div class="mb-4">
+                                    <label class="form-label">Has Local Sororities:</label>
+                                    <select class="form-select" name="has_local_sororities">
+                                        <option value="1"
+                                            {{ old('has_local_sororities', $info->has_local_sororities) ? 'selected' : '' }}>Yes
+                                        </option>
+                                        <option value="0"
+                                            {{ !old('has_local_sororities', $info->has_local_sororities) ? 'selected' : '' }}>No
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Has National Sororities:</label>
+                                    <select class="form-select" name="has_national_sororities">
+                                        <option value="1"
+                                            {{ old('has_national_sororities', $info->has_national_sororities) ? 'selected' : '' }}>
+                                            Yes</option>
+                                        <option value="0"
+                                            {{ !old('has_national_sororities', $info->has_national_sororities) ? 'selected' : '' }}>
+                                            No</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Percent of Women Joining Sororities:</label>
+                                    <input type="number" step="0.01" min="0" max="100" class="form-control"
+                                        name="percent_women_join_sororities"
+                                        value="{{ old('percent_women_join_sororities', $info->percent_women_join_sororities) }}" />
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Percent of Freshmen Joining Sororities:</label>
+                                    <input type="number" step="0.01" min="0" max="100" class="form-control"
+                                        name="percent_freshmen_join_sororities"
+                                        value="{{ old('percent_freshmen_join_sororities', $info->percent_freshmen_join_sororities) }}" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <!-- Fraternity-related fields -->
+                                <div class="mb-4">
+                                    <label class="form-label">Has National Fraternities:</label>
+                                    <select class="form-select" name="has_national_fraternities">
+                                        <option value="1"
+                                            {{ old('has_national_fraternities', $info->has_national_fraternities) ? 'selected' : '' }}>
+                                            Yes</option>
+                                        <option value="0"
+                                            {{ !old('has_national_fraternities', $info->has_national_fraternities) ? 'selected' : '' }}>
+                                            No</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Has Local Fraternities:</label>
+                                    <select class="form-select" name="has_local_fraternities">
+                                        <option value="1"
+                                            {{ old('has_local_fraternities', $info->has_local_fraternities) ? 'selected' : '' }}>
+                                            Yes</option>
+                                        <option value="0"
+                                            {{ !old('has_local_fraternities', $info->has_local_fraternities) ? 'selected' : '' }}>
+                                            No</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Percent of Freshmen Joining Fraternities:</label>
+                                    <input type="number" step="0.01" min="0" max="100" class="form-control"
+                                        name="percent_freshmen_join_fraternities"
+                                        value="{{ old('percent_freshmen_join_fraternities', $info->percent_freshmen_join_fraternities) }}" />
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Percent of Men Joining Fraternities:</label>
+                                    <input type="number" step="0.01" min="0" max="100" class="form-control"
+                                        name="percent_men_join_fraternities"
+                                        value="{{ old('percent_men_join_fraternities', $info->percent_men_join_fraternities) }}" />
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label">Has Local Fraternities:</label>
-                            <select class="form-select" name="has_local_fraternities">
-                                <option value="1"
-                                    {{ old('has_local_fraternities', $info->has_local_fraternities) ? 'selected' : '' }}>
-                                    Yes</option>
-                                <option value="0"
-                                    {{ !old('has_local_fraternities', $info->has_local_fraternities) ? 'selected' : '' }}>
-                                    No</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Percent of Freshmen Joining Fraternities:</label>
-                            <input type="number" step="0.01" min="0" max="100" class="form-control"
-                                name="percent_freshmen_join_fraternities"
-                                value="{{ old('percent_freshmen_join_fraternities', $info->percent_freshmen_join_fraternities) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Percent of Men Joining Fraternities:</label>
-                            <input type="number" step="0.01" min="0" max="100" class="form-control"
-                                name="percent_men_join_fraternities"
-                                value="{{ old('percent_men_join_fraternities', $info->percent_men_join_fraternities) }}" />
-                        </div>
-
-                        <!-- Sorority-related fields -->
                         <div class="mb-4">
                             <label class="form-label">Academic Calendar System:</label>
                             <input type="text" class="form-control" name="academic_calendar_system"
                                 value="{{ old('academic_calendar_system', $info->academic_calendar_system) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Percent of Women Joining Sororities:</label>
-                            <input type="number" step="0.01" min="0" max="100" class="form-control"
-                                name="percent_women_join_sororities"
-                                value="{{ old('percent_women_join_sororities', $info->percent_women_join_sororities) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Percent of Freshmen Joining Sororities:</label>
-                            <input type="number" step="0.01" min="0" max="100" class="form-control"
-                                name="percent_freshmen_join_sororities"
-                                value="{{ old('percent_freshmen_join_sororities', $info->percent_freshmen_join_sororities) }}" />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Has Local Sororities:</label>
-                            <select class="form-select" name="has_local_sororities">
-                                <option value="1"
-                                    {{ old('has_local_sororities', $info->has_local_sororities) ? 'selected' : '' }}>Yes
-                                </option>
-                                <option value="0"
-                                    {{ !old('has_local_sororities', $info->has_local_sororities) ? 'selected' : '' }}>No
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Has National Sororities:</label>
-                            <select class="form-select" name="has_national_sororities">
-                                <option value="1"
-                                    {{ old('has_national_sororities', $info->has_national_sororities) ? 'selected' : '' }}>
-                                    Yes</option>
-                                <option value="0"
-                                    {{ !old('has_national_sororities', $info->has_national_sororities) ? 'selected' : '' }}>
-                                    No</option>
-                            </select>
                         </div>
 
                         <!-- Athletics-related fields -->

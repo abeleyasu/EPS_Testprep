@@ -626,8 +626,10 @@ class InititalCollegeListController extends Controller
                         // print_r($detailInformation);
                     }
 
-                    $direct_tuition = (float) ($detailInformation['direct_tuition_free_year'] ?: null);
-                    $direct_room_board = (float) ($detailInformation['direct_room_board_year'] ?: null);
+                    // $direct_tuition = (float) ($detailInformation['direct_tuition_free_year'] ?: null);
+                    $direct_tuition = isset($detailInformation['direct_tuition_free_year']) ? (float) $detailInformation['direct_tuition_free_year'] : null;
+                    // $direct_room_board = (float) ($detailInformation['direct_room_board_year'] ?: null);
+                    $direct_room_board = isset($detailInformation['direct_room_board_year']) ? (float) $detailInformation['direct_room_board_year'] : null;
 
                     // echo session('costComparisonStateChanged') ? 'true' : 'false';
 
@@ -719,6 +721,12 @@ class InititalCollegeListController extends Controller
         if ($state) {
             $state = States::where('state_code', $state)->first();
             session(['costComparisonActiveStateId' => $state->id]);
+
+            // update user state
+            $user = Auth::user();
+            $user->state_id = $state->id;
+            $user->save();
+
         } else {
             session(['costComparisonActiveStateId' => '']);
         }
@@ -766,8 +774,11 @@ class InititalCollegeListController extends Controller
                     // $direct_tuition = $detailInformation['direct_tuition_free_year'] ?: $college_information['tution_and_fess'];
                     // $direct_room_board = $detailInformation['direct_room_board_year'] ?: $college_information['room_and_board'];
 
-                    $direct_tuition = (float) ($detailInformation['direct_tuition_free_year'] ?: null);
-                    $direct_room_board = (float) ($detailInformation['direct_room_board_year'] ?: null);
+                    // $direct_tuition = (float) ($detailInformation['direct_tuition_free_year'] ?: null);
+                    $direct_tuition = isset($detailInformation['direct_tuition_free_year']) ? (float) $detailInformation['direct_tuition_free_year'] : null;
+                    // $direct_room_board = (float) ($detailInformation['direct_room_board_year'] ?: null);
+                    $direct_room_board = isset($detailInformation['direct_room_board_year']) ? (float) $detailInformation['direct_room_board_year'] : null;
+
                     // if ($direct_tuition === null || $direct_tuition === '') {
                     //     if (\App\Helpers\Helper::isPrivateCollege($college_information)) {
                     //         $direct_tuition = $college_information['tution_and_fess'];
@@ -954,8 +965,11 @@ class InititalCollegeListController extends Controller
                         # reset cost comparison detail
                         $cost_comparion_detail = CostComparisonDetail::where('cost_comparison_id', $cost_comparions->id)->first();
 
-                        $cost_comparion_detail->direct_tuition_free_year = $tution_and_fess; // reset to system initial value
-                        $cost_comparion_detail->direct_room_board_year = $room_and_board; // reset to system initial value
+                        // $cost_comparion_detail->direct_tuition_free_year = $tution_and_fess; // reset to system initial value
+                        // $cost_comparion_detail->direct_room_board_year = $room_and_board; // reset to system initial value
+
+                        $cost_comparion_detail->direct_tuition_free_year = null;
+                        $cost_comparion_detail->direct_room_board_year = null;
                         $cost_comparion_detail->direct_miscellaneous_year = null;
 
                         $cost_comparion_detail->institutional_academic_merit_aid = null;
@@ -1100,8 +1114,10 @@ class InititalCollegeListController extends Controller
         $stateActiveId = session('costComparisonActiveStateId') ?: $stateId;
         $state = States::where('id', $stateActiveId)->first();
 
-        $tution_and_fees = (float) ($data['direct_tuition_free_year'] ?: null);
-        $room_and_board = (float) ($data['direct_room_board_year'] ?: null);
+        // $tution_and_fees = (float) ($data['direct_tuition_free_year'] ?: null);
+        $tution_and_fees = isset($data['direct_tuition_free_year']) ? (float) $data['direct_tuition_free_year'] : null;
+        // $room_and_board = (float) ($data['direct_room_board_year'] ?: null);
+        $room_and_board = isset($data['direct_room_board_year']) ? (float) $data['direct_room_board_year'] : null;
 
         $direct_miscellaneous_year = $data['direct_miscellaneous_year'] ? $data['direct_miscellaneous_year'] : 0;
 
