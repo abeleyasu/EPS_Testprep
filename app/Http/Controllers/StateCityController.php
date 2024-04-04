@@ -9,9 +9,10 @@ use App\Models\HighSchoolResume\Cities;
 class StateCityController extends Controller
 {
     public function states(Request $request) {
+        $total_states = States::count();
         $page = isset($request->page) ? $request->page : 1;
         $search = isset($request->search) ? $request->search : null;
-        $limit = $page * 25;
+        $limit = $page * $total_states;
         $states = States::select('id', 'state_name as text');
         if (!empty($search)) {
             $states = $states->where(function ($state) use ($search) {
@@ -20,6 +21,7 @@ class StateCityController extends Controller
         }
         $states = $states->paginate($limit);
         $states = $states->toArray();
+        // dd($states);
         return response()->json([
             'data' => $states['data'],
             'total' => $states['total']
