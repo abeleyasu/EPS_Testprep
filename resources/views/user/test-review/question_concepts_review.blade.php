@@ -56,6 +56,7 @@
                             @if (isset($test_details) && !empty($test_details))
                                 @php
                                     $testType = request()->session()->get('testType');
+
                                 @endphp
                                 @if ($testType == 'proctored')
                                     <li class="breadcrumb-item" aria-current="page">
@@ -189,7 +190,28 @@
                                             <th>Section</th>
                                             <th># Correct</th>
                                             <th>Scaled Score
-                                                ({{ isset($low_score) ? number_format($low_score, 0) : '-' }}-{{ isset($high_score) ? number_format($high_score, 0) : '-' }})
+                                                @if (
+                                                    $test_details->test_source == 1 &&
+                                                        ($test_details->format == 'DSAT' || $test_details->format == 'DPSAT') &&
+                                                        $test_details->user_id == Auth::user()->id)
+                                                    @if (isset($user_selected_answers[0]['sections']) && !empty($user_selected_answers[0]['sections']))
+                                                        @if (
+                                                            $user_selected_answers[0]['sections'][0]->practice_test_type == 'Reading_And_Writing' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Easy_Reading_And_Writing' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Hard_Reading_And_Writing')
+                                                            ({{ isset($low_reading_score) ? number_format($low_reading_score, 0) : '-' }}-{{ isset($high_reading_score) ? number_format($high_reading_score, 0) : '-' }})
+                                                        @elseif(
+                                                            $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math_with_calculator' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math_no_calculator')
+                                                            ({{ isset($low_math_score) ? number_format($low_math_score, 0) : '-' }}-{{ isset($high_math_score) ? number_format($high_math_score, 0) : '-' }})
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    @endif
+                                                @else
+                                                    ({{ isset($low_score) ? number_format($low_score, 0) : '-' }}-{{ isset($high_score) ? number_format($high_score, 0) : '-' }})
+                                                @endif
                                             </th>
                                             <th>Date Taken</th>
                                         </tr>
@@ -216,7 +238,45 @@
                                             </td>
                                             <td>{{ isset($right_answers) ? $right_answers : '' }}/{{ isset($total_questions) ? $total_questions : '' }}
                                             </td>
-                                            <td>{{ number_format($scaled_score ?? 0, 0) }}</td>
+                                            <td>
+
+                                                @if (
+                                                    $test_details->test_source == 1 &&
+                                                        ($test_details->format == 'DSAT' || $test_details->format == 'DPSAT') &&
+                                                        $test_details->user_id == Auth::user()->id)
+                                                    @php
+                                                        $readingWriting = session()->get('reading_and_writing');
+                                                        $math = session()->get('math');
+                                                    @endphp
+                                                    @if (isset($user_selected_answers[0]['sections']) && !empty($user_selected_answers[0]['sections']))
+                                                        @if (
+                                                            $user_selected_answers[0]['sections'][0]->practice_test_type == 'Reading_And_Writing' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Easy_Reading_And_Writing' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Hard_Reading_And_Writing')
+                                                            @if ($readingWriting[0]['testId'] == $test_details->id && $readingWriting[0]['format'] == $test_details->format)
+                                                                {{ number_format($readingWriting[0]['score'] ?? 0, 0) }}
+                                                            @else
+                                                                0
+                                                            @endif
+                                                        @elseif(
+                                                            $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math_no_calculator' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math_with_calculator')
+                                                            @if ($math[0]['testId'] == $test_details->id && $math[0]['format'] == $test_details->format)
+                                                                {{ number_format($math[0]['score'] ?? 0, 0) }}
+                                                            @else
+                                                                0
+                                                            @endif
+                                                        @else
+                                                            0
+                                                        @endif
+                                                    @else
+                                                        0
+                                                    @endif
+                                                @else
+                                                    {{ number_format($scaled_score ?? 0, 0) }}
+                                                @endif
+                                            </td>
                                             <td>
                                                 @if (isset($user_selected_answers[0]['date_taken']) && !empty($user_selected_answers[0]['date_taken']))
                                                     @foreach ($user_selected_answers[0]['date_taken'] as $test_date)

@@ -208,7 +208,11 @@
                                     </a>
                                 @elseif (isset($testSections[0]->testid) && $firstSectionId != 0)
                                     @php
-                                        $str = 'test_id=' . $testSections[0]->testid . '&time=regular&section=all&sections=' . htmlspecialchars(json_encode($sectionIdsArray), JSON_NUMERIC_CHECK);
+                                        $str =
+                                            'test_id=' .
+                                            $testSections[0]->testid .
+                                            '&time=regular&section=all&sections=' .
+                                            htmlspecialchars(json_encode($sectionIdsArray), JSON_NUMERIC_CHECK);
                                     @endphp
                                     <a href="{{ route('startAllSections', ['sec_id' => $firstSectionId, 'str' => $str, 'id' => $testSections[0]->testid]) }}"
                                         style="white-space: nowrap" data-test_id="{{ $selected_test_id }}"
@@ -430,7 +434,10 @@
                                                             </a>
                                                         @endif
                                                         @php
-                                                            array_push($sectionArray, (int) $singletestSections['Sections'][0]['id']);
+                                                            array_push(
+                                                                $sectionArray,
+                                                                (int) $singletestSections['Sections'][0]['id'],
+                                                            );
                                                         @endphp
                                                     @endif
                                                 @elseif(!isset($singletestSections['Sections_question']))
@@ -451,23 +458,49 @@
                                 @php
                                     if ($singletestSections['Sections'][0]['practice_test_type'] == 'Math') {
                                         $id = $singletestSections['Sections'][0]['id'];
-                                    } elseif ($singletestSections['Sections'][0]['practice_test_type'] == 'Reading_And_Writing') {
+                                    } elseif (
+                                        $singletestSections['Sections'][0]['practice_test_type'] ==
+                                        'Reading_And_Writing'
+                                    ) {
                                         $id = $singletestSections['Sections'][0]['id'];
                                     }
-                                    if ($singletestSections['Sections'][0]['practice_test_type'] == 'Easy_Reading_And_Writing') {
+                                    if (
+                                        $singletestSections['Sections'][0]['practice_test_type'] ==
+                                        'Easy_Reading_And_Writing'
+                                    ) {
                                         $readingAndWritingId = $singletestSections['Sections'][0]['id'];
-                                        $checkReading = \DB::table('user_answers')->where('section_id', $readingAndWritingId)->exists();
+                                        $checkReading = \DB::table('user_answers')
+                                            ->where('section_id', $readingAndWritingId)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->exists();
                                         // dd($readingAndWritingId);
-                                    } elseif ($singletestSections['Sections'][0]['practice_test_type'] == 'Hard_Reading_And_Writing') {
+                                    } elseif (
+                                        $singletestSections['Sections'][0]['practice_test_type'] ==
+                                        'Hard_Reading_And_Writing'
+                                    ) {
                                         $readingAndWritingId = $singletestSections['Sections'][0]['id'];
-                                        $checkReading = \DB::table('user_answers')->where('section_id', $readingAndWritingId)->exists();
+                                        $checkReading = \DB::table('user_answers')
+                                            ->where('section_id', $readingAndWritingId)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->exists();
                                     }
-                                    if ($singletestSections['Sections'][0]['practice_test_type'] == 'Math_no_calculator') {
+                                    if (
+                                        $singletestSections['Sections'][0]['practice_test_type'] == 'Math_no_calculator'
+                                    ) {
                                         $mathId = $singletestSections['Sections'][0]['id'];
-                                        $checkMath = \DB::table('user_answers')->where('section_id', $mathId)->exists();
-                                    } elseif ($singletestSections['Sections'][0]['practice_test_type'] == 'Math_with_calculator') {
+                                        $checkMath = \DB::table('user_answers')
+                                            ->where('section_id', $mathId)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->exists();
+                                    } elseif (
+                                        $singletestSections['Sections'][0]['practice_test_type'] ==
+                                        'Math_with_calculator'
+                                    ) {
                                         $mathId = $singletestSections['Sections'][0]['id'];
-                                        $checkMath = \DB::table('user_answers')->where('section_id', $mathId)->exists();
+                                        $checkMath = \DB::table('user_answers')
+                                            ->where('section_id', $mathId)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->exists();
                                     }
                                     // if (isset($checkReading)) {
                                     //     dump($checkReading);
@@ -604,7 +637,12 @@
                                                                         Section
                                                                     </a>
                                                                     @php
-                                                                        array_push($sectionArray, (int) $singletestSections['Sections'][0]['id']);
+                                                                        array_push(
+                                                                            $sectionArray,
+                                                                            (int) $singletestSections['Sections'][0][
+                                                                                'id'
+                                                                            ],
+                                                                        );
                                                                     @endphp
                                                                 </div>
                                                             </div>
@@ -615,6 +653,7 @@
                                         @endif
                                     @endif
                                 @else
+                               
                                     @if (isset($singletestSections['Sections_question']))
                                         @if (isset($singletestSections['check_if_section_completed']) &&
                                                 $singletestSections['check_if_section_completed'][0] == 'yes')
@@ -656,10 +695,30 @@
                                                                 </div>
                                                                 <div>
                                                                     @php
-                                                                        if (strpos($singletestSections['Sections'][0]['practice_test_type'], 'Math') !== false) {
-                                                                            $score = $singletestSections['Sections'][0]['newScore'];
-                                                                        } elseif (strpos($singletestSections['Sections'][0]['practice_test_type'], 'Reading') !== false) {
-                                                                            $score = $singletestSections['Sections'][0]['newScore'];
+                                                                        if (
+                                                                            strpos(
+                                                                                $singletestSections['Sections'][0][
+                                                                                    'practice_test_type'
+                                                                                ],
+                                                                                'Math',
+                                                                            ) !== false
+                                                                        ) {
+                                                                            $score =
+                                                                                $singletestSections['Sections'][0][
+                                                                                    'newScore'
+                                                                                ];
+                                                                        } elseif (
+                                                                            strpos(
+                                                                                $singletestSections['Sections'][0][
+                                                                                    'practice_test_type'
+                                                                                ],
+                                                                                'Reading',
+                                                                            ) !== false
+                                                                        ) {
+                                                                            $score =
+                                                                                $singletestSections['Sections'][0][
+                                                                                    'newScore'
+                                                                                ];
                                                                         } else {
                                                                         }
                                                                     @endphp
@@ -712,8 +771,16 @@
                                                         <i class="fa-solid fa-2"></i>
                                                     </div>
                                                     @php
-                                                        $modifiedString = str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']);
-                                                        $modifiedStrings = str_replace(['calculator', 'Easy', 'with', 'no', 'Hard'], '', $modifiedString);
+                                                        $modifiedString = str_replace(
+                                                            ['_'],
+                                                            [' '],
+                                                            $singletestSections['Sections'][0]['practice_test_type'],
+                                                        );
+                                                        $modifiedStrings = str_replace(
+                                                            ['calculator', 'Easy', 'with', 'no', 'Hard'],
+                                                            '',
+                                                            $modifiedString,
+                                                        );
                                                     @endphp
                                                     <div class="timeline-event-block block">
                                                         <div class="block-header block-header-default">
@@ -784,11 +851,19 @@
                                                 <li class="timeline-event">
 
                                                     <div class="timeline-event-icon bg-success">
-                                                        <i class="fa-solid fa-{{ $loop->index - 1 }}"></i>
+                                                        <i class="fa-solid fa-4"></i>
                                                     </div>
                                                     @php
-                                                        $modifiedString = str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']);
-                                                        $modifiedStrings = str_replace(['calculator', 'Easy', 'with', 'no', 'Hard'], '', $modifiedString);
+                                                        $modifiedString = str_replace(
+                                                            ['_'],
+                                                            [' '],
+                                                            $singletestSections['Sections'][0]['practice_test_type'],
+                                                        );
+                                                        $modifiedStrings = str_replace(
+                                                            ['calculator', 'Easy', 'with', 'no', 'Hard'],
+                                                            '',
+                                                            $modifiedString,
+                                                        );
                                                     @endphp
                                                     <div class="timeline-event-block block">
                                                         <div class="block-header block-header-default">
@@ -915,7 +990,12 @@
                                                                             style='margin-right:5px'></i> Start Section
                                                                     </a>
                                                                     @php
-                                                                        array_push($sectionArray, (int) $singletestSections['Sections'][0]['id']);
+                                                                        array_push(
+                                                                            $sectionArray,
+                                                                            (int) $singletestSections['Sections'][0][
+                                                                                'id'
+                                                                            ],
+                                                                        );
                                                                     @endphp
                                                                 </div>
                                                             </div>
@@ -929,8 +1009,16 @@
                                                         <i class="fa-solid fa-{{ ++$count }}"></i>
                                                     </div>
                                                     @php
-                                                        $modifiedString = str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']);
-                                                        $modifiedStrings = str_replace(['calculator', 'Easy', 'with', 'no', 'Hard'], '', $modifiedString);
+                                                        $modifiedString = str_replace(
+                                                            ['_'],
+                                                            [' '],
+                                                            $singletestSections['Sections'][0]['practice_test_type'],
+                                                        );
+                                                        $modifiedStrings = str_replace(
+                                                            ['calculator', 'Easy', 'with', 'no', 'Hard'],
+                                                            '',
+                                                            $modifiedString,
+                                                        );
                                                     @endphp
                                                     <div class="timeline-event-block block">
                                                         <div class="block-header block-header-default">
@@ -971,7 +1059,12 @@
                                                                         Section
                                                                     </a>
                                                                     @php
-                                                                        array_push($sectionArray, (int) $singletestSections['Sections'][0]['id']);
+                                                                        array_push(
+                                                                            $sectionArray,
+                                                                            (int) $singletestSections['Sections'][0][
+                                                                                'id'
+                                                                            ],
+                                                                        );
                                                                     @endphp
                                                                 </div>
                                                             </div>
@@ -986,8 +1079,16 @@
                                                         <i class="fa-solid fa-{{ $loop->index }}"></i>
                                                     </div>
                                                     @php
-                                                        $modifiedString = str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']);
-                                                        $modifiedStrings = str_replace(['calculator', 'Easy', 'with', 'no', 'Hard'], '', $modifiedString);
+                                                        $modifiedString = str_replace(
+                                                            ['_'],
+                                                            [' '],
+                                                            $singletestSections['Sections'][0]['practice_test_type'],
+                                                        );
+                                                        $modifiedStrings = str_replace(
+                                                            ['calculator', 'Easy', 'with', 'no', 'Hard'],
+                                                            '',
+                                                            $modifiedString,
+                                                        );
                                                     @endphp
                                                     <div class="timeline-event-block block">
                                                         <div class="block-header block-header-default">
@@ -1028,7 +1129,12 @@
                                                                         Section
                                                                     </a>
                                                                     @php
-                                                                        array_push($sectionArray, (int) $singletestSections['Sections'][0]['id']);
+                                                                        array_push(
+                                                                            $sectionArray,
+                                                                            (int) $singletestSections['Sections'][0][
+                                                                                'id'
+                                                                            ],
+                                                                        );
                                                                     @endphp
                                                                 </div>
                                                             </div>
@@ -1152,7 +1258,10 @@
                                                                     Section
                                                                 </a>
                                                                 @php
-                                                                    array_push($sectionArray, (int) $singletestSections['Sections'][0]['id']);
+                                                                    array_push(
+                                                                        $sectionArray,
+                                                                        (int) $singletestSections['Sections'][0]['id'],
+                                                                    );
                                                                 @endphp
                                                             </div>
                                                         </div>

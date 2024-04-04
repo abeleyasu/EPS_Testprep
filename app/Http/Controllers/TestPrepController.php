@@ -998,8 +998,46 @@ class TestPrepController extends Controller
             }
         } else {
             if (Score::where('section_id', $id)->exists()) {
-                $high_score = Score::where('section_id', $id)->max('converted_score');
-                $low_score = Score::where('section_id', $id)->min('converted_score');
+                if ($test_details['test_source'] == 1 && ($test_details['format'] == 'DSAT' || $test_details['format'] == 'DPSAT')) {
+                    $high_reading_score = Score::where('test_id', $test_details['id'])
+                        ->where(function ($query) {
+                            $query->where('section_type', 'Reading_And_Writing')
+                                ->orWhere('section_type', 'Easy_Reading_And_Writing')
+                                ->orWhere('section_type', 'Hard_Reading_And_Writing');
+                        })
+                        ->max('converted_score');
+                    $low_reading_score = Score::where('test_id', $test_details['id'])
+                        ->where(function ($query) {
+                            $query->where('section_type', 'Reading_And_Writing')
+                                ->orWhere('section_type', 'Easy_Reading_And_Writing')
+                                ->orWhere('section_type', 'Hard_Reading_And_Writing');
+                        })
+                        ->min('converted_score');
+
+                    $high_math_score = Score::where('test_id', $test_details['id'])
+                        ->where(function ($query) {
+                            $query->where('section_type', 'Math')
+                                ->orWhere('section_type', 'Math_with_calculator')
+                                ->orWhere('section_type', 'Math_no_calculator');
+                        })
+                        ->max('converted_score');
+
+                    $low_math_score = Score::where('test_id', $test_details['id'])
+                        ->where(function ($query) {
+                            $query->where('section_type', 'Math')
+                                ->orWhere('section_type', 'Math_with_calculator')
+                                ->orWhere('section_type', 'Math_no_calculator');
+                        })
+                        ->min('converted_score');
+                    $high_score = 0;
+                    $low_score = 0;
+                } else {
+                    $high_score = Score::where('section_id', $id)->max('converted_score');
+                    $low_score = Score::where('section_id', $id)->min('converted_score');
+                }
+                // $high_score = Score::where('section_id', $id)->max('converted_score');
+                // $low_score = Score::where('section_id', $id)->min('converted_score');
+
             } else {
                 $high_score = 0;
                 $low_score = 0;
@@ -1009,6 +1047,11 @@ class TestPrepController extends Controller
         if ($_GET['type'] == 'all' && $test_details['format'] == 'ACT') {
             $high_score = $high_score / (count($store_sections_detail['all_sections']) == 0 ? 1 : count($store_sections_detail['all_sections']));
             $low_score = $low_score / (count($store_sections_detail['all_sections']) == 0 ? 1 : count($store_sections_detail['all_sections']));
+        } elseif ($test_details['test_source'] == 1 && ($test_details['format'] == 'DSAT' || $test_details['format'] == 'DPSAT')) {
+            $high_reading_score = $high_reading_score;
+            $low_reading_score =  $low_reading_score;
+            $high_math_score = $high_math_score;
+            $low_math_score = $low_math_score;
         } else {
             $high_score = $high_score;
             $low_score = $low_score;
@@ -1253,7 +1296,11 @@ class TestPrepController extends Controller
             'high_score' => $high_score,
             'low_score' => $low_score,
             'practice_test_section_id' => $practice_test_section_id,
-            'categoryAndQuestionTypeSummaryData' => $categoryAndQuestionTypeSummaryData
+            'categoryAndQuestionTypeSummaryData' => $categoryAndQuestionTypeSummaryData,
+            'high_reading_score' => $high_reading_score,
+            'low_reading_score' => $low_reading_score,
+            'high_math_score' => $high_math_score,
+            'low_math_score' => $low_math_score
         ]);
     }
 
@@ -4525,8 +4572,32 @@ class TestPrepController extends Controller
         foreach ($store_sections_details as $key => $singletestSections) {
             if (in_array($singletestSections['Sections'][0]['format'], ['DSAT', 'DPSAT'])) {
 
+
+
                 if (isset($singletestSections['Sections'][0]['newScore'])) {
                     $compositeScore = $compositeScore + $singletestSections['Sections'][0]['newScore'];
+
+                    if ($singletestSections['Sections'][0]['practice_test_type'] == 'Reading_And_Writing' || $singletestSections['Sections'][0]['practice_test_type'] == 'Easy_Reading_And_Writing' || $singletestSections['Sections'][0]['practice_test_type'] == 'Hard_Reading_And_Writing') {
+                        session()->forget('reading_and_writing');
+                        session()->push('reading_and_writing', [
+                            'userId' => Auth::user()->id,
+                            'testId' => $singletestSections['Sections'][0]['testid'],
+                            'format' => $singletestSections['Sections'][0]['format'],
+                            'score' => $singletestSections['Sections'][0]['newScore'],
+                            'test_type' => $singletestSections['Sections'][0]['practice_test_type']
+                        ]);
+                    }
+
+                    if ($singletestSections['Sections'][0]['practice_test_type'] == 'Math' || $singletestSections['Sections'][0]['practice_test_type'] == 'Math_with_calculator' || $singletestSections['Sections'][0]['practice_test_type'] == 'Math_no_calculator') {
+                        session()->forget('math');
+                        session()->push('math', [
+                            'userId' => Auth::user()->id,
+                            'testId' => $singletestSections['Sections'][0]['testid'],
+                            'format' => $singletestSections['Sections'][0]['format'],
+                            'score' => $singletestSections['Sections'][0]['newScore'],
+                            'test_type' => $singletestSections['Sections'][0]['practice_test_type']
+                        ]);
+                    }
                 }
 
                 // dump($singletestSections['Sections'][0]['newScore']);
@@ -4638,7 +4709,7 @@ class TestPrepController extends Controller
                 $mathScore = 0;
             }
         }
-        // dd($practice_test);
+
 
         // dump($mathSectionCount);
         // dump($readingSectionCount);

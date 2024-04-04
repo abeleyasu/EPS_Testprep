@@ -26,9 +26,11 @@ class SendReminder extends Controller
                 $user_settings = UserSettings::where('user_id', $reminder->user_id)->first();
                 if ($user_settings->application_deadline_notification == 1 && $reminder->type == 'application_deadline' && $reminder->is_send == 0) {
                     $college = CollegeSearchAdd::where('id', $reminder->college_id)->first();
-                    if ($college->is_active == 1) {
-                        Log::channel('reminder')->info("Application deadline notification");
-                        $this->sendOneTimeNotification($reminder, $user_settings);
+                    if ($college) {
+                        if ($college->is_active == 1) {
+                            Log::channel('reminder')->info("Application deadline notification");
+                            $this->sendOneTimeNotification($reminder, $user_settings);
+                        }
                     }
                 } else if ($reminder->type == 'custom') {
                     $this->createReminder($reminder, $user_settings);
@@ -39,29 +41,33 @@ class SendReminder extends Controller
         }
     }
 
-    public function getUserTimeZoneTime($user_settings) {
+    public function getUserTimeZoneTime($user_settings)
+    {
         $currentTimeInUserTimezone = Carbon::now()->setTimezone($user_settings->timezone);
-        Log::channel('reminder')->info("Current User Timezone Time = ".$currentTimeInUserTimezone->format('Y-m-d H:i'));
+        Log::channel('reminder')->info("Current User Timezone Time = " . $currentTimeInUserTimezone->format('Y-m-d H:i'));
         return $currentTimeInUserTimezone;
     }
 
-    public function getReminderStartDateWithTime($reminder, $user_settings) {
+    public function getReminderStartDateWithTime($reminder, $user_settings)
+    {
         $startTime = Carbon::parse($reminder->start_date)->setTimezone($user_settings->timezone);
         $time = Carbon::createFromFormat('H:i:s', $reminder->when_time);
         $startTime->setTime($time->hour, $time->minute, 0);
-        Log::channel('reminder')->info("Reminder Start Date With Time = ".$startTime->format('Y-m-d H:i'));
+        Log::channel('reminder')->info("Reminder Start Date With Time = " . $startTime->format('Y-m-d H:i'));
         return $startTime;
     }
 
-    public function getReminderEndDate($reminder, $user_settings) {
+    public function getReminderEndDate($reminder, $user_settings)
+    {
         $endTime = Carbon::parse($reminder->end_date)->setTimezone($user_settings->timezone);
         $time = Carbon::createFromFormat('H:i:s', $reminder->when_time);
         $endTime->setTime($time->hour, $time->minute, 0);
-        Log::channel('reminder')->info("Reminder End Date = ".$endTime->format('Y-m-d H:i'));
+        Log::channel('reminder')->info("Reminder End Date = " . $endTime->format('Y-m-d H:i'));
         return $endTime;
     }
 
-    public function createReminder($reminder, $user_settings) {
+    public function createReminder($reminder, $user_settings)
+    {
         Log::channel('reminder')->info("reminder = $reminder");
 
         $currentTimeInUserTimezone = $this->getUserTimeZoneTime($user_settings);
@@ -76,8 +82,8 @@ class SendReminder extends Controller
 
         while ($currentDate->format('Y-m-d') <= $endDate->format('Y-m-d')) {
             $currentDateTime = $currentDate->copy();
-            Log::channel('reminder')->info("currentDateTime = ".$currentDateTime->format('Y-m-d H:i'));
-            Log::channel('reminder')->info("Carbon now = ".$currentTimeInUserTimezone->format('Y-m-d H:i'));
+            Log::channel('reminder')->info("currentDateTime = " . $currentDateTime->format('Y-m-d H:i'));
+            Log::channel('reminder')->info("Carbon now = " . $currentTimeInUserTimezone->format('Y-m-d H:i'));
 
             if ($reminder->before_time && $reminder->before_frequncy || $reminder->before_time != '' && $reminder->before_frequncy != '') {
                 if ($reminder->before_frequncy == 'hour') {
@@ -92,11 +98,11 @@ class SendReminder extends Controller
                     $currentDateTime->subMinutes($reminder->before_time);
                 }
 
-                if ($currentTimeInUserTimezone->format('Y-m-d H:i') === $currentDateTime->format('Y-m-d H:i')) { 
+                if ($currentTimeInUserTimezone->format('Y-m-d H:i') === $currentDateTime->format('Y-m-d H:i')) {
                     $this->sendNotfiction($method, $reminder, $user);
                     break;
                 }
-            }  else if ($currentTimeInUserTimezone->format('Y-m-d H:i') === $currentDateTime->format('Y-m-d H:i')) {
+            } else if ($currentTimeInUserTimezone->format('Y-m-d H:i') === $currentDateTime->format('Y-m-d H:i')) {
                 $this->sendNotfiction($method, $reminder, $user);
                 break;
             }
@@ -111,14 +117,14 @@ class SendReminder extends Controller
         }
     }
 
-    public function sendOneTimeNotification($reminder, $user_settings) {
+    public function sendOneTimeNotification($reminder, $user_settings)
+    {
         Log::channel('reminder')->info("reminder = $reminder");
         $user = User::where('id', $reminder->user_id)->with('deadlineReminderSettings')->first();
-
         $method = strtolower($reminder->method);
         $currentTimeInUserTimezone = $this->getUserTimeZoneTime($user_settings);
-        $startDate = $this->getReminderStartDateWithTime($reminder, $user_settings);
-        if ($startDate->format('Y-m-d') == $currentTimeInUserTimezone->format('Y-m-d')) {  
+        $startDate = $this->getReminderStartDateWithTime($reminder, $user_settings);         
+        if ($startDate->format('Y-m-d') == $currentTimeInUserTimezone->format('Y-m-d')) {
             $this->sendNotfiction($method, $reminder, $user);
             $reminder->is_send = 1;
             $reminder->save();
@@ -140,12 +146,13 @@ class SendReminder extends Controller
         }
     }
 
-    public function sendNotfiction($method, $reminder, $user) {
-        if($method == 'text' || $method == 'both') {
+    public function sendNotfiction($method, $reminder, $user)
+    {
+        if ($method == 'text' || $method == 'both') {
             $this->sendSmsReminder($reminder, $user);
         }
 
-        if($method == 'email' || $method == 'both') {
+        if ($method == 'email' || $method == 'both') {
             $this->sendEmailReminder($reminder, $user);
         }
     }
@@ -169,7 +176,7 @@ class SendReminder extends Controller
                     'time' => $time
                 ])->render()
             ]);
-            
+
             if ($sent) {
                 Log::channel('reminder')->info("Email sent successfully to $to_email");
             } else {
@@ -202,7 +209,7 @@ class SendReminder extends Controller
             Log::channel('reminder')->info("Twilio Response:\n" . json_encode($message, JSON_PRETTY_PRINT));
             Log::channel('reminder')->info("SMS sent successfully to $toPhoneNumber");
         } catch (Exception $e) {
-            Log::channel('reminder')->info("Failed to send SMS: ". $e->getMessage());
+            Log::channel('reminder')->info("Failed to send SMS: " . $e->getMessage());
         }
     }
 }
