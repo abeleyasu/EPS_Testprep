@@ -383,10 +383,11 @@
     })
 
     function saveform(formid) {
+        const formSerialized = $('#form-' + formid).serialize();
         $.ajax({
             url: "{{route('admin-dashboard.college_application_save')}}",
             type: 'POST',
-            data: $('#form-' + formid).serialize(),
+            data: formSerialized,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },

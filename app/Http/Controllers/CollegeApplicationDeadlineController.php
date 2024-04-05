@@ -15,6 +15,8 @@ use App\Models\UserCalendar;
 use Carbon\Carbon;
 use App\Service\GoogleService;
 
+use function PHPUnit\Framework\isJson;
+
 class CollegeApplicationDeadlineController extends Controller
 {
     protected $googleService;
@@ -48,9 +50,9 @@ class CollegeApplicationDeadlineController extends Controller
     {
         try {
             $college_list_deadline = CollegeList::where('user_id', Auth::id())
-            ->with(['college_list_details' => function ($detail) {
-                $detail->where('is_active', true)->orderBy('order_index')->with(['collegeDeadline']);
-            }])->first();
+                ->with(['college_list_details' => function ($detail) {
+                    $detail->where('is_active', true)->orderBy('order_index')->with(['collegeDeadline']);
+                }])->first();
 
             return [
                 'success' => true,
@@ -317,6 +319,12 @@ class CollegeApplicationDeadlineController extends Controller
             'css_profile_deadline' => 'nullable|date_format:m-d-Y',
         ]);
 
+        $collegeDetail = CollegeDetails::where('id', $request->college_detail_id)->first();
+
+        $appOrganizerData = isJson($request->app_organizer_json) ? json_decode($request->app_organizer_json, true) : [];
+        $collegeInfoTemp = $appOrganizerData['college_details']['college_information'];
+        $collegeInformation = CollegeInformation::where('id', $collegeInfoTemp['id'])->first();
+
         // check if $request->admissions_deadline is already passed, then set to +1 year
         if ($request->admissions_deadline) {
             $deadline = $request->admissions_deadline;
@@ -328,17 +336,114 @@ class CollegeApplicationDeadlineController extends Controller
             if ($date->isPast()) {
                 $date->addYear();
             }
-            $data['admissions_deadline'] = $date->format('m-d-Y');
-            $request->admissions_deadline = $data['admissions_deadline'];
+
+            $data['is_admission_deadline_from_user'] = false;
+
+            $deadlineFromSystem = $this->__getDeadlineDate([
+                'request_data' => $request->all(),
+                'college_detail' => $collegeDetail,
+                'college_information' => $collegeInformation
+            ]);
+
+            // check if admissions_deadline same as system
+            if (isset($deadlineFromSystem['date']) && $deadlineFromSystem['date'] == $data['admissions_deadline']) {
+                $data['is_admission_deadline_from_user'] = false;
+                $data['admissions_deadline'] = $deadlineFromSystem['date'];
+            } else {
+                $data['admissions_deadline'] = $date->format('m-d-Y');
+                $data['is_admission_deadline_from_user'] = true;
+            }
         } else {
             $data['admissions_deadline'] = null;
+            $data['is_admission_deadline_from_user'] = false;
         }
 
         // dd($data);
-        $college = CollegeDetails::where('id', $request->college_detail_id)->update($data);
+        $college = $collegeDetail->update($data);
 
         $this->setReminderAndAddIntoCalendor($request->college_detail_id);
     }
+
+    private function __getDeadlineDate($data)
+    {
+        $deadlineDate = null;
+
+        $adminissionOptionSelected = $data['request_data']['admission_option']; // Early Action, Early Decision 1, Early Decision 2, Regular Decision, Rolling Admission
+
+        if (!empty($adminissionOptionSelected)) {
+            // admission deadline:
+            // Early Action: AP_DL_EACT_DAY, AP_DL_EACT_MON
+            // Early Decision 1: AP_DL_EDEC_1_DAY, AP_DL_EDEC_1_MON
+            // Early Decision 2: AP_DL_EDEC_2_DAY, AP_DL_EDEC_2_MON
+            // Regular Decision: AP_DL_FRSH_DAY, AP_DL_FRSH_MON
+            // Rolling Admission: No
+
+            $collegeInformation = $data['college_information'];
+
+            $deadlineDay = 0;
+            $deadlineMonth = 0;
+
+            if ($adminissionOptionSelected == 'Early Action') {
+                $deadlineDay = $collegeInformation['early_action_day'] ?: $collegeInformation['AP_DL_EACT_DAY'];
+                $deadlineMonth = $collegeInformation['early_action_month'] ?: $collegeInformation['AP_DL_EACT_MON'];
+            } elseif ($adminissionOptionSelected == 'Early Decision 1') {
+                $deadlineDay =
+                    $collegeInformation['early_decision_i_day'] ?: $collegeInformation['AP_DL_EDEC_1_DAY'];
+                $deadlineMonth =
+                    $collegeInformation['early_decision_i_month'] ?: $collegeInformation['AP_DL_EDEC_1_MON'];
+            } elseif ($adminissionOptionSelected == 'Early Decision 2') {
+                $deadlineDay =
+                    $collegeInformation['early_decision_ii_day'] ?: $collegeInformation['AP_DL_EDEC_2_DAY'];
+                $deadlineMonth =
+                    $collegeInformation['early_decision_ii_month'] ?: $collegeInformation['AP_DL_EDEC_2_MON'];
+            } elseif ($adminissionOptionSelected == 'Regular Decision') {
+                $deadlineDay =
+                    $collegeInformation['regular_decision_day'] ?: $collegeInformation['AP_DL_FRSH_DAY'];
+                $deadlineMonth =
+                    $collegeInformation['regular_decision_month'] ?: $collegeInformation['AP_DL_FRSH_MON'];
+            } elseif ($adminissionOptionSelected == 'Rolling Admission') {
+                //
+            }
+
+            if ($deadlineDay && $deadlineMonth) {
+                $year = date('Y');
+                $date = strtotime($year . '-' . $deadlineMonth . '-' . $deadlineDay);
+                if ($date < time()) {
+                    $deadlineDate = $deadlineMonth . '-' . $deadlineDay . '-' . ($year + 1);
+                } else {
+                    $deadlineDate = $deadlineMonth . '-' . $deadlineDay . '-' . $year;
+                }
+            } else {
+                // $deadlineDate = isset($collegeInformation['regular_admission_deadline'])
+                //     ? $collegeInformation['regular_admission_deadline']
+                //     : '';
+
+                // if (!empty($deadlineDate)) {
+                //     $deadlineDate = date('Y-m-d', strtotime($deadlineDate));
+                // }
+            }
+        }
+
+        if (!empty($deadlineDate)) {
+            // convert deadlineDate to M-d-Y
+
+            try {
+                $deadlineDate = Carbon::createFromFormat("m-d-Y", $deadlineDate);
+            } catch (\Throwable $th) {
+                $deadlineDate = Carbon::createFromFormat("Y-m-d", $deadlineDate);
+            }
+
+            $deadlineDate = $deadlineDate->format('m-d-Y');
+            return [
+                'date' => $deadlineDate,
+            ];
+        }
+
+        return [
+            'date' => '',
+        ];
+    }
+
 
     public function college_application_save(Request $request)
     {
