@@ -1051,7 +1051,6 @@ class TestPrepController extends Controller
             $high_score = $high_score / (count($store_sections_detail['all_sections']) == 0 ? 1 : count($store_sections_detail['all_sections']));
             $low_score = $low_score / (count($store_sections_detail['all_sections']) == 0 ? 1 : count($store_sections_detail['all_sections']));
         } elseif ($test_details['test_source'] == 1 && ($test_details['format'] == 'DSAT' || $test_details['format'] == 'DPSAT')) {
-
             $high_reading_score = $high_reading_score;
             $low_reading_score =  $low_reading_score;
             $high_math_score = $high_math_score;
@@ -3787,7 +3786,7 @@ class TestPrepController extends Controller
         //         $existingRecord = TestProgress::where('test_id', $request->test_id)
         //             ->where('user_id', $current_user_id)
         //             ->delete();
-        //     }    
+        //     }
         // }
 
         $set_offset = 0;
@@ -3857,7 +3856,7 @@ class TestPrepController extends Controller
         //         $existingRecord = TestProgress::where('test_id', $request->test_id)
         //             ->where('user_id', $current_user_id)
         //             ->delete();
-        //     }    
+        //     }
         // }
 
         $testType = $request->session()->get('testType');
@@ -3931,7 +3930,7 @@ class TestPrepController extends Controller
         //         $existingRecord = TestProgress::where('test_id', $request->test_id)
         //             ->where('user_id', $current_user_id)
         //             ->delete();
-        //     }    
+        //     }
         // }
 
         // $set_offset = 0;
@@ -4014,7 +4013,7 @@ class TestPrepController extends Controller
         //         $existingRecord = TestProgress::where('test_id', $request->test_id)
         //             ->where('user_id', $current_user_id)
         //             ->delete();
-        //     }    
+        //     }
         // }
 
         $set_offset = 0;
@@ -4504,7 +4503,7 @@ class TestPrepController extends Controller
                             //     }
                             // }
 
-                            //NewCode 
+                            //NewCode
                             $nonEmptyKeysCount = 0; // Initialize count of non-empty keys
                             $newMathScore = 0; // Initialize count of non-empty data
                             foreach ($mathIdsArr as $value) {
@@ -5268,7 +5267,7 @@ class TestPrepController extends Controller
             }
         }
 
-        //DSAT Custom Quiz 
+        //DSAT Custom Quiz
         $dsat_custom_details = [];
         foreach ($getCustomQuiz['DSAT'] as $key => $value) {
             $dsat_custom_details[$value['id']]['test_name'] = $value['title'];
@@ -5961,7 +5960,7 @@ class TestPrepController extends Controller
 
         // // $mathScoreCount = array_map(function ($section_type) use ($right_question) {
         // //     return count($right_question[$section_type]);
-        // // }, $section_types);  
+        // // }, $section_types);
 
         // if (!empty($reading_section_ids)) {
         //     $mathScoreCount = array_map(function ($section_type) use ($right_question, $math_section_ids) {

@@ -56,6 +56,7 @@
                             @if (isset($test_details) && !empty($test_details))
                                 @php
                                     $testType = request()->session()->get('testType');
+
                                 @endphp
                                 @if ($testType == 'proctored')
                                     <li class="breadcrumb-item" aria-current="page">
@@ -2537,7 +2538,7 @@
                                                                                                             type="button"
                                                                                                             data-bs-toggle="modal"
                                                                                                             data-bs-target="#modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                            class="btn 
+                                                                                                            class="btn
                                                                                                             @if ($checkbox_arr[$key][$i] == '1') btn-success
                                                                                                             @elseif ($checkbox_arr[$key][$i] == '0')
                                                                                                                 btn-danger
@@ -3577,7 +3578,7 @@
                                                                                                     );
                                                                                                     dump(
                                                                                                         $count
-                                                                                                    ); 
+                                                                                                    );
                                                                                                     dump(
                                                                                                         $missed_qt
                                                                                                     );
@@ -3862,11 +3863,11 @@
                                                     <?php
                                                     $test = $count++;
                                                     $store_total_wrong_answer = 0;
-                                                    
+
                                                     foreach ($single_question_data as $single_question_details_item) {
                                                         $store_correct_answer = 0;
                                                         $store_wrong_answer = 0;
-                                                    
+
                                                         foreach ($user_selected_answers as $single_answer_user_selected) {
                                                             if (isset($single_answer_user_selected['get_question_details'][0]->question_id) && !empty($single_answer_user_selected['get_question_details'][0]->question_id)) {
                                                                 if ($single_question_details_item[0] == $single_answer_user_selected['get_question_details'][0]->question_id) {

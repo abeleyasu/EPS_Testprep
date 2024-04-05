@@ -321,14 +321,15 @@ class CollegeApplicationDeadlineController extends Controller
 
         $collegeDetail = CollegeDetails::where('id', $request->college_detail_id)->first();
 
-        $appOrganizerData = isJson($request->app_organizer_json) ? json_decode($request->app_organizer_json, true) : [];
+        // $appOrganizerData = isJson($request->app_organizer_json) ? json_decode($request->app_organizer_json, true) : [];
 
-        $collegeInfoTemp = isset($appOrganizerData['college_details']['college_information']) ? $appOrganizerData['college_details']['college_information'] : null;
-        if (!empty($collegeInfoTemp)) {
-            $collegeInformation = CollegeInformation::where('id', $collegeInfoTemp['id'])->first();
-        } else {
-            $collegeInformation = $collegeDetail->college_details->collegeInformation;
-        }
+        // $collegeInfoTemp = isset($appOrganizerData['college_details']['college_information']) ? $appOrganizerData['college_details']['college_information'] : null;
+        // if (!empty($collegeInfoTemp)) {
+        //     $collegeInformation = CollegeInformation::where('id', $collegeInfoTemp['id'])->first();
+        // } else {
+        //     $collegeInformation = $collegeDetail->college_details->collegeInformation;
+        // }
+        $collegeInformation = $collegeDetail->college_details->collegeInformation;
 
         // dd($collegeInformation);
 
@@ -363,7 +364,7 @@ class CollegeApplicationDeadlineController extends Controller
 
             if ($collegeDetail->admission_option == $request->admission_option) {
                 // echo 'same option';
-                if (isset($deadlineFromSystem['date']) && $deadlineFromSystem['date'] == $data['admissions_deadline']) {
+                if ($deadlineFromSystem['date'] == $data['admissions_deadline']) {
                     $data['is_admission_deadline_from_user'] = false;
                     $data['admissions_deadline'] = $deadlineFromSystem['date'];
                 } else {
@@ -374,12 +375,12 @@ class CollegeApplicationDeadlineController extends Controller
                 // echo 'diff option';
                 // dd($data['admissions_deadline'], $deadlineFromSystem['date']);
 
-                if (isset($deadlineFromSystem['date']) && $deadlineFromSystem['date'] != $data['admissions_deadline']) {
-                    $data['is_admission_deadline_from_user'] = true;
-                    $data['admissions_deadline'] = $date->format('m-d-Y');
-                } else {
+                if ($deadlineFromSystem['date'] == $data['admissions_deadline']) {
                     $data['is_admission_deadline_from_user'] = false;
                     $data['admissions_deadline'] = $deadlineFromSystem['date'];
+                } else {
+                    $data['is_admission_deadline_from_user'] = true;
+                    $data['admissions_deadline'] = $date->format('m-d-Y');
                 }
             }
 
@@ -388,6 +389,8 @@ class CollegeApplicationDeadlineController extends Controller
             $data['admissions_deadline'] = null;
             $data['is_admission_deadline_from_user'] = false;
         }
+
+        // die;
 
         // dd($data);
         $college = $collegeDetail->update($data);

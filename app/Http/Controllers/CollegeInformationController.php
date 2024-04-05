@@ -175,64 +175,73 @@ class CollegeInformationController extends Controller
                 $new_data = $this->get_column_values($column_names, $data);
                 // dd($new_data);
 
-                if (isset($new_data['FEES_FT_D']) && isset($new_data['BOOKS_RES_D']) && isset($new_data['TRANSPORT_RES_D'])) {
-                    $fees = (float) $new_data['FEES_FT_D'] ?: 0;
-                    $books = (float) $new_data['BOOKS_RES_D'] ?: 0;
-                    $transport = (float) $new_data['TRANSPORT_RES_D'] ?: 0;
-                    $tuitionOverall = (float) $new_data['TUIT_OVERALL_FT_D'] ?: 0;
-                    $tuitionState = (float) $new_data['TUIT_STATE_FT_D'] ?: 0;
-                    $tuitionNonResident = (float) $new_data['TUIT_NRES_FT_D'] ?: 0;
+                $fees = (float) $new_data['FEES_FT_D'] ?: 0;
+                $books = (float) $new_data['BOOKS_RES_D'] ?: 0;
+                $transport = (float) $new_data['TRANSPORT_RES_D'] ?: 0;
+                $tuitionOverall = (float) $new_data['TUIT_OVERALL_FT_D'] ?: 0;
+                $tuitionState = (float) $new_data['TUIT_STATE_FT_D'] ?: 0;
+                $tuitionNonResident = (float) $new_data['TUIT_NRES_FT_D'] ?: 0;
 
+                // if (isset($new_data['FEES_FT_D']) && isset($new_data['BOOKS_RES_D']) && isset($new_data['TRANSPORT_RES_D'])) {
                     if (isset($new_data['TUIT_OVERALL_FT_D'])) {
                         $new_data['pvt_coa'] = $tuitionOverall + $fees + $books + $transport;
 
-                        if ($collegeInfo->tution_and_fess == null) {
+                        // if ($collegeInfo->tution_and_fess == null || $collegeInfo->tution_and_fess == '') {
                             $new_data['tution_and_fess'] = $tuitionOverall + $fees;
-                        }
+                        // }
                     }
 
                     if (isset($new_data['TUIT_STATE_FT_D'])) {
                         $new_data['public_coa_in_state'] = $tuitionState + $fees + $books + $transport;
 
-                        if ($collegeInfo->tuition_and_fee_instate == null) {
+                        // if ($collegeInfo->tuition_and_fee_instate == null || $collegeInfo->tuition_and_fee_instate == '') {
                             $new_data['tuition_and_fee_instate'] = $tuitionState + $fees;
-                        }
+                        // }
                     }
 
                     if (isset($new_data['TUIT_NRES_FT_D'])) {
                         $new_data['public_coa_out_state'] = $tuitionNonResident + $fees + $books + $transport;
 
-                        if ($collegeInfo->tuition_and_fee_outstate == null) {
+                        // if ($collegeInfo->tuition_and_fee_outstate == null || $collegeInfo->tuition_and_fee_outstate == '') {
                             $new_data['tuition_and_fee_outstate'] = $tuitionNonResident + $fees;
-                        }
+                        // }
                     }
-                }
+                // }
 
-                if (isset($new_data['RM_BD_D']) && $collegeInfo->room_and_board == null) {
+                // if (isset($new_data['RM_BD_D']) && ($collegeInfo->room_and_board == null || $collegeInfo->room_and_board == '')) {
+                if (isset($new_data['RM_BD_D'])) {
                     $new_data['room_and_board'] = $new_data['RM_BD_D'];
                 }
-                if (isset($new_data['AP_DL_EACT_MON']) && $collegeInfo->early_action_month == null) {
+                // if (isset($new_data['AP_DL_EACT_MON']) && ($collegeInfo->early_action_month == null || $collegeInfo->early_action_month == '')) {
+                if (isset($new_data['AP_DL_EACT_MON'])) {
                     $new_data['early_action_month'] = $new_data['AP_DL_EACT_MON'];
                 }
-                if (isset($new_data['AP_DL_EACT_DAY']) && $collegeInfo->early_action_day == null) {
+                // if (isset($new_data['AP_DL_EACT_DAY']) && ($collegeInfo->early_action_day == null || $collegeInfo->early_action_day == '')) {
+                if (isset($new_data['AP_DL_EACT_DAY'])) {
                     $new_data['early_action_day'] = $new_data['AP_DL_EACT_DAY'];
                 }
-                if (isset($new_data['AP_DL_FRSH_MON']) && $collegeInfo->regular_decision_month == null) {
+                // if (isset($new_data['AP_DL_FRSH_MON']) && ($collegeInfo->regular_decision_month == null || $collegeInfo->regular_decision_month == '')) {
+                if (isset($new_data['AP_DL_FRSH_MON'])) {
                     $new_data['regular_decision_month'] = $new_data['AP_DL_FRSH_MON'];
                 }
-                if (isset($new_data['AP_DL_FRSH_DAY']) && $collegeInfo->regular_decision_day == null) {
+                // if (isset($new_data['AP_DL_FRSH_DAY']) && ($collegeInfo->regular_decision_day == null || $collegeInfo->regular_decision_day == '')) {
+                if (isset($new_data['AP_DL_FRSH_DAY'])) {
                     $new_data['regular_decision_day'] = $new_data['AP_DL_FRSH_DAY'];
                 }
-                if (isset($new_data['AP_DL_EDEC_1_MON']) && $collegeInfo->early_decision_i_month == null) {
+                // if (isset($new_data['AP_DL_EDEC_1_MON']) && ($collegeInfo->early_decision_i_month == null || $collegeInfo->early_decision_i_month == '')) {
+                if (isset($new_data['AP_DL_EDEC_1_MON'])) {
                     $new_data['early_decision_i_month'] = $new_data['AP_DL_EDEC_1_MON'];
                 }
-                if (isset($new_data['AP_DL_EDEC_1_DAY']) && $collegeInfo->early_decision_i_day == null) {
+                // if (isset($new_data['AP_DL_EDEC_1_DAY']) && ($collegeInfo->early_decision_i_day == null || $collegeInfo->early_decision_i_day == '')) {
+                if (isset($new_data['AP_DL_EDEC_1_DAY'])) {
                     $new_data['early_decision_i_day'] = $new_data['AP_DL_EDEC_1_DAY'];
                 }
-                if (isset($new_data['AP_DL_EDEC_2_MON']) && $collegeInfo->early_decision_ii_month == null) {
+                // if (isset($new_data['AP_DL_EDEC_2_MON']) && ($collegeInfo->early_decision_ii_month == null || $collegeInfo->early_decision_ii_month == '')) {
+                if (isset($new_data['AP_DL_EDEC_2_MON'])) {
                     $new_data['early_decision_ii_month'] = $new_data['AP_DL_EDEC_2_MON'];
                 }
-                if (isset($new_data['AP_DL_EDEC_2_DAY']) && $collegeInfo->early_decision_ii_day == null) {
+                // if (isset($new_data['AP_DL_EDEC_2_DAY']) && ($collegeInfo->early_decision_ii_day == null || $collegeInfo->early_decision_ii_day == '')) {
+                if (isset($new_data['AP_DL_EDEC_2_DAY'])) {
                     $new_data['early_decision_ii_day'] = $new_data['AP_DL_EDEC_2_DAY'];
                 }
 
