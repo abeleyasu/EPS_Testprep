@@ -1021,7 +1021,6 @@ class TestPrepController extends Controller
                                 ->orWhere('section_type', 'Math_no_calculator');
                         })
                         ->max('converted_score');
-
                     $low_math_score = Score::where('test_id', $test_details['id'])
                         ->where(function ($query) {
                             $query->where('section_type', 'Math')
@@ -1041,6 +1040,10 @@ class TestPrepController extends Controller
             } else {
                 $high_score = 0;
                 $low_score = 0;
+                $high_reading_score = 0;
+                $low_reading_score = 0;
+                $high_math_score = 0;
+                $low_math_score = 0;
             }
         }
 
@@ -1048,6 +1051,7 @@ class TestPrepController extends Controller
             $high_score = $high_score / (count($store_sections_detail['all_sections']) == 0 ? 1 : count($store_sections_detail['all_sections']));
             $low_score = $low_score / (count($store_sections_detail['all_sections']) == 0 ? 1 : count($store_sections_detail['all_sections']));
         } elseif ($test_details['test_source'] == 1 && ($test_details['format'] == 'DSAT' || $test_details['format'] == 'DPSAT')) {
+
             $high_reading_score = $high_reading_score;
             $low_reading_score =  $low_reading_score;
             $high_math_score = $high_math_score;
@@ -1275,8 +1279,8 @@ class TestPrepController extends Controller
         }
         // dd($categoryAndQuestionTypeSummaryData);
 
-        $real_total_questions = DB::table('practice_questions')->where('practice_test_sections_id',$practice_test_section_id)->count();
-     
+        $real_total_questions = DB::table('practice_questions')->where('practice_test_sections_id', $practice_test_section_id)->count();
+
 
         return view('user.test-review.question_concepts_review',  [
             'category_data' => $category_data,

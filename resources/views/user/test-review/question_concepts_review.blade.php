@@ -256,21 +256,32 @@
                                                         $readingWriting = session()->get('reading_and_writing');
                                                         $math = session()->get('math');
                                                     @endphp
-                                                    @if (isset($user_selected_answers[0]['sections']) && !empty($user_selected_answers[0]['sections']))
+                                                    @if (
+                                                        !empty($user_selected_answers) &&
+                                                            isset($user_selected_answers[0]['sections']) &&
+                                                            !empty($user_selected_answers[0]['sections']))
                                                         @if (
                                                             $user_selected_answers[0]['sections'][0]->practice_test_type == 'Reading_And_Writing' ||
                                                                 $user_selected_answers[0]['sections'][0]->practice_test_type == 'Easy_Reading_And_Writing' ||
                                                                 $user_selected_answers[0]['sections'][0]->practice_test_type == 'Hard_Reading_And_Writing')
-                                                            @if ($readingWriting[0]['testId'] == $test_details->id && $readingWriting[0]['format'] == $test_details->format)
+                                                            @if (
+                                                                !empty($readingWriting) &&
+                                                                    isset($readingWriting[0]) &&
+                                                                    $readingWriting[0]['testId'] == $test_details->id &&
+                                                                    $readingWriting[0]['format'] == $test_details->format)
                                                                 {{ number_format($readingWriting[0]['score'] ?? 0, 0) }}
                                                             @else
                                                                 0
                                                             @endif
-                                                        @elseif(
+                                                        @elseif (
                                                             $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math' ||
                                                                 $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math_no_calculator' ||
                                                                 $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math_with_calculator')
-                                                            @if ($math[0]['testId'] == $test_details->id && $math[0]['format'] == $test_details->format)
+                                                            @if (
+                                                                !empty($math) &&
+                                                                    isset($math[0]) &&
+                                                                    $math[0]['testId'] == $test_details->id &&
+                                                                    $math[0]['format'] == $test_details->format)
                                                                 {{ number_format($math[0]['score'] ?? 0, 0) }}
                                                             @else
                                                                 0
