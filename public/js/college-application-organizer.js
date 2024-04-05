@@ -435,11 +435,11 @@ const getAdmissionDeadline = (data) => {
             // console.log('Early Action')
             deadlineDay = collegeInformation.early_action_day ?? collegeInformation.AP_DL_EACT_DAY
             deadlineMonth = collegeInformation.early_action_month ?? collegeInformation.AP_DL_EACT_MON
-        } else if (data.admission_option === 'Early Decision' || data.admission_option === 'Early Decision 1') {
+        } else if (data.admission_option === 'Early Decision' || data.admission_option === 'Early Decision 1' ||  data.admission_option === 'Early Decision I') {
             // console.log('Early Decision 1')
             deadlineDay = collegeInformation.early_decision_i_day ?? collegeInformation.AP_DL_EDEC_1_DAY
             deadlineMonth = collegeInformation.early_decision_i_month ?? collegeInformation.AP_DL_EDEC_1_MON
-        } else if (data.admission_option === 'Early Decision 2') {
+        } else if (data.admission_option === 'Early Decision 2' || data.admission_option === 'Early Decision II') {
             // console.log('Early Decision 2')
             deadlineDay = collegeInformation.early_decision_ii_day ?? collegeInformation.AP_DL_EDEC_2_DAY
             deadlineMonth = collegeInformation.early_decision_ii_month ?? collegeInformation.AP_DL_EDEC_2_MON
@@ -513,11 +513,11 @@ const onChangeAdminisionOption = (datasetID) => {
         // console.log('Early Action')
         deadlineDay = collegeInformation.early_action_day ?? collegeInformation.AP_DL_EACT_DAY
         deadlineMonth = collegeInformation.early_action_month ?? collegeInformation.AP_DL_EACT_MON
-    } else if (admissionOptionSelected === 'Early Decision' || admissionOptionSelected === 'Early Decision 1') {
+    } else if (admissionOptionSelected === 'Early Decision' || admissionOptionSelected === 'Early Decision 1' ||  admissionOptionSelected === 'Early Decision I') {
         // console.log('Early Decision 1')
         deadlineDay = collegeInformation.early_decision_i_day ?? collegeInformation.AP_DL_EDEC_1_DAY
         deadlineMonth = collegeInformation.early_decision_i_month ?? collegeInformation.AP_DL_EDEC_1_MON
-    } else if (admissionOptionSelected === 'Early Decision 2') {
+    } else if (admissionOptionSelected === 'Early Decision 2' || admissionOptionSelected === 'Early Decision II') {
         // console.log('Early Decision 2')
         deadlineDay = collegeInformation.early_decision_ii_day ?? collegeInformation.AP_DL_EDEC_2_DAY
         deadlineMonth = collegeInformation.early_decision_ii_month ?? collegeInformation.AP_DL_EDEC_2_MON
