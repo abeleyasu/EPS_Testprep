@@ -322,8 +322,15 @@ class CollegeApplicationDeadlineController extends Controller
         $collegeDetail = CollegeDetails::where('id', $request->college_detail_id)->first();
 
         $appOrganizerData = isJson($request->app_organizer_json) ? json_decode($request->app_organizer_json, true) : [];
-        $collegeInfoTemp = $appOrganizerData['college_details']['college_information'];
-        $collegeInformation = CollegeInformation::where('id', $collegeInfoTemp['id'])->first();
+
+        $collegeInfoTemp = isset($appOrganizerData['college_details']['college_information']) ? $appOrganizerData['college_details']['college_information'] : null;
+        if (!empty($collegeInfoTemp)) {
+            $collegeInformation = CollegeInformation::where('id', $collegeInfoTemp['id'])->first();
+        } else {
+            $collegeInformation = $collegeDetail->college_details->collegeInformation;
+        }
+
+        // dd($collegeInformation);
 
         // check if $request->admissions_deadline is already passed, then set to +1 year
         if ($request->admissions_deadline) {
@@ -346,13 +353,37 @@ class CollegeApplicationDeadlineController extends Controller
             ]);
 
             // check if admissions_deadline same as system
-            if (isset($deadlineFromSystem['date']) && $deadlineFromSystem['date'] == $data['admissions_deadline']) {
-                $data['is_admission_deadline_from_user'] = false;
-                $data['admissions_deadline'] = $deadlineFromSystem['date'];
-            } else {
-                $data['admissions_deadline'] = $date->format('m-d-Y');
-                $data['is_admission_deadline_from_user'] = true;
+            // if (isset($deadlineFromSystem['date']) && $deadlineFromSystem['date'] == $data['admissions_deadline']) {
+            //     $data['is_admission_deadline_from_user'] = false;
+            //     $data['admissions_deadline'] = $deadlineFromSystem['date'];
+            // } else {
+            //     $data['admissions_deadline'] = $date->format('m-d-Y');
+            //     $data['is_admission_deadline_from_user'] = true;
+            // }
+
+            if ($collegeDetail->admission_option == $request->admission_option) {
+                // echo 'same option';
+                if (isset($deadlineFromSystem['date']) && $deadlineFromSystem['date'] == $data['admissions_deadline']) {
+                    $data['is_admission_deadline_from_user'] = false;
+                    $data['admissions_deadline'] = $deadlineFromSystem['date'];
+                } else {
+                    $data['admissions_deadline'] = $date->format('m-d-Y');
+                    $data['is_admission_deadline_from_user'] = true;
+                }
+            } else if ($collegeDetail->admission_option != $request->admission_option) {
+                // echo 'diff option';
+                // dd($data['admissions_deadline'], $deadlineFromSystem['date']);
+
+                if (isset($deadlineFromSystem['date']) && $deadlineFromSystem['date'] != $data['admissions_deadline']) {
+                    $data['is_admission_deadline_from_user'] = true;
+                    $data['admissions_deadline'] = $date->format('m-d-Y');
+                } else {
+                    $data['is_admission_deadline_from_user'] = false;
+                    $data['admissions_deadline'] = $deadlineFromSystem['date'];
+                }
             }
+
+
         } else {
             $data['admissions_deadline'] = null;
             $data['is_admission_deadline_from_user'] = false;
@@ -386,7 +417,7 @@ class CollegeApplicationDeadlineController extends Controller
             if ($adminissionOptionSelected == 'Early Action') {
                 $deadlineDay = $collegeInformation['early_action_day'] ?: $collegeInformation['AP_DL_EACT_DAY'];
                 $deadlineMonth = $collegeInformation['early_action_month'] ?: $collegeInformation['AP_DL_EACT_MON'];
-            } elseif ($adminissionOptionSelected == 'Early Decision 1') {
+            } elseif ($adminissionOptionSelected == 'Early Decision' || $adminissionOptionSelected == 'Early Decision 1') {
                 $deadlineDay =
                     $collegeInformation['early_decision_i_day'] ?: $collegeInformation['AP_DL_EDEC_1_DAY'];
                 $deadlineMonth =
@@ -404,6 +435,9 @@ class CollegeApplicationDeadlineController extends Controller
             } elseif ($adminissionOptionSelected == 'Rolling Admission') {
                 //
             }
+
+            // echo 'adminissionOptionSelected -> ' . $adminissionOptionSelected;
+            // echo $deadlineDay . ' -> ' . $deadlineMonth;
 
             if ($deadlineDay && $deadlineMonth) {
                 $year = date('Y');
