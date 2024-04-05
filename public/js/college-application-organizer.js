@@ -435,7 +435,7 @@ const getAdmissionDeadline = (data) => {
             // console.log('Early Action')
             deadlineDay = collegeInformation.early_action_day ?? collegeInformation.AP_DL_EACT_DAY
             deadlineMonth = collegeInformation.early_action_month ?? collegeInformation.AP_DL_EACT_MON
-        } else if (data.admission_option === 'Early Decision') {
+        } else if (data.admission_option === 'Early Decision' || data.admission_option === 'Early Decision 1') {
             // console.log('Early Decision 1')
             deadlineDay = collegeInformation.early_decision_i_day ?? collegeInformation.AP_DL_EDEC_1_DAY
             deadlineMonth = collegeInformation.early_decision_i_month ?? collegeInformation.AP_DL_EDEC_1_MON
@@ -513,7 +513,7 @@ const onChangeAdminisionOption = (datasetID) => {
         // console.log('Early Action')
         deadlineDay = collegeInformation.early_action_day ?? collegeInformation.AP_DL_EACT_DAY
         deadlineMonth = collegeInformation.early_action_month ?? collegeInformation.AP_DL_EACT_MON
-    } else if (admissionOptionSelected === 'Early Decision') {
+    } else if (admissionOptionSelected === 'Early Decision' || admissionOptionSelected === 'Early Decision 1') {
         // console.log('Early Decision 1')
         deadlineDay = collegeInformation.early_decision_i_day ?? collegeInformation.AP_DL_EDEC_1_DAY
         deadlineMonth = collegeInformation.early_decision_i_month ?? collegeInformation.AP_DL_EDEC_1_MON
