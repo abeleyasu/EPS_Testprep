@@ -1059,6 +1059,10 @@ class TestPrepController extends Controller
         } else {
             $high_score = $high_score;
             $low_score = $low_score;
+            $high_reading_score = 0;
+            $low_reading_score = 0;
+            $high_math_score = 0;
+            $low_math_score = 0;
         }
 
         $checkData = [];
