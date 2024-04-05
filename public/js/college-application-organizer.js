@@ -186,7 +186,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                         <label class="form-label" for="admission_option-${dataset.id}">Admission Option</label>
                         <div class="col-10">
                             <select class="form-select update-form" id="admission_option-${dataset.id}" name="admission_option" data-index="${dataset.id}" onchange="onChangeAdminisionOption(${dataset.id})">
-                                ${getStatsOption(staticdata.admision_option, data.admission_option)}
+                                ${getStatsOption(staticdata.admission_option, data.admission_option)}
                             </select>
                         </div>
                         <div class="col-2">

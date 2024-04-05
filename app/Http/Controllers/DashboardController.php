@@ -68,7 +68,7 @@ class DashboardController extends Controller
 
             // echo '0--> '. $deadlineDate . '<br>';
         } else {
-            $adminissionOptionSelected = $deadline['college_deadline']['admision_option']; // Early Action, Early Decision 1, Early Decision 2, Regular Decision, Rolling Admission
+            $adminissionOptionSelected = $deadline['college_deadline']['admission_option']; // Early Action, Early Decision 1, Early Decision 2, Regular Decision, Rolling Admission
 
             if (!empty($adminissionOptionSelected)) {
                 // admission deadline:

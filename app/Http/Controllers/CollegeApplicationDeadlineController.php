@@ -37,7 +37,7 @@ class CollegeApplicationDeadlineController extends Controller
 
         return view('user.admin-dashboard.college-application-deadline', [
             'applications' => config('constants.types_of_application'),
-            'admision_option' => config('constants.admission_options'),
+            'admission_option' => config('constants.admission_options'),
             'college_list_status' => config('constants.college_list_status'),
             'college_list_deadline' => $college_list_deadline,
             'college_list' => $college_list,
