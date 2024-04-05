@@ -19,9 +19,12 @@ class CollegeDetails extends Model
         'user_id',
         'college_id',
         'type_of_application',
+
         'admission_option',
-        'number_of_essaya',
         'admissions_deadline',
+        'is_admission_deadline_from_user',
+
+        'number_of_essaya',
         'ad_status',
         'competitive_scholarship_deadline',
         'csd_status',

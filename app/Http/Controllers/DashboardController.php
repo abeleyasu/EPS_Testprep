@@ -51,6 +51,7 @@ class DashboardController extends Controller
         if (
             isset($deadline['college_deadline']['admissions_deadline']) &&
             !empty($deadline['college_deadline']['admissions_deadline'])
+            && $deadline['college_deadline']['is_admission_deadline_from_user'] == 1
         ) {
             $deadlineDate = $deadline['college_deadline']['admissions_deadline']; // month-day-year
             // convert to Y-m-d
@@ -85,7 +86,7 @@ class DashboardController extends Controller
                 if ($adminissionOptionSelected == 'Early Action') {
                     $deadlineDay = $collegeInformation['early_action_day'] ?: $collegeInformation['AP_DL_EACT_DAY'];
                     $deadlineMonth = $collegeInformation['early_action_month'] ?: $collegeInformation['AP_DL_EACT_MON'];
-                } elseif ($adminissionOptionSelected == 'Early Decision 1') {
+                } elseif ($adminissionOptionSelected == 'Early Decision' || $adminissionOptionSelected == 'Early Decision 1') {
                     $deadlineDay =
                         $collegeInformation['early_decision_i_day'] ?: $collegeInformation['AP_DL_EDEC_1_DAY'];
                     $deadlineMonth =
@@ -107,6 +108,8 @@ class DashboardController extends Controller
                 if ($deadlineDay && $deadlineMonth) {
                     $year = date('Y');
                     $date = strtotime($year . '-' . $deadlineMonth . '-' . $deadlineDay);
+                    $deadlineDay = str_pad($deadlineDay, 2, '0', STR_PAD_LEFT);
+                    $deadlineMonth = str_pad($deadlineMonth, 2, '0', STR_PAD_LEFT);
                     if ($date < time()) {
                         $deadlineDate = $deadlineMonth . '-' . $deadlineDay . '-' . ($year + 1);
                     } else {
@@ -148,6 +151,15 @@ class DashboardController extends Controller
         }
 
         if (!empty($deadlineDate)) {
+
+            try {
+                $date = Carbon::createFromFormat("m-d-Y", $deadlineDate);
+            } catch (\Throwable $th) {
+                $date = Carbon::createFromFormat("Y-m-d", $deadlineDate);
+            }
+
+            $deadlineDate = $date->format('Y-m-d');
+
             return [
                 'date' => $deadlineDate,
                 'dateInput' => date('m-d-Y', strtotime($deadlineDate)),

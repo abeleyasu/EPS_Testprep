@@ -146,6 +146,8 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
     }).done((response) => {
         if (response.success) {
             const data = response.data
+            // console.log('getSingleApplicationData', data)
+
             $('#toggle' + dataset.id).removeClass('fa-angle-right').addClass('fa-angle-down');
             $('#' + elementid).html('')
             let content = '';
@@ -162,12 +164,13 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
             })
             // console.log('filteredTypeOfApplications', filteredTypeOfApplications)
 
-            const collegeInformationString = JSON.stringify(data.college_details.college_information)
+            // const collegeInformationString = JSON.stringify(data.college_details.college_information)
+            const appOrganizerString = JSON.stringify(data)
 
             onChangeAdminisionOption(dataset.id)
 
             content += `
-            <textarea name="colleg_information_${dataset.id}" class="d-none">${collegeInformationString}</textarea>
+            <textarea name="app_organizer_json" class="d-none">${appOrganizerString}</textarea>
                 <div class="college-content-wrapper college-content">
                     <div class="row mb-3 list-content">
                         <label class="form-label" for="type_of_application-${dataset.id}">Type of Application</label>
@@ -204,7 +207,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                             <div class="row">
                                 <div class="col-6">
                                     <label class="form-label" for="admissions_deadline-${dataset.id}">Admissions Deadline</label>
-                                    <input type="text" class="date-own form-control update-form" id="admissions_deadline-${dataset.id}" data-index="${dataset.id}" value="${data.admissions_deadline ? data.admissions_deadline : 'mm/dd/yy'}" name="admissions_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                    <input type="text" class="date-own form-control update-form" id="admissions_deadline-${dataset.id}" data-index="${dataset.id}" value="${getAdmissionDeadline(data)}" name="admissions_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="ad_status">Status</label>
@@ -416,17 +419,81 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
     })
 }
 
+const getAdmissionDeadline = (data) => {
+
+    // console.log('is_admission_deadline_from_user', data.is_admission_deadline_from_user)
+    if (data.is_admission_deadline_from_user) {
+        return data.admissions_deadline ? data.admissions_deadline : 'dd/mm/yy'
+    } else {
+        const collegeInformation = data.college_details.college_information
+        // console.log('collegeInformation', collegeInformation)
+
+        let deadlineDay = 0
+        let deadlineMonth = 0
+
+        if (data.admission_option === 'Early Action') {
+            // console.log('Early Action')
+            deadlineDay = collegeInformation.early_action_day ?? collegeInformation.AP_DL_EACT_DAY
+            deadlineMonth = collegeInformation.early_action_month ?? collegeInformation.AP_DL_EACT_MON
+        } else if (data.admission_option === 'Early Decision') {
+            // console.log('Early Decision 1')
+            deadlineDay = collegeInformation.early_decision_i_day ?? collegeInformation.AP_DL_EDEC_1_DAY
+            deadlineMonth = collegeInformation.early_decision_i_month ?? collegeInformation.AP_DL_EDEC_1_MON
+        } else if (data.admission_option === 'Early Decision 2') {
+            // console.log('Early Decision 2')
+            deadlineDay = collegeInformation.early_decision_ii_day ?? collegeInformation.AP_DL_EDEC_2_DAY
+            deadlineMonth = collegeInformation.early_decision_ii_month ?? collegeInformation.AP_DL_EDEC_2_MON
+        } else if (data.admission_option === 'Regular Decision') {
+            // console.log('Regular Decision')
+            deadlineDay = collegeInformation.regular_decision_day ?? collegeInformation.AP_DL_FRSH_DAY
+            deadlineMonth = collegeInformation.regular_decision_month ?? collegeInformation.AP_DL_FRSH_MON
+        } else if (data.admission_option === 'Rolling Admission') {
+            // console.log('Rolling Admission')
+            deadlineDay = 0
+            deadlineMonth = 0
+        }
+
+        // console.log('deadlineDay', deadlineDay)
+        // console.log('deadlineMonth', deadlineMonth)
+
+        let deadlineDate = 'dd/mm/yy'
+
+        // set deadlineDate to YYYY-MM-DD format, MM from deadlineMonth, DD from deadlineDay
+        // if deadlineDate has been passed, then set deadlineDate to the next year
+        if (deadlineDay && deadlineMonth) {
+            const year = new Date().getFullYear()
+            const date = new Date(year, deadlineMonth - 1, deadlineDay)
+            deadlineMonth = deadlineMonth < 10 ? `0${deadlineMonth}` : deadlineMonth
+            deadlineDay = deadlineDay < 10 ? `0${deadlineDay}` : deadlineDay
+            if (date < new Date()) {
+                deadlineDate = `${deadlineMonth}-${deadlineDay}-${year + 1}`
+            } else {
+                deadlineDate = `${deadlineMonth}-${deadlineDay}-${year}`
+            }
+        }
+
+        // console.log('deadlineDate', deadlineDate)
+
+        return deadlineDate
+    }
+
+}
+
 const onChangeAdminisionOption = (datasetID) => {
-    // console.log('onChangeAdminisionOption', datasetID)
+    console.log('onChangeAdminisionOption', datasetID)
 
     // get collegeInformationString from textarea
-    const collegeInformationString = $(`textarea[name="colleg_information_${datasetID}"]`).val()
+    // const collegeInformationString = $(`textarea[name="colleg_information_${datasetID}"]`).val()
+    // const collegeInformationString = $(`textarea[name="colleg_information_json"]`).val()
+    const appOrganizerString = $(`textarea[name="app_organizer_json"]`).val()
 
     // check if collegeInformationString is not empty
-    if (!collegeInformationString) return
+    if (!appOrganizerString) return
 
-    const collegeInformation = JSON.parse(collegeInformationString)
-    // console.log('collegeInformation', collegeInformation)
+    const appOrganizerData = JSON.parse(appOrganizerString)
+    // console.log('appOrganizerData', appOrganizerData)
+
+    const collegeInformation = appOrganizerData.college_details.college_information
 
     // get admission_option value
     const admissionOptionSelected = $(`#admission_option-${datasetID}`).val()
