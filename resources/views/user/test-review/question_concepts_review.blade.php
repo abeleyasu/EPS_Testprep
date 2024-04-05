@@ -56,7 +56,6 @@
                             @if (isset($test_details) && !empty($test_details))
                                 @php
                                     $testType = request()->session()->get('testType');
-
                                 @endphp
                                 @if ($testType == 'proctored')
                                     <li class="breadcrumb-item" aria-current="page">
@@ -236,7 +235,16 @@
                                                     @endforeach
                                                 @endif
                                             </td>
-                                            <td>{{ isset($right_answers) ? $right_answers : '' }}/{{ isset($total_questions) ? $total_questions : '' }}
+
+                                            <td>
+                                                @if (
+                                                    $test_details->test_source == 1 &&
+                                                        ($test_details->format == 'DSAT' || $test_details->format == 'DPSAT') &&
+                                                        $test_details->user_id == Auth::user()->id)
+                                                    {{ isset($right_answers) ? $right_answers : '' }}/{{ isset($real_total_questions) ? $real_total_questions : '' }}
+                                                @else
+                                                    {{ isset($right_answers) ? $right_answers : '' }}/{{ isset($total_questions) ? $total_questions : '' }}
+                                                @endif
                                             </td>
                                             <td>
 

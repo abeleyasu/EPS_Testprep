@@ -1273,8 +1273,10 @@ class TestPrepController extends Controller
                 array_multisort($keys, SORT_DESC, $categoryAndQuestionTypeSummaryData);
             }
         }
-
         // dd($categoryAndQuestionTypeSummaryData);
+
+        $real_total_questions = DB::table('practice_questions')->where('practice_test_sections_id',$practice_test_section_id)->count();
+     
 
         return view('user.test-review.question_concepts_review',  [
             'category_data' => $category_data,
@@ -1292,6 +1294,7 @@ class TestPrepController extends Controller
             'percentage_arr_all' => $percentage_arr_all,
             'right_answers' => $right_answers,
             'total_questions' => $total_questions,
+            'real_total_questions' => $real_total_questions,
             'scaled_score' => $scaled_score,
             'high_score' => $high_score,
             'low_score' => $low_score,
