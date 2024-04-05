@@ -175,12 +175,12 @@ class CollegeInformationController extends Controller
                 $new_data = $this->get_column_values($column_names, $data);
                 // dd($new_data);
 
-                $fees = (float) $new_data['FEES_FT_D'] ?: 0;
-                $books = (float) $new_data['BOOKS_RES_D'] ?: 0;
-                $transport = (float) $new_data['TRANSPORT_RES_D'] ?: 0;
-                $tuitionOverall = (float) $new_data['TUIT_OVERALL_FT_D'] ?: 0;
-                $tuitionState = (float) $new_data['TUIT_STATE_FT_D'] ?: 0;
-                $tuitionNonResident = (float) $new_data['TUIT_NRES_FT_D'] ?: 0;
+                $fees = isset($new_data['FEES_FT_D']) ? (float) $new_data['FEES_FT_D'] : 0;
+                $books = isset($new_data['BOOKS_RES_D']) ? (float) $new_data['BOOKS_RES_D'] : 0;
+                $transport = isset($new_data['TRANSPORT_RES_D']) ? (float) $new_data['TRANSPORT_RES_D'] : 0;
+                $tuitionOverall = isset($new_data['TUIT_OVERALL_FT_D']) ? (float) $new_data['TUIT_OVERALL_FT_D'] : 0;
+                $tuitionState = isset($new_data['TUIT_STATE_FT_D']) ? (float) $new_data['TUIT_STATE_FT_D'] : 0;
+                $tuitionNonResident = isset($new_data['TUIT_NRES_FT_D']) ? (float) $new_data['TUIT_NRES_FT_D'] : 0;
 
                 // if (isset($new_data['FEES_FT_D']) && isset($new_data['BOOKS_RES_D']) && isset($new_data['TRANSPORT_RES_D'])) {
                     if (isset($new_data['TUIT_OVERALL_FT_D'])) {
