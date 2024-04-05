@@ -1021,7 +1021,6 @@ class TestPrepController extends Controller
                                 ->orWhere('section_type', 'Math_no_calculator');
                         })
                         ->max('converted_score');
-
                     $low_math_score = Score::where('test_id', $test_details['id'])
                         ->where(function ($query) {
                             $query->where('section_type', 'Math')
@@ -1041,6 +1040,10 @@ class TestPrepController extends Controller
             } else {
                 $high_score = 0;
                 $low_score = 0;
+                $high_reading_score = 0;
+                $low_reading_score = 0;
+                $high_math_score = 0;
+                $low_math_score = 0;
             }
         }
 
@@ -1055,6 +1058,10 @@ class TestPrepController extends Controller
         } else {
             $high_score = $high_score;
             $low_score = $low_score;
+            $high_reading_score = 0;
+            $low_reading_score = 0;
+            $high_math_score = 0;
+            $low_math_score = 0;
         }
 
         $checkData = [];
@@ -1273,8 +1280,10 @@ class TestPrepController extends Controller
                 array_multisort($keys, SORT_DESC, $categoryAndQuestionTypeSummaryData);
             }
         }
-
         // dd($categoryAndQuestionTypeSummaryData);
+
+        $real_total_questions = DB::table('practice_questions')->where('practice_test_sections_id', $practice_test_section_id)->count();
+
 
         return view('user.test-review.question_concepts_review',  [
             'category_data' => $category_data,
@@ -1292,6 +1301,7 @@ class TestPrepController extends Controller
             'percentage_arr_all' => $percentage_arr_all,
             'right_answers' => $right_answers,
             'total_questions' => $total_questions,
+            'real_total_questions' => $real_total_questions,
             'scaled_score' => $scaled_score,
             'high_score' => $high_score,
             'low_score' => $low_score,
@@ -3776,7 +3786,7 @@ class TestPrepController extends Controller
         //         $existingRecord = TestProgress::where('test_id', $request->test_id)
         //             ->where('user_id', $current_user_id)
         //             ->delete();
-        //     }    
+        //     }
         // }
 
         $set_offset = 0;
@@ -3846,7 +3856,7 @@ class TestPrepController extends Controller
         //         $existingRecord = TestProgress::where('test_id', $request->test_id)
         //             ->where('user_id', $current_user_id)
         //             ->delete();
-        //     }    
+        //     }
         // }
 
         $testType = $request->session()->get('testType');
@@ -3920,7 +3930,7 @@ class TestPrepController extends Controller
         //         $existingRecord = TestProgress::where('test_id', $request->test_id)
         //             ->where('user_id', $current_user_id)
         //             ->delete();
-        //     }    
+        //     }
         // }
 
         // $set_offset = 0;
@@ -4003,7 +4013,7 @@ class TestPrepController extends Controller
         //         $existingRecord = TestProgress::where('test_id', $request->test_id)
         //             ->where('user_id', $current_user_id)
         //             ->delete();
-        //     }    
+        //     }
         // }
 
         $set_offset = 0;
@@ -4493,7 +4503,7 @@ class TestPrepController extends Controller
                             //     }
                             // }
 
-                            //NewCode 
+                            //NewCode
                             $nonEmptyKeysCount = 0; // Initialize count of non-empty keys
                             $newMathScore = 0; // Initialize count of non-empty data
                             foreach ($mathIdsArr as $value) {
@@ -5257,7 +5267,7 @@ class TestPrepController extends Controller
             }
         }
 
-        //DSAT Custom Quiz 
+        //DSAT Custom Quiz
         $dsat_custom_details = [];
         foreach ($getCustomQuiz['DSAT'] as $key => $value) {
             $dsat_custom_details[$value['id']]['test_name'] = $value['title'];
@@ -5950,7 +5960,7 @@ class TestPrepController extends Controller
 
         // // $mathScoreCount = array_map(function ($section_type) use ($right_question) {
         // //     return count($right_question[$section_type]);
-        // // }, $section_types);  
+        // // }, $section_types);
 
         // if (!empty($reading_section_ids)) {
         //     $mathScoreCount = array_map(function ($section_type) use ($right_question, $math_section_ids) {

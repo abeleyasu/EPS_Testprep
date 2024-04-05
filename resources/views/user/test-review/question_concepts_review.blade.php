@@ -236,7 +236,16 @@
                                                     @endforeach
                                                 @endif
                                             </td>
-                                            <td>{{ isset($right_answers) ? $right_answers : '' }}/{{ isset($total_questions) ? $total_questions : '' }}
+
+                                            <td>
+                                                @if (
+                                                    $test_details->test_source == 1 &&
+                                                        ($test_details->format == 'DSAT' || $test_details->format == 'DPSAT') &&
+                                                        $test_details->user_id == Auth::user()->id)
+                                                    {{ isset($right_answers) ? $right_answers : '' }}/{{ isset($real_total_questions) ? $real_total_questions : '' }}
+                                                @else
+                                                    {{ isset($right_answers) ? $right_answers : '' }}/{{ isset($total_questions) ? $total_questions : '' }}
+                                                @endif
                                             </td>
                                             <td>
 
@@ -248,21 +257,32 @@
                                                         $readingWriting = session()->get('reading_and_writing');
                                                         $math = session()->get('math');
                                                     @endphp
-                                                    @if (isset($user_selected_answers[0]['sections']) && !empty($user_selected_answers[0]['sections']))
+                                                    @if (
+                                                        !empty($user_selected_answers) &&
+                                                            isset($user_selected_answers[0]['sections']) &&
+                                                            !empty($user_selected_answers[0]['sections']))
                                                         @if (
                                                             $user_selected_answers[0]['sections'][0]->practice_test_type == 'Reading_And_Writing' ||
                                                                 $user_selected_answers[0]['sections'][0]->practice_test_type == 'Easy_Reading_And_Writing' ||
                                                                 $user_selected_answers[0]['sections'][0]->practice_test_type == 'Hard_Reading_And_Writing')
-                                                            @if ($readingWriting[0]['testId'] == $test_details->id && $readingWriting[0]['format'] == $test_details->format)
+                                                            @if (
+                                                                !empty($readingWriting) &&
+                                                                    isset($readingWriting[0]) &&
+                                                                    $readingWriting[0]['testId'] == $test_details->id &&
+                                                                    $readingWriting[0]['format'] == $test_details->format)
                                                                 {{ number_format($readingWriting[0]['score'] ?? 0, 0) }}
                                                             @else
                                                                 0
                                                             @endif
-                                                        @elseif(
+                                                        @elseif (
                                                             $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math' ||
                                                                 $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math_no_calculator' ||
                                                                 $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math_with_calculator')
-                                                            @if ($math[0]['testId'] == $test_details->id && $math[0]['format'] == $test_details->format)
+                                                            @if (
+                                                                !empty($math) &&
+                                                                    isset($math[0]) &&
+                                                                    $math[0]['testId'] == $test_details->id &&
+                                                                    $math[0]['format'] == $test_details->format)
                                                                 {{ number_format($math[0]['score'] ?? 0, 0) }}
                                                             @else
                                                                 0
@@ -2518,7 +2538,7 @@
                                                                                                             type="button"
                                                                                                             data-bs-toggle="modal"
                                                                                                             data-bs-target="#modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                            class="btn 
+                                                                                                            class="btn
                                                                                                             @if ($checkbox_arr[$key][$i] == '1') btn-success
                                                                                                             @elseif ($checkbox_arr[$key][$i] == '0')
                                                                                                                 btn-danger
@@ -3558,7 +3578,7 @@
                                                                                                     );
                                                                                                     dump(
                                                                                                         $count
-                                                                                                    ); 
+                                                                                                    );
                                                                                                     dump(
                                                                                                         $missed_qt
                                                                                                     );
@@ -3843,11 +3863,11 @@
                                                     <?php
                                                     $test = $count++;
                                                     $store_total_wrong_answer = 0;
-                                                    
+
                                                     foreach ($single_question_data as $single_question_details_item) {
                                                         $store_correct_answer = 0;
                                                         $store_wrong_answer = 0;
-                                                    
+
                                                         foreach ($user_selected_answers as $single_answer_user_selected) {
                                                             if (isset($single_answer_user_selected['get_question_details'][0]->question_id) && !empty($single_answer_user_selected['get_question_details'][0]->question_id)) {
                                                                 if ($single_question_details_item[0] == $single_answer_user_selected['get_question_details'][0]->question_id) {
