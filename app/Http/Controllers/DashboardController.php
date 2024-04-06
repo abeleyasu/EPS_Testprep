@@ -86,12 +86,12 @@ class DashboardController extends Controller
                 if ($adminissionOptionSelected == 'Early Action') {
                     $deadlineDay = $collegeInformation['early_action_day'] ?: $collegeInformation['AP_DL_EACT_DAY'];
                     $deadlineMonth = $collegeInformation['early_action_month'] ?: $collegeInformation['AP_DL_EACT_MON'];
-                } elseif ($adminissionOptionSelected == 'Early Decision' || $adminissionOptionSelected == 'Early Decision 1') {
+                } elseif ($adminissionOptionSelected == 'Early Decision' || $adminissionOptionSelected == 'Early Decision 1' || $adminissionOptionSelected == 'Early Decision I') {
                     $deadlineDay =
                         $collegeInformation['early_decision_i_day'] ?: $collegeInformation['AP_DL_EDEC_1_DAY'];
                     $deadlineMonth =
                         $collegeInformation['early_decision_i_month'] ?: $collegeInformation['AP_DL_EDEC_1_MON'];
-                } elseif ($adminissionOptionSelected == 'Early Decision 2') {
+                } elseif ($adminissionOptionSelected == 'Early Decision 2' || $adminissionOptionSelected == 'Early Decision II') {
                     $deadlineDay =
                         $collegeInformation['early_decision_ii_day'] ?: $collegeInformation['AP_DL_EDEC_2_DAY'];
                     $deadlineMonth =

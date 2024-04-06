@@ -240,7 +240,7 @@
 
     const staticdata = {
         applications: @json($applications),
-        admision_option: @json($admision_option),
+        admission_option: @json($admission_option),
         college_list_status: @json($college_list_status),
     }
 

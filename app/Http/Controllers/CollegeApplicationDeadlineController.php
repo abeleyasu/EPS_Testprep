@@ -37,7 +37,7 @@ class CollegeApplicationDeadlineController extends Controller
 
         return view('user.admin-dashboard.college-application-deadline', [
             'applications' => config('constants.types_of_application'),
-            'admision_option' => config('constants.admission_options'),
+            'admission_option' => config('constants.admission_options'),
             'college_list_status' => config('constants.college_list_status'),
             'college_list_deadline' => $college_list_deadline,
             'college_list' => $college_list,
@@ -420,12 +420,12 @@ class CollegeApplicationDeadlineController extends Controller
             if ($adminissionOptionSelected == 'Early Action') {
                 $deadlineDay = $collegeInformation['early_action_day'] ?: $collegeInformation['AP_DL_EACT_DAY'];
                 $deadlineMonth = $collegeInformation['early_action_month'] ?: $collegeInformation['AP_DL_EACT_MON'];
-            } elseif ($adminissionOptionSelected == 'Early Decision' || $adminissionOptionSelected == 'Early Decision 1') {
+            } elseif ($adminissionOptionSelected == 'Early Decision' || $adminissionOptionSelected == 'Early Decision 1' || $adminissionOptionSelected == 'Early Decision I') {
                 $deadlineDay =
                     $collegeInformation['early_decision_i_day'] ?: $collegeInformation['AP_DL_EDEC_1_DAY'];
                 $deadlineMonth =
                     $collegeInformation['early_decision_i_month'] ?: $collegeInformation['AP_DL_EDEC_1_MON'];
-            } elseif ($adminissionOptionSelected == 'Early Decision 2') {
+            } elseif ($adminissionOptionSelected == 'Early Decision 2' || $adminissionOptionSelected == 'Early Decision II') {
                 $deadlineDay =
                     $collegeInformation['early_decision_ii_day'] ?: $collegeInformation['AP_DL_EDEC_2_DAY'];
                 $deadlineMonth =
