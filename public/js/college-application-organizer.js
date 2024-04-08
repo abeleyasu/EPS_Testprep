@@ -422,7 +422,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
 const getAdmissionDeadline = (data) => {
 
     // console.log('is_admission_deadline_from_user', data.is_admission_deadline_from_user)
-    if (data.is_admission_deadline_from_user) {
+    if (parseInt(data.is_admission_deadline_from_user) == 1) {
         return data.admissions_deadline ? data.admissions_deadline : 'dd/mm/yy'
     } else {
         const collegeInformation = data.college_details.college_information
