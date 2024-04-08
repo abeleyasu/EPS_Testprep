@@ -504,13 +504,13 @@ const getFormatMoney = (value) => {
     if (number.includes('.')) {
         const decimal = +(number.split('.')[1]);
         if (decimal === 0) {
-            return number.split('.')[0];
+            return `$${number.split('.')[0]}`
         } else {
-            return number;
+            return `$${number}`
         }
     }
 
-    return number;
+    return `$${number}`
 }
 
 function updateField(index, fieldName, data) {
