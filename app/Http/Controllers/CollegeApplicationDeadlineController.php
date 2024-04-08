@@ -253,16 +253,79 @@ class CollegeApplicationDeadlineController extends Controller
             } catch (\Throwable $th) {
                 $date = Carbon::createFromFormat("Y-m-d", $deadline);
             }
-            if ($date->isPast()) {
-                $date->addYear();
+
+            // if passed, add 1 year from now
+            if ($date->lessThan(Carbon::now())) {
+                do {
+                    $date->addYear();
+                } while ($date->lessThan(Carbon::now()));
             }
+
             $data['admissions_deadline'] = $date->format('m-d-Y');
             $request->admissions_deadline = $data['admissions_deadline'];
+            $data['is_admission_deadline_from_user'] = false;
         } else {
             $data['admissions_deadline'] = null;
+            $data['is_admission_deadline_from_user'] = false;
         }
 
         $college = CollegeDetails::create($data);
+
+        $collegeDetail = CollegeDetails::where('id', $college->id)->first();
+        $collegeInformation = $collegeDetail->college_details->collegeInformation;
+
+        // dd($collegeInformation);
+
+        // check if $request->admissions_deadline is already passed, then set to +1 year
+        if ($request->admissions_deadline) {
+            $deadline = $request->admissions_deadline;
+            /* try {
+                $date = Carbon::createFromFormat("m-d-Y", $deadline);
+            } catch (\Throwable $th) {
+                $date = Carbon::createFromFormat("Y-m-d", $deadline);
+            }
+
+            // if passed, add 1 year from now
+            if ($date->lessThan(Carbon::now())) {
+                do {
+                    $date->addYear();
+                } while ($date->lessThan(Carbon::now()));
+            } */
+
+            $data['is_admission_deadline_from_user'] = false;
+
+            $deadlineFromSystem = $this->__getDeadlineDate([
+                'request_data' => $data,
+                'college_detail' => $collegeDetail,
+                'college_information' => $collegeInformation
+            ]);
+
+            if ($collegeDetail->admission_option == $request->admission_option) {
+                // echo 'same option';
+                if ($deadlineFromSystem['date'] == $data['admissions_deadline']) {
+                    $data['is_admission_deadline_from_user'] = false;
+                    $data['admissions_deadline'] = $deadlineFromSystem['date'];
+                } else {
+                    $data['admissions_deadline'] = $date->format('m-d-Y');
+                    $data['is_admission_deadline_from_user'] = true;
+                }
+            } else if ($collegeDetail->admission_option != $request->admission_option) {
+                // echo 'diff option';
+                // dd($data['admissions_deadline'], $deadlineFromSystem['date']);
+
+                if ($deadlineFromSystem['date'] == $data['admissions_deadline']) {
+                    $data['is_admission_deadline_from_user'] = false;
+                    $data['admissions_deadline'] = $deadlineFromSystem['date'];
+                } else {
+                    $data['is_admission_deadline_from_user'] = true;
+                    $data['admissions_deadline'] = $date->format('m-d-Y');
+                }
+            }
+
+            // update college
+            $college = $collegeDetail->update($data);
+        }
+
         $this->setReminderAndAddIntoCalendor($data);
     }
 
@@ -341,14 +404,18 @@ class CollegeApplicationDeadlineController extends Controller
             } catch (\Throwable $th) {
                 $date = Carbon::createFromFormat("Y-m-d", $deadline);
             }
-            if ($date->isPast()) {
-                $date->addYear();
+
+            // if passed, add 1 year from now
+            if ($date->lessThan(Carbon::now())) {
+                do {
+                    $date->addYear();
+                } while ($date->lessThan(Carbon::now()));
             }
 
             $data['is_admission_deadline_from_user'] = false;
 
             $deadlineFromSystem = $this->__getDeadlineDate([
-                'request_data' => $request->all(),
+                'request_data' => $data,
                 'college_detail' => $collegeDetail,
                 'college_information' => $collegeInformation
             ]);
@@ -383,8 +450,6 @@ class CollegeApplicationDeadlineController extends Controller
                     $data['admissions_deadline'] = $date->format('m-d-Y');
                 }
             }
-
-
         } else {
             $data['admissions_deadline'] = null;
             $data['is_admission_deadline_from_user'] = false;
@@ -499,6 +564,14 @@ class CollegeApplicationDeadlineController extends Controller
             } catch (\Throwable $th) {
                 $date = Carbon::createFromFormat("Y-m-d", $deadline);
             }
+
+            // if passed, add 1 year from now
+            if ($date->lessThan(Carbon::now())) {
+                do {
+                    $date->addYear();
+                } while ($date->lessThan(Carbon::now()));
+            }
+
             $days = 'Due in ' . $date->diffInDays(Carbon::now()) . ' days';
         }
         return [
