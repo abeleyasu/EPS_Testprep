@@ -131,11 +131,28 @@ class DashboardController extends Controller
         $deadlineDateDiff = 0; // + or -
         $deadlineDateDiffLabel = ''; // Due in 123 days (dynamic)
         if (!empty($deadlineDate)) {
-            // echo '1--> '. $deadlineDate . '<br>';
+            try {
+                $date = Carbon::createFromFormat("m-d-Y", $deadlineDate);
+            } catch (\Throwable $th) {
+                $date = Carbon::createFromFormat("Y-m-d", $deadlineDate);
+            }
+
+            // if passed, add 1 year from now
+            if ($date->lessThan(Carbon::now())) {
+                do {
+                    $date->addYear();
+                } while ($date->lessThan(Carbon::now()));
+            }
+
+            $deadlineDate = $date->format('Y-m-d');
+
+            // echo '1--> ' . $deadlineDate . '<br>';
             $deadlineDateDiff = strtotime($deadlineDate) - time();
 
+            // dd($deadlineDateDiff, $deadlineDate);
+
             if ($deadlineDateDiff > 0) {
-                $deadlineDateDiffLabel = 'Due in ' . floor($deadlineDateDiff / (60 * 60 * 24)) . ' days';
+                $deadlineDateDiffLabel = 'Due in ' . ceil($deadlineDateDiff / (60 * 60 * 24)) . ' days';
             } else {
 
                 // add 1 years from deadlineDate
@@ -144,21 +161,21 @@ class DashboardController extends Controller
                 // $deadlineDateDiff = strtotime($deadlineDate) - time();
                 // $deadlineDateDiffLabel = 'Due in ' . floor($deadlineDateDiff / (60 * 60 * 24)) . ' days';
 
-                // set past due label
-                $dueCountDay = floor(abs($deadlineDateDiff) / (60 * 60 * 24));
-                $deadlineDateDiffLabel = 'Past due ' . $dueCountDay . ' days';
+                 // set past due label
+                 $dueCountDay = floor(abs($deadlineDateDiff) / (60 * 60 * 24));
+                 $deadlineDateDiffLabel = 'Past due ' . $dueCountDay . ' days';
             }
         }
 
         if (!empty($deadlineDate)) {
 
-            try {
+           /*  try {
                 $date = Carbon::createFromFormat("m-d-Y", $deadlineDate);
             } catch (\Throwable $th) {
                 $date = Carbon::createFromFormat("Y-m-d", $deadlineDate);
             }
 
-            $deadlineDate = $date->format('Y-m-d');
+            $deadlineDate = $date->format('Y-m-d'); */
 
             return [
                 'date' => $deadlineDate,
