@@ -497,7 +497,8 @@ var global = {
   })
 
 const getFormatMoney = (value) => {
-    return `$${(value || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    // return `$${(value || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    return `$${(value || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 }
 
 function updateField(index, fieldName, data) {
