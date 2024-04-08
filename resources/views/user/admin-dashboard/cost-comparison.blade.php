@@ -498,7 +498,19 @@ var global = {
 
 const getFormatMoney = (value) => {
     // return `$${(value || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-    return `$${(value || 0).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+
+    const number = (value || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
+    if (number.includes('.')) {
+        const decimal = +(number.split('.')[1]);
+        if (decimal === 0) {
+            return number.split('.')[0];
+        } else {
+            return number;
+        }
+    }
+
+    return number;
 }
 
 function updateField(index, fieldName, data) {
