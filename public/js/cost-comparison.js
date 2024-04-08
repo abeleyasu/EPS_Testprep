@@ -423,7 +423,7 @@ const getTuitionAndFeesValue = (costComparisonData) => {
         // console.log('tution fee', result)
     }
 
-    return result ? parseFloat(result) : 0
+    return result ? Math.round(parseFloat(result)) : 0
 }
 
 const getRoomAndBoardValue = (costComparisonData) => {
@@ -465,7 +465,7 @@ const getRoomAndBoardValue = (costComparisonData) => {
         }
     }
 
-    return result ? parseFloat(result) : 0
+    return result ? Math.round(parseFloat(result)) : 0
 }
 
 const getDirectCostTotal = (costComparisonData) => {
