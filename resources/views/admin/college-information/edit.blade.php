@@ -1360,13 +1360,13 @@
                     // console.log('roomboard', roomboard);
 
                     if (costType === 'tuition_and_fee_instate') {
-                        this.tuition_and_fee_instate = tuition.in_state ? tuition.in_state : null;
+                        this.tuition_and_fee_instate = tuition.in_state ? tuition.in_state : 'No data';
                     } else if (costType === 'tuition_and_fee_outstate') {
-                        this.tuition_and_fee_outstate = tuition.out_of_state ? tuition.out_of_state : null;
+                        this.tuition_and_fee_outstate = tuition.out_of_state ? tuition.out_of_state : 'No data';
                     } else if (costType === 'tution_and_fess') {
-                        this.tution_and_fess = tuition.program_year ? tuition.program_year : null;
+                        this.tution_and_fess = tuition.program_year ? tuition.program_year : 'No data';
                     } else if (costType === 'room_and_board') {
-                        this.room_and_board = roomboard.oncampus ? roomboard.oncampus : null;
+                        this.room_and_board = roomboard.oncampus ? roomboard.oncampus : 'No data';
                     }
 
                 },
@@ -1374,9 +1374,9 @@
                     console.log('costType', costType);
 
                     // for COA from UG_EXPENSE_ASGNS
-                    // in-state: TUIT_STATE_FT_D + FEES_FT_D + RM_BD_D + BOOKS_RES_D
-                    // out-of-state: TUIT_NRES_FT_D + FEES_OOS_FT_D + RM_BD_D + BOOKS_RES_D
-                    // private: TUIT_OVERALL_FT_D + FEES_FT_D + RM_BD_D + BOOKS_RES_D
+                    // in-state: TUIT_STATE_FT_D + FEES_FT_D + TRANSPORT_RES_D + BOOKS_RES_D
+                    // out-of-state: TUIT_NRES_FT_D + FEES_OOS_FT_D + TRANSPORT_RES_D + BOOKS_RES_D
+                    // private: TUIT_OVERALL_FT_D + FEES_FT_D + TRANSPORT_RES_D + BOOKS_RES_D
                     const tuitStateFtD = collegeInfo.TUIT_STATE_FT_D ? parseFloat(collegeInfo.TUIT_STATE_FT_D) : 0;
                     const tuitOverallFtD = collegeInfo.TUIT_OVERALL_FT_D ? parseFloat(collegeInfo
                         .TUIT_OVERALL_FT_D) : 0;
@@ -1384,6 +1384,7 @@
                     const feesFtD = collegeInfo.FEES_FT_D ? parseFloat(collegeInfo.FEES_FT_D) : 0;
                     const rmBdD = collegeInfo.RM_BD_D ? parseFloat(collegeInfo.RM_BD_D) : 0;
                     const booksResD = collegeInfo.BOOKS_RES_D ? parseFloat(collegeInfo.BOOKS_RES_D) : 0;
+                    const transport = collegeInfo.TRANSPORT_RES_D ? parseFloat(collegeInfo.TRANSPORT_RES_D) : 0;
 
                     // for Tuition Fee and Roomboard from UG_EXPENSE_ASGNS
                     // in-state: TUIT_STATE_FT_D + FEES_FT_D
@@ -1400,11 +1401,11 @@
 
 
                     if (costType === 'public_coa_in_state') {
-                        this.public_coa_in_state = (tuitStateFtD + feesFtD + rmBdD + booksResD) || null;
+                        this.public_coa_in_state = (tuitStateFtD + feesFtD + transport + booksResD) || null;
                     } else if (costType === 'public_coa_out_state') {
-                        this.public_coa_out_state = (tuitNresFtD + feesFtD + rmBdD + booksResD) || null;
+                        this.public_coa_out_state = (tuitNresFtD + feesFtD + transport + booksResD) || null;
                     } else if (costType === 'pvt_coa') {
-                        this.pvt_coa = (tuitOverallFtD + feesFtD + rmBdD + booksResD) || null;
+                        this.pvt_coa = (tuitOverallFtD + feesFtD + transport + booksResD) || null;
                     } else if (costType === 'tution_and_fess') {
                         this.tution_and_fess = (tuitOverallFtD + feesFtD) || null;
                     } else if (costType === 'tuition_and_fee_instate') {
