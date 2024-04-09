@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Grade;
 use Illuminate\Http\Request;
+use App\Service\ResumeService;
 
 class GradesController extends Controller
 {
-    public function getGradeList()
+    protected $resumeService;
+
+    public function __construct(ResumeService $resumeService) {
+        $this->resumeService = $resumeService;
+    }
+
+
+    public function getGradeList(Request $request)
     {
-        $grades_list = Grade::all();
+        $type = isset($request->type) ? config('constants.grades_types.'.$request->type.'_grades') : null;
+        $grades_list = $this->resumeService->getGrades($type);
 
         return response()->json(['success' => true, 'dropdown_list' => $grades_list]);
     }

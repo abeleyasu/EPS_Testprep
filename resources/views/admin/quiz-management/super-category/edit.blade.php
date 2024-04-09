@@ -69,6 +69,8 @@
                                                         <option value="SAT" @if($category['format'] == 'SAT') selected  @endif >SAT</option>
                                                         <option value="PSAT" @if($category['format'] == 'PSAT') selected  @endif>PSAT</option>
                                                         <option value="ACT" @if($category['format'] == 'ACT') selected  @endif>ACT</option>
+                                                        <option value="DSAT" @if($category['format'] == 'DSAT') selected  @endif>Digital SAT</option>
+                                                        <option value="DPSAT" @if($category['format'] == 'DPSAT') selected  @endif>Digital PSAT</option>
                                                     </select>
                                                 </div>
                                                 @error('test_format')
@@ -123,6 +125,7 @@
     $(document).on('change','#test_format',function(){
         $('#section_type').html('');
         let section_type = @json($category['section_type']);
+        // console.log(section_type);
         let sat_array = ['Reading','Writing','Math_no_calculator','Math_with_calculator'];
         let act_array = ['English','Math','Reading','Science'];
         let html = ``;
@@ -136,6 +139,16 @@
             $.each(act_array,function(i,v){
                 html += `<option value="${v}"  ${section_type == v ? 'selected' : ''}   >${v}</option>`;
             });
+        }
+
+        if($(this).val() == 'DSAT'){
+            html += `<option value="Reading_And_Writing" ${section_type == 'Reading_And_Writing' ? 'selected' : ''}>Reading And Writing</option>`;
+            html += `<option value="Math" ${section_type == 'Math' ? 'selected' : ''}>Math</option>`;
+            
+        } 
+        if($(this).val() == 'DPSAT'){
+            html += `<option value="Reading_And_Writing" ${section_type == 'Reading_And_Writing' ? 'selected' : ''}>Reading And Writing</option>`;
+            html += `<option value="Math" ${section_type == 'Math' ? 'selected' : ''}>Math</option>`;
         }
         $('#section_type').append(html);
     });

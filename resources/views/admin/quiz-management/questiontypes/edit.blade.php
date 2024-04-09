@@ -67,6 +67,8 @@
                                                         <option value="SAT" @if ($getquestionDetails->format == 'SAT') selected @endif>SAT</option>
                                                         <option value="PSAT" @if ($getquestionDetails->format == 'PSAT') selected @endif>PSAT</option>
                                                         <option value="ACT" @if ($getquestionDetails->format == 'ACT') selected @endif>ACT</option>
+                                                        <option value="DSAT" @if ($getquestionDetails->format == 'DSAT') selected @endif>Digital SAT</option>
+                                                        <option value="DPSAT" @if ($getquestionDetails->format == 'DPSAT') selected @endif>Digital PSAT</option>
                                                     </select>
                                                 </div>
                                                 <div class="mb-2 col-md-12 mb-2 mt-2">
@@ -206,6 +208,16 @@
                 $.each(act_array,function(i,v){
                     html += `<option value="${v}"  ${section_type == v ? 'selected' : ''}   >${v}</option>`;
                 });
+            }
+
+            if($(this).val() == 'DSAT'){
+                html += `<option value="Reading_And_Writing" ${section_type == 'Reading_And_Writing' ? 'selected' : ''}>Reading And Writing</option>`;
+                html += `<option value="Math" ${section_type == 'Math' ? 'selected' : ''}>Math</option>`;
+                
+            } 
+            if($(this).val() == 'DPSAT'){
+                html += `<option value="Reading_And_Writing" ${section_type == 'Reading_And_Writing' ? 'selected' : ''}>Reading And Writing</option>`;
+                html += `<option value="Math" ${section_type == 'Math' ? 'selected' : ''}>Math</option>`;
             }
             $('#section_type').append(html);
         });

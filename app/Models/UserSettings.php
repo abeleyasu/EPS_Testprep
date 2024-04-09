@@ -15,6 +15,8 @@ class UserSettings extends Model
         'user_id',
         'application_deadline_notification',
         'is_receive_sms',
+        'timezone',
+        'is_receive_emails_newsletters',
     ];
 
     protected $hidden = [

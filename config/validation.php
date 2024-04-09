@@ -30,9 +30,9 @@ return [
                 "required" => true,
                 "email" => true
             ],
-            "social_links[*][link]" => [
-                "url" => true
-            ],
+            // "social_links[*][link]" => [
+            //     "url" => true
+            // ],
             "parent_email_one" => [
                 "required" => true,
                 "email" => true
@@ -135,18 +135,18 @@ return [
     ],
     "honors"=>[
         "rules"=>[
-            "honors_data[*][position]" =>[
-                "required" => true,
-            ],
-            "honors_data[*][honor_achievement_award]" =>[
-                "required" => true,
-            ],
-            "honors_data[*][grade][]" =>[
-                "required" => true,
-            ],
-            "honors_data[*][location]" =>[
-                "required" => true,
-            ],
+            // "honors_data[*][position]" =>[
+            //     "required" => true,
+            // ],
+            // "honors_data[*][honor_achievement_award]" =>[
+            //     "required" => true,
+            // ],
+            // "honors_data[*][grade][]" =>[
+            //     "required" => true,
+            // ],
+            // "honors_data[*][location]" =>[
+            //     "required" => true,
+            // ],
         ],
         "messages"=>[
             "honors_data[*][position]" => "Honors position field is required",

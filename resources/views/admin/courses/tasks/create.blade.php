@@ -87,13 +87,16 @@
                                 <label for="type" class="form-label">Parent Section:</label>
                                 <select name="section_id" class="form-control" id="section_id">
                                     @foreach($sections as $section)
-                                        <option value="{{$section->id}}"> {{ $section->title }}</option>
+                                        <option value="{{$section->id}}" @if(isset($_GET['section_id']) && $_GET['section_id'] == $section->id) selected @endif > {{ $section->title }}</option>
                                     @endforeach
                                 </select>
                                 @error('section_id')
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
                             </div>
+
+                            @include('admin.courses.components.user-role-dropdown')
+
 							<div class="mb-2">
                                 <label class="form-label" for="order">Order</label>
 
@@ -144,6 +147,7 @@
                                     <option value="unpaid">Unpaid</option>
                                 </select>
                             </div>
+                            @include('admin.courses.components.product-dropdown')
                         </div>
                     </div>
                 </div>
@@ -151,6 +155,7 @@
         </div>
     </form>
 </main>
+@include('admin.courses.components.create-new-product')
 <!-- END Main Container -->
 <div class="modal fade" id="dragModal"
 
@@ -194,6 +199,7 @@
     <script src="{{asset('assets/js/plugins/select2/js/select2.min.js')}}"></script>
 
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
+    <script src="{{ asset('js/admin/course.js') }}"></script>
 
 
     <script>

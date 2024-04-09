@@ -13,6 +13,7 @@ class CostComparisonDetail extends Model
         'cost_comparison_id',
         'direct_tuition_free_year',
         'direct_room_board_year',
+        'direct_miscellaneous_year',
         'institutional_academic_merit_aid',
         'institutional_exchange_program_scho',
         'institutional_honors_col_program',
@@ -31,4 +32,8 @@ class CostComparisonDetail extends Model
         'need_base_other_grants',
         'cost_of_attendance_year'
     ];
+
+    public function cost_comparison() {
+        return $this->belongsTo(CostComparison::class, 'cost_comparison_id', 'id');
+    }
 }

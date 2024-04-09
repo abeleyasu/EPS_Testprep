@@ -23,7 +23,8 @@ class Courses extends Model
         'duration',
         'order',
         'status',
-        'coverimage'
+        'coverimage',
+        'product_id',
     ];
 	public function milestones() {
         return $this->hasMany(Milestone::class)->where('published', true);
@@ -68,5 +69,25 @@ class Courses extends Model
             ->where('tasks.published', 1)
 			->where('user_task_statuses.user_id', $userId)->get();
         return $tasks;
+    }
+
+    public function user_course_roles() {
+        return $this->belongsToMany(UserRole::class,'course_user_types', 'course_id', 'user_role_id');
+    }
+
+    public static function userHasCoursePermissionOrNot($course_id) {
+        $user = auth()->user();
+        $course = Courses::where('id', $course_id)->first();
+        if ($course) {
+            $course_user_types = $course->user_course_roles->pluck('id')->toArray();
+            if (in_array($user->role, $course_user_types)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function user_course_products() {
+        return $this->belongsToMany(Product::class,'course_products', 'course_id', 'product_id');
     }
 }

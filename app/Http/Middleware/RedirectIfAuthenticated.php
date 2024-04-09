@@ -19,14 +19,15 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check() && Auth::user()->isAdmin()) {
+        // dd('called');
+        if(Auth::check() && Auth::user()->isAdmin() && Auth::user()->hasVerifiedEmail()) {
             return redirect()->route('admin-dashboard');
         }
         
-        if(Auth::check() && Auth::user()->isUser()) {
+        if(Auth::check() && Auth::user()->isUser() && Auth::user()->hasVerifiedEmail()) {
             return redirect()->route('user-dashboard');
         }
-        if(Auth::check())
+        if(Auth::check() && Auth::user()->hasVerifiedEmail())
         return redirect(route('home'));
         return $next($request);
     }

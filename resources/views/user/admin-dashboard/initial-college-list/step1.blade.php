@@ -11,13 +11,17 @@
         font-weight: 600;
         color: #61656a
     }
+    .curson-drag {
+        cursor: move;
+    }
 </style>
+@can('Access Initial College List')
 <main id="main-container">
     <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
         <div class="bg-black-10">
             <div class="content content-full text-center">
                 <br>
-                <h1 class="h2 text-white mb-0">Initial College List</h1>
+                <h1 class="h2 text-white mb-0">College Search</h1>
                 <br>
             </div>
         </div>
@@ -58,7 +62,7 @@
                             <form method="get">
                                 <div class="college_wants-wrapper">
                                     <h6>
-                                        <span>Note:</span> 
+                                        <span>Note:</span>
                                         We suggest starting your search with no more than 3 of the following aspects selected, see which colleges show up in your results, then decide whether to choose more than 3 aspects to refine your results, if it feels necessary (or if too many colleges show up in your search). We suggest choosing the 1st 3 aspects, but feel free to choose different options that are important to you personally if you choose.
                                     </h6>
                                     <div class="college_wants_list">
@@ -67,7 +71,7 @@
                                                 <div class="accordion accordionExample accordionExample2">
                                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                         <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                            <a class=" text-white fw-600 collapsed"><i class="fa fa-2x fa-calendar"></i> College Major & Degree Type</a>
+                                                            <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-calendar"></i> College Major & Degree Type</a>
                                                         </div>
                                                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent=".accordionExample">
                                                             <div class="college-content-wrapper college-content">
@@ -77,7 +81,7 @@
                                                                     </label>
                                                                     <select class="js-example-basic-single js-states form-control" id="college_majors_options" name="college_majors_options" style="width: 100%;" data-placeholder="Select One.">
                                                                         <option></option>
-                                                                        @foreach($college_major_data as $option) 
+                                                                        @foreach($college_major_data as $option)
                                                                             <option value="{{ $option->code }}">{{ $option->title }}</option>
                                                                         @endforeach
                                                                     </select>
@@ -197,7 +201,7 @@
                                                                     </label>
                                                                     <select class="js-example-basic-single js-states form-control" id="specialized_mission" name="specialized_mission" style="width: 100%;" data-placeholder="Select One.">
                                                                         <option></option>
-                                                                        @foreach(config('constants.specialized_mission_options') as $option) 
+                                                                        @foreach(config('constants.specialized_mission_options') as $option)
                                                                             <option value="{{ $option['search_key'] }}">{{ $option['option'] }}</option>
                                                                         @endforeach
                                                                     </select>
@@ -208,7 +212,7 @@
                                                                     </label>
                                                                     <select class="js-example-basic-single js-states form-control" id="religious_affiliation" name="religious_affiliation" style="width: 100%;" data-placeholder="Select One.">
                                                                         <option></option>
-                                                                        @foreach(config('constants.religious_affiliation_options') as $option) 
+                                                                        @foreach(config('constants.religious_affiliation_options') as $option)
                                                                             <option value="{{ $option['value'] }}">{{ $option['option'] }}</option>
                                                                         @endforeach
                                                                     </select>
@@ -274,7 +278,7 @@
                                                                     </label>
                                                                     <input type="text" class="js-range-slider form-control" id="graduate_rate" name="graduate_rate" data-min="0" data-max="100" data-from="0" data-grid="true" data-postfix="%">
                                                                 </div>
-    
+
                                                                 <div class="mb-2">
                                                                     <label class="form-check-label bold-label mb-2" for="acceptance_rate">
                                                                         Acceptance rate
@@ -349,21 +353,76 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">My College List</h5>
+        <h3 class="block-title fw-500">College List</h3>
+        <button type="button" class="btn btn-sm btn-alt-success" id="add-college">Add College</button>
+        <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hidden Colleges</button>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body" id="user-college-list">
+      <div class="modal-body" id="userSelectedCollegeList" data-type="search-step-1" @if($college_id) data-collegeid="{{ $college_id }}" @endif>
       </div>
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="add_new_college_list" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="block block-rounded block-transparent mb-0">
+        <div class="block-header block-header-tab">
+          <h3 class="block-title text-white">Add College</h3>
+          <div class="block-options">
+            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+              <i class="fa fa-fw fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="row block-content">
+          <div>
+            <label for="select-college" class="form-label">Select College</label>
+            <select class="js-data-example form-control" id="select-college" name="college" style="width: 100%;" data-placeholder="Select One.">
+              <option value="">Select One</option>
+            </select>
+          </div>
+        </div>
+        <div class="block-content block-content-full text-end">
+          <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn submit-btn" id="add-college-detail">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="hide-college-list-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">College List</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="hide-college-modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-sm btn-alt-danger" data-type="search-list" id="remove-all-college">Remove All College</button>
+      </div>
+    </div>
+  </div>
+</div>
+@endcan
+
+@cannot('Access Initial College List')
+    @include('components.subscription-warning')
+@endcan
 @endsection
 
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/initial-college-list.css') }}">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet"> -->
 <link rel="stylesheet" href="{{ asset('assets/js/plugins/ion-rangeslider/css/ion.rangeSlider.css') }}">
+<link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
 <style>
     .no-data {
         border: 1px solid;
@@ -377,13 +436,17 @@
 </style>
 @endsection
 
-
+@can('Access Initial College List')
 @section('user-script')
 <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 <script src="{{ asset('js/selecting-search-params.js') }}"></script>
 <script src="{{asset('assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
+<script src="{{asset('js/college-list.js')}}"></script>
+<script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+<script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 <script>
 
     $(".js-range-slider").ionRangeSlider({
@@ -420,6 +483,10 @@
                 };
             }
         }
+    });
+
+    $(document).on('select2:open', () => {
+        document.querySelector('.select2-search__field').focus();
     });
 
     $('#is_select_college_size').on('change', function(e) {
@@ -482,38 +549,206 @@
     $(document).ready(function () {
         // $('#college-list').modal('show')
     })
-
+    const collegeid = @json($college_id);
     $('#view-college-list').on('click', function (e) {
         e.preventDefault();
-        $.ajax({
-            url: "{{ route('admin-dashboard.initialCollegeList.getUserCollegeList') }}",
-            method: 'GET',
-            headers: {
-                'X-CSRF-TOKEN': "{{ csrf_token() }}"
-            },
-        }).done((response) => {
-            if (response.success) {
-                $('#user-college-list').html('')
-                if (response.data.length > 0) {
-                    response.data.forEach((data, index) => {
-                        const element = `
-                            <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                <div class="block-header block-header-default">
-                                    <div class="d-flex align-items-center w-100 gap-3" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
-                                        <span>${index + 1}</span>
-                                        <span>${data.college_name}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        `
-                        $('#user-college-list').append(element)
-                    })
-                    $('#college-list').modal('show')
-                } else {
-                    $('#user-college-list').html('<h5 class="no-data">No College Found</h5>')
-                }
-            }
-        })
+        // getStep1CollegeList();
+        getCollegeList()
     })
+
+    function getCollegeList() {
+    $.ajax({
+      url: "{{ route('admin-dashboard.initialCollegeList.step4.getSelectedCollegeList', ['id' => ':id' ]) }}".replace(':id', collegeid),
+      method: 'get',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(response) {
+        if (response.success) {
+          $('#userSelectedCollegeList').html('');
+          const options = ['Smart', 'Match', 'Reach'];
+          if (response.data.length > 0) {
+            response.data.forEach((data, index) => {
+              let optionCLass= '';
+              if (data.option && data.option === 'Smart') {
+                optionCLass = 'bg-smart'
+              } else if (data.option && data.option === 'Match') {
+                optionCLass = 'bg-match'
+              } else if (data.option && data.option === 'Reach') {
+                optionCLass = 'bg-reach'
+              }
+              const element = `
+                <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${data.id}">
+                  <div class="block-header block-header-tab">
+                    <div class="d-flex align-items-center w-100 gap-3 text-white fw-600 drag-handle" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+                      <i class="fa fa-2x fa-angle-right" id="toggle${index}"></i>
+                      <i class="fa fa-bars"></i>
+                      <span>${index + 1}</span>
+                      <span>${data.college_name}</span>
+                    </div>
+                    <div class="d-flex">
+                      <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list me-2" data-id="${data.id}">Hide</button>
+                      <button type="button" class="btn btn-sm btn-alt-danger remove-user-college" data-type="step-4" data-id="${data.id}">Remove</button>
+                    </div>
+                  </div>
+                  <div id="accodion-${index}" data-id="${index}" class="collapse" role="tabpanel" aria-labelledby="faq6_h1" data-bs-parent="#userSelectedCollegeList">
+                    <div class="block-content">
+                      <div class="block block-rounded">
+                        <div class="mb-3">
+                          <select class="form-control selection-type ${optionCLass}" data-id="${data.id}">
+                            <option value="">Select Type</option>
+                            ${options.map((option, index) => {
+                              return `<option value="${option}" ${data.option === option ? 'selected' : ''}>${option}</option>`
+                            })}
+                          </select>
+                        </div>
+                        <table class="table table-bordered table-sm table-hover">
+                          <tbody>
+                            <tr>
+                              <th>Average Admitted GPA:</th>
+                              <th>${data.college_information.gpa_average ? data.college_information.gpa_average : '-'}</th>
+                            </tr>
+                            <tr>
+                              <th>Average Accepted ACT:</th>
+                              <th>${data.college_information.avg_act_score ? data.college_information.avg_act_score : '-'}</th>
+                            </tr>
+                            <tr>
+                              <th>Average Accepted SAT:</th>
+                              <th>${data.college_information.avg_sat_score ? data.college_information.avg_sat_score : '-'}</th>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `
+              $('#userSelectedCollegeList').append(element);
+              $('#college-list').modal('show')
+            })
+          } else {
+            $('#userSelectedCollegeList').html(`<div class="no-data">No College Found</div>`);
+          }
+        }
+      }
+    })
+  }
+
+  $('#view-hide-college-btn').on('click', async function (e) {
+    await getHideCollegeList('hide-college-list-modal')
+  })
+
+  $('#add-college').on('click', function (e) {
+    $('#add_new_college_list').modal('show');
+  })
+
+  $(document).on('click', '#add-college-detail', function (e) {
+    $.ajax({
+      url: "{{ route('admin-dashboard.collegeApplicationDeadline.college_save') }}",
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      data: {college: $('#select-college').val()},
+    }).done((response) => {
+      if (response.success) {
+        $('#select-college').val('').trigger('change');
+        window.localStorage.setItem('APP-REFRESHED', Date.now());
+        $('#add_new_college_list').modal('hide')
+        getCollegeList()
+
+      } else {
+        console.log('no')
+        toastr.error(response.message)
+      }
+    })
+  })
+
+  $(document).on('click', '.hide-college-from-list', function (e) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to hide this college?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, hide it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await hideshowlist(e.target.dataset.id);
+        if (response) {
+          getCollegeList();
+        }
+      }
+    })
+  })
+
+  $(document).on('click', '.show-college-from-list', async function (e) {
+    const response = await hideshowlist(e.target.dataset.id);
+    if (response) {
+      getCollegeList();
+      getHideCollegeList('hide-college-list-modal')
+    }
+  })
+
+  $('.js-data-example').select2({
+    dropdownParent: $('#add_new_college_list'),
+    allowClear: true,
+    ajax: {
+        delay: 500,
+        url: core.collegelustUrl,
+        dataType: 'json',
+        data: function (params) {
+        var query = {
+            search: params.term,
+            page: params.page || 1
+        }
+        return query;
+        },
+        processResults: function (data, params) {
+        params.page = params.page || 1;
+        const result = data.data.map((item) => { return { id: item.college_id, text: item.name } });
+        return {
+            results: result,
+            pagination: {
+            more: (params.page * 30) < data.total
+            }
+        };
+        }
+    }
+  });
+    // function getStep1CollegeList() {
+    //     $.ajax({
+    //         url: "{{ route('admin-dashboard.initialCollegeList.getUserCollegeList') }}",
+    //         method: 'GET',
+    //         headers: {
+    //             'X-CSRF-TOKEN': "{{ csrf_token() }}"
+    //         },
+    //     }).done((response) => {
+    //         if (response.success) {
+    //             $('#userSelectedCollegeList').html('')
+    //             if (response.data.length > 0) {
+    //                 response.data.forEach((data, index) => {
+    //                     const element = `
+    //                         <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${data.id}">
+    //                             <div class="block-header block-header-tab">
+    //                                 <div class="d-flex align-items-center w-100 gap-3 text-white fw-600 curson-drag" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+    //                                     <i class="fa fa-bars"></i>
+    //                                     <span>${index + 1}</span>
+    //                                     <span>${data.college_name}</span>
+    //                                 </div>
+    //                             </div>
+    //                         </div>
+    //                     `
+    //                     $('#userSelectedCollegeList').append(element)
+    //                 })
+    //                 $('#college-list').modal('show')
+    //             } else {
+    //                 $('#userSelectedCollegeList').html('<h5 class="no-data">No College Found</h5>')
+    //             }
+    //         }
+    //     })
+    // }
 </script>
 @endsection
+@endcan

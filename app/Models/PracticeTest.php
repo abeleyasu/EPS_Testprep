@@ -11,7 +11,14 @@ class PracticeTest extends Model
     use HasFactory, SoftDeletes;
 	
 	protected $fillable = [
-        'title', 'format','test_source', 'description','tags','is_test_completed','user_id'
+        'title', 
+        'format',
+        'test_source', 
+        'description',
+        'tags',
+        'is_test_completed',
+        'user_id',
+        'status',
     ];
 
     public function getPracticeSections()
@@ -21,5 +28,9 @@ class PracticeTest extends Model
 
     public function userAnswers(){
         return $this->hasMany(UserAnswers::class,'test_id','id');
+    }
+
+    public function practice_tests_products() {
+        return $this->belongsToMany(Product::class);
     }
 }

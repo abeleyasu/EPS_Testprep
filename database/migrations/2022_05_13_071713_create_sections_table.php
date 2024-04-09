@@ -21,8 +21,11 @@ return new class extends Migration
                 $table->unsignedBigInteger('module_id')->nullable();
                 $table->tinyInteger('order')->default(0);
                 $table->string('status')->nullable();
-                $table->timestamps();
+                $table->string('coverimage');
+                $table->boolean('published')->default(false);
                 $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
+                $table->foreignId('product_id')->nullable()->references('id')->on('product')->onDelete('cascade');
+                $table->timestamps();
             });
         }
     }

@@ -29,7 +29,9 @@ return new class extends Migration
             $table->string('avg_gpa')->nullable();
             $table->string('avg_sat')->nullable();
             $table->string('avg_act')->nullable();
+            $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

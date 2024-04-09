@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
 
 class Helper
 {
-    public static function objectToArray ($object) 
+    public static function objectToArray ($object)
     {
         return @json_decode(json_encode($object), true);
     }
@@ -38,7 +38,7 @@ class Helper
         // return !empty($collegeInfo) ? implode(',', $collegeInfo) : "-";
 
         /* -----------------------------------------------------------------------------------------
-           For get single college name by passing id , which is passed as a parameter of function 
+           For get single college name by passing id , which is passed as a parameter of function
         ------------------------------------------------------------------------------------------ */
 
         $collegeInfo = CollegeInformation::where('id', $id_array)->first();
@@ -95,7 +95,7 @@ class Helper
         }
     }
 
-    public function stringExactMatch($correctString, $string) 
+    public function stringExactMatch($correctString, $string)
     {
         if(Str::contains($string, ",")) {
             $string = explode(",",$string);
@@ -122,31 +122,31 @@ class Helper
         foreach($ratings as $rating){
             $questions[$rating->id] = PracticeQuestion::where('diff_rating',$rating->id)->where('test_source','2')->count();
         }
-        
+
         return ['ratings' => $ratings, 'questions' => $questions];
     }
 
     public function getAllQuestionTags(){
         $tags = QuestionTag::all();
-        
+
         return $tags;
     }
 
     public function getSelfMadeCategory(){
         $category = PracticeCategoryType::where('selfMade',1)->get();
-        
+
         return $category;
     }
 
     public function getSelfMadeQuestionType(){
         $questionType = QuestionType::where('selfMade',1)->get();
-        
+
         return $questionType;
     }
 
     public function getSelfMadeTags(){
         $tags = QuestionTag::where('selfMade',1)->get();
-        
+
         return $tags;
     }
 
@@ -172,4 +172,18 @@ class Helper
         [$hours,$minutes] = explode(':', $timeString);
         return ($hours * 60) + $minutes;
     }
+
+    public static function isPrivateCollege ($collegeInformation) {
+        // return $collegeInformation['ownership'] != 1;
+        return (isset($collegeInformation['TUIT_OVERALL_FT_D']) && $collegeInformation['TUIT_OVERALL_FT_D'] > 0) || $collegeInformation['ownership'] != 1;
+    }
+
+    public static function isInStateCollege ($collegeInformation, $stateCode = '') {
+        return $collegeInformation['state'] === $stateCode;
+    }
+
+    public static function isInPublicStateCollege ($collegeInformation, $stateCode) {
+        return !self::isPrivateCollege($collegeInformation) && self::isInStateCollege($collegeInformation, $stateCode);
+    }
+
 }

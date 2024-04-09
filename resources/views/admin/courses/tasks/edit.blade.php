@@ -91,6 +91,11 @@
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
                             </div>
+
+                            @include('admin.courses.components.user-role-dropdown', [
+                                'selected_user_roles' => $task_user_types    
+                            ])
+
 							<div class="mb-2">
                                     <label class="form-label" for="order">Order</label>
 
@@ -143,6 +148,10 @@
                                     <option value="unpaid" @php if($task->status == 'unpaid'){ echo 'selected';} @endphp >Unpaid</option>
                                 </select>
                             </div>
+                            @include('admin.courses.components.product-dropdown', [
+                                'product' => $task->user_task_products()->pluck('product_id')->toArray(),
+                                'status' => $task->status
+                            ])
                         </div>
                     </div>
                 </div>
@@ -150,7 +159,7 @@
         </div>
     </form>
 </main>
-
+@include('admin.courses.components.create-new-product')
 <!-- END Main Container -->
 <div class="modal fade" id="dragModal"
 
@@ -193,6 +202,7 @@
     <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
 
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
+    <script src="{{ asset('js/admin/course.js') }}"></script>
 
     <script>
 	var currtaskId = '<?php echo $task->id; ?>';

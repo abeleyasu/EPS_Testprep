@@ -22,6 +22,7 @@ class Plan extends Model
         'display_amount',
         'status',
         'order_index',
+        "inactive_at"
     ];
 
     public function product() {

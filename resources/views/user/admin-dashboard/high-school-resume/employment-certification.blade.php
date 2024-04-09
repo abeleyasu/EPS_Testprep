@@ -83,6 +83,22 @@
                     @endif
                     <div class="tab-content" id="myTabContent">
                         <div class="setup-content">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div class="prev-btn next-btn">
+                                    <a href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.activities') }}"
+                                        class="btn btn-alt-success prev-step"> Previous Step
+                                    </a>
+                                </div>
+                                @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
+                                <div class="next-btn d-flex">
+                                    @if (!isset($resume_id))
+                                        <div>
+                                            @include('components.reset-all-drafts-button')
+                                        </div>
+                                    @endif
+                                    <input type="submit" class="btn  btn-alt-success next-step" value="Next Step">
+                                </div>
+                            </div>
                             <div class="accordion accordionExample2">
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
@@ -104,7 +120,7 @@
                                                                    Name Of The Company
                                                                </label>
                                                             </td>
-                                                            <td>
+                                                            <td style="width: 300px;">
                                                                 <label class="form-label" for="job_title">
                                                                     Job Title
                                                                 </label>
@@ -112,7 +128,6 @@
                                                             <td>
                                                                 <label class="form-label" for="employment_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -131,7 +146,7 @@
                                                         </tr>
                                                         @if(!empty($employmentCertification->employment_data))
                                                             @foreach ($employmentCertification->employment_data as $index => $employment_data)
-                                                                <tr class="employment_data_table_row {{ $loop->first ? '' : 'remove_employement_data' }}">
+                                                                <tr class="employment_data_table_row {{ $loop->last ? '' : 'remove_employement_data' }}">
                                                                     <td>
                                                                         <input type="text"
                                                                             class="form-control"
@@ -144,7 +159,7 @@
                                                                         {{-- <input type="text"
                                                                             class="form-control" id="job_title" value="{{ $employment_data['job_title'] }}"
                                                                             name="employment_data[{{ $index }}][job_title]" placeholder="Enter Job title"> --}}
-                                                                        <select class="js-select2 form-select single-select2-class" id="job_title_{{ $index }}" name="employment_data[{{ $index }}][job_title]" style="width: 100%;" data-placeholder="Select" multiple="multiple">
+                                                                        <select class="js-select2 form-select single-select2-class" id="job_title_{{ $index }}" name="employment_data[{{ $index }}][job_title]" style="width: 100%;" data-placeholder="Select">
                                                                             <option value="">Select</option>
                                                                             @foreach($demonstrated_positions as $position)
                                                                                 <option value="{{$position->position_name}}" {{ isset($employment_data['job_title']) && $employment_data['job_title'] != null ? ($employment_data['job_title']  == $position->position_name ? 'selected' : '') : '' }}> {{$position->position_name}} </option>
@@ -155,7 +170,7 @@
                                                                         <div class="select2-container_main">
                                                                             <select class="js-select2 select" id="employment_select_{{ $index }}"
                                                                                 name="employment_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                                @foreach ($grades as $grade)
+                                                                                @foreach ($grades['employment_grades'] as $grade)
                                                                                     <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array($grade->id ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                                 @endforeach
                                                                             </select>
@@ -178,7 +193,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
-                                                                            <i class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus'}}" data-count="{{ count($employmentCertification->employment_data) != 0 ? count($employmentCertification->employment_data) - 1 : 0 }}" onclick="{{ $loop->first ? 'addEmploymentData(this)' : 'removeEmploymentData(this)' }}"></i>
+                                                                            <i class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus'}}" data-count="{{ count($employmentCertification->employment_data) != 0 ? count($employmentCertification->employment_data) - 1 : 0 }}" onclick="{{ $loop->last ? 'addEmploymentData(this)' : 'removeEmploymentData(this)' }}"></i>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -196,7 +211,7 @@
                                                                     {{-- <input type="text"
                                                                         class="form-control" id="job_title"
                                                                         name="employment_data[0][job_title]" placeholder="Enter Job title"> --}}
-                                                                    <select class="js-select2 form-select single-select2-class" id="job_title" name="employment_data[0][job_title]" style="width: 100%;" data-placeholder="Select" multiple="multiple">
+                                                                    <select class="js-select2 form-select single-select2-class" id="job_title" name="employment_data[0][job_title]" style="width: 100%;" data-placeholder="Select">
                                                                         <option value="">Select</option>
                                                                         @foreach($demonstrated_positions as $position)
                                                                             <option value="{{$position->position_name}}"> {{$position->position_name}} </option>
@@ -207,7 +222,7 @@
                                                                     <div class="select2-container_main">
                                                                         <select class="js-select2 select" id="employment_select_0"
                                                                             name="employment_data[0][grade][]" multiple="multiple">
-                                                                            @foreach ($grades as $grade)
+                                                                            @foreach ($grades['employment_grades'] as $grade)
                                                                                 <option value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                             @endforeach
                                                                         </select>
@@ -263,7 +278,6 @@
                                                                  <label class="form-label"
                                                                     for="significant_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -283,7 +297,7 @@
                                                         </tr>
                                                         @if(!empty($employmentCertification->significant_data))
                                                             @foreach ($employmentCertification->significant_data as $index => $significant_data)
-                                                                <tr class="significant_data_table_row {{ $loop->first ? '' : 'remove_significant_data' }}">
+                                                                <tr class="significant_data_table_row {{ $loop->last ? '' : 'remove_significant_data' }}">
                                                                     <td>                                                               
                                                                         <input type="text"
                                                                             class="form-control"
@@ -298,7 +312,7 @@
                                                                                 id="significant_select_{{ $index }}"
                                                                                 name="significant_data[{{ $index }}][grade][]"
                                                                                 multiple="multiple">
-                                                                                @foreach ($grades as $grade)
+                                                                                @foreach ($grades['other_significant_grades'] as $grade)
                                                                                     <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array($grade->id ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                                 @endforeach
                                                                             </select>
@@ -322,7 +336,7 @@
                                                                     </td>
                                                                     <td>                                                                
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
-                                                                            <i class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" data-count="{{ count($employmentCertification->significant_data) != 0 ? count($employmentCertification->significant_data) - 1 : 0 }}" onclick="{{ $loop->first ? 'addSignificantData(this)' : 'removeSignificantData(this)' }}"></i>
+                                                                            <i class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}" data-count="{{ count($employmentCertification->significant_data) != 0 ? count($employmentCertification->significant_data) - 1 : 0 }}" onclick="{{ $loop->last ? 'addSignificantData(this)' : 'removeSignificantData(this)' }}"></i>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -342,7 +356,7 @@
                                                                             id="significant_select_0"
                                                                             name="significant_data[0][grade][]"
                                                                             multiple="multiple">
-                                                                            @foreach ($grades as $grade)
+                                                                            @foreach ($grades['other_significant_grades'] as $grade)
                                                                                 <option value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                             @endforeach
                                                                         </select>
@@ -382,6 +396,7 @@
                                         class="btn btn-alt-success prev-step"> Previous Step
                                     </a>
                                 </div>
+                                @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                                 <div class="next-btn d-flex">
                                     @if (!isset($resume_id))
                                         <div>
@@ -443,18 +458,7 @@
 
         $(document).ready(function() {
             $('.single-select2-class').select2({
-                maximumSelectionLength: 1,
                 tags: true,
-                language: {
-                    maximumSelected: function () {
-                        return '';
-                    }
-                }
-            }).on('select2:opening', function (event) {
-                var selectedOptions = $(this).val();
-                if (selectedOptions && selectedOptions.length >= 1) {
-                    event.preventDefault();
-                }
             });
         });
 
@@ -579,23 +583,23 @@
                 },
             });
 
-            $('select[name^="employment_data"]').filter('select[name$="[grade][]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Grade field is required"
-                    }
-                });
-            });
+            // $('select[name^="employment_data"]').filter('select[name$="[grade][]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Grade field is required"
+            //         }
+            //     });
+            // });
 
-            $('select[name^="significant_data"]').filter('select[name$="[grade][]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Grade field is required"
-                    }
-                });
-            });
+            // $('select[name^="significant_data"]').filter('select[name$="[grade][]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Grade field is required"
+            //         }
+            //     });
+            // });
             
         });
 

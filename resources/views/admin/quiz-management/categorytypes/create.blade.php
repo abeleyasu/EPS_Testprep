@@ -62,6 +62,8 @@
                                                         <option value="SAT">SAT</option>
                                                         <option value="PSAT">PSAT</option>
                                                         <option value="ACT">ACT</option>
+                                                        <option value="DSAT">Digital SAT</option>
+                                                        <option value="DPSAT">Digital PSAT</option>
                                                     </select>
                                                 </div>
                                                 <div class="mb-2 col-md-12 ptype mt-2">
@@ -182,6 +184,16 @@
                     html += `<option value="${v}">${v}</option>`;
                 });
             } 
+
+            if($(this).val() == 'DSAT'){
+                html += `<option value="Reading_And_Writing">Reading And Writing</option>`;
+                html += `<option value="Math">Math</option>`;
+            } 
+            if($(this).val() == 'DPSAT'){
+                html += `<option value="Reading_And_Writing">Reading And Writing</option>`;
+                html += `<option value="Math">Math</option>`;
+            }
+
             $('#section_type').append(html);
         });
 

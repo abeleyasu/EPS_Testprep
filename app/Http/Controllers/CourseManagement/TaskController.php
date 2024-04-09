@@ -52,6 +52,10 @@ class TaskController extends Controller
     {
         //$task = $this->createFromRequest(app('App\Models\CourseManagement\Task'),$request);
 		$order = $request->order;
+        if ($request->product) {
+            $request->request->add(['product_id' => $request->product]);
+            unset($request['product']);
+        }
         if(!$order || $order == 0) {
             $request->request->add(['order' => Task::where('section_id','=', $request->section_id)->count() + 1]);
         } else {
@@ -59,6 +63,12 @@ class TaskController extends Controller
         }
 
         $task = $this->createFromRequest(app('App\Models\CourseManagement\Task'),$request);
+        $task->user_tasks_roles()->attach($request->user_type);
+
+        if ($request->status == 'paid') {
+            $task->user_task_products()->attach($request->products);
+        }
+
         if($request->tags) {
             foreach ($request->tags as $tag) {
                 ModelTag::create([
@@ -81,8 +91,12 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-		if($task->status == 'paid'){
-			return redirect(route('home'));
+        $is_course_permission = Courses::userHasCoursePermissionOrNot($task->section->module->milestone->course_id);
+        if (!$is_course_permission) {
+            return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
+        }
+		if(!$task->userHasTaskPermissionOrNot() || $task->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($task->user_task_products()->pluck('product_id')->toArray())){
+			return redirect(route('sections.detail',['section'=>$task->section_id]))->with('error', 'You are not authorized to access this task');
 		}
 		$gettasks = Task::where('section_id',$task->section_id)->orderBy('order')->get();
 		
@@ -138,7 +152,8 @@ class TaskController extends Controller
             ['model_id', $task->id],
             ['model_type', get_class($task)]
         ])->pluck('tag_id')->toArray();
-        return view('admin.courses.tasks.edit', compact('task','sections','tags', 'module_tags'));
+        $task_user_types = $task->user_tasks_roles()->pluck('user_role_id')->toArray();
+        return view('admin.courses.tasks.edit', compact('task','sections','tags', 'module_tags', 'task_user_types'));
     }
 
     /**
@@ -148,11 +163,34 @@ class TaskController extends Controller
      * @param  \App\Models\CourseManagement\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update(TaskRequest $request, Task $task)
     {
         $request->request->add(['published' => $request->published ? true : false]);
 
+        if ($request->status == 'unpaid') {
+            $request->request->add(['product_id' => null]);
+        } else {
+            if ($request->product) {
+                $request->request->add(['product_id' => $request->product]);
+                unset($request['product']);
+            }
+        }
+
         $model = $this->updateFromRequest($task,$request);
+
+        $task_user_types = $task->user_tasks_roles()->pluck('user_role_id')->toArray();
+        if (count($task_user_types) > 0) {
+            $task->user_tasks_roles()->detach($task_user_types);
+        }
+        $task->user_tasks_roles()->attach($request->user_type);
+
+        $task_products = $task->user_task_products()->pluck('product_id')->toArray();
+        if (count($task_products) > 0) {
+            $task->user_task_products()->detach($task_products);
+        }
+        if ($request->status == 'paid') {
+            $task->user_task_products()->attach($request->products);
+        }
 
         if($request->tags) {
             ModelTag::where([

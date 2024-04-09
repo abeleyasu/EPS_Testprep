@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('goal_sat_score')->nullable();
             $table->string('final_act_score')->nullable();
             $table->string('final_sat_score')->nullable();
+            $table->string('final_psat_score')->nullable();
             $table->timestamps();
         });
     }

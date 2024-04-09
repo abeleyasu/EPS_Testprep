@@ -24,4 +24,11 @@ class AppConstants
         'bg-gray-dark',
         'bg-primary',
     ];
+
+    const STRIPE_STATUS_COLOR_CODE = [
+        'active' => 'bg-success-light text-success',
+        'consumed' => 'bg-warning-light text-warning',
+        'canceled' => 'bg-warning-light text-warning',
+        'failed' => 'bg-danger-light text-danger'
+    ];
 }

@@ -1,3 +1,29 @@
+const common_error_function = {
+  errorElement: "em",
+  errorPlacement: function(error, element) {
+    error.addClass("invalid-feedback");
+    if (element.prop("type") === "checkbox") {
+      error.insertAfter(element.parent("label"));
+    } else {
+      error.insertAfter(element);
+    }
+  },
+  highlight: function(element, errorClass, validClass) {
+    if (errorClass) {
+      $(element).closest('.form-control').addClass("is-invalid");
+    } else {
+      $(element).removeClass("is-valid");
+    }
+  },
+  unhighlight: function(element, errorClass, validClass) {
+    if (validClass) {
+      $(element).closest('.form-control').removeClass("is-invalid");
+    } else {
+      $(element).removeClass("is-invalid");
+    }
+  }
+}
+
 function hideshowlist(id) {
   return $.ajax({
     type: "PATCH",
@@ -27,8 +53,8 @@ function getHideCollegeList(showModal) {
         response.data.forEach((data, index) => {
           const element = `
             <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${data.id}">
-              <div class="block-header block-header-default">
-                <div class="d-flex align-items-center w-100 gap-3" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+              <div class="block-header block-header-tab">
+                <div class="d-flex align-items-center w-100 gap-3 text-white fw-600" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
                   <span>${index + 1}</span>
                   <span>${data.college_name}</span>
                 </div>
@@ -77,9 +103,27 @@ $('.js-data-example-ajax').select2({
   }
 });
 
+function refreshResults(type) {
+  console.log('type -->', type)
+  if (type === 'search-list') {
+    getHideCollegeList();
+  } else if (type === 'cost-comparison') {
+    getCollegeListForCostComparison();
+    $('#costcomparison-summary').DataTable().ajax.reload();
+  } else if (type === 'college-application-deadline') {
+    getApplicationDeadlineOrganizerData();
+  } else if (type === 'search-step-1') {
+    // getStep1CollegeList();
+    getCollegeList()
+  } else if (type === 'step-4') {
+    getCollegeList();
+  }
+}
+
 Sortable.create(userSelectedCollegeList, {
   animation: 150,
   ghostClass: 'blue-background-class',
+  handle: '.drag-handle',
   onEnd: function (evt) {
     const payload = []
     for (let  i = 0; i < evt.from.children.length; i++) {
@@ -100,17 +144,77 @@ Sortable.create(userSelectedCollegeList, {
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
-      success: function(response) {
+      success: async function(response) {
         if (response.success) {
-          if (evt.to.dataset.type === 'search-list') {
-            getCollegeList();
-          } else if (evt.to.dataset.type === 'cost-comparison') {
-            getCollegeListForCostComparison();
-          } else if (evt.to.dataset.type === 'college-application-deadline') {
-            getApplicationDeadlineOrganizerData();
-          }
+          window.localStorage.setItem('APP-REFRESHED', Date.now());
+          refreshResults(evt.to.dataset.type);
         }
       }
     })
   }
+});
+
+$('#remove-all-college').on('click', function (e) {
+  e.preventDefault();
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You want to remove all college from list",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#23BF08',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, remove it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: core.removeAllCollege,
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      }).done((response) => {
+        if (response.success) {
+          toastr.success(response.message)
+          refreshResults(e.target.dataset.type);
+        } else {
+          toastr.error(response.message)
+        }
+      })
+    }
+  })
+})
+
+$(document).on('click', '.remove-user-college', function(e) {
+  e.preventDefault();
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You want to remove this college from list",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#23BF08',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, remove it!'
+  }).then((result) => {
+    if(result.isConfirmed) {
+      $.ajax({
+        url: core.removeUserCollege.replace(':id', $(this).data('id')),
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      }).done(function (response) {
+        if (response.success) {
+          toastr.success(response.message)
+          refreshResults(e.target.dataset.type);
+          window.localStorage.setItem('APP-REFRESHED', Date.now());
+        } else {
+          toastr.error(response.message)
+        }
+      })
+    }
+  })
+})
+
+$(document).on('select2:open', () => {
+  document.querySelector('.select2-search__field').focus();
 });

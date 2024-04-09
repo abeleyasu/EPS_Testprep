@@ -17,6 +17,26 @@
                                 <br />
                                 {{ isset($test_details->format) ? $test_details->format . ' Practice Test' : '' }}
                             </h1>
+                            @if (!@empty($test_details))
+                                <input type="hidden" id="test_type" name="test_type" value="{{ $test_details->format }}" />
+                                <input type="hidden" id="test_id" name="test_id" value="{{ $test_details->id }}" />
+                                <input type="hidden" id="section_id" name="section_id" value="{{ $section_id }}" />
+                            @endempty
+
+                            @php
+                                // echo "<pre>";print_r($user_selected_answers);echo "</pre>";exit;
+                                // dd($section_id);
+                            @endphp
+                            @if (isset($user_selected_answers[0]['all_sections']) && !empty($user_selected_answers[0]['all_sections']))
+                                {{-- <input type="hidden" id="practice_test_type" name="practice_test_type"
+                                    value="{{ $user_selected_answers[0]['all_sections'][0]['practice_test_type'] }}" /> --}}
+                                <input type="hidden" id="practice_test_type" name="practice_test_type"
+                                    value="{{ $user_selected_answers[0]['all_sections'][0]->practice_test_type }}" />
+                            @endif
+                            @if (isset($user_selected_answers[0]['sections']) && !empty($user_selected_answers[0]['sections']))
+                                <input type="hidden" id="practice_test_type" name="practice_test_type"
+                                    value="{{ $user_selected_answers[0]['sections'][0]->practice_test_type }}" />
+                            @endif
                             <div class="d-flex align-items-center" style="overflow-wrap: break-word;">
                                 <div class="description-test"
                                     style="max-width: 100%; display: block; overflow-wrap: anywhere">
@@ -28,575 +48,1583 @@
                                     <p class="ms-5 d-flex align-items-center mb-0 w-100">{{ isset($test_details->created_at) ? ' - '. date('F Y', strtotime($test_details->created_at)) : '' }}</p>
                                 </div> --}}
                             </div>
-                        </div>
                     </div>
-                    <div class="content content-full">
-                        <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
-                            <ol class="breadcrumb breadcrumb-alt">
-                                @if (isset($test_details) && !empty($test_details))
+                </div>
+                <div class="content content-full">
+                    <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
+                        <ol class="breadcrumb breadcrumb-alt">
+                            @if (isset($test_details) && !empty($test_details))
+                                @php
+                                    $testType = request()->session()->get('testType');
+
+                                @endphp
+                                @if ($testType == 'proctored')
+                                    <li class="breadcrumb-item" aria-current="page">
+                                        <a class="link-fx"
+                                            href="{{ url('user/practice-test-sections/' . $test_details->id . '?test_section=proctored') }}">College
+                                            Prep
+                                            System {{ isset($test_details->format) ? $test_details->format : '' }}
+                                            {{ isset($test_details->title) ? $test_details->title : '' }}
+                                        </a>
+                                    </li>
+                                @else
                                     <li class="breadcrumb-item" aria-current="page">
                                         <a class="link-fx"
                                             href="{{ url('user/practice-test-sections/' . $test_details->id) }}">College
                                             Prep
                                             System {{ isset($test_details->format) ? $test_details->format : '' }}
                                             {{ isset($test_details->title) ? $test_details->title : '' }}
-                                            {{ isset($test_details->id) ? '#' . $test_details->id : '' }}</a>
-                                    </li>
-                                    <li class="breadcrumb-item">
-                                        <a class="link-fx"
-                                            href="javascript:void(0)">{{ isset($test_details->format) ? $test_details->format . ' Practice Test' : '' }}
-                                            {{ isset($test_details->created_at) ? ' - ' . date('F Y', strtotime($test_details->created_at)) . ' Review Summary' : '' }}</a>
+                                        </a>
                                     </li>
                                 @endif
-                                {{-- <li class="breadcrumb-item" aria-current="page">
-                                    ACT Math Review (Form 1576C / Z04)
-                                </li> --}}
-                            </ol>
-                        </nav>
-                    </div>
+                                <li class="breadcrumb-item">
+                                    <a class="link-fx"
+                                        href="javascript:void(0)">{{ isset($test_details->format) ? $test_details->format . ' Practice Test' : '' }}
+                                        {{ isset($test_details->created_at) ? ' - ' . date('F Y', strtotime($test_details->created_at)) . ' Review Summary' : '' }}</a>
+                                </li>
+                            @endif
+                        </ol>
+                    </nav>
                 </div>
             </div>
-            {{-- END Test review title --}}
+        </div>
+        {{-- END Test review title --}}
 
-            <div class="content">
+        <div class="content">
+            <div>
+                <div>
+                    <h2 class="content-heading">Pick a Review Option</h2>
+                </div>
                 {{-- Pick a Review Option --}}
-                <h2 class="content-heading">Pick a Review Option</h2>
                 {{-- END Pick a Review Option --}}
+                {{-- <div class="container position-fixed">
+                    <div class="row">
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <div class="text-end">
+                                <button type="button" data-bs-toggle="modal"
+                                    data-bs-target="#modal-test_type_selection"
+                                    class="btn btn-primary fs-xs fw-semibold generate_custom_quiz_two">Generate
+                                    Custom Quiz</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> --}}
+                <div class="position-fixed" style="top: 10rem; right: 20px; z-index: 1000;">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#modal-test_type_selection"
+                        class="btn btn-primary fs-xs fw-semibold generate_custom_quiz_two">Generate Custom Quiz</button>
+                </div>
+            </div>
+            <div class="mt-3">
+                <ul class="nav nav-tabs col-12" role="tablist">
+                    <li class="nav-item me-0 col-12 col-md-4 col-xl-4 px-2 pe-md-3" role="presentation">
+                        <button class="block block-rounded bg-primary-dark nav-link w-100 tab-padding"
+                            id="btabs-animated-fade-home-tab" data-bs-toggle="tab"
+                            data-bs-target="#btabs-animated-fade-home" role="tab"
+                            aria-controls="btabs-animated-fade-home" aria-selected="false" tabindex="-1">
+                            <div
+                                class="block-content text-start p-0 block-content-full  d-flex justify-content-between">
+                                <div class="me-3">
+                                    <p class="fw-semibold text-white mb-0">Question & Concept Review</p>
+                                    <p class="fs-sm text-white-75 mb-0">
+                                        {{ isset($test_details->title) ? $test_details->title : '' }}
+                                        {{-- {{ isset($test_details->id) ? '#' . $test_details->id : '' }} --}}
+                                    </p>
+                                </div>
+                            </div>
+                        </button>
+                    </li>
+                    <li class="nav-item me-0 col-12 col-md-4 col-xl-4 px-2" role="presentation">
+                        <button class="block block-rounded bg-primary-dark nav-link w-100 tab-padding"
+                            id="btabs-animated-fade-profile-tab" data-bs-toggle="tab"
+                            data-bs-target="#btabs-animated-fade-profile" role="tab"
+                            aria-controls="btabs-animated-fade-profile" aria-selected="true">
+                            <div
+                                class="block-content text-start p-0 block-content-full  d-flex justify-content-between">
+                                <div class="me-3">
+                                    <p class="fw-semibold text-white mb-0">Category & Question Type Summary</p>
+                                    <p class="fs-sm text-white-75 mb-0">
+                                        from your missed questions.
+                                    </p>
+                                </div>
+                            </div>
+                        </button>
+                    </li>
+                    <li class="nav-item me-0 col-12 col-md-4 col-xl-4 px-2 ps-md-3" role="presentation">
+                        <button class="block block-rounded bg-primary-dark nav-link w-100 tab-padding"
+                            id="btabs-animated-fade-answer-tab" data-bs-toggle="tab"
+                            data-bs-target="#btabs-animated-fade-answer" role="tab"
+                            aria-controls="btabs-animated-fade-answer" aria-selected="true">
+                            <div
+                                class="block-content text-start p-0 block-content-full  d-flex justify-content-between">
+                                <div class="me-3">
+                                    <p class="fw-semibold text-white mb-0">Mistake Summary</p>
+                                    <p class="fs-sm text-white-75 mb-0">
+                                        from your missed questions.
+                                    </p>
+                                </div>
+                            </div>
+                        </button>
+                    </li>
+                </ul>
+                <div class="block-content tab-content overflow-hidden">
 
-                <div class="">
-                    <ul class="nav nav-tabs col-12" role="tablist">
-                        <li class="nav-item me-0 col-12 col-md-4 col-xl-4 px-2 pe-md-3" role="presentation">
-                            <button class="block block-rounded bg-primary-dark nav-link w-100 tab-padding"
-                                id="btabs-animated-fade-home-tab" data-bs-toggle="tab"
-                                data-bs-target="#btabs-animated-fade-home" role="tab"
-                                aria-controls="btabs-animated-fade-home" aria-selected="false" tabindex="-1">
-                                <div
-                                    class="block-content text-start p-0 block-content-full  d-flex justify-content-between">
-                                    <div class="me-3">
-                                        <p class="fw-semibold text-white mb-0">Question & Concept Review</p>
-                                        <p class="fs-sm text-white-75 mb-0">
-                                            Practice Test 1576C
-                                        </p>
-                                    </div>
-                                </div>
-                            </button>
-                        </li>
-                        <li class="nav-item me-0 col-12 col-md-4 col-xl-4 px-2" role="presentation">
-                            <button class="block block-rounded bg-primary-dark nav-link w-100 tab-padding"
-                                id="btabs-animated-fade-profile-tab" data-bs-toggle="tab"
-                                data-bs-target="#btabs-animated-fade-profile" role="tab"
-                                aria-controls="btabs-animated-fade-profile" aria-selected="true">
-                                <div
-                                    class="block-content text-start p-0 block-content-full  d-flex justify-content-between">
-                                    <div class="me-3">
-                                        <p class="fw-semibold text-white mb-0">Category & Question Type Summary</p>
-                                        <p class="fs-sm text-white-75 mb-0">
-                                            from your missed questions.
-                                        </p>
-                                    </div>
-                                </div>
-                            </button>
-                        </li>
-                        <li class="nav-item me-0 col-12 col-md-4 col-xl-4 px-2 ps-md-3" role="presentation">
-                            <button class="block block-rounded bg-primary-dark nav-link w-100 tab-padding"
-                                id="btabs-animated-fade-answer-tab" data-bs-toggle="tab"
-                                data-bs-target="#btabs-animated-fade-answer" role="tab"
-                                aria-controls="btabs-animated-fade-answer" aria-selected="true">
-                                <div
-                                    class="block-content text-start p-0 block-content-full  d-flex justify-content-between">
-                                    <div class="me-3">
-                                        <p class="fw-semibold text-white mb-0">Answer Type Summary</p>
-                                        <p class="fs-sm text-white-75 mb-0">
-                                            from your missed questions.
-                                        </p>
-                                    </div>
-                                </div>
-                            </button>
-                        </li>
-                    </ul>
-                    <div class="block-content tab-content overflow-hidden">
-
-                        {{-- Question & Concept Review MOBILE tab --}}
-                        <div class="tab-pane fade active show" id="btabs-animated-fade-home" role="tabpanel"
-                            aria-labelledby="btabs-animated-fade-home-tab" tabindex="0">
-                            {{-- score summary - act 1576c --}}
-                            <div class="block block-rounded">
-                                <div class="block-header block-header-default">
-                                    <h3 class="block-title">Score Summary - ACT 1576C</h3>
-                                </div>
-                                <div class="block-content">
-                                    {{-- <div class="form-check form-switch">
+                    {{-- Question & Concept Review MOBILE tab --}}
+                    <div class="tab-pane fade active show" id="btabs-animated-fade-home" role="tabpanel"
+                        aria-labelledby="btabs-animated-fade-home-tab" tabindex="0">
+                        <div class="block block-rounded">
+                            <div class="block-header block-header-default">
+                                <h3 class="block-title">Score Summary -
+                                    {{ isset($test_details->title) ? $test_details->title : '' }}
+                                </h3>
+                            </div>
+                            <div class="block-content">
+                                {{-- <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" value="" id="mega-settings-status" name="mega-settings-status">
                                         <label class="form-check-label fs-sm" for="mega-settings-status">Show All Sections</label>
                                     </div> --}}
-                                    <table class="js-table-sections table table-hover table-vcenter table-contant">
-                                        <thead>
-                                            <tr class=" align-items-center justify-content-between">
-                                                <th>Section</th>
-                                                <th># Correct</th>
-                                                <th>Scaled Score
-                                                    ({{ isset($low_score) ? number_format($low_score, 0) : '-' }}-{{ isset($high_score) ? number_format($high_score, 0) : '-' }})
-                                                </th>
-                                                <th>Date Taken</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class=" align-items-center justify-content-between">
-                                                <td>
-                                                    @if (isset($user_selected_answers[0]['all_sections']) && !empty($user_selected_answers[0]['all_sections']))
-                                                        @foreach ($user_selected_answers[0]['all_sections'] as $test_section)
-                                                            <li class="mt-3">{{ $test_section->practice_test_type }}</li>
-                                                        @endforeach
-                                                    @endif
+                                <table class="js-table-sections table table-hover table-vcenter table-contant">
+                                    <thead>
+                                        <tr class=" align-items-center justify-content-between">
+                                            <th>Section</th>
+                                            <th># Correct</th>
+                                            <th>Scaled Score
+                                                @if (
+                                                    $test_details->test_source == 1 &&
+                                                        ($test_details->format == 'DSAT' || $test_details->format == 'DPSAT') &&
+                                                        $test_details->user_id == Auth::user()->id)
                                                     @if (isset($user_selected_answers[0]['sections']) && !empty($user_selected_answers[0]['sections']))
-                                                        @foreach ($user_selected_answers[0]['sections'] as $test_section)
-                                                            <li>{{ $test_section->practice_test_type }}</li>
-                                                        @endforeach
+                                                        @if (
+                                                            $user_selected_answers[0]['sections'][0]->practice_test_type == 'Reading_And_Writing' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Easy_Reading_And_Writing' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Hard_Reading_And_Writing')
+                                                            ({{ isset($low_reading_score) ? number_format($low_reading_score, 0) : '-' }}-{{ isset($high_reading_score) ? number_format($high_reading_score, 0) : '-' }})
+                                                        @elseif(
+                                                            $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math_with_calculator' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math_no_calculator')
+                                                            ({{ isset($low_math_score) ? number_format($low_math_score, 0) : '-' }}-{{ isset($high_math_score) ? number_format($high_math_score, 0) : '-' }})
+                                                        @else
+                                                            -
+                                                        @endif
                                                     @endif
-                                                </td>
-                                                {{-- @if (isset($right_answers) && !empty($right_answers))
-                                                    <td>{{ $right_answers }}/{{ $total_questions }}</td>
-                                                @endif --}}
-                                                <td>{{ isset($right_answers) ? $right_answers : '' }}/{{ isset($total_questions) ? $total_questions : '' }}
-                                                </td>
-                                                <td>{{ number_format($scaled_score, 0) }}</td>
-                                                <td>
-                                                    @if (isset($user_selected_answers[0]['date_taken']) && !empty($user_selected_answers[0]['date_taken']))
-                                                        @foreach ($user_selected_answers[0]['date_taken'] as $test_date)
-                                                            <li>{{ date('d-m-Y', strtotime($test_date->created_at)) }}</li>
-                                                        @endforeach
-                                                    @endif
-                                                    @if (isset($user_selected_answers[0]['taken_date']) && !empty($user_selected_answers[0]['taken_date']))
-                                                        @foreach ($user_selected_answers[0]['taken_date'] as $test_date)
-                                                            <li>{{ date('d-m-Y', strtotime($test_date->created_at)) }}</li>
-                                                        @endforeach
-                                                    @endif
-                                                </td>
-                                                {{-- <td>{{date('d-m-y',strtotime($user_selected_answers[0]['date_taken'][0]->created_at))}}</td>
-                                            </tr> --}}
-                                                {{-- @if ($user_selected_answers[0]['type'] == 'all')
-                                                @foreach ($user_selected_answers as $user_selected_answer)
-                                                    <tr>
-                                                        <td>{{$user_selected_answer['all_sections'][0]['practice_test_type']}}</td>
-                                                        <td>{{$right_answers}}/{{$total_questions}}</td>
-                                                        <td>28</td>
-                                                        <td>{{date('d-m-y',strtotime($user_selected_answer['date_taken'][0]->created_at))}}</td>
-                                                    </tr>
-                                                @endforeach
-                                            @endif
-                                            @if ($user_selected_answers[0]['type'] == 'single')
-                                                @foreach ($user_selected_answers as $user_selected_answer)
-                                                    <tr>
-                                                        <td>{{$user_selected_answer['sections'][0]['practice_test_type']}}</td>
-                                                        <td>{{$right_answers}}/{{$total_questions}}</td>
-                                                        <td>28</td>
-                                                        <td>{{date('d-m-y',strtotime($user_selected_answer['date_taken'][0]->created_at))}}</td>
-                                                    </tr>
-                                                    @break
-                                                @endforeach
-                                            @endif --}}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            {{-- END score summary - act 1576c --}}
+                                                @else
+                                                    ({{ isset($low_score) ? number_format($low_score, 0) : '-' }}-{{ isset($high_score) ? number_format($high_score, 0) : '-' }})
+                                                @endif
+                                            </th>
+                                            <th>Date Taken</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class=" align-items-center justify-content-between">
+                                            <td>
+                                                @if (isset($user_selected_answers[0]['all_sections']) && !empty($user_selected_answers[0]['all_sections']))
+                                                    @foreach ($user_selected_answers[0]['all_sections'] as $test_section)
+                                                        <li class="mt-3">
+                                                            {{-- $test_section->practice_test_type --}}
+                                                            {{ $test_section->section_title }}
+                                                        </li>
+                                                    @endforeach
+                                                @endif
+                                                @if (isset($user_selected_answers[0]['sections']) && !empty($user_selected_answers[0]['sections']))
+                                                    @foreach ($user_selected_answers[0]['sections'] as $test_section)
+                                                        <li>
+                                                            {{-- $test_section->practice_test_type --}}
+                                                            {{ $test_section->section_title }}
+                                                        </li>
+                                                    @endforeach
+                                                @endif
+                                            </td>
 
-                            <div class="block block-rounded">
-                                <div class="block-header block-header-default">
-                                    <h3 class="block-title">Question & Concept Review</h3>
-                                </div>
-                                <div class="block-content">
-                                    <h3>ACT Math - Official Form 1576C</h3>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            onchange="showIncorrectAnswer(this)" name="mega-settings-status">
-                                        <label class="form-check-label fs-sm" for="mega-settings-status">Show Incorrect
-                                            Questions Only</label>
-                                    </div>
-                                    <div class="container position-fixed">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                            </div>
-                                            <div class="col-md-6 text-end">
-                                                <div class="text-end">
-                                                    <button type="button" class="btn btn-primary fs-xs fw-semibold"
-                                                        data-bs-trigger="click">Generate
-                                                        Custom Quiz</button>
-                                                </div>
+                                            <td>
+                                                @if (
+                                                    $test_details->test_source == 1 &&
+                                                        ($test_details->format == 'DSAT' || $test_details->format == 'DPSAT') &&
+                                                        $test_details->user_id == Auth::user()->id)
+                                                    {{ isset($right_answers) ? $right_answers : '' }}/{{ isset($real_total_questions) ? $real_total_questions : '' }}
+                                                @else
+                                                    {{ isset($right_answers) ? $right_answers : '' }}/{{ isset($total_questions) ? $total_questions : '' }}
+                                                @endif
+                                            </td>
+                                            <td>
+
+                                                @if (
+                                                    $test_details->test_source == 1 &&
+                                                        ($test_details->format == 'DSAT' || $test_details->format == 'DPSAT') &&
+                                                        $test_details->user_id == Auth::user()->id)
+                                                    @php
+                                                        $readingWriting = session()->get('reading_and_writing');
+                                                        $math = session()->get('math');
+                                                    @endphp
+                                                    @if (
+                                                        !empty($user_selected_answers) &&
+                                                            isset($user_selected_answers[0]['sections']) &&
+                                                            !empty($user_selected_answers[0]['sections']))
+                                                        @if (
+                                                            $user_selected_answers[0]['sections'][0]->practice_test_type == 'Reading_And_Writing' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Easy_Reading_And_Writing' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Hard_Reading_And_Writing')
+                                                            @if (
+                                                                !empty($readingWriting) &&
+                                                                    isset($readingWriting[0]) &&
+                                                                    $readingWriting[0]['testId'] == $test_details->id &&
+                                                                    $readingWriting[0]['format'] == $test_details->format)
+                                                                {{ number_format($readingWriting[0]['score'] ?? 0, 0) }}
+                                                            @else
+                                                                0
+                                                            @endif
+                                                        @elseif (
+                                                            $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math_no_calculator' ||
+                                                                $user_selected_answers[0]['sections'][0]->practice_test_type == 'Math_with_calculator')
+                                                            @if (
+                                                                !empty($math) &&
+                                                                    isset($math[0]) &&
+                                                                    $math[0]['testId'] == $test_details->id &&
+                                                                    $math[0]['format'] == $test_details->format)
+                                                                {{ number_format($math[0]['score'] ?? 0, 0) }}
+                                                            @else
+                                                                0
+                                                            @endif
+                                                        @else
+                                                            0
+                                                        @endif
+                                                    @else
+                                                        0
+                                                    @endif
+                                                @else
+                                                    {{ number_format($scaled_score ?? 0, 0) }}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if (isset($user_selected_answers[0]['date_taken']) && !empty($user_selected_answers[0]['date_taken']))
+                                                    @foreach ($user_selected_answers[0]['date_taken'] as $test_date)
+                                                        <li>{{ date('m-d-Y', strtotime($test_date->created_at)) }}</li>
+                                                    @endforeach
+                                                @endif
+                                                @if (isset($user_selected_answers[0]['taken_date']) && !empty($user_selected_answers[0]['taken_date']))
+                                                    @foreach ($user_selected_answers[0]['taken_date'] as $test_date)
+                                                        <li>{{ date('m-d-Y', strtotime($test_date->created_at)) }}</li>
+                                                    @endforeach
+                                                @endif
+                                            </td>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {{-- END score summary - act 1576c --}}
+
+                        <div class="block block-rounded">
+                            <div class="block-header block-header-default">
+                                <h3 class="block-title">Question & Concept Review</h3>
+                            </div>
+                            <div class="block-content">
+                                <h3>{{ isset($test_details->title) ? $test_details->title : '' }}</h3>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                        </div>
+                                        <div class="col-md-6 text-end">
+                                            <div class="text-end">
+                                                <button type="button" id="generate_custom_quiz"
+                                                    class="generate_custom_quiz_one btn btn-primary fs-xs fw-semibold generate_custom_quiz_two">Generate
+                                                    Custom Quiz</button>
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- header --}}
-                                    <table class="js-table-sections table table-hover table-vcenter">
-                                        <thead>
-                                            <tr class="d-flex align-items-center justify-content-between"
-                                                style="width: 410px">
-                                                <th></th>
-                                                <th class="ms-2">Q#</th>
-                                                <th class="text-center ms-2">Your Answer</th>
-                                                <th class="text-center ms-2">Correct Answer</th>
-                                                <th>Flags</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" value=""
+                                        onchange="showIncorrectAnswer(this)" name="mega-settings-status">
+                                    <label class="form-check-label fs-sm" for="mega-settings-status">Show Incorrect
+                                        Questions Only</label>
+                                </div>
+                                {{-- header --}}
+                                <table class="js-table-sections table table-hover table-vcenter">
+                                    <thead>
+                                        <tr class="d-flex align-items-center justify-content-between"
+                                            style="width: 410px">
+                                            <th></th>
+                                            <th class="ms-2">Q#</th>
+                                            <th class="text-center ms-2">Your Answer</th>
+                                            <th class="text-center ms-2">Correct Answer</th>
+                                            <th>Flags</th>
+                                        </tr>
+                                    </thead>
+                                </table>
 
-                                    {{-- END header --}}
-                                    <script>
-                                        jQuery(document).ready(function() {
-                                            function removeTags(str) {
-                                                if ((str === null) || (str === ''))
-                                                    return false;
-                                                else
-                                                    str = str.toString();
+                                {{-- END header --}}
+                                <script>
+                                    jQuery(document).ready(function() {
+                                        function removeTags(str) {
+                                            if ((str === null) || (str === '')) {
+                                                return false;
+                                            } else {
+                                                str = str.toString();
                                                 return str.replace(/(<([^>]+)>)/ig, '');
                                             }
+                                        }
 
-                                            jQuery(".text-info").click(function() {
-                                                jQuery(this).next("div.modal").css("display", "block");
+                                        var textInfo = jQuery(".text-info");
 
+                                        textInfo.click(function() {
+                                            var currentTextInfo = jQuery(this);
+                                            var currentModal = currentTextInfo.next(
+                                                "div.modal"); // Find the modal associated with the clicked text-info
+                                            var loader = jQuery("#loader");
+                                            loader.show();
 
-                                                jQuery(this).next("div.modal").find(".nav-link").removeClass('active');
-                                                jQuery(this).next("div.modal").find(".tab-pane").removeClass('active');
-                                                jQuery(this).next("div.modal").find(".tab-pane:first").addClass('active');
+                                            currentModal.css("display", "block");
 
-                                                //jQuery('.nav-link').removeClass('active');
-                                                //jQuery('.tab-pane').removeClass('active');
-                                                //jQuery(".tab-pane:first").addClass('active');
+                                            loader.hide();
 
-                                                var get_question_title = removeTags(jQuery(this).data('question-title'));
-                                                jQuery(".text-info").addClass(get_question_title);
-                                                // var get_passage_title = removeTags(jQuery(this).data('passage-title'));
-                                                var serial_no = jQuery(this).data('serial-no');
-                                                var get_correct_answer = jQuery(this).data('correct-answer');
-                                                var get_user_answer = jQuery(this).data('user-answer');
-                                                var get_answers_exp = jQuery(this).data('answers-exp');
-                                                var get_answers_explanation = jQuery(this).data('answers-explanation');
-                                                var get_question_id = jQuery(this).data('question-id');
+                                            currentModal.find(".nav-link, .tab-pane").removeClass('active');
+                                            currentModal.find(".tab-pane:first").addClass('active');
 
-                                                jQuery(".set_serial_no").text(serial_no);
-                                                // jQuery(".set_question_title").text(get_question_title);
-                                                // jQuery(".set_passage_title").text(get_passage_title);
+                                            var get_question_title = removeTags(currentTextInfo.data('question-title'));
+                                            textInfo.addClass(get_question_title);
 
-                                                var array_correct = get_correct_answer.split(',');
-                                                array_correct = $.map(array_correct, function(value) {
-                                                    // return value.replace(/ /g, '');
-                                                    return value.trim();
-                                                });
-                                                var array_user_answer = get_user_answer.split(',');
-                                                array_user_answer = $.map(array_user_answer, function(value) {
-                                                    // return value.replace(/ /g, '');
-                                                    return value.trim();
-                                                });
+                                            var serial_no = currentTextInfo.data('serial-no');
+                                            var get_correct_answer = currentTextInfo.data('correct-answer');
+                                            var get_user_answer = currentTextInfo.data('user-answer');
+                                            var get_answers_exp = currentTextInfo.data('answers-exp');
+                                            var get_answers_explanation = currentTextInfo.data('answers-explanation');
 
-                                                jQuery(".text-info").parent().find(`.nav-tabs-alt-${get_question_id} .nav-item`).find(
-                                                    '.text-gray').each(
-                                                    function(index) {
-                                                        for (let i = 0; i < get_answers_exp.length; i++) {
-                                                            var new_txt = removeTags(get_answers_exp[i]);
-                                                            if (get_answers_explanation && get_answers_explanation[i].length) {
-                                                                $("div").find('[data-option=' + i + ']').html($("<p>" + get_answers_exp[
-                                                                        i] +
-                                                                    "</p><div class='d-flex'>Explanation: &nbsp;" +
-                                                                    get_answers_explanation[i] + "</div>"));
-                                                            } else {
-                                                                $("div").find('[data-option=' + i + ']').html($("<p>" + get_answers_exp[
-                                                                        i] +
-                                                                    "</p><div class='d-flex text-danger'>No Explanation</div>"));
-                                                            }
-                                                        }
+                                            console.log(get_answers_explanation);
+                                            var get_question_id = currentTextInfo.data('question-id');
 
-                                                        if ($(this).data('option-value') == 'a') {
-                                                            $(this).addClass('active');
-                                                        }
-                                                        var option_value = $(this).data('option-value');
-                                                        if (jQuery.inArray(option_value, array_correct) != -1) {
-                                                            $(this).removeClass('bg-city-dark');
-                                                            $(this).removeClass('bg-success');
-                                                            $(this).removeClass('bg-danger');
-                                                            $(this).addClass('bg-success');
-                                                        } else if (jQuery.inArray(option_value, array_user_answer) != -1) {
-                                                            $(this).addClass('bg-danger');
-                                                            $(this).addClass('text-gray');
-                                                            $(this).removeClass('bg-success');
-                                                            $(this).removeClass('bg-city-dark');
-                                                        } else {
-                                                            $(this).removeClass('bg-success');
-                                                            $(this).addClass('text-gray');
-                                                            $(this).addClass('bg-city-dark');
-                                                        }
-                                                    });
+                                            jQuery(".set_serial_no").text(serial_no);
+
+                                            var array_correct = get_correct_answer.split(',').map(function(value) {
+                                                return value.trim();
                                             });
-                                            jQuery(".cat_type_desc_btn").click(function() {
-                                                var get_question_desc = jQuery(this).data('question_desc');
-                                                var get_question_title = jQuery(this).data('question_title');
-                                                var get_question_lesson = jQuery(this).data('question_lesson');
-                                                var get_question_strategies = jQuery(this).data('question_strategies');
-                                                var get_question_identification_methods = jQuery(this).data(
-                                                    'question_identification_methods');
-                                                var get_question_identification_activity = jQuery(this).data(
-                                                    'question_identification_activity');
-                                                jQuery('.set_question_type_title').html(get_question_title);
-                                                jQuery('.set_question_type_desc').html(get_question_desc);
-                                                jQuery('.set_question_type_lesson').html(get_question_lesson);
-                                                jQuery('.set_question_type_strategies').html(get_question_strategies);
-                                                jQuery('.set_question_type_identification_methods').html(
-                                                    get_question_identification_methods);
-                                                jQuery('.set_question_type_identification_activity').html(
-                                                    get_question_identification_activity);
-                                            });
-                                            jQuery(".category_description").click(function() {
-                                                var get_category_title = jQuery(this).data('category_title');
-                                                var get_category_description = jQuery(this).data('category_description');
-                                                var get_category_lesson = jQuery(this).data('category_lesson');
-                                                var get_category_strategies = jQuery(this).data('category_strategies');
-                                                var get_category_identification_methods = jQuery(this).data(
-                                                    'category_identification_methods');
-                                                var get_category_identification_activity = jQuery(this).data(
-                                                    'category_identification_activity');
 
-                                                jQuery('.set_category_title').html(get_category_title);
-                                                jQuery('.set_category_description').html(get_category_description);
-                                                jQuery('.set_category_type_lesson').html(get_category_lesson);
-                                                jQuery('.set_category_type_strategies').html(get_category_strategies);
-                                                jQuery('.set_category_type_identification_methods').html(
-                                                    get_category_identification_methods);
-                                                jQuery('.set_category_type_identification_activity').html(
-                                                    get_category_identification_activity);
+                                            var array_user_answer = get_user_answer.split(',').map(function(value) {
+                                                return value.trim();
+                                            });
+
+                                            var navTabs = textInfo.parent().find(
+                                                `.nav-tabs-alt-${get_question_id} .nav-item .text-gray`);
+                                            navTabs.each(function(index) {
+                                                for (let i = 0; i < get_answers_exp.length; i++) {
+                                                    var new_txt = removeTags(get_answers_exp[i]);
+                                                    var optionElement = currentModal.find('[data-option=' + i + ']');
+
+                                                    if (get_answers_explanation && get_answers_explanation[i].length) {
+                                                        optionElement.html($("<p>" + get_answers_exp[i] +
+                                                            "</p><div class='d-flex flex-column'>Explanation: &nbsp;" +
+                                                            get_answers_explanation[i] + "</div>"));
+                                                    } else {
+                                                        optionElement.html($("<p>" + get_answers_exp[i] +
+                                                            "</p><div class='d-flex text-danger'>No Explanation</div>"));
+                                                    }
+                                                }
+
+                                                var optionValue = jQuery(this).data('option-value');
+
+                                                if (optionValue == 'a') {
+                                                    jQuery(this).addClass('active');
+                                                }
+
+                                                if (jQuery.inArray(optionValue, array_correct) != -1) {
+                                                    jQuery(this).removeClass('bg-city-dark bg-success bg-danger').addClass(
+                                                        'bg-success');
+                                                } else if (jQuery.inArray(optionValue, array_user_answer) != -1) {
+                                                    jQuery(this).removeClass('bg-city-dark bg-success').addClass(
+                                                        'bg-danger text-gray');
+                                                } else {
+                                                    jQuery(this).removeClass('bg-success').addClass('text-gray bg-city-dark');
+                                                }
                                             });
                                         });
 
-                                        function showIncorrectAnswer(data) {
-                                            let is_checked = $(data).is(':checked');
-                                            let incorrect_answer = $('.incorrect-answers').parents('.hide-correct-answers').length;
-                                            if (is_checked) {
-                                                if (incorrect_answer == 0) {
-                                                    $('.correct-answers').parents('.hide-correct-answers').hide();
-                                                    $('#incorrect-message').text("Incorrect Question Not Found !");
-                                                } else {
-                                                    $('.correct-answers').parents('.hide-correct-answers').hide();
-                                                }
+                                        jQuery(".cat_type_desc_btn").click(function() {
+                                            var currentButton = jQuery(this);
+                                            var get_question_desc = currentButton.data('question_desc');
+                                            var get_question_title = currentButton.data('question_title');
+                                            var get_question_lesson = currentButton.data('question_lesson');
+                                            var get_question_strategies = currentButton.data('question_strategies');
+                                            var get_question_identification_methods = currentButton.data(
+                                                'question_identification_methods');
+                                            var get_question_identification_activity = currentButton.data(
+                                                'question_identification_activity');
+
+                                            jQuery('.set_question_type_title').html(get_question_title);
+                                            jQuery('.set_question_type_desc').html(get_question_desc);
+                                            jQuery('.set_question_type_lesson').html(get_question_lesson);
+                                            jQuery('.set_question_type_strategies').html(get_question_strategies);
+                                            jQuery('.set_question_type_identification_methods').html(
+                                                get_question_identification_methods);
+                                            jQuery('.set_question_type_identification_activity').html(
+                                                get_question_identification_activity);
+                                        });
+
+                                        jQuery(".category_description").click(function() {
+                                            var currentCategory = jQuery(this);
+                                            var get_category_title = currentCategory.data('category_title');
+                                            var get_category_description = currentCategory.data('category_description');
+                                            var get_category_lesson = currentCategory.data('category_lesson');
+                                            var get_category_strategies = currentCategory.data('category_strategies');
+                                            var get_category_identification_methods = currentCategory.data(
+                                                'category_identification_methods');
+                                            var get_category_identification_activity = currentCategory.data(
+                                                'category_identification_activity');
+
+                                            jQuery('.set_category_title').html(get_category_title);
+                                            jQuery('.set_category_description').html(get_category_description);
+                                            jQuery('.set_category_type_lesson').html(get_category_lesson);
+                                            jQuery('.set_category_type_strategies').html(get_category_strategies);
+                                            jQuery('.set_category_type_identification_methods').html(
+                                                get_category_identification_methods);
+                                            jQuery('.set_category_type_identification_activity').html(
+                                                get_category_identification_activity);
+                                        });
+                                    });
+
+                                    function showIncorrectAnswer(data) {
+                                        let is_checked = $(data).is(':checked');
+                                        let incorrect_answer = $('.incorrect-answers').parents('.hide-correct-answers').length;
+
+                                        if (is_checked) {
+                                            if (incorrect_answer == 0) {
+                                                $('.correct-answers').parents('.hide-correct-answers').hide();
+                                                $('#incorrect-message').text("Incorrect Question Not Found !");
                                             } else {
-                                                $('#incorrect-message').text('');
-                                                $('.correct-answers').parents('.hide-correct-answers').show();
+                                                $('.correct-answers').parents('.hide-correct-answers').hide();
                                             }
+                                        } else {
+                                            $('#incorrect-message').text('');
+                                            $('.correct-answers').parents('.hide-correct-answers').show();
                                         }
-                                    </script>
-                                    <div class="tab-content" id="myTabContent">
-                                        <div class="setup-content" role="tabpanel" id="step1"
-                                            aria-labelledby="step1-tab">
-                                            <div class="accordion accordionExample">
-                                                <span id="incorrect-message" class="text-danger"
-                                                    style="text-align: center; font-weight:bolder;"></span>
-                                                <?php
-                                                $count = 1;
-                                                $acc_id = 0;
-                                                ?>
-                                                @if (isset($user_selected_answers) && !empty($user_selected_answers))
-                                                    @foreach ($user_selected_answers as $key => $single_user_selected_answers)
-                                                        <div
-                                                            class="hide-correct-answers block block-rounded block-bordered overflow-hidden mb-1">
-                                                            @if (isset($single_user_selected_answers['get_question_details'][0]->question_id) &&
-                                                                    !empty($single_user_selected_answers['get_question_details'][0]->question_id))
-                                                                <div class="block-header block-header-tab justify-content-start"
-                                                                    type="button" data-toggle="collapse"
-                                                                    data-target="#collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>">
-                                                                    <table>
-                                                                        <tr>
-                                                                            <td class="text-center">
-                                                                                <i
-                                                                                    class="fa fa-angle-right text-white me-2 accordian-icon"></i>
-                                                                            </td>
-                                                                            <td class="d-flex align-items-center">
-                                                                                <div
-                                                                                    style="width: 70px; display: flex; align-items: start;">
-                                                                                    <button type="button"
-                                                                                        class="btn btn-danger fs-xs fw-semibold me-1 error-button"
+                                    }
+
+                                    function showAllModuleData(data) {
+                                        let is_checked = $(data).is(':checked');
+                                        let testid = $('#test_id').val();
+                                        let section_id = $('#section_id').val();
+                                        if (is_checked) {
+                                            $.ajax({
+                                                type: "GET",
+                                                url: "{{ route('multiple_review') }}",
+                                                dataType: 'json',
+                                                data: {
+                                                    testid: testid,
+                                                    section_id: section_id
+                                                },
+                                                beforeSend: function() {
+                                                    $('#myTabContentSingle').hide();
+                                                    $('.custom-loader-his').css('visibility', 'visible');
+                                                },
+                                                success: function(res) {
+                                                    $('.custom-loader-his').css('visibility', 'hidden');
+                                                    $('#myTabContentSingle').hide();
+                                                    $('#myTabContentMultiple').show();
+                                                    $('#myTabContentMultiple').html(res.html);
+                                                },
+                                            });
+                                        } else {
+                                            $('#myTabContentSingle').show();
+                                            $('#myTabContentMultiple').hide();
+                                        }
+                                    }
+                                </script>
+                                {{-- <script>
+                                    jQuery(document).ready(function() {
+                                        function removeTags(str) {
+                                            if ((str === null) || (str === ''))
+                                                return false;
+                                            else
+                                                str = str.toString();
+                                            return str.replace(/(<([^>]+)>)/ig, '');
+                                        }
+
+                                        jQuery(".text-info").click(function() {
+                                            jQuery(this).next("div.modal").css("display", "block");
+
+
+                                            jQuery(this).next("div.modal").find(".nav-link").removeClass('active');
+                                            jQuery(this).next("div.modal").find(".tab-pane").removeClass('active');
+                                            jQuery(this).next("div.modal").find(".tab-pane:first").addClass('active');
+
+                                            //jQuery('.nav-link').removeClass('active');
+                                            //jQuery('.tab-pane').removeClass('active');
+                                            //jQuery(".tab-pane:first").addClass('active');
+
+                                            var get_question_title = removeTags(jQuery(this).data('question-title'));
+                                            jQuery(".text-info").addClass(get_question_title);
+                                            // var get_passage_title = removeTags(jQuery(this).data('passage-title'));
+                                            var serial_no = jQuery(this).data('serial-no');
+                                            var get_correct_answer = jQuery(this).data('correct-answer');
+                                            var get_user_answer = jQuery(this).data('user-answer');
+                                            var get_answers_exp = jQuery(this).data('answers-exp');
+                                            var get_answers_explanation = jQuery(this).data('answers-explanation');
+                                            console.log(get_answers_explanation);
+                                            var get_question_id = jQuery(this).data('question-id');
+
+                                            jQuery(".set_serial_no").text(serial_no);
+                                            // jQuery(".set_question_title").text(get_question_title);
+                                            // jQuery(".set_passage_title").text(get_passage_title);
+
+                                            var array_correct = get_correct_answer.split(',');
+                                            array_correct = $.map(array_correct, function(value) {
+                                                // return value.replace(/ /g, '');
+                                                return value.trim();
+                                            });
+                                            var array_user_answer = get_user_answer.split(',');
+                                            array_user_answer = $.map(array_user_answer, function(value) {
+                                                // return value.replace(/ /g, '');
+                                                return value.trim();
+                                            });
+
+                                            jQuery(".text-info").parent().find(`.nav-tabs-alt-${get_question_id} .nav-item`).find(
+                                                '.text-gray').each(
+                                                function(index) {
+                                                    for (let i = 0; i < get_answers_exp.length; i++) {
+                                                        var new_txt = removeTags(get_answers_exp[i]);
+                                                        if (get_answers_explanation && get_answers_explanation[i].length) {
+                                                            $("div").find('[data-option=' + i + ']').html($("<p>" + get_answers_exp[
+                                                                    i] +
+                                                                "</p><div class='d-flex flex-column'>Explanation: &nbsp;" +
+                                                                get_answers_explanation[i] + "</div>"));
+                                                        } else {
+                                                            $("div").find('[data-option=' + i + ']').html($("<p>" + get_answers_exp[
+                                                                    i] +
+                                                                "</p><div class='d-flex text-danger'>No Explanation</div>"));
+                                                        }
+                                                    }
+
+                                                    if ($(this).data('option-value') == 'a') {
+                                                        $(this).addClass('active');
+                                                    }
+                                                    var option_value = $(this).data('option-value');
+                                                    if (jQuery.inArray(option_value, array_correct) != -1) {
+                                                        $(this).removeClass('bg-city-dark');
+                                                        $(this).removeClass('bg-success');
+                                                        $(this).removeClass('bg-danger');
+                                                        $(this).addClass('bg-success');
+                                                    } else if (jQuery.inArray(option_value, array_user_answer) != -1) {
+                                                        $(this).addClass('bg-danger');
+                                                        $(this).addClass('text-gray');
+                                                        $(this).removeClass('bg-success');
+                                                        $(this).removeClass('bg-city-dark');
+                                                    } else {
+                                                        $(this).removeClass('bg-success');
+                                                        $(this).addClass('text-gray');
+                                                        $(this).addClass('bg-city-dark');
+                                                    }
+                                                });
+                                        });
+                                        jQuery(".cat_type_desc_btn").click(function() {
+                                            var get_question_desc = jQuery(this).data('question_desc');
+                                            var get_question_title = jQuery(this).data('question_title');
+                                            var get_question_lesson = jQuery(this).data('question_lesson');
+                                            var get_question_strategies = jQuery(this).data('question_strategies');
+                                            var get_question_identification_methods = jQuery(this).data(
+                                                'question_identification_methods');
+                                            var get_question_identification_activity = jQuery(this).data(
+                                                'question_identification_activity');
+                                            jQuery('.set_question_type_title').html(get_question_title);
+                                            jQuery('.set_question_type_desc').html(get_question_desc);
+                                            jQuery('.set_question_type_lesson').html(get_question_lesson);
+                                            jQuery('.set_question_type_strategies').html(get_question_strategies);
+                                            jQuery('.set_question_type_identification_methods').html(
+                                                get_question_identification_methods);
+                                            jQuery('.set_question_type_identification_activity').html(
+                                                get_question_identification_activity);
+                                        });
+                                        jQuery(".category_description").click(function() {
+                                            var get_category_title = jQuery(this).data('category_title');
+                                            var get_category_description = jQuery(this).data('category_description');
+                                            var get_category_lesson = jQuery(this).data('category_lesson');
+                                            var get_category_strategies = jQuery(this).data('category_strategies');
+                                            var get_category_identification_methods = jQuery(this).data(
+                                                'category_identification_methods');
+                                            var get_category_identification_activity = jQuery(this).data(
+                                                'category_identification_activity');
+
+                                            jQuery('.set_category_title').html(get_category_title);
+                                            jQuery('.set_category_description').html(get_category_description);
+                                            jQuery('.set_category_type_lesson').html(get_category_lesson);
+                                            jQuery('.set_category_type_strategies').html(get_category_strategies);
+                                            jQuery('.set_category_type_identification_methods').html(
+                                                get_category_identification_methods);
+                                            jQuery('.set_category_type_identification_activity').html(
+                                                get_category_identification_activity);
+                                        });
+                                    });
+
+                                    function showIncorrectAnswer(data) {
+                                        let is_checked = $(data).is(':checked');
+                                        let incorrect_answer = $('.incorrect-answers').parents('.hide-correct-answers').length;
+                                        if (is_checked) {
+                                            if (incorrect_answer == 0) {
+                                                $('.correct-answers').parents('.hide-correct-answers').hide();
+                                                $('#incorrect-message').text("Incorrect Question Not Found !");
+                                            } else {
+                                                $('.correct-answers').parents('.hide-correct-answers').hide();
+                                            }
+                                        } else {
+                                            $('#incorrect-message').text('');
+                                            $('.correct-answers').parents('.hide-correct-answers').show();
+                                        }
+                                    }
+                                </script> --}}
+
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="setup-content" role="tabpanel" id="step1"
+                                        aria-labelledby="step1-tab">
+                                        <div class="accordion accordionExample">
+                                            <span id="incorrect-message" class="text-danger"
+                                                style="text-align: center; font-weight:bolder;"></span>
+                                            <?php
+                                            $count = 1;
+                                            $acc_id = 0;
+                                            ?>
+                                            @if (isset($user_selected_answers) && !empty($user_selected_answers))
+                                                @foreach ($user_selected_answers as $key => $single_user_selected_answers)
+                                                    <div
+                                                        class="hide-correct-answers block block-rounded block-bordered overflow-hidden mb-1">
+                                                        @if (isset($single_user_selected_answers['get_question_details'][0]->question_id) &&
+                                                                !empty($single_user_selected_answers['get_question_details'][0]->question_id))
+                                                            <div class="block-header block-header-tab justify-content-start"
+                                                                type="button" data-toggle="collapse"
+                                                                data-target="#collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                aria-expanded="false"
+                                                                aria-controls="collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i
+                                                                                class="fa fa-angle-right text-white me-2 accordian-icon"></i>
+                                                                        </td>
+                                                                        <td class="d-flex align-items-center">
+                                                                            <?php $correct = [];
+                                                                            array_push($correct, str_replace(' ', '', $single_user_selected_answers['get_question_details'][0]->question_answer));
+                                                                            $helper = new Helper();
+                                                                            $user_selected_answer = empty($single_user_selected_answers['user_selected_answer']) ? '-' : $single_user_selected_answers['user_selected_answer'];
+                                                                            ?>
+                                                                            <div
+                                                                                style="width: 70px; display: flex; align-items: start;">
+                                                                                <button type="button"
+                                                                                    class="btn @if ($helper->stringExactMatch($correct[0], $single_user_selected_answers['user_selected_answer'])) btn-success
+                                                                                    @else
+                                                                                    btn-danger @endif  fs-xs fw-semibold me-1 error-button"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-trigger="click"
+                                                                                    data-bs-placement="top"
+                                                                                    title="Question No.">{{ $count++ }}</button>
+                                                                            </div>
+
+                                                                            @if ($single_user_selected_answers['get_question_details'][0]->is_multiple_choice == 2)
+                                                                                {{-- @if (in_array(str_replace(' ', '', $single_user_selected_answers['user_selected_answer']), explode(',', $correct[0])) || in_array(str_replace(' ', '', $single_user_selected_answers['user_selected_answer']), $correct) || Str::contains($correct[0], explode(',', str_replace(' ', '', $single_user_selected_answers['user_selected_answer'])))) --}}
+                                                                                @if ($helper->stringExactMatch($correct[0], $single_user_selected_answers['user_selected_answer']))
+                                                                                    <div
+                                                                                        style="width: 120px; display: flex; align-items: start;">
+                                                                                        <button type="button"
+                                                                                            class="correct-answers btn btn-success fs-xs fw-semibold me-1"
+                                                                                            data-bs-toggle="tooltip"
+                                                                                            data-bs-trigger="click"
+                                                                                            data-bs-placement="top"
+                                                                                            title="User Answer"><i
+                                                                                                class="fa fa-lg fa-circle-check me-1"
+                                                                                                style="color:white"></i>
+                                                                                            {{ $user_selected_answer }}</button>
+                                                                                    </div>
+                                                                                @else
+                                                                                    <div
+                                                                                        style="width: 120px; display: flex; align-items: start;">
+                                                                                        <button type="button"
+                                                                                            class="incorrect-answers btn btn-danger fs-xs fw-semibold me-1"
+                                                                                            data-bs-toggle="tooltip"
+                                                                                            data-bs-trigger="click"
+                                                                                            data-bs-placement="top"
+                                                                                            title="User Answer"><i
+                                                                                                class="fa fa-lg fa-circle-xmark me-1"
+                                                                                                style="color:white"></i>
+                                                                                            {{ $user_selected_answer }}</button>
+                                                                                    </div>
+                                                                                @endif
+                                                                            @else
+                                                                                @if (str_replace(' ', '', $single_user_selected_answers['user_selected_answer']) == str_replace(' ', '', $correct[0]))
+                                                                                    <div
+                                                                                        style="width: 120px; display: flex; align-items: start;">
+                                                                                        <button type="button"
+                                                                                            class="correct-answers btn btn-success fs-xs fw-semibold me-1"
+                                                                                            data-bs-toggle="tooltip"
+                                                                                            data-bs-trigger="click"
+                                                                                            data-bs-placement="top"
+                                                                                            title="User Answer"><i
+                                                                                                class="fa fa-lg fa-circle-check me-1"
+                                                                                                style="color:white"></i>
+                                                                                            {{ $user_selected_answer }}</button>
+                                                                                    </div>
+                                                                                @else
+                                                                                    <div
+                                                                                        style="width: 120px; display: flex; align-items: start;">
+                                                                                        <button type="button"
+                                                                                            class="incorrect-answers btn btn-danger fs-xs fw-semibold me-1"
+                                                                                            data-bs-toggle="tooltip"
+                                                                                            data-bs-trigger="click"
+                                                                                            data-bs-placement="top"
+                                                                                            title="User Answer"><i
+                                                                                                class="fa fa-lg fa-circle-xmark me-1"
+                                                                                                style="color:white"></i>
+                                                                                            {{ $user_selected_answer }}</button>
+                                                                                    </div>
+                                                                                @endif
+                                                                            @endif
+
+                                                                            <div
+                                                                                style="width: 110px; display: flex; align-items: start;">
+                                                                                <button type="button"
+                                                                                    class="btn btn-success fs-xs fw-semibold me-1"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-trigger="click"
+                                                                                    data-bs-placement="top"
+                                                                                    title="Right Answer"><i
+                                                                                        class="fa fa-lg fa-circle-check me-1"
+                                                                                        style="color:white"></i>
+                                                                                    {{ $single_user_selected_answers['get_question_details'][0]->question_answer }}</button>
+                                                                            </div>
+                                                                            <div>
+                                                                                @if ($single_user_selected_answers['user_selected_flag'] == 'yes')
+                                                                                    <i class="fa fa-fw fa-flag me-1"
+                                                                                        style="color:rgb(255, 255, 255)"
                                                                                         data-bs-toggle="tooltip"
                                                                                         data-bs-trigger="click"
                                                                                         data-bs-placement="top"
-                                                                                        title="Question No.">{{ $count++ }}</button>
-                                                                                </div>
-                                                                                <?php $correct = [];
-                                                                                array_push($correct, str_replace(' ', '', $single_user_selected_answers['get_question_details'][0]->question_answer));
-                                                                                $helper = new Helper();
-                                                                                ?>
-                                                                                @if ($single_user_selected_answers['get_question_details'][0]->is_multiple_choice == 2)
-                                                                                    {{-- @if (in_array(str_replace(' ', '', $single_user_selected_answers['user_selected_answer']), explode(',', $correct[0])) || in_array(str_replace(' ', '', $single_user_selected_answers['user_selected_answer']), $correct) || Str::contains($correct[0], explode(',', str_replace(' ', '', $single_user_selected_answers['user_selected_answer'])))) --}}
-                                                                                    @if ($helper->stringExactMatch($correct[0], $single_user_selected_answers['user_selected_answer']))
-                                                                                        <div
-                                                                                            style="width: 120px; display: flex; align-items: start;">
-                                                                                            <button type="button"
-                                                                                                class="correct-answers btn btn-success fs-xs fw-semibold me-1"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-trigger="click"
-                                                                                                data-bs-placement="top"
-                                                                                                title="User Answer"><i
-                                                                                                    class="fa fa-lg fa-circle-check me-1"
-                                                                                                    style="color:white"></i>
-                                                                                                {{ $single_user_selected_answers['user_selected_answer'] }}</button>
-                                                                                        </div>
-                                                                                    @else
-                                                                                        <div
-                                                                                            style="width: 120px; display: flex; align-items: start;">
-                                                                                            <button type="button"
-                                                                                                class="incorrect-answers btn btn-danger fs-xs fw-semibold me-1"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-trigger="click"
-                                                                                                data-bs-placement="top"
-                                                                                                title="User Answer"><i
-                                                                                                    class="fa fa-lg fa-circle-xmark me-1"
-                                                                                                    style="color:white"></i>
-                                                                                                {{ $single_user_selected_answers['user_selected_answer'] }}</button>
-                                                                                        </div>
-                                                                                    @endif
-                                                                                @else
-                                                                                    @if (str_replace(' ', '', $single_user_selected_answers['user_selected_answer']) == str_replace(' ', '', $correct[0]))
-                                                                                        <div
-                                                                                            style="width: 120px; display: flex; align-items: start;">
-                                                                                            <button type="button"
-                                                                                                class="correct-answers btn btn-success fs-xs fw-semibold me-1"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-trigger="click"
-                                                                                                data-bs-placement="top"
-                                                                                                title="User Answer"><i
-                                                                                                    class="fa fa-lg fa-circle-check me-1"
-                                                                                                    style="color:white"></i>
-                                                                                                {{ $single_user_selected_answers['user_selected_answer'] }}</button>
-                                                                                        </div>
-                                                                                    @else
-                                                                                        <div
-                                                                                            style="width: 120px; display: flex; align-items: start;">
-                                                                                            <button type="button"
-                                                                                                class="incorrect-answers btn btn-danger fs-xs fw-semibold me-1"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-trigger="click"
-                                                                                                data-bs-placement="top"
-                                                                                                title="User Answer"><i
-                                                                                                    class="fa fa-lg fa-circle-xmark me-1"
-                                                                                                    style="color:white"></i>
-                                                                                                {{ $single_user_selected_answers['user_selected_answer'] }}</button>
-                                                                                        </div>
-                                                                                    @endif
+                                                                                        title="Flagged Question"></i>
                                                                                 @endif
 
-                                                                                <div
-                                                                                    style="width: 110px; display: flex; align-items: start;">
-                                                                                    <button type="button"
-                                                                                        class="btn btn-success fs-xs fw-semibold me-1"
+                                                                                @if ($single_user_selected_answers['user_selected_skip'] == 'yes')
+                                                                                    <i style="color:rgb(255, 255, 255)"
+                                                                                        class="fa fa-fw fa-forward me-1"
+                                                                                        data-bs-trigger="click"
+                                                                                        data-bs-placement="top"
+                                                                                        title="Skipped Question"></i>
+                                                                                @endif
+
+                                                                                @if ($single_user_selected_answers['user_selected_guess'] == 'yes')
+                                                                                    <i class="fa fa-fw fa-circle-question me-1"
+                                                                                        style="color:rgb(255, 255, 255)"
                                                                                         data-bs-toggle="tooltip"
                                                                                         data-bs-trigger="click"
                                                                                         data-bs-placement="top"
-                                                                                        title="Right Answer"><i
-                                                                                            class="fa fa-lg fa-circle-check me-1"
-                                                                                            style="color:white"></i>
-                                                                                        {{ $single_user_selected_answers['get_question_details'][0]->question_answer }}</button>
-                                                                                </div>
-                                                                                <div>
-                                                                                    @if ($single_user_selected_answers['user_selected_flag'] == 'yes')
-                                                                                        <i class="fa fa-fw fa-flag me-1"
-                                                                                            style="color:rgb(255, 255, 255)"
-                                                                                            data-bs-toggle="tooltip"
-                                                                                            data-bs-trigger="click"
-                                                                                            data-bs-placement="top"
-                                                                                            title="Flagged Question"></i>
-                                                                                    @endif
+                                                                                        title="Guessed On Question"></i>
+                                                                                @endif
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                            <div class="spinner-border" id="loader" role="status"
+                                                                style="display: none">
+                                                                <span class="sr-only">Loading...</span>
+                                                            </div>
+                                                            <div id="collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" class="collapse"
+                                                                aria-labelledby="headingOne"
+                                                                data-parent=".accordionExample">
+                                                                <div class="odd">
+                                                                    <div class="fw-semibold fs-sm p-4 ">
 
-                                                                                    @if ($single_user_selected_answers['user_selected_guess'] == 'yes')
-                                                                                        <i class="fa fa-fw fa-circle-question me-1"
-                                                                                            style="color:rgb(255, 255, 255)"
-                                                                                            data-bs-toggle="tooltip"
-                                                                                            data-bs-trigger="click"
-                                                                                            data-bs-placement="top"
-                                                                                            title="Guessed On Question"></i>
-                                                                                    @endif
+                                                                        <button type="button" data-bs-toggle="modal"
+                                                                            data-bs-target="#modal-block-large-q1r_{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
+                                                                            data-question-id="{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
+                                                                            data-question-title="{{ $single_user_selected_answers['get_question_details'][0]->question_title }}"
+                                                                            data-correct-answer="{{ $single_user_selected_answers['get_question_details'][0]->question_answer }}"
+                                                                            data-user-answer="{{ $single_user_selected_answers['user_selected_answer'] }}"
+                                                                            data-answers-exp="{{ $single_user_selected_answers['get_question_details'][0]->question_answer_options }}"
+                                                                            data-answers-explanation="{{ isset($single_user_selected_answers['get_question_details'][0]->answer_exp) ? $single_user_selected_answers['get_question_details'][0]->answer_exp : '' }}"
+                                                                            data-serial-no="{{ $key + 1 }}"
+                                                                            class="btn btn-info fs-xs fw-semibold me-1 mb-3 bg-info text-white text-info"><i
+                                                                                class="fa fa-lg fa-pencil me-1"></i>REVIEW</button>
 
-                                                                                    @if ($single_user_selected_answers['user_selected_answer'] == '-')
-                                                                                        <i style="color:rgb(255, 255, 255)"
-                                                                                            class="fa fa-fw fa-forward me-1"
-                                                                                            data-bs-trigger="click"
-                                                                                            data-bs-placement="top"
-                                                                                            title="Skipped Question"></i>
-                                                                                    @endif
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>
-                                                                </div>
-                                                                <div id="collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" class="collapse"
-                                                                    aria-labelledby="headingOne"
-                                                                    data-parent=".accordionExample">
-                                                                    <div class="odd">
-                                                                        <div class="fw-semibold fs-sm p-4 ">
-
-                                                                            <button type="button" data-bs-toggle="modal"
-                                                                                data-bs-target="#modal-block-large-q1r_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                data-question-id="{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
-                                                                                data-question-title="{{ $single_user_selected_answers['get_question_details'][0]->question_title }}"
-                                                                                data-correct-answer="{{ $single_user_selected_answers['get_question_details'][0]->question_answer }}"
-                                                                                data-user-answer="{{ $single_user_selected_answers['user_selected_answer'] }}"
-                                                                                data-answers-exp="{{ $single_user_selected_answers['get_question_details'][0]->question_answer_options }}"
-                                                                                data-answers-explanation="{{ isset($single_user_selected_answers['get_question_details'][0]->answer_exp) ? $single_user_selected_answers['get_question_details'][0]->answer_exp : '' }}"
-                                                                                data-serial-no="{{ $key + 1 }}"
-                                                                                class="btn btn-info fs-xs fw-semibold me-1 mb-3 bg-info text-white text-info"><i
-                                                                                    class="fa fa-lg fa-pencil me-1"></i>REVIEW</button>
-
-                                                                            <div class="modal"
-                                                                                id="modal-block-large-q1r_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                tabindex="-1"
-                                                                                aria-labelledby="modal-block-large-q1r_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                style="display: none;" aria-hidden="true">
-                                                                                <div class="modal-dialog modal-lg"
-                                                                                    role="document">
-                                                                                    <div class="modal-content">
-                                                                                        <div class="block block-rounded">
+                                                                        <div class="modal"
+                                                                            id="modal-block-large-q1r_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                            tabindex="-1"
+                                                                            aria-labelledby="modal-block-large-q1r_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                            style="display: none;" aria-hidden="true">
+                                                                            <div class="modal-dialog modal-lg"
+                                                                                role="document">
+                                                                                <div class="modal-content">
+                                                                                    <div class="block block-rounded">
+                                                                                        <div
+                                                                                            class="block-header block-header-default">
+                                                                                            <h3 class="block-title">
+                                                                                                Question <span
+                                                                                                    class="set_serial_no">{{ $key + 1 }}</span>
+                                                                                                Review</h3>
+                                                                                        </div>
+                                                                                        <div class="block-content">
                                                                                             <div
-                                                                                                class="block-header block-header-default">
-                                                                                                <h3 class="block-title">
-                                                                                                    Question <span
-                                                                                                        class="set_serial_no">{{ $key + 1 }}</span>
-                                                                                                    Review</h3>
-                                                                                            </div>
-                                                                                            <div class="block-content">
-                                                                                                <div
-                                                                                                    class="row items-push">
+                                                                                                class="row items-push">
+                                                                                                <div id="my-block"
+                                                                                                    class="block block-rounded block-bordered">
+                                                                                                    <div
+                                                                                                        class="block-content">
+                                                                                                        {!! $single_user_selected_answers['get_question_details'][0]->question_title !!}
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                @if (!empty($single_user_selected_answers['get_question_details'][0]->title))
                                                                                                     <div id="my-block"
                                                                                                         class="block block-rounded block-bordered">
                                                                                                         <div
                                                                                                             class="block-content">
-                                                                                                            <p>N/A</p>
-                                                                                                        </div>
-                                                                                                    </div>
-
-                                                                                                    <div id="my-block"
-                                                                                                        class="block block-rounded block-bordered p-0">
-                                                                                                        <div
-                                                                                                            class="block-header block-header-default">
-                                                                                                            <h3
-                                                                                                                class="block-title">
-                                                                                                                Question
-                                                                                                                <span
-                                                                                                                    class="set_serial_no">{{ $key + 1 }}</span>
-                                                                                                            </h3>
-                                                                                                            <div
-                                                                                                                class="block-options">
-                                                                                                                <button
-                                                                                                                    type="button"
-                                                                                                                    class="btn-block-option"
-                                                                                                                    data-toggle="block-option"
-                                                                                                                    data-action="content_toggle"></button>
-                                                                                                            </div>
+                                                                                                            {!! $single_user_selected_answers['get_question_details'][0]->title !!}
                                                                                                         </div>
                                                                                                         <div
                                                                                                             class="block-content">
-                                                                                                            <p
-                                                                                                                class="set_question_title">
-                                                                                                                {!! $single_user_selected_answers['get_question_details'][0]->question_title !!}
-                                                                                                            </p>
+                                                                                                            {!! $single_user_selected_answers['get_question_details'][0]->description !!}
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    @if ($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFive_Odd')
+                                                                                                @endif
+
+                                                                                                <div id="my-block"
+                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                    <div
+                                                                                                        class="block-header block-header-default">
+                                                                                                        <h3
+                                                                                                            class="block-title">
+                                                                                                            Question
+                                                                                                            <span
+                                                                                                                class="set_serial_no">{{ $key + 1 }}</span>
+                                                                                                        </h3>
+                                                                                                        <div
+                                                                                                            class="block-options">
+                                                                                                            <button
+                                                                                                                type="button"
+                                                                                                                class="btn-block-option"
+                                                                                                                data-toggle="block-option"
+                                                                                                                data-action="content_toggle"></button>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    {{-- <div
+                                                                                                        class="block-content">
+                                                                                                        <p
+                                                                                                            class="set_question_title">
+                                                                                                            {!! $single_user_selected_answers['get_question_details'][0]->question_title !!}
+                                                                                                        </p>
+                                                                                                    </div> --}}
+                                                                                                </div>
+                                                                                                @if ($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFive_Odd')
+                                                                                                    <div
+                                                                                                        class="block block-rounded">
+                                                                                                        <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
+                                                                                                            role="tablist">
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link active bg-danger
+                                                                                                            text-gray
+                                                                                                            text-white"
+                                                                                                                    id="btabs-alt-static-home-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-home"
+                                                                                                                    data-option-value='a'
+                                                                                                                    aria-selected="true">
+                                                                                                                    A</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='b'
+                                                                                                                    aria-selected="false">
+                                                                                                                    B</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='c'
+                                                                                                                    aria-selected="false">
+                                                                                                                    C</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='d'
+                                                                                                                    aria-selected="false">
+                                                                                                                    D</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1e_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='e'
+                                                                                                                    aria-selected="false">
+                                                                                                                    E</button>
+                                                                                                            </li>
+                                                                                                        </ul>
+
+                                                                                                        <div
+                                                                                                            class="block-content tab-content">
+                                                                                                            <div class="tab-pane active"
+                                                                                                                id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="0"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-home-tab">
+                                                                                                                <p>NO
+                                                                                                                    CHANGE:
+                                                                                                                    1/9
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="1"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>1/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="2"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>6/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="3"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>7/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1e_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="4"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>8/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFive_Even')
+                                                                                                    <div
+                                                                                                        class="block block-rounded">
+                                                                                                        <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
+                                                                                                            role="tablist">
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link active bg-danger
+                                                                                                            text-gray
+                                                                                                            text-white"
+                                                                                                                    id="btabs-alt-static-home-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1f_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-home"
+                                                                                                                    data-option-value='f'
+                                                                                                                    aria-selected="true">
+                                                                                                                    F</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1g_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='g'
+                                                                                                                    aria-selected="false">
+                                                                                                                    G</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1h_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='h'
+                                                                                                                    aria-selected="false">
+                                                                                                                    H</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1j_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='j'
+                                                                                                                    aria-selected="false">
+                                                                                                                    J</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1k_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='k'
+                                                                                                                    aria-selected="false">
+                                                                                                                    K</button>
+                                                                                                            </li>
+                                                                                                        </ul>
+
+                                                                                                        <div
+                                                                                                            class="block-content tab-content">
+                                                                                                            <div class="tab-pane active"
+                                                                                                                id="btabs-alt-static-q1f_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="0"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-home-tab">
+                                                                                                                <p>NO
+                                                                                                                    CHANGE:
+                                                                                                                    1/9
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1g_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="1"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>1/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1h_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="2"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>6/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1j_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="3"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>7/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1k_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="4"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>8/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFour_Odd')
+                                                                                                    <div
+                                                                                                        class="block block-rounded">
+                                                                                                        <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
+                                                                                                            role="tablist">
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link active bg-danger
+                                                                                                            text-gray
+                                                                                                            text-white"
+                                                                                                                    id="btabs-alt-static-home-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-home"
+                                                                                                                    data-option-value='a'
+                                                                                                                    aria-selected="true">
+                                                                                                                    A</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='b'
+                                                                                                                    aria-selected="false">
+                                                                                                                    B</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='c'
+                                                                                                                    aria-selected="false">
+                                                                                                                    C</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='d'
+                                                                                                                    aria-selected="false">
+                                                                                                                    D</button>
+                                                                                                            </li>
+                                                                                                        </ul>
+
+                                                                                                        <div
+                                                                                                            class="block-content tab-content">
+                                                                                                            <div class="tab-pane active"
+                                                                                                                id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="0"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-home-tab">
+                                                                                                                <p>NO
+                                                                                                                    CHANGE:
+                                                                                                                    1/9
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="1"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>1/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="2"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>6/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="3"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>7/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFour_Even')
+                                                                                                    <div
+                                                                                                        class="block block-rounded">
+                                                                                                        <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
+                                                                                                            role="tablist">
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link active bg-danger
+                                                                                                            text-gray
+                                                                                                            text-white"
+                                                                                                                    id="btabs-alt-static-home-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1f_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-home"
+                                                                                                                    data-option-value='f'
+                                                                                                                    aria-selected="true">
+                                                                                                                    F</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1g_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='g'
+                                                                                                                    aria-selected="false">
+                                                                                                                    G</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1h_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='h'
+                                                                                                                    aria-selected="false">
+                                                                                                                    H</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1j_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='j'
+                                                                                                                    aria-selected="false">
+                                                                                                                    J</button>
+                                                                                                            </li>
+                                                                                                        </ul>
+
+                                                                                                        <div
+                                                                                                            class="block-content tab-content">
+                                                                                                            <div class="tab-pane active"
+                                                                                                                id="btabs-alt-static-q1f_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="0"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-home-tab">
+                                                                                                                <p>NO
+                                                                                                                    CHANGE:
+                                                                                                                    1/9
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1g_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="1"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>1/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1h_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="2"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>6/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1j_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="3"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>7/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFourPass_Odd')
+                                                                                                    <div
+                                                                                                        class="block block-rounded">
+                                                                                                        <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
+                                                                                                            role="tablist">
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link active bg-danger
+                                                                                                            text-gray
+                                                                                                            text-white"
+                                                                                                                    id="btabs-alt-static-home-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-home"
+                                                                                                                    data-option-value='a'
+                                                                                                                    aria-selected="true">
+                                                                                                                    A</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='b'
+                                                                                                                    aria-selected="false">
+                                                                                                                    B</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='c'
+                                                                                                                    aria-selected="false">
+                                                                                                                    C</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='d'
+                                                                                                                    aria-selected="false">
+                                                                                                                    D</button>
+                                                                                                            </li>
+                                                                                                        </ul>
+
+                                                                                                        <div
+                                                                                                            class="block-content tab-content">
+                                                                                                            <div class="tab-pane active"
+                                                                                                                id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="0"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-home-tab">
+                                                                                                                <p>NO
+                                                                                                                    CHANGE:
+                                                                                                                    1/9
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="1"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>1/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="2"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>6/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="3"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>7/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFourPass_Even')
+                                                                                                    <div
+                                                                                                        class="block block-rounded">
+                                                                                                        <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
+                                                                                                            role="tablist">
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link active bg-danger
+                                                                                                            text-gray
+                                                                                                            text-white"
+                                                                                                                    id="btabs-alt-static-home-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1f_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-home"
+                                                                                                                    data-option-value='f'
+                                                                                                                    aria-selected="true">
+                                                                                                                    F</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1g_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='g'
+                                                                                                                    aria-selected="false">
+                                                                                                                    G</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1h_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='h'
+                                                                                                                    aria-selected="false">
+                                                                                                                    H</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1j_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='j'
+                                                                                                                    aria-selected="false">
+                                                                                                                    J</button>
+                                                                                                            </li>
+                                                                                                        </ul>
+
+                                                                                                        <div
+                                                                                                            class="block-content tab-content">
+                                                                                                            <div class="tab-pane active"
+                                                                                                                id="btabs-alt-static-q1f_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="0"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-home-tab">
+                                                                                                                <p>NO
+                                                                                                                    CHANGE:
+                                                                                                                    1/9
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1g_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="1"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>1/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1h_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="2"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>6/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1j_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="3"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>7/15
+                                                                                                                </p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceMultInFourFill')
+                                                                                                    {{-- {{dd($single_user_selected_answers['get_question_details'][0]->is_multiple_choice)}} --}}
+                                                                                                    @if ($single_user_selected_answers['get_question_details'][0]->is_multiple_choice == 1)
                                                                                                         <div
                                                                                                             class="block block-rounded">
                                                                                                             <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
@@ -605,1079 +1633,1994 @@
                                                                                                                     class="nav-item">
                                                                                                                     <button
                                                                                                                         class="nav-link active bg-danger
-                                                                                                            text-gray
-                                                                                                            text-white"
-                                                                                                                        id="btabs-alt-static-home-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-home"
-                                                                                                                        data-option-value='a'
-                                                                                                                        aria-selected="true">Answer
-                                                                                                                        A</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='b'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        B</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='c'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        C</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='d'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        D</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1e_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='e'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        E</button>
-                                                                                                                </li>
-                                                                                                            </ul>
-
-                                                                                                            <div
-                                                                                                                class="block-content tab-content">
-                                                                                                                <div class="tab-pane active"
-                                                                                                                    id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="0"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-home-tab">
-                                                                                                                    <p>NO
-                                                                                                                        CHANGE:
-                                                                                                                        1/9
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="1"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>1/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="2"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>6/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="3"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>7/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1e_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="4"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>8/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFive_Even')
-                                                                                                        <div
-                                                                                                            class="block block-rounded">
-                                                                                                            <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
-                                                                                                                role="tablist">
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link active bg-danger
-                                                                                                            text-gray
-                                                                                                            text-white"
-                                                                                                                        id="btabs-alt-static-home-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1f_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-home"
-                                                                                                                        data-option-value='f'
-                                                                                                                        aria-selected="true">Answer
-                                                                                                                        F</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1g_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='g'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        G</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1h_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='h'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        H</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1j_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='j'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        J</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1k_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='k'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        K</button>
-                                                                                                                </li>
-                                                                                                            </ul>
-
-                                                                                                            <div
-                                                                                                                class="block-content tab-content">
-                                                                                                                <div class="tab-pane active"
-                                                                                                                    id="btabs-alt-static-q1f_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="0"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-home-tab">
-                                                                                                                    <p>NO
-                                                                                                                        CHANGE:
-                                                                                                                        1/9
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1g_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="1"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>1/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1h_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="2"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>6/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1j_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="3"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>7/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1k_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="4"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>8/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFour_Odd')
-                                                                                                        <div
-                                                                                                            class="block block-rounded">
-                                                                                                            <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
-                                                                                                                role="tablist">
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link active bg-danger
-                                                                                                            text-gray
-                                                                                                            text-white"
-                                                                                                                        id="btabs-alt-static-home-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-home"
-                                                                                                                        data-option-value='a'
-                                                                                                                        aria-selected="true">Answer
-                                                                                                                        A</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='b'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        B</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='c'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        C</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='d'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        D</button>
-                                                                                                                </li>
-                                                                                                            </ul>
-
-                                                                                                            <div
-                                                                                                                class="block-content tab-content">
-                                                                                                                <div class="tab-pane active"
-                                                                                                                    id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="0"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-home-tab">
-                                                                                                                    <p>NO
-                                                                                                                        CHANGE:
-                                                                                                                        1/9
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="1"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>1/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="2"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>6/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="3"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>7/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFour_Even')
-                                                                                                        <div
-                                                                                                            class="block block-rounded">
-                                                                                                            <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
-                                                                                                                role="tablist">
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link active bg-danger
-                                                                                                            text-gray
-                                                                                                            text-white"
-                                                                                                                        id="btabs-alt-static-home-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1f_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-home"
-                                                                                                                        data-option-value='f'
-                                                                                                                        aria-selected="true">Answer
-                                                                                                                        F</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1g_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='g'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        G</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1h_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='h'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        H</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1j_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='j'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        J</button>
-                                                                                                                </li>
-                                                                                                            </ul>
-
-                                                                                                            <div
-                                                                                                                class="block-content tab-content">
-                                                                                                                <div class="tab-pane active"
-                                                                                                                    id="btabs-alt-static-q1f_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="0"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-home-tab">
-                                                                                                                    <p>NO
-                                                                                                                        CHANGE:
-                                                                                                                        1/9
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1g_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="1"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>1/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1h_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="2"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>6/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1j_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="3"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>7/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFourPass_Odd')
-                                                                                                        <div
-                                                                                                            class="block block-rounded">
-                                                                                                            <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
-                                                                                                                role="tablist">
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link active bg-danger
-                                                                                                            text-gray
-                                                                                                            text-white"
-                                                                                                                        id="btabs-alt-static-home-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-home"
-                                                                                                                        data-option-value='a'
-                                                                                                                        aria-selected="true">Answer
-                                                                                                                        A</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='b'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        B</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='c'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        C</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='d'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        D</button>
-                                                                                                                </li>
-                                                                                                            </ul>
-
-                                                                                                            <div
-                                                                                                                class="block-content tab-content">
-                                                                                                                <div class="tab-pane active"
-                                                                                                                    id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="0"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-home-tab">
-                                                                                                                    <p>NO
-                                                                                                                        CHANGE:
-                                                                                                                        1/9
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="1"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>1/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="2"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>6/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="3"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>7/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFourPass_Even')
-                                                                                                        <div
-                                                                                                            class="block block-rounded">
-                                                                                                            <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
-                                                                                                                role="tablist">
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link active bg-danger
-                                                                                                            text-gray
-                                                                                                            text-white"
-                                                                                                                        id="btabs-alt-static-home-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1f_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-home"
-                                                                                                                        data-option-value='f'
-                                                                                                                        aria-selected="true">Answer
-                                                                                                                        F</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1g_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='g'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        G</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1h_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='h'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        H</button>
-                                                                                                                </li>
-                                                                                                                <li
-                                                                                                                    class="nav-item">
-                                                                                                                    <button
-                                                                                                                        class="nav-link bg-city-dark text-gray"
-                                                                                                                        id="btabs-alt-static-profile-tab"
-                                                                                                                        data-bs-toggle="tab"
-                                                                                                                        data-bs-target="#btabs-alt-static-q1j_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        role="tab"
-                                                                                                                        aria-controls="btabs-alt-static-profile"
-                                                                                                                        data-option-value='j'
-                                                                                                                        aria-selected="false">Answer
-                                                                                                                        J</button>
-                                                                                                                </li>
-                                                                                                            </ul>
-
-                                                                                                            <div
-                                                                                                                class="block-content tab-content">
-                                                                                                                <div class="tab-pane active"
-                                                                                                                    id="btabs-alt-static-q1f_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="0"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-home-tab">
-                                                                                                                    <p>NO
-                                                                                                                        CHANGE:
-                                                                                                                        1/9
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1g_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="1"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>1/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1h_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="2"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>6/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                                <div class="tab-pane"
-                                                                                                                    id="btabs-alt-static-q1j_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                    data-option="3"
-                                                                                                                    role="tabpanel"
-                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                    <p>7/15
-                                                                                                                    </p>
-                                                                                                                    <p><b>Explanation:
-                                                                                                                        </b>Reasons...
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceMultInFourFill')
-                                                                                                        {{-- {{dd($single_user_selected_answers['get_question_details'][0]->is_multiple_choice)}} --}}
-                                                                                                        @if ($single_user_selected_answers['get_question_details'][0]->is_multiple_choice == 1)
-                                                                                                            <div
-                                                                                                                class="block block-rounded">
-                                                                                                                <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
-                                                                                                                    role="tablist">
-                                                                                                                    <li
-                                                                                                                        class="nav-item">
-                                                                                                                        <button
-                                                                                                                            class="nav-link active bg-danger
                                                                                                                 text-gray
                                                                                                                 text-white"
-                                                                                                                            id="btabs-alt-static-home-tab"
-                                                                                                                            data-bs-toggle="tab"
-                                                                                                                            data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                            role="tab"
-                                                                                                                            aria-controls="btabs-alt-static-home"
-                                                                                                                            data-option-value='a'
-                                                                                                                            aria-selected="true">Answer
-                                                                                                                            A</button>
-                                                                                                                    </li>
-                                                                                                                    <li
-                                                                                                                        class="nav-item">
-                                                                                                                        <button
-                                                                                                                            class="nav-link bg-city-dark text-gray"
-                                                                                                                            id="btabs-alt-static-profile-tab"
-                                                                                                                            data-bs-toggle="tab"
-                                                                                                                            data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                            role="tab"
-                                                                                                                            aria-controls="btabs-alt-static-profile"
-                                                                                                                            data-option-value='b'
-                                                                                                                            aria-selected="false">Answer
-                                                                                                                            B</button>
-                                                                                                                    </li>
-                                                                                                                    <li
-                                                                                                                        class="nav-item">
-                                                                                                                        <button
-                                                                                                                            class="nav-link bg-city-dark text-gray"
-                                                                                                                            id="btabs-alt-static-profile-tab"
-                                                                                                                            data-bs-toggle="tab"
-                                                                                                                            data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                            role="tab"
-                                                                                                                            aria-controls="btabs-alt-static-profile"
-                                                                                                                            data-option-value='c'
-                                                                                                                            aria-selected="false">Answer
-                                                                                                                            C</button>
-                                                                                                                    </li>
-                                                                                                                    <li
-                                                                                                                        class="nav-item">
-                                                                                                                        <button
-                                                                                                                            class="nav-link bg-city-dark text-gray"
-                                                                                                                            id="btabs-alt-static-profile-tab"
-                                                                                                                            data-bs-toggle="tab"
-                                                                                                                            data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                            role="tab"
-                                                                                                                            aria-controls="btabs-alt-static-profile"
-                                                                                                                            data-option-value='d'
-                                                                                                                            aria-selected="false">Answer
-                                                                                                                            D</button>
-                                                                                                                    </li>
-                                                                                                                </ul>
+                                                                                                                        id="btabs-alt-static-home-tab"
+                                                                                                                        data-bs-toggle="tab"
+                                                                                                                        data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                        role="tab"
+                                                                                                                        aria-controls="btabs-alt-static-home"
+                                                                                                                        data-option-value='a'
+                                                                                                                        aria-selected="true">
+                                                                                                                        A</button>
+                                                                                                                </li>
+                                                                                                                <li
+                                                                                                                    class="nav-item">
+                                                                                                                    <button
+                                                                                                                        class="nav-link bg-city-dark text-gray"
+                                                                                                                        id="btabs-alt-static-profile-tab"
+                                                                                                                        data-bs-toggle="tab"
+                                                                                                                        data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                        role="tab"
+                                                                                                                        aria-controls="btabs-alt-static-profile"
+                                                                                                                        data-option-value='b'
+                                                                                                                        aria-selected="false">
+                                                                                                                        B</button>
+                                                                                                                </li>
+                                                                                                                <li
+                                                                                                                    class="nav-item">
+                                                                                                                    <button
+                                                                                                                        class="nav-link bg-city-dark text-gray"
+                                                                                                                        id="btabs-alt-static-profile-tab"
+                                                                                                                        data-bs-toggle="tab"
+                                                                                                                        data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                        role="tab"
+                                                                                                                        aria-controls="btabs-alt-static-profile"
+                                                                                                                        data-option-value='c'
+                                                                                                                        aria-selected="false">
+                                                                                                                        C</button>
+                                                                                                                </li>
+                                                                                                                <li
+                                                                                                                    class="nav-item">
+                                                                                                                    <button
+                                                                                                                        class="nav-link bg-city-dark text-gray"
+                                                                                                                        id="btabs-alt-static-profile-tab"
+                                                                                                                        data-bs-toggle="tab"
+                                                                                                                        data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                        role="tab"
+                                                                                                                        aria-controls="btabs-alt-static-profile"
+                                                                                                                        data-option-value='d'
+                                                                                                                        aria-selected="false">
+                                                                                                                        D</button>
+                                                                                                                </li>
+                                                                                                            </ul>
 
-                                                                                                                <div
-                                                                                                                    class="block-content tab-content">
-                                                                                                                    <div class="tab-pane active"
-                                                                                                                        id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        data-option="0"
-                                                                                                                        role="tabpanel"
-                                                                                                                        aria-labelledby="btabs-alt-static-home-tab">
-                                                                                                                        <p>NO
-                                                                                                                            CHANGE:
-                                                                                                                            1/9
-                                                                                                                        </p>
-                                                                                                                        <p><b>Explanation:
-                                                                                                                            </b>Reasons...
-                                                                                                                        </p>
-                                                                                                                    </div>
-                                                                                                                    <div class="tab-pane"
-                                                                                                                        id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        data-option="1"
-                                                                                                                        role="tabpanel"
-                                                                                                                        aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                        <p>1/15
-                                                                                                                        </p>
-                                                                                                                        <p><b>Explanation:
-                                                                                                                            </b>Reasons...
-                                                                                                                        </p>
-                                                                                                                    </div>
-                                                                                                                    <div class="tab-pane"
-                                                                                                                        id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        data-option="2"
-                                                                                                                        role="tabpanel"
-                                                                                                                        aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                        <p>6/15
-                                                                                                                        </p>
-                                                                                                                        <p><b>Explanation:
-                                                                                                                            </b>Reasons...
-                                                                                                                        </p>
-                                                                                                                    </div>
-                                                                                                                    <div class="tab-pane"
-                                                                                                                        id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        data-option="3"
-                                                                                                                        role="tabpanel"
-                                                                                                                        aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                        <p>7/15
-                                                                                                                        </p>
-                                                                                                                        <p><b>Explanation:
-                                                                                                                            </b>Reasons...
-                                                                                                                        </p>
-                                                                                                                    </div>
+                                                                                                            <div
+                                                                                                                class="block-content tab-content">
+                                                                                                                <div class="tab-pane active"
+                                                                                                                    id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    data-option="0"
+                                                                                                                    role="tabpanel"
+                                                                                                                    aria-labelledby="btabs-alt-static-home-tab">
+                                                                                                                    <p>NO
+                                                                                                                        CHANGE:
+                                                                                                                        1/9
+                                                                                                                    </p>
+                                                                                                                    <p><b>Explanation:
+                                                                                                                        </b>Reasons...
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                                <div class="tab-pane"
+                                                                                                                    id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    data-option="1"
+                                                                                                                    role="tabpanel"
+                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                    <p>1/15
+                                                                                                                    </p>
+                                                                                                                    <p><b>Explanation:
+                                                                                                                        </b>Reasons...
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                                <div class="tab-pane"
+                                                                                                                    id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    data-option="2"
+                                                                                                                    role="tabpanel"
+                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                    <p>6/15
+                                                                                                                    </p>
+                                                                                                                    <p><b>Explanation:
+                                                                                                                        </b>Reasons...
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                                <div class="tab-pane"
+                                                                                                                    id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    data-option="3"
+                                                                                                                    role="tabpanel"
+                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                    <p>7/15
+                                                                                                                    </p>
+                                                                                                                    <p><b>Explanation:
+                                                                                                                        </b>Reasons...
+                                                                                                                    </p>
                                                                                                                 </div>
                                                                                                             </div>
-                                                                                                        @elseif($single_user_selected_answers['get_question_details'][0]->is_multiple_choice == 3)
-                                                                                                            <div
-                                                                                                                class="block block-rounded">
-                                                                                                                <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
-                                                                                                                    role="tablist">
-                                                                                                                    <li
-                                                                                                                        class="nav-item">
-                                                                                                                        <button
-                                                                                                                            class="nav-link active bg-danger
+                                                                                                        </div>
+                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->is_multiple_choice == 3)
+                                                                                                        <div
+                                                                                                            class="block block-rounded">
+                                                                                                            <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
+                                                                                                                role="tablist">
+                                                                                                                <li
+                                                                                                                    class="nav-item">
+                                                                                                                    <button
+                                                                                                                        class="nav-link active bg-danger
                                                                                                                 text-gray
                                                                                                                 text-white"
-                                                                                                                            id="btabs-alt-static-home-tab"
-                                                                                                                            data-bs-toggle="tab"
-                                                                                                                            data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                            role="tab"
-                                                                                                                            aria-controls="btabs-alt-static-home"
-                                                                                                                            data-option-value='a'
-                                                                                                                            aria-selected="true">Answer
-                                                                                                                            A</button>
-                                                                                                                    </li>
-                                                                                                                    <li
-                                                                                                                        class="nav-item">
-                                                                                                                        <button
-                                                                                                                            class="nav-link bg-city-dark text-gray"
-                                                                                                                            id="btabs-alt-static-profile-tab"
-                                                                                                                            data-bs-toggle="tab"
-                                                                                                                            data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                            role="tab"
-                                                                                                                            aria-controls="btabs-alt-static-profile"
-                                                                                                                            data-option-value='b'
-                                                                                                                            aria-selected="false">Answer
-                                                                                                                            B</button>
-                                                                                                                    </li>
-                                                                                                                    <li
-                                                                                                                        class="nav-item">
-                                                                                                                        <button
-                                                                                                                            class="nav-link bg-city-dark text-gray"
-                                                                                                                            id="btabs-alt-static-profile-tab"
-                                                                                                                            data-bs-toggle="tab"
-                                                                                                                            data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                            role="tab"
-                                                                                                                            aria-controls="btabs-alt-static-profile"
-                                                                                                                            data-option-value='c'
-                                                                                                                            aria-selected="false">Answer
-                                                                                                                            C</button>
-                                                                                                                    </li>
-                                                                                                                    <li
-                                                                                                                        class="nav-item">
-                                                                                                                        <button
-                                                                                                                            class="nav-link bg-city-dark text-gray"
-                                                                                                                            id="btabs-alt-static-profile-tab"
-                                                                                                                            data-bs-toggle="tab"
-                                                                                                                            data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                            role="tab"
-                                                                                                                            aria-controls="btabs-alt-static-profile"
-                                                                                                                            data-option-value='d'
-                                                                                                                            aria-selected="false">Answer
-                                                                                                                            D</button>
-                                                                                                                    </li>
-                                                                                                                </ul>
+                                                                                                                        id="btabs-alt-static-home-tab"
+                                                                                                                        data-bs-toggle="tab"
+                                                                                                                        data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                        role="tab"
+                                                                                                                        aria-controls="btabs-alt-static-home"
+                                                                                                                        data-option-value='a'
+                                                                                                                        aria-selected="true">
+                                                                                                                        A</button>
+                                                                                                                </li>
+                                                                                                                <li
+                                                                                                                    class="nav-item">
+                                                                                                                    <button
+                                                                                                                        class="nav-link bg-city-dark text-gray"
+                                                                                                                        id="btabs-alt-static-profile-tab"
+                                                                                                                        data-bs-toggle="tab"
+                                                                                                                        data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                        role="tab"
+                                                                                                                        aria-controls="btabs-alt-static-profile"
+                                                                                                                        data-option-value='b'
+                                                                                                                        aria-selected="false">
+                                                                                                                        B</button>
+                                                                                                                </li>
+                                                                                                                <li
+                                                                                                                    class="nav-item">
+                                                                                                                    <button
+                                                                                                                        class="nav-link bg-city-dark text-gray"
+                                                                                                                        id="btabs-alt-static-profile-tab"
+                                                                                                                        data-bs-toggle="tab"
+                                                                                                                        data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                        role="tab"
+                                                                                                                        aria-controls="btabs-alt-static-profile"
+                                                                                                                        data-option-value='c'
+                                                                                                                        aria-selected="false">
+                                                                                                                        C</button>
+                                                                                                                </li>
+                                                                                                                <li
+                                                                                                                    class="nav-item">
+                                                                                                                    <button
+                                                                                                                        class="nav-link bg-city-dark text-gray"
+                                                                                                                        id="btabs-alt-static-profile-tab"
+                                                                                                                        data-bs-toggle="tab"
+                                                                                                                        data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                        role="tab"
+                                                                                                                        aria-controls="btabs-alt-static-profile"
+                                                                                                                        data-option-value='d'
+                                                                                                                        aria-selected="false">
+                                                                                                                        D</button>
+                                                                                                                </li>
+                                                                                                            </ul>
 
-                                                                                                                <div
-                                                                                                                    class="block-content tab-content">
-                                                                                                                    <div class="tab-pane active"
-                                                                                                                        id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        data-option="0"
-                                                                                                                        role="tabpanel"
-                                                                                                                        aria-labelledby="btabs-alt-static-home-tab">
-                                                                                                                        <p>NO
-                                                                                                                            CHANGE:
-                                                                                                                            1/9
-                                                                                                                        </p>
-                                                                                                                        <p><b>Explanation:
-                                                                                                                            </b>Reasons...
-                                                                                                                        </p>
-                                                                                                                    </div>
-                                                                                                                    <div class="tab-pane"
-                                                                                                                        id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        data-option="1"
-                                                                                                                        role="tabpanel"
-                                                                                                                        aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                        <p>1/15
-                                                                                                                        </p>
-                                                                                                                        <p><b>Explanation:
-                                                                                                                            </b>Reasons...
-                                                                                                                        </p>
-                                                                                                                    </div>
-                                                                                                                    <div class="tab-pane"
-                                                                                                                        id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        data-option="2"
-                                                                                                                        role="tabpanel"
-                                                                                                                        aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                        <p>6/15
-                                                                                                                        </p>
-                                                                                                                        <p><b>Explanation:
-                                                                                                                            </b>Reasons...
-                                                                                                                        </p>
-                                                                                                                    </div>
-                                                                                                                    <div class="tab-pane"
-                                                                                                                        id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                        data-option="3"
-                                                                                                                        role="tabpanel"
-                                                                                                                        aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                                        <p>7/15
-                                                                                                                        </p>
-                                                                                                                        <p><b>Explanation:
-                                                                                                                            </b>Reasons...
-                                                                                                                        </p>
-                                                                                                                    </div>
+                                                                                                            <div
+                                                                                                                class="block-content tab-content">
+                                                                                                                <div class="tab-pane active"
+                                                                                                                    id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    data-option="0"
+                                                                                                                    role="tabpanel"
+                                                                                                                    aria-labelledby="btabs-alt-static-home-tab">
+                                                                                                                    <p>NO
+                                                                                                                        CHANGE:
+                                                                                                                        1/9
+                                                                                                                    </p>
+                                                                                                                    <p><b>Explanation:
+                                                                                                                        </b>Reasons...
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                                <div class="tab-pane"
+                                                                                                                    id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    data-option="1"
+                                                                                                                    role="tabpanel"
+                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                    <p>1/15
+                                                                                                                    </p>
+                                                                                                                    <p><b>Explanation:
+                                                                                                                        </b>Reasons...
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                                <div class="tab-pane"
+                                                                                                                    id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    data-option="2"
+                                                                                                                    role="tabpanel"
+                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                    <p>6/15
+                                                                                                                    </p>
+                                                                                                                    <p><b>Explanation:
+                                                                                                                        </b>Reasons...
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                                <div class="tab-pane"
+                                                                                                                    id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    data-option="3"
+                                                                                                                    role="tabpanel"
+                                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                    <p>7/15
+                                                                                                                    </p>
+                                                                                                                    <p><b>Explanation:
+                                                                                                                        </b>Reasons...
+                                                                                                                    </p>
                                                                                                                 </div>
                                                                                                             </div>
-                                                                                                            <?php $helper = new Helper(); ?>
-                                                                                                        @elseif($single_user_selected_answers['get_question_details'][0]->is_multiple_choice == 2)
-                                                                                                            <div
-                                                                                                                class="block block-rounded">
-                                                                                                                <ul class="nav nav-tabs nav-tabs-alt"
-                                                                                                                    role="tablist">
-                                                                                                                    {{-- @if (in_array(str_replace(' ', '', $single_user_selected_answers['user_selected_answer']), explode(',', $correct[0])) || in_array(str_replace(' ', '', $single_user_selected_answers['user_selected_answer']), $correct) || Str::contains($correct[0], explode(',', str_replace(' ', '', $single_user_selected_answers['user_selected_answer'])))) --}}
-                                                                                                                    {{-- @if (Str::contains($single_user_selected_answers['get_question_details'][0]->question_answer, explode(',', $single_user_selected_answers['user_selected_answer']))) --}}
-                                                                                                                    @if ($helper->stringExactMatch($correct[0], $single_user_selected_answers['user_selected_answer']))
-                                                                                                                        <li
-                                                                                                                            class="nav-item">
-                                                                                                                            <button
-                                                                                                                                style="background: #65a30d !important;"
-                                                                                                                                class="nav-link active bg-danger
-                                                                                                                    text-gray
-                                                                                                                    text-white"
-                                                                                                                                id="btabs-alt-static-home-tab"
-                                                                                                                                data-bs-toggle="tab"
-                                                                                                                                data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                                role="tab"
-                                                                                                                                aria-controls="btabs-alt-static-home"
-                                                                                                                                data-option-value='a'
-                                                                                                                                aria-selected="true">{{ $single_user_selected_answers['user_selected_answer'] }}</button>
-                                                                                                                        </li>
-                                                                                                                    @else
-                                                                                                                        <li
-                                                                                                                            class="nav-item">
-                                                                                                                            <button
-                                                                                                                                style="background: #dc2626 !important;"
-                                                                                                                                class="nav-link active bg-danger
-                                                                                                                    text-gray
-                                                                                                                    text-white"
-                                                                                                                                id="btabs-alt-static-home-tab"
-                                                                                                                                data-bs-toggle="tab"
-                                                                                                                                data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                                                                                role="tab"
-                                                                                                                                aria-controls="btabs-alt-static-home"
-                                                                                                                                data-option-value='a'
-                                                                                                                                aria-selected="true">{{ $single_user_selected_answers['user_selected_answer'] }}</button>
-                                                                                                                        </li>
-                                                                                                                    @endif
+                                                                                                        </div>
+                                                                                                        <?php $helper = new Helper(); ?>
+                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->is_multiple_choice == 2)
+                                                                                                        <div
+                                                                                                            class="block block-rounded">
+                                                                                                            <ul class="nav nav-tabs nav-tabs-alt"
+                                                                                                                role="tablist">
+                                                                                                                {{-- @if (in_array(str_replace(' ', '', $single_user_selected_answers['user_selected_answer']), explode(',', $correct[0])) || in_array(str_replace(' ', '', $single_user_selected_answers['user_selected_answer']), $correct) || Str::contains($correct[0], explode(',', str_replace(' ', '', $single_user_selected_answers['user_selected_answer'])))) --}}
+                                                                                                                {{-- @if (Str::contains($single_user_selected_answers['get_question_details'][0]->question_answer, explode(',', $single_user_selected_answers['user_selected_answer']))) --}}
+                                                                                                                @if ($helper->stringExactMatch($correct[0], $single_user_selected_answers['user_selected_answer']))
                                                                                                                     <li
                                                                                                                         class="nav-item">
                                                                                                                         <button
                                                                                                                             style="background: #65a30d !important;"
                                                                                                                             class="nav-link active bg-danger
-                                                                                                                text-gray
-                                                                                                                text-white"
+                                                                                                                    text-gray
+                                                                                                                    text-white"
                                                                                                                             id="btabs-alt-static-home-tab"
                                                                                                                             data-bs-toggle="tab"
                                                                                                                             data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
                                                                                                                             role="tab"
                                                                                                                             aria-controls="btabs-alt-static-home"
                                                                                                                             data-option-value='a'
-                                                                                                                            aria-selected="true">{{ $single_user_selected_answers['get_question_details'][0]->question_answer }}</button>
+                                                                                                                            aria-selected="true">{{ $single_user_selected_answers['user_selected_answer'] }}</button>
                                                                                                                     </li>
-                                                                                                                </ul>
-                                                                                                            </div>
-                                                                                                        @endif
+                                                                                                                @else
+                                                                                                                    <li
+                                                                                                                        class="nav-item">
+                                                                                                                        <button
+                                                                                                                            style="background: #dc2626 !important;"
+                                                                                                                            class="nav-link active bg-danger
+                                                                                                                    text-gray
+                                                                                                                    text-white"
+                                                                                                                            id="btabs-alt-static-home-tab"
+                                                                                                                            data-bs-toggle="tab"
+                                                                                                                            data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                            role="tab"
+                                                                                                                            aria-controls="btabs-alt-static-home"
+                                                                                                                            data-option-value='a'
+                                                                                                                            aria-selected="true">{{ $single_user_selected_answers['user_selected_answer'] }}</button>
+                                                                                                                    </li>
+                                                                                                                @endif
+                                                                                                                <li
+                                                                                                                    class="nav-item">
+                                                                                                                    <button
+                                                                                                                        style="background: #65a30d !important;"
+                                                                                                                        class="nav-link active bg-danger
+                                                                                                                text-gray
+                                                                                                                text-white"
+                                                                                                                        id="btabs-alt-static-home-tab"
+                                                                                                                        data-bs-toggle="tab"
+                                                                                                                        data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                        role="tab"
+                                                                                                                        aria-controls="btabs-alt-static-home"
+                                                                                                                        data-option-value='a'
+                                                                                                                        aria-selected="true">{{ $single_user_selected_answers['get_question_details'][0]->question_answer }}</button>
+                                                                                                                </li>
+                                                                                                            </ul>
+                                                                                                        </div>
                                                                                                     @endif
+                                                                                                @endif
+                                                                                                <div id="my-block"
+                                                                                                    class="block block-rounded block-bordered my-2">
+                                                                                                    <div
+                                                                                                        class="block-content">
+                                                                                                        Notes
+                                                                                                    </div>
+                                                                                                    @php
+                                                                                                        $notes = \DB::table(
+                                                                                                            'practice_question_notes',
+                                                                                                        )
+                                                                                                            ->where(
+                                                                                                                'user_id',
+                                                                                                                Auth::user()
+                                                                                                                    ->id,
+                                                                                                            )
+                                                                                                            ->where(
+                                                                                                                'practice_question_id',
+                                                                                                                $single_user_selected_answers[
+                                                                                                                    'get_question_details'
+                                                                                                                ][0]
+                                                                                                                    ->question_id,
+                                                                                                            )
+                                                                                                            ->select(
+                                                                                                                'notes',
+                                                                                                            )
+                                                                                                            ->first();
+                                                                                                        //    dump($notes);
+                                                                                                    @endphp
+                                                                                                    <div
+                                                                                                        class="block-content">
+                                                                                                        <textarea class="form-control"
+                                                                                                            onchange="handleNotesChange(this,{{ $single_user_selected_answers['get_question_details'][0]->question_id }})"
+                                                                                                            placeholder="Enter your notes here...">
+@if (isset($notes))
+{{ $notes->notes }}
+@endif
+</textarea>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="block-content block-content-full text-end bg-body">
+
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn btn-sm block-header-default  text-white review_model_close"
+                                                                                                        data-bs-dismiss="modal">Close</button>
                                                                                                 </div>
                                                                                             </div>
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <br />
+
+                                                                        <div class="col-md-6 mb-2">
+                                                                            <select class="form-select mistake-type"
+                                                                                id="example-select"
+                                                                                data-question-id="{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
+                                                                                name="example-select">
+                                                                                <option value="" selected>Mistake
+                                                                                    Type (Select
+                                                                                    One)</option>
+                                                                                <option
+                                                                                    @if ($single_user_selected_answers['get_question_details'][0]->mistake_type == 'content_misunderstanding') selected @endif
+                                                                                    value="content_misunderstanding">
+                                                                                    Content
+                                                                                    Misunderstanding
+                                                                                </option>
+                                                                                <option
+                                                                                    @if ($single_user_selected_answers['get_question_details'][0]->mistake_type == 'random_error') selected @endif
+                                                                                    value="random_error">Random
+                                                                                    Error
+                                                                                </option>
+                                                                                <option
+                                                                                    @if ($single_user_selected_answers['get_question_details'][0]->mistake_type == 'timing_issue') selected @endif
+                                                                                    value="timing_issue">Timing
+                                                                                    Issue
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
+
+                                                                        <table
+                                                                            class="table table-bordered table-striped table-vcenter js-dataTable-responsive">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th style="width: 30%;"
+                                                                                        class="sorting" tabindex="0"
+                                                                                        aria-controls="DataTables_Table_4"
+                                                                                        rowspan="1" colspan="1"
+                                                                                        aria-label="Name: activate to sort column ascending">
+                                                                                        Category</th>
+                                                                                    <th style="width: 55%;"
+                                                                                        class="sorting" tabindex="0"
+                                                                                        aria-controls="DataTables_Table_4"
+                                                                                        rowspan="1" colspan="1"
+                                                                                        aria-label="Name: activate to sort column ascending">
+                                                                                        Question Type</th>
+                                                                                    <th style="width: 15%;"
+                                                                                        class="sorting" tabindex="0"
+                                                                                        aria-controls="DataTables_Table_4"
+                                                                                        rowspan="1" colspan="1"
+                                                                                        aria-label="Name: activate to sort column ascending">
+                                                                                        Add to
+                                                                                        Custom Quiz</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+
+                                                                                @php
+                                                                                    $category_type_arr =
+                                                                                        $categoryTypeData[
+                                                                                            $single_user_selected_answers[
+                                                                                                'get_question_details'
+                                                                                            ][0]->question_id
+                                                                                        ] ?? [];
+                                                                                    $question_type_arr =
+                                                                                        $questionTypeData[
+                                                                                            $single_user_selected_answers[
+                                                                                                'get_question_details'
+                                                                                            ][0]->question_id
+                                                                                        ] ?? [];
+                                                                                    $checkbox_arr =
+                                                                                        $checkboxData[
+                                                                                            $single_user_selected_answers[
+                                                                                                'get_question_details'
+                                                                                            ][0]->question_id
+                                                                                        ] ?? [];
+                                                                                    $user_selected_answer =
+                                                                                        $single_user_selected_answers[
+                                                                                            'user_selected_answer'
+                                                                                        ] ?? '';
+                                                                                    $question_id =
+                                                                                        $single_user_selected_answers[
+                                                                                            'get_question_details'
+                                                                                        ][0]->question_id ?? '';
+                                                                                @endphp
+                                                                                @if (empty($user_selected_answer) || $user_selected_answer === '-')
+                                                                                    @php
+                                                                                        $newcategory_type_arr = [];
+                                                                                        foreach (
+                                                                                            $category_type_arr
+                                                                                            as $key => $category_type
+                                                                                        ):
+                                                                                            foreach (
+                                                                                                $category_type
+                                                                                                as $key2 => $v2
+                                                                                            ):
+                                                                                                $flag = false;
+                                                                                                foreach (
+                                                                                                    $newcategory_type_arr
+                                                                                                    as $key3 => $v
+                                                                                                ):
+                                                                                                    if (
+                                                                                                        in_array(
+                                                                                                            $v2,
+                                                                                                            $v,
+                                                                                                        )
+                                                                                                    ):
+                                                                                                        $flag = true;
+                                                                                                    endif;
+                                                                                                endforeach;
+                                                                                                if ($flag):
+                                                                                                    break;
+                                                                                                endif;
+                                                                                                $newcategory_type_arr[
+                                                                                                    $key
+                                                                                                ][] = $v2;
+                                                                                            endforeach;
+                                                                                        endforeach;
+                                                                                        $category_type_arr = $newcategory_type_arr;
+                                                                                    @endphp
+                                                                                    @foreach ($category_type_arr as $key => $category_type)
+                                                                                        @for ($i = 0; $i < count($category_type); $i++)
+                                                                                            <?php
+                                                                                            // dump($question_type_arr);
+                                                                                            // dump($key);
+                                                                                            // dump($i);
+                                                                                            $question_arrs = \DB::table('question_types')
+                                                                                                ->whereIn('id', $question_type_arr[$key])
+                                                                                                ->get();
+                                                                                            // dd($question_arrs);
+                                                                                            ?>
+                                                                                            @foreach ($question_arrs as $question_arr)
+                                                                                                <tr
+                                                                                                    class="odd {{ $question_id }}">
+                                                                                                    <td
+                                                                                                        class="{{ $question_id }}">
+                                                                                                        <?php
+                                                                                                        $modal_count = 1;
+                                                                                                        $category_arr = Helper::getCategoryNameByID($category_type[$i]);
+                                                                                                        // dump($category_arr);
+                                                                                                        $modal_count = $modal_count++;
+                                                                                                        ?>
+                                                                                                        <button
+                                                                                                            type="button"
+                                                                                                            data-bs-toggle="modal"
+                                                                                                            data-bs-target="#modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                            class="btn btn-danger fs-xs fw-semibold me-1 category_description"
+                                                                                                            data-category_title="{{ isset($category_arr->category_type_title) ? $category_arr->category_type_title : '' }}"
+                                                                                                            data-category_description="{{ isset($category_arr->category_type_description) ? $category_arr->category_type_description : '' }}"
+                                                                                                            data-category_lesson="{{ isset($category_arr->category_type_lesson) ? $category_arr->category_type_lesson : '' }}"
+                                                                                                            data-category_strategies="{{ isset($category_arr->category_type_strategies) ? $category_arr->category_type_strategies : '' }}"
+                                                                                                            data-category_identification_methods="{{ isset($category_arr->category_type_identification_methods) ? $category_arr->category_type_identification_methods : '' }}"
+                                                                                                            data-category_identification_activity="{{ isset($category_arr->category_type_identification_activity) ? $category_arr->category_type_identification_activity : '' }}">
+                                                                                                            {{ isset($category_arr->category_type_title) ? $category_arr->category_type_title : '' }}</button>
+
+                                                                                                        {{-- start model  --}}
+                                                                                                        <div class="modal"
+                                                                                                            id="modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                            tabindex="-1"
+                                                                                                            aria-labelledby="modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                            style="display: none;"
+                                                                                                            aria-hidden="true">
+                                                                                                            <div class="modal-dialog modal-lg"
+                                                                                                                role="document">
+                                                                                                                <div
+                                                                                                                    class="modal-content">
+                                                                                                                    <div
+                                                                                                                        class="block block-rounded">
+                                                                                                                        <div
+                                                                                                                            class="block-header block-header-default">
+                                                                                                                            <h3
+                                                                                                                                class="block-title set_category_title">
+                                                                                                                            </h3>
+                                                                                                                        </div>
+                                                                                                                        <div
+                                                                                                                            class="block-content">
+                                                                                                                            <p
+                                                                                                                                class="fs-sm mb-0">
+                                                                                                                            </p>
+
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Description
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+
+                                                                                                                                    <div
+                                                                                                                                        class="block-content set_category_description">
+                                                                                                                                        <p>other
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            {{-- start new  --}}
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Lesson
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_category_type_lesson">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Strategies
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_category_type_strategies">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Identification
+                                                                                                                                            Methods
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_category_type_identification_methods">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Identification
+                                                                                                                                            Activity
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_category_type_identification_activity">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+
+                                                                                                                        <div
+                                                                                                                            class="block-content block-content-full text-end bg-body">
+                                                                                                                            <button
+                                                                                                                                type="button"
+                                                                                                                                class="btn btn-sm block-header-default text-white"
+                                                                                                                                data-bs-dismiss="modal">Close</button>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </td>
+                                                                                                    <td>
+
+                                                                                                        <button
+                                                                                                            type="button"
+                                                                                                            data-bs-toggle="modal"
+                                                                                                            data-question_desc="{{ isset($question_arr->question_type_description) ? $question_arr->question_type_description : '' }}"
+                                                                                                            data-question_title="{{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}"
+                                                                                                            data-question_lesson="{{ isset($question_arr->question_type_lesson) ? $question_arr->question_type_lesson : '' }}"
+                                                                                                            data-question_strategies="{{ isset($question_arr->question_type_strategies) ? $question_arr->question_type_strategies : '' }}"
+                                                                                                            data-question_identification_methods="{{ isset($question_arr->question_type_identification_methods) ? $question_arr->question_type_identification_methods : '' }}"
+                                                                                                            data-question_identification_activity="{{ isset($question_arr->question_type_identification_activity) ? $question_arr->question_type_identification_activity : '' }}"
+                                                                                                            data-bs-target="#modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                            class="btn btn-danger fs-xs fw-semibold me-1 cat_type_desc_btn">{{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}</button>
+                                                                                                        {{-- start question type modal  --}}
+                                                                                                        <div class="modal"
+                                                                                                            id="modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                            tabindex="-1"
+                                                                                                            aria-labelledby="modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                            style="display: none;"
+                                                                                                            aria-hidden="true">
+                                                                                                            <div class="modal-dialog modal-lg"
+                                                                                                                role="document">
+                                                                                                                <div
+                                                                                                                    class="modal-content">
+                                                                                                                    <div
+                                                                                                                        class="block block-rounded">
+                                                                                                                        <div
+                                                                                                                            class="block-header block-header-default">
+                                                                                                                            <h3
+                                                                                                                                class="block-title set_question_type_title">
+                                                                                                                                Arithmetic
+                                                                                                                                Operations
+                                                                                                                            </h3>
+                                                                                                                        </div>
+                                                                                                                        <div
+                                                                                                                            class="block-content">
+                                                                                                                            <p
+                                                                                                                                class="fs-sm mb-0">
+                                                                                                                            </p>
+
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Description
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_question_type_desc">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            {{-- start  --}}
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Lesson
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_question_type_lesson">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Strategies
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_question_type_strategies">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Identification
+                                                                                                                                            Methods
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_question_type_identification_methods">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Identification
+                                                                                                                                            Activity
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_question_type_identification_activity">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            {{-- end  --}}
+                                                                                                                        </div>
+
+                                                                                                                        <div
+                                                                                                                            class="block-content block-content-full text-end bg-body">
+                                                                                                                            <button
+                                                                                                                                type="button"
+                                                                                                                                class="btn btn-sm block-header-default text-white"
+                                                                                                                                data-bs-dismiss="modal">Close</button>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        <div
+                                                                                                            class="block-content block-content-full text-center">
+                                                                                                            <input
+                                                                                                                class="add_to_custom_quiz form-check-input"
+                                                                                                                type="checkbox"
+                                                                                                                data-category-id={{ $category_type[$i] }}
+                                                                                                                data-question-type={{ $question_type_arr[$key][$i] }}
+                                                                                                                value=""
+                                                                                                                name="add_to_custom_quiz">
+                                                                                                        </div>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            @endforeach
+                                                                                        @endfor
+                                                                                    @endforeach
+                                                                                @else
+                                                                                    @foreach ($category_type_arr as $key => $category_type)
+                                                                                        @for ($i = 0; $i < count($category_type); $i++)
+                                                                                            @if (in_array(strtolower($key), explode(',', $single_user_selected_answers['user_selected_answer'])))
+                                                                                                <tr
+                                                                                                    class="odd {{ $question_id }}">
+                                                                                                    <td
+                                                                                                        class="{{ $question_id }}">
+                                                                                                        <?php
+                                                                                                        $modal_count = 1;
+                                                                                                        $category_arr = Helper::getCategoryNameByID($category_type[$i]);
+                                                                                                        $modal_count = $modal_count++;
+                                                                                                        ?>
+                                                                                                        <button
+                                                                                                            type="button"
+                                                                                                            data-bs-toggle="modal"
+                                                                                                            data-bs-target="#modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                            class="btn
+                                                                                                            @if ($checkbox_arr[$key][$i] == '1') btn-success
+                                                                                                            @elseif ($checkbox_arr[$key][$i] == '0')
+                                                                                                                btn-danger
+                                                                                                            @else
+                                                                                                                btn-dark @endif fs-xs fw-semibold me-1 category_description"
+                                                                                                            data-category_title="{{ isset($category_arr->category_type_title) ? $category_arr->category_type_title : '' }}"
+                                                                                                            data-category_description="{{ isset($category_arr->category_type_description) ? $category_arr->category_type_description : '' }}"
+                                                                                                            data-category_lesson="{{ isset($category_arr->category_type_lesson) ? $category_arr->category_type_lesson : '' }}"
+                                                                                                            data-category_strategies="{{ isset($category_arr->category_type_strategies) ? $category_arr->category_type_strategies : '' }}"
+                                                                                                            data-category_identification_methods="{{ isset($category_arr->category_type_identification_methods) ? $category_arr->category_type_identification_methods : '' }}"
+                                                                                                            data-category_identification_activity="{{ isset($category_arr->category_type_identification_activity) ? $category_arr->category_type_identification_activity : '' }}">
+                                                                                                            {{ isset($category_arr->category_type_title) ? $category_arr->category_type_title : '' }}</button>
+
+                                                                                                        {{-- start model  --}}
+                                                                                                        <div class="modal"
+                                                                                                            id="modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                            tabindex="-1"
+                                                                                                            aria-labelledby="modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                            style="display: none;"
+                                                                                                            aria-hidden="true">
+                                                                                                            <div class="modal-dialog modal-lg"
+                                                                                                                role="document">
+                                                                                                                <div
+                                                                                                                    class="modal-content">
+                                                                                                                    <div
+                                                                                                                        class="block block-rounded">
+                                                                                                                        <div
+                                                                                                                            class="block-header block-header-default">
+                                                                                                                            <h3
+                                                                                                                                class="block-title set_category_title">
+                                                                                                                            </h3>
+                                                                                                                        </div>
+                                                                                                                        <div
+                                                                                                                            class="block-content">
+                                                                                                                            <p
+                                                                                                                                class="fs-sm mb-0">
+                                                                                                                            </p>
+
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Description
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+
+                                                                                                                                    <div
+                                                                                                                                        class="block-content set_category_description">
+                                                                                                                                        <p>other
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            {{-- start new  --}}
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Lesson
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_category_type_lesson">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Strategies
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_category_type_strategies">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Identification
+                                                                                                                                            Methods
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_category_type_identification_methods">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Identification
+                                                                                                                                            Activity
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_category_type_identification_activity">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+
+                                                                                                                        <div
+                                                                                                                            class="block-content block-content-full text-end bg-body">
+                                                                                                                            <button
+                                                                                                                                type="button"
+                                                                                                                                class="btn btn-sm block-header-default text-white"
+                                                                                                                                data-bs-dismiss="modal">Close</button>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        <?php
+                                                                                                        $question_arr = Helper::getQuestionNameByID($question_type_arr[$key][$i]);
+                                                                                                        ?>
+                                                                                                        <button
+                                                                                                            type="button"
+                                                                                                            data-bs-toggle="modal"
+                                                                                                            data-question_desc="{{ isset($question_arr->question_type_description) ? $question_arr->question_type_description : '' }}"
+                                                                                                            data-question_title="{{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}"
+                                                                                                            data-question_lesson="{{ isset($question_arr->question_type_lesson) ? $question_arr->question_type_lesson : '' }}"
+                                                                                                            data-question_strategies="{{ isset($question_arr->question_type_strategies) ? $question_arr->question_type_strategies : '' }}"
+                                                                                                            data-question_identification_methods="{{ isset($question_arr->question_type_identification_methods) ? $question_arr->question_type_identification_methods : '' }}"
+                                                                                                            data-question_identification_activity="{{ isset($question_arr->question_type_identification_activity) ? $question_arr->question_type_identification_activity : '' }}"
+                                                                                                            data-bs-target="#modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                            class="btn @if ($checkbox_arr[$key][$i] == '1') btn-success
+                                                                                                                @elseif ($checkbox_arr[$key][$i] == '0')
+                                                                                                                btn-danger
+                                                                                                            @else
+                                                                                                            btn-dark @endif  fs-xs fw-semibold me-1 cat_type_desc_btn">{{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}</button>
+                                                                                                        {{-- start question type modal  --}}
+                                                                                                        <div class="modal"
+                                                                                                            id="modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                            tabindex="-1"
+                                                                                                            aria-labelledby="modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                            style="display: none;"
+                                                                                                            aria-hidden="true">
+                                                                                                            <div class="modal-dialog modal-lg"
+                                                                                                                role="document">
+                                                                                                                <div
+                                                                                                                    class="modal-content">
+                                                                                                                    <div
+                                                                                                                        class="block block-rounded">
+                                                                                                                        <div
+                                                                                                                            class="block-header block-header-default">
+                                                                                                                            <h3
+                                                                                                                                class="block-title set_question_type_title">
+                                                                                                                                Arithmetic
+                                                                                                                                Operations
+                                                                                                                            </h3>
+                                                                                                                        </div>
+                                                                                                                        <div
+                                                                                                                            class="block-content">
+                                                                                                                            <p
+                                                                                                                                class="fs-sm mb-0">
+                                                                                                                            </p>
+
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Description
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_question_type_desc">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            {{-- start  --}}
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Lesson
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_question_type_lesson">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Strategies
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_question_type_strategies">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Identification
+                                                                                                                                            Methods
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_question_type_identification_methods">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div
+                                                                                                                                class="row items-push">
+                                                                                                                                <div id="my-block"
+                                                                                                                                    class="block block-rounded block-bordered p-0">
+                                                                                                                                    <div
+                                                                                                                                        class="block-header block-header-default">
+                                                                                                                                        <h3
+                                                                                                                                            class="block-title">
+                                                                                                                                            Identification
+                                                                                                                                            Activity
+                                                                                                                                        </h3>
+                                                                                                                                        <div
+                                                                                                                                            class="block-options">
+                                                                                                                                            <button
+                                                                                                                                                type="button"
+                                                                                                                                                class="btn-block-option"
+                                                                                                                                                data-toggle="block-option"
+                                                                                                                                                data-action="content_toggle"><i
+                                                                                                                                                    class="si si-arrow-up"></i></button>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div
+                                                                                                                                        class="block-content">
+                                                                                                                                        <p
+                                                                                                                                            class="set_question_type_identification_activity">
+                                                                                                                                            words
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            {{-- end  --}}
+                                                                                                                        </div>
+
+                                                                                                                        <div
+                                                                                                                            class="block-content block-content-full text-end bg-body">
+                                                                                                                            <button
+                                                                                                                                type="button"
+                                                                                                                                class="btn btn-sm block-header-default text-white"
+                                                                                                                                data-bs-dismiss="modal">Close</button>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        <div
+                                                                                                            class="block-content block-content-full text-center">
+                                                                                                            <input
+                                                                                                                class="add_to_custom_quiz form-check-input"
+                                                                                                                type="checkbox"
+                                                                                                                data-category-id={{ $category_type[$i] }}
+                                                                                                                data-question-type={{ $question_type_arr[$key][$i] }}
+                                                                                                                value=""
+                                                                                                                name="add_to_custom_quiz">
+                                                                                                        </div>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            @endif
+                                                                                        @endfor
+                                                                                    @endforeach
+                                                                                @endif
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    @php
+                                                        $acc_id = $acc_id + 1;
+                                                    @endphp
+                                                @endforeach
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Category & Question Type Summary tab --}}
+                    <div class="tab-pane fade" id="btabs-animated-fade-profile" role="tabpanel"
+                        aria-labelledby="btabs-animated-fade-profile-tab" tabindex="0">
+                        @if ($test_details->format == 'DSAT' || $test_details->format == 'DPSAT')
+                            <div class="col-md-12 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" value=""
+                                        onchange="showAllModuleData(this)" name="mega-settings-status"
+                                        id="showCombined">
+                                    <label class="form-check-label fs-sm" for="mega-settings-status">Show
+                                        Combined</label>
+                                </div>
+                            </div>
+                        @endif
+
+
+
+
+
+                        <div class="block block-rounded">
+                            <div class="block-header block-header-default">
+                                <h3 class="block-title">(BEST SO FAR..) QUESTION TYPE CATEGORIZATION</h3>
+                            </div>
+                            <div class="block-content">
+                                <div class="block-content p-0">
+                                    <div class="custom-loader-his"></div>
+                                    @if (isset($categoryAndQuestionTypeSummaryData) && !empty($categoryAndQuestionTypeSummaryData))
+                                        <div class="tab-content" id="myTabContentSingle">
+                                            @php
+                                                $test = 0;
+                                            @endphp
+                                            <div class="setup-content" role="tabpanel" id="step1"
+                                                aria-labelledby="step1-tab">
+                                                <div class="accordion accordionExample">
+                                                    @foreach ($categoryAndQuestionTypeSummaryData as $categoryAndQuestionTypeSummary)
+                                                        @php
+                                                            $category_arr = Helper::getCategoryNameByID(
+                                                                $categoryAndQuestionTypeSummary['ct'],
+                                                            );
+                                                            // dump($category_arr);
+                                                        @endphp
+                                                        @if ($category_arr)
+                                                            <div
+                                                                class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                <div class="block-header block-header-tab justify-content-start"
+                                                                    type="button" data-toggle="collapse"
+                                                                    data-target="#collapseOne_{{ $categoryAndQuestionTypeSummary['ct'] }}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapseOne_{{ $categoryAndQuestionTypeSummary['ct'] }}">
+                                                                    <table style="width: 100%;">
+                                                                        <tr>
+                                                                            <td class="text-center"
+                                                                                style="width: 5%;">
+                                                                                <i
+                                                                                    class="fa fa-angle-right text-white me-2 accordian-icon"></i>
+                                                                            </td>
+                                                                            <td class="pl-4" style="width: 90%;">
+                                                                                <button type="button"
+                                                                                    class="btn btn-danger fs-xs fw-semibold me-1 js-bs-tooltip-enabled"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-trigger="click"
+                                                                                    data-bs-placement="top"
+                                                                                    title=""
+                                                                                    data-bs-original-title="Category Type">CT</button>
+                                                                                <button type="button"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-question_desc="<?php $category_arr->category_type_description; ?>"
+                                                                                    data-question_title="<?php $category_arr->category_type_title; ?>"
+                                                                                    data-question_lesson="<?php $category_arr->category_type_lesson; ?>"
+                                                                                    data-question_strategies="<?php $category_arr->category_type_strategies; ?>"
+                                                                                    data-question_identification_methods="<?php $category_arr->category_type_identification_methods; ?>"
+                                                                                    data-question_identification_activity="<?php $category_arr->category_type_identification_activity; ?>"
+                                                                                    data-bs-target="#modal-block-large-ct1_{{ $categoryAndQuestionTypeSummary['ct'] }}"
+                                                                                    class="btn btn-dark fs-xs fw-semibold me-1">{{ $category_arr->category_type_title }}</button>
+
+                                                                                <!-- MODAL -->
+                                                                                <div class="modal"
+                                                                                    id="modal-block-large-ct1_{{ $categoryAndQuestionTypeSummary['ct'] }}"
+                                                                                    tabindex="-1"
+                                                                                    aria-labelledby="modal-block-large-ct1"
+                                                                                    style="display: none;"
+                                                                                    aria-hidden="true">
+                                                                                    <div class="modal-dialog modal-lg"
+                                                                                        role="document">
+                                                                                        <div class="modal-content">
                                                                                             <div
-                                                                                                class="block-content block-content-full text-end bg-body">
-                                                                                                <button type="button"
-                                                                                                    class="btn btn-sm block-header-default  text-white review_model_close"
-                                                                                                    data-bs-dismiss="modal">Close</button>
+                                                                                                class="block block-rounded">
+                                                                                                <div
+                                                                                                    class="block-header block-header-default">
+                                                                                                    <h3
+                                                                                                        class="block-title set_category_title">
+                                                                                                        {{ isset($category_arr->category_type_title) ? $category_arr->category_type_title : '' }}
+                                                                                                    </h3>
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="block-content">
+                                                                                                    <p
+                                                                                                        class="fs-sm mb-0">
+                                                                                                    </p>
+
+                                                                                                    <div
+                                                                                                        class="row items-push">
+                                                                                                        <div id="my-block"
+                                                                                                            class="block block-rounded block-bordered p-0">
+                                                                                                            <div
+                                                                                                                class="block-header block-header-default">
+                                                                                                                <h3
+                                                                                                                    class="block-title">
+                                                                                                                    Description
+                                                                                                                </h3>
+                                                                                                                <div
+                                                                                                                    class="block-options">
+                                                                                                                    <button
+                                                                                                                        type="button"
+                                                                                                                        class="btn-block-option"
+                                                                                                                        data-toggle="block-option"
+                                                                                                                        data-action="content_toggle"><i
+                                                                                                                            class="si si-arrow-up"></i></button>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div
+                                                                                                                class="block-content">
+                                                                                                                <p>
+                                                                                                                    {!! isset($category_arr->category_type_description) ? $category_arr->category_type_description : '' !!}
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="row items-push">
+                                                                                                        <div id="my-block"
+                                                                                                            class="block block-rounded block-bordered p-0">
+                                                                                                            <div
+                                                                                                                class="block-header block-header-default">
+                                                                                                                <h3
+                                                                                                                    class="block-title">
+                                                                                                                    Lesson
+                                                                                                                </h3>
+                                                                                                                <div
+                                                                                                                    class="block-options">
+                                                                                                                    <button
+                                                                                                                        type="button"
+                                                                                                                        class="btn-block-option"
+                                                                                                                        data-toggle="block-option"
+                                                                                                                        data-action="content_toggle"><i
+                                                                                                                            class="si si-arrow-up"></i></button>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div
+                                                                                                                class="block-content">
+                                                                                                                <p
+                                                                                                                    class="set_category_type_lesson">
+                                                                                                                    {!! isset($category_arr->category_type_lesson) ? $category_arr->category_type_lesson : '' !!}
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="row items-push">
+                                                                                                        <div id="my-block"
+                                                                                                            class="block block-rounded block-bordered p-0">
+                                                                                                            <div
+                                                                                                                class="block-header block-header-default">
+                                                                                                                <h3
+                                                                                                                    class="block-title">
+                                                                                                                    Strategies
+                                                                                                                </h3>
+                                                                                                                <div
+                                                                                                                    class="block-options">
+                                                                                                                    <button
+                                                                                                                        type="button"
+                                                                                                                        class="btn-block-option"
+                                                                                                                        data-toggle="block-option"
+                                                                                                                        data-action="content_toggle"><i
+                                                                                                                            class="si si-arrow-up"></i></button>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div
+                                                                                                                class="block-content">
+                                                                                                                <p
+                                                                                                                    class="set_category_type_strategies">
+                                                                                                                    {!! isset($category_arr->category_type_strategies) ? $category_arr->category_type_strategies : '' !!}
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="row items-push">
+                                                                                                        <div id="my-block"
+                                                                                                            class="block block-rounded block-bordered p-0">
+                                                                                                            <div
+                                                                                                                class="block-header block-header-default">
+                                                                                                                <h3
+                                                                                                                    class="block-title">
+                                                                                                                    Identification
+                                                                                                                    Methods
+                                                                                                                </h3>
+                                                                                                                <div
+                                                                                                                    class="block-options">
+                                                                                                                    <button
+                                                                                                                        type="button"
+                                                                                                                        class="btn-block-option"
+                                                                                                                        data-toggle="block-option"
+                                                                                                                        data-action="content_toggle"><i
+                                                                                                                            class="si si-arrow-up"></i></button>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div
+                                                                                                                class="block-content">
+                                                                                                                <p
+                                                                                                                    class="set_category_type_identification_methods">
+                                                                                                                    {!! isset($category_arr->category_type_identification_methods)
+                                                                                                                        ? $category_arr->category_type_identification_methods
+                                                                                                                        : '' !!}
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="row items-push">
+                                                                                                        <div id="my-block"
+                                                                                                            class="block block-rounded block-bordered p-0">
+                                                                                                            <div
+                                                                                                                class="block-header block-header-default">
+                                                                                                                <h3
+                                                                                                                    class="block-title">
+                                                                                                                    Identification
+                                                                                                                    Activity
+                                                                                                                </h3>
+                                                                                                                <div
+                                                                                                                    class="block-options">
+                                                                                                                    <button
+                                                                                                                        type="button"
+                                                                                                                        class="btn-block-option"
+                                                                                                                        data-toggle="block-option"
+                                                                                                                        data-action="content_toggle"><i
+                                                                                                                            class="si si-arrow-up"></i></button>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div
+                                                                                                                class="block-content">
+                                                                                                                <p
+                                                                                                                    class="set_category_type_identification_activity">
+                                                                                                                    {!! isset($category_arr->category_type_identification_activity)
+                                                                                                                        ? $category_arr->category_type_identification_activity
+                                                                                                                        : '' !!}
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div
+                                                                                                    class="block-content block-content-full text-end bg-body">
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn btn-sm block-header-default text-white"
+                                                                                                        data-bs-dismiss="modal">Close</button>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
 
-                                                                            <br />
+                                                                                <!-- END MODAL -->
+                                                                                @php
+                                                                                    $incorrect_ct =
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'incorrect'
+                                                                                        ] ?? 0;
+                                                                                    $count =
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'count'
+                                                                                        ] ?? 0;
+                                                                                    $total_questions =
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'total_qts'
+                                                                                        ] ?? 0;
+                                                                                    $missed_ct =
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'missed'
+                                                                                        ] ?? 0;
+                                                                                    $percentage =
+                                                                                        (($incorrect_ct + $missed_ct) /
+                                                                                            $categoryAndQuestionTypeSummary[
+                                                                                                'count'
+                                                                                            ]) *
+                                                                                        100;
 
-                                                                            <div class="col-md-6 mb-2">
-                                                                                <select class="form-select"
-                                                                                    id="example-select"
-                                                                                    name="example-select">
-                                                                                    <option selected>Mistake Type (Select
-                                                                                        One)</option>
-                                                                                    <option value="1">Content
-                                                                                        Misunderstanding</option>
-                                                                                    <option value="2">Random Error
-                                                                                    </option>
-                                                                                    <option value="3">Timing Issue
-                                                                                    </option>
-                                                                                </select>
-                                                                            </div>
+                                                                                    $percentage = $percentage . '%';
+                                                                                    $missedCounts = array_column(
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'qt'
+                                                                                        ],
+                                                                                        'missed',
+                                                                                    );
+                                                                                    $incorrectCounts = array_column(
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'qt'
+                                                                                        ],
+                                                                                        'incorrect',
+                                                                                    );
+                                                                                    $correctCounts = array_column(
+                                                                                        $categoryAndQuestionTypeSummary[
+                                                                                            'qt'
+                                                                                        ],
+                                                                                        'correct',
+                                                                                    );
+                                                                                    $totalMissed = array_sum(
+                                                                                        $missedCounts,
+                                                                                    );
+                                                                                    $totalIncorrect = array_sum(
+                                                                                        $incorrectCounts,
+                                                                                    );
+                                                                                    $totalCorrect = array_sum(
+                                                                                        $correctCounts,
+                                                                                    );
+                                                                                    // dump($totalMissed);
+                                                                                    // dump($totalIncorrect);
+                                                                                    // dd($questionsCtPresent);
+                                                                                    // dump($categoryAndQuestionTypeSummary);
+                                                                                @endphp
+                                                                                <div class="row">
+                                                                                    <div
+                                                                                        class="col-md-12 text-center">
+                                                                                        <p class="block-title m-0">
+                                                                                            {{-- @if ($missed_ct > 0) --}}
+                                                                                            {{-- Missed
+                                                                                            on
+                                                                                            {{ $incorrect_ct + $missed_ct }}
+                                                                                            /
+                                                                                            {{ $questionsCtPresent[$categoryAndQuestionTypeSummary] ?? 0 }}
+                                                                                            questions --}}
 
-                                                                            <table
-                                                                                class="table table-bordered table-striped table-vcenter js-dataTable-responsive">
-                                                                                <thead>
-                                                                                    <tr>
-                                                                                        <th style="width: 30%;"
-                                                                                            class="sorting" tabindex="0"
-                                                                                            aria-controls="DataTables_Table_4"
-                                                                                            rowspan="1" colspan="1"
-                                                                                            aria-label="Name: activate to sort column ascending">
-                                                                                            Category</th>
-                                                                                        <th style="width: 55%;"
-                                                                                            class="sorting" tabindex="0"
-                                                                                            aria-controls="DataTables_Table_4"
-                                                                                            rowspan="1" colspan="1"
-                                                                                            aria-label="Name: activate to sort column ascending">
-                                                                                            Question Type</th>
-                                                                                        <th style="width: 15%;" class="sorting" tabindex="0"
-                                                                                            aria-controls="DataTables_Table_4" rowspan="1"
-                                                                                            colspan="1"
-                                                                                            aria-label="Name: activate to sort column ascending">Add to
-                                                                                            Custom Quiz</th>
-                                                                                    </tr>
-                                                                                </thead>
-                                                                                <tbody>
+                                                                                            {{-- @endif --}}
+
+                                                                                            Missed on
+                                                                                            @foreach ($questionsCtPresent as $key => $question)
+                                                                                                @if ($key == $categoryAndQuestionTypeSummary['ct'])
+                                                                                                    {{ count($question['incorrect']) + count($question['missed']) }}
+                                                                                                    /
+                                                                                                    {{ $question['count'] ?? 0 }}
+                                                                                                    questions
+                                                                                                @endif
+                                                                                            @endforeach
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="progress mt-2 {{ $percentage }}"
+                                                                                    style="background:#c4c5c7;height: 10px"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-placement="top"
+                                                                                    title="{{ $percentage }}">
+                                                                                    <div class="progress-bar bg-info"
+                                                                                        style="width: {{ $percentage }}"
+                                                                                        role="progressbar"
+                                                                                        aria-valuenow="25"
+                                                                                        aria-valuemin="0"
+                                                                                        aria-valuemax="100">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="d-flex gap-3 justify-content-center align-items-center m-3">
+                                                                                    {{-- @if ($incorrect_ct == 0)
+                                                                                    <div
+                                                                                        class="text-success text-center">
+                                                                                        All Correct Answers,
+                                                                                    </div>
+                                                                                @else
+                                                                                    <div
+                                                                                        class="text-danger text-center">
+                                                                                        {{ $incorrect_ct }}
+                                                                                        /
+                                                                                        {{ $count }}
+                                                                                        Questions missed,
+                                                                                    </div>
+                                                                                @endif --}}
+                                                                                    @if ($missed_ct !== $count)
+                                                                                        @if (
+                                                                                            $categoryAndQuestionTypeSummary['total_incorrect_qts'] == 0 &&
+                                                                                                $categoryAndQuestionTypeSummary['total_correct_qts'] == $categoryAndQuestionTypeSummary['total_qts']
+                                                                                        )
+                                                                                            <div
+                                                                                                class="text-success text-center">
+                                                                                                All Question Types
+                                                                                                Correct
+                                                                                            </div>
+                                                                                        @elseif($missed_ct > 0)
+                                                                                            <div
+                                                                                                class="text-danger text-center">
+                                                                                                {{ $totalMissed + $totalIncorrect }}
+                                                                                                /
+                                                                                                {{ $totalMissed + $totalIncorrect + $totalCorrect }}
+                                                                                                Incorrect Question Types
+                                                                                            </div>
+                                                                                        @else
+                                                                                            <div
+                                                                                                class="text-danger text-center">
+                                                                                                {{ $categoryAndQuestionTypeSummary['total_incorrect_qts'] }}
+                                                                                                /
+                                                                                                {{-- {{ $categoryAndQuestionTypeSummary['total_qts'] }} --}}
+                                                                                                {{-- {{ count($categoryAndQuestionTypeSummary['qt']) }} --}}
+                                                                                                {{ $totalMissed + $totalIncorrect + $totalCorrect }}
+                                                                                                Incorrect Question Types
+                                                                                            </div>
+                                                                                        @endif
+                                                                                    @elseif($missed_ct > 0)
+                                                                                        <div
+                                                                                            class="text-danger text-center">
+                                                                                            {{ $totalMissed + $totalIncorrect }}
+                                                                                            /
+                                                                                            {{ $totalMissed + $totalIncorrect + $totalCorrect }}
+                                                                                            Incorrect Question Types
+                                                                                        </div>
+                                                                                    @endif
+
+                                                                                    {{-- @if ($missed_ct > 0)
+                                                                                        <div
+                                                                                            class="text-danger text-center">
+                                                                                            {{ $missed_ct }} /
+                                                                                            {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
+                                                                                            {{ $count }}
+                                                                                            Missed
+                                                                                        </div>
+                                                                                    @endif --}}
+                                                                                </div>
+
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                                <div id="collapseOne_{{ $categoryAndQuestionTypeSummary['ct'] }}"
+                                                                    class="collapse" aria-labelledby="headingOne"
+                                                                    data-parent=".accordionExample">
+                                                                    <div class="odd">
+                                                                        <div class="fw-semibold fs-sm">
+                                                                            <div>
+                                                                                <div>
                                                                                     @php
-                                                                                        $category_type_arr = $categoryTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
-                                                                                        $question_type_arr = $questionTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
-                                                                                        // $question_type_arr = json_decode($single_user_selected_answers['get_question_details'][0]->question_type_id, true) ?? [];
+                                                                                        $qtArray = [];
+                                                                                        if (
+                                                                                            !empty(
+                                                                                                $categoryAndQuestionTypeSummary[
+                                                                                                    'qt'
+                                                                                                ]
+                                                                                            )
+                                                                                        ) {
+                                                                                            $qtArray =
+                                                                                                $categoryAndQuestionTypeSummary[
+                                                                                                    'qt'
+                                                                                                ];
+                                                                                            $keys = array_keys(
+                                                                                                $qtArray,
+                                                                                            );
+                                                                                            array_multisort(
+                                                                                                array_column(
+                                                                                                    $qtArray,
+                                                                                                    'incorrect',
+                                                                                                ),
+                                                                                                SORT_DESC,
+                                                                                                SORT_NUMERIC,
+                                                                                                $qtArray,
+                                                                                                $keys,
+                                                                                            );
+                                                                                            $qtArray = array_combine(
+                                                                                                $keys,
+                                                                                                $qtArray,
+                                                                                            );
+                                                                                        }
+                                                                                        // dd($qtArray);
                                                                                     @endphp
-                                                                                    @for ($i = 0; $i < count($category_type_arr); $i++)
-                                                                                        <tr class="odd">
-                                                                                            <td>
-                                                                                                <?php
-                                                                                                $modal_count = 1;
-                                                                                                $category_arr = Helper::getCategoryNameByID($category_type_arr[$i]);
-                                                                                                $modal_count = $modal_count++;
-                                                                                                ?>
+
+                                                                                    @foreach ($qtArray as $qtDataKey => $qtData)
+                                                                                        @php
+                                                                                            $question_arr = Helper::getQuestionNameByID(
+                                                                                                $qtDataKey,
+                                                                                            );
+                                                                                            // dd($question_arr);
+                                                                                        @endphp
+                                                                                        <div class="odd p-3 ps-4">
+                                                                                            <div></div>
+
+                                                                                            <div
+                                                                                                class="fw-semibold fs-sm">
+                                                                                                <button type="button"
+                                                                                                    class="btn btn-warning fs-xs fw-semibold me-1 mb-3 js-bs-tooltip-enabled"
+                                                                                                    data-bs-toggle="tooltip"
+                                                                                                    data-bs-trigger="click"
+                                                                                                    data-bs-placement="top"
+                                                                                                    title=""
+                                                                                                    data-bs-original-title="Question Type">QT</button>
+
+                                                                                                {{-- /* data-question_desc1="<?php //$question_arr->question_type_description ? $question_arr->question_type_description : '';
+                                                                                                ?>"
+                                                                                                    data-question_desc="<?php if (isset($question_arr->question_type_description)) {
+                                                                                                        echo $question_arr->question_type_description;
+                                                                                                    } ?>"
+                                                                                                    data-question_title="<?php if (isset($question_arr->question_type_title)) {
+                                                                                                        echo $question_arr->question_type_title;
+                                                                                                    } ?>"
+                                                                                                    data-question_lesson="<?php if (isset($question_arr->question_type_lesson)) {
+                                                                                                        echo $question_arr->question_type_lesson;
+                                                                                                    } ?>"
+                                                                                                    data-question_strategies="<?php if (isset($question_arr->question_strategies)) {
+                                                                                                        echo $question_arr->question_strategies;
+                                                                                                    } ?>"
+                                                                                                    data-question_identification_methods="<?php if (isset($question_arr->question_type_identification_methods)) {
+                                                                                                        echo $question_arr->question_type_identification_methods;
+                                                                                                    } ?>"
+                                                                                                    data-question_type_identification_activity="<?php if (isset($question_arr->question_type_identification_activity)) {
+                                                                                                        echo $question_arr->question_type_identification_activity;
+                                                                                                    } ?>"
+                                                                                                    data-question_title1="<?php //$question_arr->question_type_title;
+                                                                                                    ?>"
+                                                                                                    data-question_lesson1="<?php //$question_arr->question_type_lesson;
+                                                                                                    ?>"
+                                                                                                    data-question_strategies1="<?php //$question_arr->question_type_strategies;
+                                                                                                    ?>"
+                                                                                                    data-question_identification_methods1="<?php //$question_arr->question_type_identification_methods;
+                                                                                                    ?>"
+                                                                                                    data-question_identification_activity1="<?php //$question_arr->question_type_identification_activity;
+                                                                                                    ?>" */ --}}
+
+
+
                                                                                                 <button type="button"
                                                                                                     data-bs-toggle="modal"
-                                                                                                    data-bs-target="#modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                    class="btn btn-dark fs-xs fw-semibold me-1 category_description"
-                                                                                                    data-category_title="{{ isset($category_arr->category_type_title) ? $category_arr->category_type_title : '' }}"
-                                                                                                    data-category_description="{{ isset($category_arr->category_type_description) ? $category_arr->category_type_description : '' }}"
-                                                                                                    data-category_lesson="{{ isset($category_arr->category_type_lesson) ? $category_arr->category_type_lesson : '' }}"
-                                                                                                    data-category_strategies="{{ isset($category_arr->category_type_strategies) ? $category_arr->category_type_strategies : '' }}"
-                                                                                                    data-category_identification_methods="{{ isset($category_arr->category_type_identification_methods) ? $category_arr->category_type_identification_methods : '' }}"
-                                                                                                    data-category_identification_activity="{{ isset($category_arr->category_type_identification_activity) ? $category_arr->category_type_identification_activity : '' }}">
-                                                                                                    {{ isset($category_arr->category_type_title) ? $category_arr->category_type_title : '' }}</button>
+                                                                                                    data-bs-target="#modal-block-large-cg1ct1_<?php echo $qtDataKey; ?>"
+                                                                                                    class="btn btn-dark fs-xs fw-semibold me-1 mb-3">
+                                                                                                    <?php if (isset($question_arr->question_type_title)) {
+                                                                                                        echo $question_arr->question_type_title;
+                                                                                                    } ?>
 
-                                                                                                {{-- start model  --}}
+                                                                                                </button>
+                                                                                                @php
+
+                                                                                                    $incorrect =
+                                                                                                        $qtData[
+                                                                                                            'incorrect'
+                                                                                                        ] ?? 0;
+                                                                                                    $missed_qt =
+                                                                                                        $qtData[
+                                                                                                            'missed'
+                                                                                                        ] ?? 0;
+                                                                                                    $count =
+                                                                                                        $qtData[
+                                                                                                            'count'
+                                                                                                        ] ?? 0;
+                                                                                                    // $percentage =
+                                                                                                    //     (($incorrect ) /
+                                                                                                    //         $qtData[
+                                                                                                    //             'count'
+                                                                                                    //         ]) *
+                                                                                                    //     100;
+                                                                                                    $percentage =
+                                                                                                        (($incorrect +
+                                                                                                            $missed_qt) /
+                                                                                                            ($incorrect +
+                                                                                                                $missed_qt +
+                                                                                                                $qtData[
+                                                                                                                    'correct'
+                                                                                                                ])) *
+                                                                                                        100;
+                                                                                                    $percentage =
+                                                                                                        $percentage .
+                                                                                                        '%';
+                                                                                                    // dump($qtData);
+                                                                                                @endphp
+
+                                                                                                <div class="progress mt-2 {{ $percentage }}"
+                                                                                                    style="background:#c4c5c7;height: 10px"
+                                                                                                    data-bs-toggle="tooltip"
+                                                                                                    data-bs-placement="top"
+                                                                                                    title="{{ $percentage }}">
+                                                                                                    <div class="progress-bar bg-info"
+                                                                                                        style="width: {{ $percentage }}"
+                                                                                                        role="progressbar"
+                                                                                                        aria-valuenow="25"
+                                                                                                        aria-valuemin="0"
+                                                                                                        aria-valuemax="100">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="d-flex align-items-center justify-content-center gap-5">
+                                                                                                    {{-- @php
+                                                                                                    dump(
+                                                                                                        $incorrect
+                                                                                                    );
+                                                                                                    dump(
+                                                                                                        $qtData['correct']
+                                                                                                    );
+                                                                                                    dump(
+                                                                                                        $count
+                                                                                                    );
+                                                                                                    dump(
+                                                                                                        $missed_qt
+                                                                                                    );
+                                                                                                @endphp --}}
+                                                                                                    {{-- @if ($count != $missed_qt) --}}
+
+                                                                                                    @if ($incorrect == 0 && $qtData['correct'] == $count)
+                                                                                                        <div
+                                                                                                            class="text-success text-center">
+                                                                                                            All
+                                                                                                            Correct
+                                                                                                            Answers
+                                                                                                        </div>
+                                                                                                    @else
+                                                                                                        <div
+                                                                                                            class="text-danger text-center">
+
+                                                                                                            {{ $incorrect + $missed_qt }}
+                                                                                                            /
+                                                                                                            {{ $incorrect + $missed_qt + $qtData['correct'] }}
+                                                                                                            {{-- {{$count}} --}}
+                                                                                                            Incorrect
+                                                                                                        </div>
+                                                                                                    @endif
+                                                                                                    {{-- @endif --}}
+
+                                                                                                    {{-- @if ($missed_qt > 0)
+                                                                                                        <div
+                                                                                                            class="text-danger text-center">
+                                                                                                            {{ $missed_qt }}
+                                                                                                            /
+                                                                                                            {{ $count }}
+                                                                                                            Missed
+                                                                                                        </div>
+                                                                                                    @endif --}}
+                                                                                                </div>
+
+                                                                                                <!-- MODAL -->
                                                                                                 <div class="modal"
-                                                                                                    id="modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                    id="modal-block-large-cg1ct1_{{ $qtDataKey }}"
                                                                                                     tabindex="-1"
-                                                                                                    aria-labelledby="modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                    aria-labelledby="modal-block-large-cg1ct1"
                                                                                                     style="display: none;"
                                                                                                     aria-hidden="true">
                                                                                                     <div class="modal-dialog modal-lg"
@@ -1689,7 +3632,9 @@
                                                                                                                 <div
                                                                                                                     class="block-header block-header-default">
                                                                                                                     <h3
-                                                                                                                        class="block-title set_category_title">
+                                                                                                                        class="block-title">
+                                                                                                                        {{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}
+
                                                                                                                     </h3>
                                                                                                                 </div>
                                                                                                                 <div
@@ -1718,16 +3663,14 @@
                                                                                                                                             class="si si-arrow-up"></i></button>
                                                                                                                                 </div>
                                                                                                                             </div>
-
                                                                                                                             <div
-                                                                                                                                class="block-content set_category_description">
-                                                                                                                                <p>other
-                                                                                                                                    words
+                                                                                                                                class="block-content">
+                                                                                                                                <p>
+                                                                                                                                    {!! isset($question_arr->question_type_description) ? $question_arr->question_type_description : '' !!}
                                                                                                                                 </p>
                                                                                                                             </div>
                                                                                                                         </div>
                                                                                                                     </div>
-                                                                                                                    {{-- start new  --}}
                                                                                                                     <div
                                                                                                                         class="row items-push">
                                                                                                                         <div id="my-block"
@@ -1752,7 +3695,7 @@
                                                                                                                                 class="block-content">
                                                                                                                                 <p
                                                                                                                                     class="set_category_type_lesson">
-                                                                                                                                    words
+                                                                                                                                    {!! isset($question_arr->question_type_lesson) ? $question_arr->question_type_lesson : '' !!}
                                                                                                                                 </p>
                                                                                                                             </div>
                                                                                                                         </div>
@@ -1781,7 +3724,7 @@
                                                                                                                                 class="block-content">
                                                                                                                                 <p
                                                                                                                                     class="set_category_type_strategies">
-                                                                                                                                    words
+                                                                                                                                    {!! isset($question_arr->question_type_strategies) ? $question_arr->question_type_strategies : '' !!}
                                                                                                                                 </p>
                                                                                                                             </div>
                                                                                                                         </div>
@@ -1811,7 +3754,9 @@
                                                                                                                                 class="block-content">
                                                                                                                                 <p
                                                                                                                                     class="set_category_type_identification_methods">
-                                                                                                                                    words
+                                                                                                                                    {!! isset($question_arr->question_type_identification_methods)
+                                                                                                                                        ? $question_arr->question_type_identification_methods
+                                                                                                                                        : '' !!}
                                                                                                                                 </p>
                                                                                                                             </div>
                                                                                                                         </div>
@@ -1841,954 +3786,13 @@
                                                                                                                                 class="block-content">
                                                                                                                                 <p
                                                                                                                                     class="set_category_type_identification_activity">
-                                                                                                                                    words
+                                                                                                                                    {!! isset($question_arr->question_type_identification_activity)
+                                                                                                                                        ? $question_arr->question_type_identification_activity
+                                                                                                                                        : '' !!}
                                                                                                                                 </p>
                                                                                                                             </div>
                                                                                                                         </div>
                                                                                                                     </div>
-                                                                                                                </div>
-
-                                                                                                                <div
-                                                                                                                    class="block-content block-content-full text-end bg-body">
-                                                                                                                    <button
-                                                                                                                        type="button"
-                                                                                                                        class="btn btn-sm block-header-default text-white"
-                                                                                                                        data-bs-dismiss="modal">Close</button>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                {{-- end modal  --}}
-
-                                                                                                {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1ct1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white">
-                                                                                                    <i class="fa fa-lg fa-circle-xmark me-1"></i>
-                                                                                                    Probability
-                                                                                                </button> --}}
-
-                                                                                                {{-- <div class="modal" id="modal-block-large-q1ct1" tabindex="-1" aria-labelledby="modal-block-large-q1ct1" style="display: none;" aria-hidden="true">
-                                                                                                    <div class="modal-dialog modal-lg" role="document">
-                                                                                                        <div class="modal-content">
-
-                                                                                                            <div class="block block-rounded">
-                                                                                                                <div class="block-header block-header-default">
-                                                                                                                    <h3 class="block-title">Category: Probability</h3>
-                                                                                                                </div>
-                                                                                                                <div class="block-content">
-                                                                                                                    <div id="q1ct1" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                            <div class="block-header block-header-default" role="tab" id="category-probability-description">
-                                                                                                                                <a class="text-white collapsed" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#category-probability-des" aria-expanded="false" aria-controls="category-probability-des">Description</a>
-                                                                                                                            </div>
-                                                                                                                            <div id="category-probability-des" class="collapse" role="tabpanel" aria-labelledby="category-probability-description" data-bs-parent="#faq_q1" style="">
-                                                                                                                                <div class="block-content">
-                                                                                                                                    <p>Simple Probability questions have you calculate the probability of events that can be expressed as a single fraction: the number of successful outcomes divided by the number of potential outcomes.</p>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div class="block-content block-content-full text-end bg-body">
-                                                                                                                        <button type="button" class="btn btn-sm block-header-default  text-white" data-bs-dismiss="modal">Close</button>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div> --}}
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <?php
-                                                                                                $question_arr = Helper::getQuestionNameByID($question_type_arr[$i]);
-                                                                                                ?>
-                                                                                                <button type="button"
-                                                                                                    data-bs-toggle="modal"
-                                                                                                    data-question_desc="{{ isset($question_arr->question_type_description) ? $question_arr->question_type_description : '' }}"
-                                                                                                    data-question_title="{{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}"
-                                                                                                    data-question_lesson="{{ isset($question_arr->question_type_lesson) ? $question_arr->question_type_lesson : '' }}"
-                                                                                                    data-question_strategies="{{ isset($question_arr->question_type_strategies) ? $question_arr->question_type_strategies : '' }}"
-                                                                                                    data-question_identification_methods="{{ isset($question_arr->question_type_identification_methods) ? $question_arr->question_type_identification_methods : '' }}"
-                                                                                                    data-question_identification_activity="{{ isset($question_arr->question_type_identification_activity) ? $question_arr->question_type_identification_activity : '' }}"
-                                                                                                    data-bs-target="#modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                    class="btn btn-dark fs-xs fw-semibold me-1 mb-3 cat_type_desc_btn">{{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}</button>
-                                                                                                {{-- start question type modal  --}}
-                                                                                                <div class="modal"
-                                                                                                    id="modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                    tabindex="-1"
-                                                                                                    aria-labelledby="modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                    style="display: none;"
-                                                                                                    aria-hidden="true">
-                                                                                                    <div class="modal-dialog modal-lg"
-                                                                                                        role="document">
-                                                                                                        <div
-                                                                                                            class="modal-content">
-                                                                                                            <div
-                                                                                                                class="block block-rounded">
-                                                                                                                <div
-                                                                                                                    class="block-header block-header-default">
-                                                                                                                    <h3
-                                                                                                                        class="block-title set_question_type_title">
-                                                                                                                        Arithmetic
-                                                                                                                        Operations
-                                                                                                                    </h3>
-                                                                                                                </div>
-                                                                                                                <div
-                                                                                                                    class="block-content">
-                                                                                                                    <p
-                                                                                                                        class="fs-sm mb-0">
-                                                                                                                    </p>
-
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Description
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_desc">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    {{-- start  --}}
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Lesson
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_lesson">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Strategies
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_strategies">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Identification
-                                                                                                                                    Methods
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_identification_methods">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Identification
-                                                                                                                                    Activity
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_identification_activity">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    {{-- end  --}}
-                                                                                                                </div>
-
-                                                                                                                <div
-                                                                                                                    class="block-content block-content-full text-end bg-body">
-                                                                                                                    <button
-                                                                                                                        type="button"
-                                                                                                                        class="btn btn-sm block-header-default text-white"
-                                                                                                                        data-bs-dismiss="modal">Close</button>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                {{-- end modal  --}}
-
-                                                                                                {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1qt1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white">
-                                                                                                    <i class="fa fa-lg fa-circle-xmark me-1"></i>
-                                                                                                    Simple Probability
-                                                                                                </button>
-
-                                                                                                <div class="modal" id="modal-block-large-q1qt1" tabindex="-1" aria-labelledby="modal-block-large-q1qt1" style="display: none;" aria-hidden="true">
-                                                                                                    <div class="modal-dialog modal-lg" role="document">
-                                                                                                        <div class="modal-content">
-                                                                                                            <div class="block block-rounded">
-                                                                                                                <div class="block-header block-header-default">
-                                                                                                                    <h3 class="block-title">Question Type: Punctuation Between Multiple Adjectives</h3>
-                                                                                                                </div>
-                                                                                                                <div class="block-content">
-                                                                                                                    <div id="faq_q1" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_description_aria-label">
-                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#faq_q1_qt1_description" aria-expanded="true" aria-controls="faq_q1_qt1_description">Description</a>
-                                                                                                                            </div>
-                                                                                                                            <div id="faq_q1_qt1_description" class="collapse show" role="tabpanel" aria-labelledby="faq_q1_qt1_description_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                                <div class="block-content">
-                                                                                                                                    <p>Simple Probability questions have you calculate the probability of events that can be expressed as a single fraction: the number of successful outcomes divided by the number of potential outcomes.</p>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_lesson_aria-label">
-                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#faq_q1_qt1_lesson" aria-expanded="true" aria-controls="faq_q1_qt1_lesson">Lesson</a>
-                                                                                                                            </div>
-                                                                                                                            <div id="faq_q1_qt1_lesson" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_lesson_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                                <div class="block-content">
-                                                                                                                                    <p>The simple probability of an event is the number of favorable outcomes divided by the number of potential outcomes.
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    Probability = # of favorable outcomes / total # of potential outcomes
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    Another way to think about probability = Part / Whole OR Part / Total
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    <b>Example 1</b>
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    What’s the probability of a flipped coin landing on heads?
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    There are a total of 2 potential outcomes: heads or tails.
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    There is only 1 favorable outcome: heads.
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    probability = # of favorable outcomes / total # of potential outcomes = <b>1/2</b>
-
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    So the probability of flipping a coin and landing on heads is <b>1/2</b>.
-                                                                                                                                    <br/></p>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_strategies_aria-label">
-                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_strategies" aria-expanded="true" aria-controls="faq_q1_qt1_strategies">Strategies</a>
-                                                                                                                            </div>
-                                                                                                                            <div id="faq_q1_qt1_strategies" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_strategies_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                                <div class="block-content">
-                                                                                                                                    <p>
-                                                                                                                                        <b>Strategy 1: Identify each part of the probability formula </b>
-                                                                                                                                    </p>
-                                                                                                                                    <p>Identify the total # of possibilties first and write it as your denominator. Then identify how many favorable outcomes align with the situation and write it as your numerator.</p>
-
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_idmethods_aria-label">
-                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_idmethods" aria-expanded="true" aria-controls="faq_q1_qt1_idmethods">Identification Methods</a>
-                                                                                                                            </div>
-                                                                                                                            <div id="faq_q1_qt1_idmethods" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_idmethods_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                                <div class="block-content">
-                                                                                                                                    <p><b>Identification Method 1</b></p>
-                                                                                                                                    <p>The question is a word problem, using the words/phrases "probability" or "what fraction" or "what are the chances" and the answer choices are usually single fractions.</p>
-                                                                                                                                    <p><b>Example 1</b></p>
-                                                                                                                                    <p>Question: A bag has 20 total marbles - 3 blue, 8 red, and 9 green. Which of the following is the probability of picking a blue marble?</p>
-                                                                                                                                    A. 3/20<br />
-                                                                                                                                    B. 3/8<br />
-                                                                                                                                    C. 8/8<br />
-                                                                                                                                    D. 8/20<br />
-                                                                                                                                    E. 9/20</p>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_idactivity_aria-label">
-                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_idactivity" aria-expanded="true" aria-controls="faq_q1_qt1_idactivity">Identification Activity</a>
-                                                                                                                            </div>
-                                                                                                                            <div id="faq_q1_qt1_idactivity" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_idactivity_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                                <div class="block-content">
-                                                                                                                                    <p><b>Identification Activity 1</b></p>
-                                                                                                                                    <p>Which of the following questions test Punctuation Between Multiple Adjectives?</p>
-
-                                                                                                                                    <p>Question 1</p>
-                                                                                                                                    <p>Question 2</p>
-
-                                                                                                                                    <p>1. Part of his success is attributed to his ability to <u>plead</u> to a wide range of audiences.</p>
-
-                                                                                                                                    <p>A. NO CHANGE</p>
-                                                                                                                                    <p>B. appeal</p>                                                                                        <p>C. attract </p>
-                                                                                                                                    <p>D. remark</p>
-
-                                                                                                                                    <p>A. NO CHANGE</p>
-                                                                                                                                    <p>B. appeal</p>
-                                                                                                                                    <p>C. attract </p>
-                                                                                                                                    <p>D. remark</p>
-
-                                                                                                                                    <p>2. The Dahlia flower is famous <u>to</u> its unique pattern of petals.</p>
-
-                                                                                                                                    <p>A. NO CHANGE</p>
-                                                                                                                                    <p>B. by</p>
-                                                                                                                                    <p>C. for</p>
-                                                                                                                                    <p>D. with</p>
-
-                                                                                                                                    <p>Key: </p>
-                                                                                                                                    <p>#1: No, this example tests Vocabulary in Context.</p>
-                                                                                                                                    <p>#2: No, even though this question tests different word choices, it does NOT test Keyword Goal. It tests Idioms and Prepositions.</p>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div class="block-content block-content-full text-end bg-body">
-                                                                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div> --}}
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <div class="block-content block-content-full text-center">
-                                                                                                    <input class="form-check-input" type="checkbox"
-                                                                                                        value="" 
-                                                                                                        name="add_to_custom_quiz">
-                                                                                                </div>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    @endfor
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                        @php
-                                                            $acc_id = $acc_id + 1;
-                                                        @endphp
-                                                    @endforeach
-                                                @endif
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- Category & Question Type Summary tab --}}
-                        <div class="tab-pane fade" id="btabs-animated-fade-profile" role="tabpanel"
-                            aria-labelledby="btabs-animated-fade-profile-tab" tabindex="0">
-                            <div class="block block-rounded">
-                                <div class="block-header block-header-default">
-                                    <h3 class="block-title">(BEST SO FAR..) QUESTION TYPE CATEGORIZATION</h3>
-                                </div>
-                                <div class="block-content">
-                                    <div class="block-content p-0">
-                                        @if (isset($store_all_data) && !empty($store_all_data))
-                                            <div class="tab-content" id="myTabContent">
-                                                <div class="setup-content" role="tabpanel" id="step1"
-                                                    aria-labelledby="step1-tab">
-                                                    <div class="accordion accordionExample">
-
-                                                        {{-- accordian tab 1 --}}
-                                                        <?php
-                                                        $count = 1;
-                                                        $new_count = 1;
-                                                        ?>
-                                                        @foreach ($store_all_data as $get_question_type => $single_question_data)
-                                                            <?php
-                                                            $test = $count++;
-                                                            $store_total_wrong_answer = 0;
-                                                            foreach ($single_question_data as $question_type_val => $single_question_details_item) {
-                                                                $store_correct_answer = 0;
-                                                                $store_wrong_answer = 0;
-
-                                                                foreach ($single_question_details_item as $get_single_ques_data) {
-                                                                    foreach ($user_selected_answers as $single_answer_user_selected) {
-                                                                        if (isset($single_answer_user_selected['get_question_details'][0]->question_id) && !empty($single_answer_user_selected['get_question_details'][0]->question_id)) {
-                                                                            if ($get_single_ques_data[0] == $single_answer_user_selected['get_question_details'][0]->question_id) {
-                                                                                if ($single_answer_user_selected['user_selected_answer'] == $single_answer_user_selected['get_question_details'][0]->question_answer) {
-                                                                                    $store_correct_answer++;
-                                                                                } else {
-                                                                                    $store_wrong_answer++;
-                                                                                    $store_total_wrong_answer += $store_wrong_answer;
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-
-                                                            ?>
-                                                            <div
-                                                                class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                <div class="block-header block-header-tab justify-content-start"
-                                                                    type="button" data-toggle="collapse"
-                                                                    data-target="#collapseOne_<?php echo $test; ?>"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="collapseOne_<?php echo $test; ?>">
-                                                                    <table class="w-75">
-                                                                        <tr>
-                                                                            <td class="text-center" style="width: 5%">
-                                                                                <i
-                                                                                    class="fa fa-angle-right text-white me-2 accordian-icon"></i>
-                                                                            </td>
-                                                                            @foreach ($single_question_data as $question_type_val => $single_question_details_item)
-                                                                                <td class="pl-4 text-start ">
-                                                                                    <button type="button"
-                                                                                        class="btn btn-danger fs-xs fw-semibold me-1 js-bs-tooltip-enabled"
-                                                                                        data-bs-toggle="tooltip"
-                                                                                        data-bs-trigger="click"
-                                                                                        data-bs-placement="top"
-                                                                                        title=""
-                                                                                        data-bs-original-title="Category Type">CT</button>
-                                                                                    <button type="button"
-                                                                                        data-bs-toggle="modal"
-                                                                                        data-bs-target="#modal-block-large-ct1"
-                                                                                        data-category_title="<?php echo $single_question_details_item[0]['category_title']; ?>"
-                                                                                        data-category_description="<?php echo $single_question_details_item[0]['category_description']; ?>"
-                                                                                        data-category_lesson="<?php echo $single_question_details_item[0]['category_type_lesson']; ?>"
-                                                                                        data-category_strategies="<?php echo $single_question_details_item[0]['category_type_strategies']; ?>"
-                                                                                        data-category_identification_methods="<?php echo $single_question_details_item[0]['category_type_identification_methods']; ?>"
-                                                                                        data-category_identification_activity="<?php echo $single_question_details_item[0]['category_type_identification_activity']; ?>"
-                                                                                        class="btn btn-dark fs-xs fw-semibold me-1 category_description">{{ $get_question_type }}</button>
-
-                                                                                    <!-- MODAL -->
-                                                                                    <div class="modal"
-                                                                                        id="modal-block-large-ct1"
-                                                                                        tabindex="-1"
-                                                                                        aria-labelledby="modal-block-large-ct1"
-                                                                                        style="display: none;"
-                                                                                        aria-hidden="true">
-                                                                                        <div class="modal-dialog modal-lg"
-                                                                                            role="document">
-                                                                                            <div class="modal-content">
-                                                                                                <div
-                                                                                                    class="block block-rounded">
-                                                                                                    <div
-                                                                                                        class="block-header block-header-default">
-                                                                                                        <h3
-                                                                                                            class="block-title set_category_title">
-                                                                                                        </h3>
-                                                                                                    </div>
-                                                                                                    <div
-                                                                                                        class="block-content">
-                                                                                                        <p
-                                                                                                            class="fs-sm mb-0">
-                                                                                                        </p>
-
-                                                                                                        <div
-                                                                                                            class="row items-push">
-                                                                                                            <div id="my-block"
-                                                                                                                class="block block-rounded block-bordered p-0">
-                                                                                                                <div
-                                                                                                                    class="block-header block-header-default">
-                                                                                                                    <h3
-                                                                                                                        class="block-title">
-                                                                                                                        Description
-                                                                                                                    </h3>
-                                                                                                                    <div
-                                                                                                                        class="block-options">
-                                                                                                                        <button
-                                                                                                                            type="button"
-                                                                                                                            class="btn-block-option"
-                                                                                                                            data-toggle="block-option"
-                                                                                                                            data-action="content_toggle"><i
-                                                                                                                                class="si si-arrow-up"></i></button>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div
-                                                                                                                    class="block-content set_category_description">
-                                                                                                                    <p>other
-                                                                                                                        words
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        {{-- start new  --}}
-                                                                                                        <div
-                                                                                                            class="row items-push">
-                                                                                                            <div id="my-block"
-                                                                                                                class="block block-rounded block-bordered p-0">
-                                                                                                                <div
-                                                                                                                    class="block-header block-header-default">
-                                                                                                                    <h3
-                                                                                                                        class="block-title">
-                                                                                                                        Lesson
-                                                                                                                    </h3>
-                                                                                                                    <div
-                                                                                                                        class="block-options">
-                                                                                                                        <button
-                                                                                                                            type="button"
-                                                                                                                            class="btn-block-option"
-                                                                                                                            data-toggle="block-option"
-                                                                                                                            data-action="content_toggle"><i
-                                                                                                                                class="si si-arrow-up"></i></button>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div
-                                                                                                                    class="block-content">
-                                                                                                                    <p
-                                                                                                                        class="set_category_type_lesson">
-                                                                                                                        words
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div
-                                                                                                            class="row items-push">
-                                                                                                            <div id="my-block"
-                                                                                                                class="block block-rounded block-bordered p-0">
-                                                                                                                <div
-                                                                                                                    class="block-header block-header-default">
-                                                                                                                    <h3
-                                                                                                                        class="block-title">
-                                                                                                                        Strategies
-                                                                                                                    </h3>
-                                                                                                                    <div
-                                                                                                                        class="block-options">
-                                                                                                                        <button
-                                                                                                                            type="button"
-                                                                                                                            class="btn-block-option"
-                                                                                                                            data-toggle="block-option"
-                                                                                                                            data-action="content_toggle"><i
-                                                                                                                                class="si si-arrow-up"></i></button>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div
-                                                                                                                    class="block-content">
-                                                                                                                    <p
-                                                                                                                        class="set_category_type_strategies">
-                                                                                                                        words
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div
-                                                                                                            class="row items-push">
-                                                                                                            <div id="my-block"
-                                                                                                                class="block block-rounded block-bordered p-0">
-                                                                                                                <div
-                                                                                                                    class="block-header block-header-default">
-                                                                                                                    <h3
-                                                                                                                        class="block-title">
-                                                                                                                        Identification
-                                                                                                                        Methods
-                                                                                                                    </h3>
-                                                                                                                    <div
-                                                                                                                        class="block-options">
-                                                                                                                        <button
-                                                                                                                            type="button"
-                                                                                                                            class="btn-block-option"
-                                                                                                                            data-toggle="block-option"
-                                                                                                                            data-action="content_toggle"><i
-                                                                                                                                class="si si-arrow-up"></i></button>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div
-                                                                                                                    class="block-content">
-                                                                                                                    <p
-                                                                                                                        class="set_category_type_identification_methods">
-                                                                                                                        words
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div
-                                                                                                            class="row items-push">
-                                                                                                            <div id="my-block"
-                                                                                                                class="block block-rounded block-bordered p-0">
-                                                                                                                <div
-                                                                                                                    class="block-header block-header-default">
-                                                                                                                    <h3
-                                                                                                                        class="block-title">
-                                                                                                                        Identification
-                                                                                                                        Activity
-                                                                                                                    </h3>
-                                                                                                                    <div
-                                                                                                                        class="block-options">
-                                                                                                                        <button
-                                                                                                                            type="button"
-                                                                                                                            class="btn-block-option"
-                                                                                                                            data-toggle="block-option"
-                                                                                                                            data-action="content_toggle"><i
-                                                                                                                                class="si si-arrow-up"></i></button>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div
-                                                                                                                    class="block-content">
-                                                                                                                    <p
-                                                                                                                        class="set_category_type_identification_activity">
-                                                                                                                        words
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        {{-- end  --}}
-                                                                                                    </div>
-
-                                                                                                    <div
-                                                                                                        class="block-content block-content-full text-end bg-body">
-                                                                                                        <button
-                                                                                                            type="button"
-                                                                                                            class="btn btn-sm block-header-default text-white"
-                                                                                                            data-bs-dismiss="modal">Close</button>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                            @endforeach
-                                                                            <!-- END MODAL -->
-                                                                            @if (isset($percentage_arr_all) && !empty($percentage_arr_all))
-                                                                                @foreach ($percentage_arr_all as $cat_type => $percentage_arr)
-                                                                                    @if ($cat_type == $get_question_type)
-                                                                                        @if (isset($percentage_arr['percentage']) && !empty($percentage_arr['percentage']))
-                                                                                            <div class="progress mt-2"
-                                                                                                style="background:#c4c5c7;height: 10px"
-                                                                                                data-bs-toggle="tooltip"
-                                                                                                data-bs-placement="top"
-                                                                                                title="{{ $percentage_arr['percentage'] }}">
-                                                                                                <div class="progress-bar bg-info"
-                                                                                                    style="width: {{ $percentage_arr['percentage'] }}"
-                                                                                                    role="progressbar"
-                                                                                                    aria-valuenow="25"
-                                                                                                    aria-valuemin="0"
-                                                                                                    aria-valuemax="100">
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        @endif
-                                                                                        @if (isset($percentage_arr['percentage_label']) && !empty($percentage_arr['percentage_label']))
-                                                                                            <div
-                                                                                                class="text-danger text-center fw-bolder mt-1 incorrect">
-                                                                                                {{ $percentage_arr['percentage_label'] }}
-                                                                                            </div>
-                                                                                        @endif
-                                                                                    @endif
-                                                                                @endforeach
-                                                                            @endif
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>
-                                                                    <div
-                                                                        class="d-flex flex-wrap justify-content-end w-50 ms-auto">
-                                                                        @foreach ($question_tags as $ct_name => $tags)
-                                                                            @if ($ct_name == $get_question_type)
-                                                                                @foreach ($tags as $tag)
-                                                                                    <button type="button"
-                                                                                        class="btn btn-success category-badge fs-xs fw-semibold ms-2 mb-1 js-bs-tooltip-enabled"
-                                                                                        data-bs-toggle="tooltip"
-                                                                                        data-bs-placement="top"
-                                                                                        title="{{ $tag }}">{{ $tag }}</button>
-                                                                                @endforeach
-                                                                            @endif
-                                                                        @endforeach
-                                                                    </div>
-                                                                </div>
-                                                                <div id="collapseOne_<?php echo $test; ?>"
-                                                                    class="collapse" aria-labelledby="headingOne"
-                                                                    data-parent=".accordionExample">
-                                                                    <div class="odd">
-                                                                        <div class="fw-semibold fs-sm">
-                                                                            <div>
-                                                                                <div>
-                                                                                    @foreach ($single_question_data as $question_type_val => $single_question_details_item)
-                                                                                        <?php
-
-                                                                                        ?>
-                                                                                        <?php $new_test = $new_count++; ?>
-                                                                                        <div class="odd p-3 ps-4">
-                                                                                            <div></div>
-
-                                                                                            <div
-                                                                                                class="fw-semibold fs-sm">
-                                                                                                <button type="button"
-                                                                                                    class="btn btn-warning fs-xs fw-semibold me-1 mb-3 js-bs-tooltip-enabled"
-                                                                                                    data-bs-toggle="tooltip"
-                                                                                                    data-bs-trigger="click"
-                                                                                                    data-bs-placement="top"
-                                                                                                    title=""
-                                                                                                    data-bs-original-title="Question Type">QT</button>
-                                                                                                <button type="button"
-                                                                                                    data-bs-toggle="modal"
-                                                                                                    data-question_desc="<?php echo $single_question_details_item[0]['question_desc']; ?>"
-                                                                                                    data-question_title="<?php echo $single_question_details_item[0]['question_type_title']; ?>"
-                                                                                                    data-question_lesson="<?php echo $single_question_details_item[0]['question_type_lesson']; ?>"
-                                                                                                    data-question_strategies="<?php echo $single_question_details_item[0]['question_type_strategies']; ?>"
-                                                                                                    data-question_identification_methods="<?php echo $single_question_details_item[0]['question_type_identification_methods']; ?>"
-                                                                                                    data-question_identification_activity="<?php echo $single_question_details_item[0]['question_type_identification_activity']; ?>"
-                                                                                                    data-bs-target="#modal-block-large-cg1ct1_<?php echo $new_test; ?>"
-                                                                                                    class="btn btn-dark fs-xs fw-semibold me-1 mb-3 cat_type_desc_btn">{{ $question_type_val }}</button>
-
-                                                                                                <!-- MODAL -->
-                                                                                                <div class="modal"
-                                                                                                    id="modal-block-large-cg1ct1_<?php echo $new_test; ?>"
-                                                                                                    tabindex="-1"
-                                                                                                    aria-labelledby="modal-block-large-cg1ct1_<?php echo $new_test; ?>"
-                                                                                                    style="display: none;"
-                                                                                                    aria-hidden="true">
-                                                                                                    <div class="modal-dialog modal-lg"
-                                                                                                        role="document">
-                                                                                                        <div
-                                                                                                            class="modal-content">
-                                                                                                            <div
-                                                                                                                class="block block-rounded">
-                                                                                                                <div
-                                                                                                                    class="block-header block-header-default">
-                                                                                                                    <h3
-                                                                                                                        class="block-title set_question_type_title">
-                                                                                                                        Arithmetic
-                                                                                                                        Operations
-                                                                                                                    </h3>
-                                                                                                                </div>
-                                                                                                                <div
-                                                                                                                    class="block-content">
-                                                                                                                    <p
-                                                                                                                        class="fs-sm mb-0">
-                                                                                                                    </p>
-
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Description
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_desc">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    {{-- start  --}}
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Lesson
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_lesson">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Strategies
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_strategies">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Identification
-                                                                                                                                    Methods
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_identification_methods">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Identification
-                                                                                                                                    Activity
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_identification_activity">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    {{-- end  --}}
                                                                                                                 </div>
 
                                                                                                                 <div
@@ -2812,247 +3816,254 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        @endforeach
-                                                        {{-- END accordian tab 1 --}}
-                                                    </div>
+                                                        @endif
+                                                    @endforeach
+
+
                                                 </div>
                                             </div>
-                                        @endif
+                                        </div>
+                                    @endif
+                                    <div class="tab-content" id="myTabContentMultiple" style="display: none">
+                                        @php
+                                            $test = 0;
+                                        @endphp
+
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        {{-- Answer Type Summary tab --}}
-                        <div class="tab-pane fade" id="btabs-animated-fade-answer" role="tabpanel"
-                            aria-labelledby="btabs-animated-fade-answer-tab" tabindex="0">
-                            <div class="block block-rounded">
-                                <div class="block-header block-header-default">
-                                    <h3 class="block-title">INCORRECT ANSWER TYPE SUMMARY</h3>
-                                </div>
-                                <div class="block-content">
-                                    <div class="block-content p-0">
-                                        <table
-                                            class="js-table-sections table table-hover table-vcenter js-table-sections-enabled">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 30px;"></th>
-                                                    <th style="width: 20%;">Type</th>
-                                                    <th>Name</th>
-                                                    <th style="width: 20%;">FREQUENCY OF INCORRECT ANSWER TYPES</th>
-                                                </tr>
-                                            </thead>
+                    {{-- Answer Type Summary tab --}}
+                    <div class="tab-pane fade" id="btabs-animated-fade-answer" role="tabpanel"
+                        aria-labelledby="btabs-animated-fade-answer-tab" tabindex="0">
+                        <div class="block block-rounded">
+                            <div class="block-header block-header-default">
+                                <h3 class="block-title">MISTAKE SUMMARY</h3>
+                            </div>
+                            <div class="block-content">
+                                <div class="block-content p-0">
+                                    <table
+                                        class="table-mistake-types js-table-sections table table-hover table-vcenter js-table-sections-enabled">
+                                        <thead>
+                                            <tr>
+                                                {{-- <th style="width: 30px;"></th> --}}
+                                                <th style="width: 40%" class="text-center">Type</th>
+                                                <th style="width: 60%" class="text-center">FREQUENCY OF INCORRECT
+                                                    ANSWER TYPES</th>
+                                            </tr>
+                                        </thead>
 
-                                            <tbody class="fs-sm">
-                                                <?php $modelcount = 0; ?>
-                                                <!-- Answer Type 1 -->
-                                                @if (isset($store_question_type_data) && !empty($store_question_type_data))
-                                                    @foreach ($store_question_type_data as $get_question_type => $single_question_data)
-                                                        <?php
-                                                        $test = $count++;
-                                                        $store_total_wrong_answer = 0;
+                                        <tbody class="fs-sm">
+                                            <?php $modelcount = 0; ?>
+                                            <!-- Answer Type 1 -->
+                                            {{-- @if (isset($store_question_type_data) && !empty($store_question_type_data))
+                                                @foreach ($store_question_type_data as $get_question_type => $single_question_data)
+                                                    <?php
+                                                    $test = $count++;
+                                                    $store_total_wrong_answer = 0;
 
-                                                        foreach ($single_question_data as $single_question_details_item) {
-                                                            $store_correct_answer = 0;
-                                                            $store_wrong_answer = 0;
+                                                    foreach ($single_question_data as $single_question_details_item) {
+                                                        $store_correct_answer = 0;
+                                                        $store_wrong_answer = 0;
 
-                                                            foreach ($user_selected_answers as $single_answer_user_selected) {
-                                                                if (isset($single_answer_user_selected['get_question_details'][0]->question_id) && !empty($single_answer_user_selected['get_question_details'][0]->question_id)) {
-                                                                    if ($single_question_details_item[0] == $single_answer_user_selected['get_question_details'][0]->question_id) {
-                                                                        if ($single_answer_user_selected['user_selected_answer'] == $single_answer_user_selected['get_question_details'][0]->question_answer) {
-                                                                            $store_correct_answer++;
-                                                                        } else {
-                                                                            $store_wrong_answer++;
-                                                                            $store_total_wrong_answer += $store_wrong_answer;
-                                                                        }
+                                                        foreach ($user_selected_answers as $single_answer_user_selected) {
+                                                            if (isset($single_answer_user_selected['get_question_details'][0]->question_id) && !empty($single_answer_user_selected['get_question_details'][0]->question_id)) {
+                                                                if ($single_question_details_item[0] == $single_answer_user_selected['get_question_details'][0]->question_id) {
+                                                                    if ($single_answer_user_selected['user_selected_answer'] == $single_answer_user_selected['get_question_details'][0]->question_answer) {
+                                                                        $store_correct_answer++;
+                                                                    } else {
+                                                                        $store_wrong_answer++;
+                                                                        $store_total_wrong_answer += $store_wrong_answer;
                                                                     }
                                                                 }
                                                             }
                                                         }
-                                                        ?>
+                                                    }
+                                                    ?>
 
-                                                        <tr>
-                                                            <td class="text-center"></td>
-                                                            <td>
-                                                                <button type="button"
-                                                                    class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">Answer
-                                                                    Type</button>
-                                                            </td>
-                                                            <td class="fw-semibold fs-sm">
-                                                                <button type="button" data-bs-toggle="modal"
-                                                                    data-bs-target="#modal-block-large-ag<?php $new = strtolower(str_replace(' ', '', $get_question_type));
-                                                                    echo preg_replace('/[^a-zA-Z0-9?]+/', '', strtolower($new));
-                                                                    ?>"
-                                                                    class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">{{ $get_question_type }}</button>
+                                                    <tr>
+                                                        <td class="text-center"></td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">Answer
+                                                                Type</button>
+                                                        </td>
+                                                        <td class="fw-semibold fs-sm">
+                                                            <button type="button" data-bs-toggle="modal"
+                                                                data-bs-target="#modal-block-large-ag<?php $new = strtolower(str_replace(' ', '', $get_question_type));
+                                                                echo preg_replace('/[^a-zA-Z0-9?]+/', '', strtolower($new));
+                                                                ?>"
+                                                                class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">{{ $get_question_type }}</button>
 
-                                                                <div class="modal"
-                                                                    id="modal-block-large-ag<?php $new = strtolower(str_replace(' ', '', $get_question_type));
-                                                                    echo preg_replace('/[^a-zA-Z0-9?]+/', '', strtolower($new));
-                                                                    ?>"
-                                                                    tabindex="-1"
-                                                                    aria-labelledby="modal-block-large-ag<?php $new = strtolower(str_replace(' ', '', $get_question_type));
-                                                                    echo preg_replace('/[^a-zA-Z0-9?]+/', '', strtolower($new));
-                                                                    ?>"
-                                                                    style="display: none;" aria-hidden="true">
-                                                                    <div class="modal-dialog modal-lg" role="document">
-                                                                        <div class="modal-content">
-                                                                            <div class="block block-rounded">
-                                                                                <div
-                                                                                    class="block-header block-header-default">
-                                                                                    <h3 class="block-title">Answer Type:
-                                                                                        {{ $get_question_type }}</h3>
-                                                                                </div>
-                                                                                <div class="block-content">
-                                                                                    <div id="faq2" class="mb-5"
-                                                                                        role="tablist"
-                                                                                        aria-multiselectable="true">
-                                                                                        <div
-                                                                                            class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                            <div class="block-header block-header-default"
-                                                                                                role="tab"
-                                                                                                id="faq2_h1">
-                                                                                                <a class="text-white"
-                                                                                                    data-bs-toggle="collapse"
-                                                                                                    data-bs-parent="#faq2"
-                                                                                                    href="#faq2_q1"
-                                                                                                    aria-expanded="true"
-                                                                                                    aria-controls="faq2_q1">Description</a>
-                                                                                            </div>
-                                                                                            <div id="faq2_q1"
-                                                                                                class="collapse show"
-                                                                                                role="tabpanel"
-                                                                                                aria-labelledby="faq2_h1"
-                                                                                                data-bs-parent="#faq2">
-                                                                                                <div
-                                                                                                    class="block-content">
-                                                                                                    <?php echo $single_question_data[0]['question_desc']; ?>
-                                                                                                </div>
-                                                                                            </div>
+                                                            <div class="modal"
+                                                                id="modal-block-large-ag<?php $new = strtolower(str_replace(' ', '', $get_question_type));
+                                                                echo preg_replace('/[^a-zA-Z0-9?]+/', '', strtolower($new));
+                                                                ?>"
+                                                                tabindex="-1"
+                                                                aria-labelledby="modal-block-large-ag<?php $new = strtolower(str_replace(' ', '', $get_question_type));
+                                                                echo preg_replace('/[^a-zA-Z0-9?]+/', '', strtolower($new));
+                                                                ?>"
+                                                                style="display: none;" aria-hidden="true">
+                                                                <div class="modal-dialog modal-lg" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="block block-rounded">
+                                                                            <div
+                                                                                class="block-header block-header-default">
+                                                                                <h3 class="block-title">Answer Type:
+                                                                                    {{ $get_question_type }}</h3>
+                                                                            </div>
+                                                                            <div class="block-content">
+                                                                                <div id="faq2" class="mb-5"
+                                                                                    role="tablist"
+                                                                                    aria-multiselectable="true">
+                                                                                    <div
+                                                                                        class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                        <div class="block-header block-header-default"
+                                                                                            role="tab"
+                                                                                            id="faq2_h1">
+                                                                                            <a class="text-white"
+                                                                                                data-bs-toggle="collapse"
+                                                                                                data-bs-parent="#faq2"
+                                                                                                href="#faq2_q1"
+                                                                                                aria-expanded="true"
+                                                                                                aria-controls="faq2_q1">Description</a>
                                                                                         </div>
-                                                                                        <div
-                                                                                            class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                            <div class="block-header block-header-default"
-                                                                                                role="tab"
-                                                                                                id="faq2_h1">
-                                                                                                <a class="text-white"
-                                                                                                    data-bs-toggle="collapse"
-                                                                                                    data-bs-parent="#faq2"
-                                                                                                    href="#faq2_q1"
-                                                                                                    aria-expanded="true"
-                                                                                                    aria-controls="faq2_q1">Lesson</a>
-                                                                                            </div>
-                                                                                            <div id="faq2_q1"
-                                                                                                class="collapse show"
-                                                                                                role="tabpanel"
-                                                                                                aria-labelledby="faq2_h1"
-                                                                                                data-bs-parent="#faq2">
-                                                                                                <div
-                                                                                                    class="block-content">
-                                                                                                    <?php echo $single_question_data[0]['question_type_lesson']; ?>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div
-                                                                                            class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                            <div class="block-header block-header-default"
-                                                                                                role="tab"
-                                                                                                id="faq2_h1">
-                                                                                                <a class="text-white"
-                                                                                                    data-bs-toggle="collapse"
-                                                                                                    data-bs-parent="#faq2"
-                                                                                                    href="#faq2_q1"
-                                                                                                    aria-expanded="true"
-                                                                                                    aria-controls="faq2_q1">Strategies</a>
-                                                                                            </div>
-                                                                                            <div id="faq2_q1"
-                                                                                                class="collapse show"
-                                                                                                role="tabpanel"
-                                                                                                aria-labelledby="faq2_h1"
-                                                                                                data-bs-parent="#faq2">
-                                                                                                <div
-                                                                                                    class="block-content">
-                                                                                                    <?php echo $single_question_data[0]['question_type_strategies']; ?>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div
-                                                                                            class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                            <div class="block-header block-header-default"
-                                                                                                role="tab"
-                                                                                                id="faq2_h1">
-                                                                                                <a class="text-white"
-                                                                                                    data-bs-toggle="collapse"
-                                                                                                    data-bs-parent="#faq2"
-                                                                                                    href="#faq2_q1"
-                                                                                                    aria-expanded="true"
-                                                                                                    aria-controls="faq2_q1">Identification
-                                                                                                    Methods</a>
-                                                                                            </div>
-                                                                                            <div id="faq2_q1"
-                                                                                                class="collapse show"
-                                                                                                role="tabpanel"
-                                                                                                aria-labelledby="faq2_h1"
-                                                                                                data-bs-parent="#faq2">
-                                                                                                <div
-                                                                                                    class="block-content">
-                                                                                                    <?php echo $single_question_data[0]['question_type_identification_methods']; ?>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div
-                                                                                            class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                            <div class="block-header block-header-default"
-                                                                                                role="tab"
-                                                                                                id="faq2_h1">
-                                                                                                <a class="text-white"
-                                                                                                    data-bs-toggle="collapse"
-                                                                                                    data-bs-parent="#faq2"
-                                                                                                    href="#faq2_q1"
-                                                                                                    aria-expanded="true"
-                                                                                                    aria-controls="faq2_q1">Identification
-                                                                                                    Activity</a>
-                                                                                            </div>
-                                                                                            <div id="faq2_q1"
-                                                                                                class="collapse show"
-                                                                                                role="tabpanel"
-                                                                                                aria-labelledby="faq2_h1"
-                                                                                                data-bs-parent="#faq2">
-                                                                                                <div
-                                                                                                    class="block-content">
-                                                                                                    <?php echo $single_question_data[0]['question_type_identification_activity']; ?>
-                                                                                                </div>
+                                                                                        <div id="faq2_q1"
+                                                                                            class="collapse show"
+                                                                                            role="tabpanel"
+                                                                                            aria-labelledby="faq2_h1"
+                                                                                            data-bs-parent="#faq2">
+                                                                                            <div
+                                                                                                class="block-content">
+                                                                                                <?php echo $single_question_data[0]['question_desc']; ?>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div
-                                                                                        class="block-content block-content-full text-end bg-body">
-                                                                                        <button type="button"
-                                                                                            class="btn btn-sm block-header-default text-white text-white"
-                                                                                            data-bs-dismiss="modal">Close</button>
+                                                                                        class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                        <div class="block-header block-header-default"
+                                                                                            role="tab"
+                                                                                            id="faq2_h1">
+                                                                                            <a class="text-white"
+                                                                                                data-bs-toggle="collapse"
+                                                                                                data-bs-parent="#faq2"
+                                                                                                href="#faq2_q1"
+                                                                                                aria-expanded="true"
+                                                                                                aria-controls="faq2_q1">Lesson</a>
+                                                                                        </div>
+                                                                                        <div id="faq2_q1"
+                                                                                            class="collapse show"
+                                                                                            role="tabpanel"
+                                                                                            aria-labelledby="faq2_h1"
+                                                                                            data-bs-parent="#faq2">
+                                                                                            <div
+                                                                                                class="block-content">
+                                                                                                <?php echo $single_question_data[0]['question_type_lesson']; ?>
+                                                                                            </div>
+                                                                                        </div>
                                                                                     </div>
+                                                                                    <div
+                                                                                        class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                        <div class="block-header block-header-default"
+                                                                                            role="tab"
+                                                                                            id="faq2_h1">
+                                                                                            <a class="text-white"
+                                                                                                data-bs-toggle="collapse"
+                                                                                                data-bs-parent="#faq2"
+                                                                                                href="#faq2_q1"
+                                                                                                aria-expanded="true"
+                                                                                                aria-controls="faq2_q1">Strategies</a>
+                                                                                        </div>
+                                                                                        <div id="faq2_q1"
+                                                                                            class="collapse show"
+                                                                                            role="tabpanel"
+                                                                                            aria-labelledby="faq2_h1"
+                                                                                            data-bs-parent="#faq2">
+                                                                                            <div
+                                                                                                class="block-content">
+                                                                                                <?php echo $single_question_data[0]['question_type_strategies']; ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                        <div class="block-header block-header-default"
+                                                                                            role="tab"
+                                                                                            id="faq2_h1">
+                                                                                            <a class="text-white"
+                                                                                                data-bs-toggle="collapse"
+                                                                                                data-bs-parent="#faq2"
+                                                                                                href="#faq2_q1"
+                                                                                                aria-expanded="true"
+                                                                                                aria-controls="faq2_q1">Identification
+                                                                                                Methods</a>
+                                                                                        </div>
+                                                                                        <div id="faq2_q1"
+                                                                                            class="collapse show"
+                                                                                            role="tabpanel"
+                                                                                            aria-labelledby="faq2_h1"
+                                                                                            data-bs-parent="#faq2">
+                                                                                            <div
+                                                                                                class="block-content">
+                                                                                                <?php echo $single_question_data[0]['question_type_identification_methods']; ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                        <div class="block-header block-header-default"
+                                                                                            role="tab"
+                                                                                            id="faq2_h1">
+                                                                                            <a class="text-white"
+                                                                                                data-bs-toggle="collapse"
+                                                                                                data-bs-parent="#faq2"
+                                                                                                href="#faq2_q1"
+                                                                                                aria-expanded="true"
+                                                                                                aria-controls="faq2_q1">Identification
+                                                                                                Activity</a>
+                                                                                        </div>
+                                                                                        <div id="faq2_q1"
+                                                                                            class="collapse show"
+                                                                                            role="tabpanel"
+                                                                                            aria-labelledby="faq2_h1"
+                                                                                            data-bs-parent="#faq2">
+                                                                                            <div
+                                                                                                class="block-content">
+                                                                                                <?php echo $single_question_data[0]['question_type_identification_activity']; ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="block-content block-content-full text-end bg-body">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-sm block-header-default text-white text-white"
+                                                                                        data-bs-dismiss="modal">Close</button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </td>
+                                                            </div>
+                                                        </td>
 
-                                                            <td class="fw-semibold fs-sm">
-                                                                <div class="py-1">
-                                                                    <p><?php echo $store_total_wrong_answer; ?></p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                @endif
-                                                <!-- END Answer Type 1 -->
+                                                        <td class="fw-semibold fs-sm">
+                                                            <div class="py-1">
+                                                                <p><?php echo $store_total_wrong_answer; ?></p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif --}}
+                                            <!-- END Answer Type 1 -->
 
 
 
-                                                <!-- END ANSWER Type 3 MODAL -->
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                            <!-- END ANSWER Type 3 MODAL -->
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -3060,70 +4071,185 @@
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
+@include('user.test-review._test_type_selection_modal')
 @endsection
-
-@section('page-style')
-    <link rel="stylesheet" href="{{ asset('css/test-review.css') }}">
-    <style>
-        .tab-padding {
-            padding: 20px !important;
-        }
-
-        .border-top-tr {
-            border-top: 1px solid #ebeef2;
-        }
-
-        .category-badge.btn-success:hover {
-            background-color: #65a30d !important;
-            border-color: #65a30d !important;
-        }
-
-        .category-badge.btn-success:focus {
-            background-color: #65a30d !important;
-            border-color: #65a30d !important;
-            box-shadow: none !important;
-        }
-
-        .category-badge {
-            cursor: default !important;
-        }
-
-        #incorrect-message {
-            position: relative;
-            top: -20px;
-            left: 31px;
-            font-size: 14px;
-        }
-
-        /* .description-test-review p:nth-child(2){
-                                                                    display: none;
-                                                                } */
-        .content-full {
-            max-width: 1195px !important;
-            overflow: hidden !important;
-        }
-
-        .table thead th {
-            padding: 10px 19px 10px 12px !important;
-        }
-
-        .table-contant tbody tr td {
-            padding: 10px 19px 10px 12px !important;
-        }
-
-        @media(max-width:575px) {
-            table {
-                display: block;
-                /* width: 260px; */
-                overflow: scroll;
+@php
+    $practice_test_section_ids = [];
+    if (isset($user_selected_answers[0]['all_sections']) && !empty($user_selected_answers[0]['all_sections'])) {
+        foreach ($user_selected_answers as $user_selected_answer) {
+            foreach ($user_selected_answer['all_sections'] as $allSection) {
+                # code...
+                array_push($practice_test_section_ids, $allSection->id);
             }
         }
-    </style>
-@endsection
+    } else {
+        foreach ($user_selected_answers as $user_selected_answer) {
+            foreach ($user_selected_answer['sections'] as $allSection) {
+                # code...
+                array_push($practice_test_section_ids, $allSection->id);
+            }
+        }
+    }
+    $practice_test_section_ids = array_unique($practice_test_section_ids);
+@endphp
+@section('page-style')
+<link rel="stylesheet" href="{{ asset('css/test-review.css') }}">
+<style>
+    .tab-padding {
+        padding: 20px !important;
+    }
 
+    .border-top-tr {
+        border-top: 1px solid #ebeef2;
+    }
+
+    .category-badge.btn-success:hover {
+        background-color: #65a30d !important;
+        border-color: #65a30d !important;
+    }
+
+    .category-badge.btn-success:focus {
+        background-color: #65a30d !important;
+        border-color: #65a30d !important;
+        box-shadow: none !important;
+    }
+
+    .category-badge {
+        cursor: default !important;
+    }
+
+    #incorrect-message {
+        position: relative;
+        top: -20px;
+        left: 31px;
+        font-size: 14px;
+    }
+
+    /* .description-test-review p:nth-child(2){
+                                                                                                                                                                                                                                                                                        display: none;
+                                                                                                                                                                                                                                                                                    } */
+    .content-full {
+        max-width: 1195px !important;
+        overflow: hidden !important;
+    }
+
+    .table thead th {
+        padding: 10px 19px 10px 12px !important;
+    }
+
+    .table-contant tbody tr td {
+        padding: 10px 19px 10px 12px !important;
+    }
+
+    @media(max-width:575px) {
+        table {
+            display: block;
+            /* width: 260px; */
+            overflow: scroll;
+        }
+    }
+
+    .custom-loader-his {
+        width: 50px;
+        height: 50px;
+        display: grid;
+        border-radius: 50%;
+        -webkit-mask: radial-gradient(farthest-side, #0000 40%, #000 41%);
+        background: linear-gradient(0deg, #766DF480 50%, #766DF4FF 0) center/4px 100%,
+            linear-gradient(90deg, #766DF440 50%, #766DF4BF 0) center/100% 4px;
+        background-repeat: no-repeat;
+        animation: s3 1s infinite steps(12);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        visibility: hidden;
+    }
+
+    .custom-loader-his::before,
+    .custom-loader-his::after {
+        content: "";
+        grid-area: 1/1;
+        border-radius: 50%;
+        background: inherit;
+        opacity: 0.915;
+        transform: rotate(30deg);
+    }
+
+    .custom-loader-his::after {
+        opacity: 0.83;
+        transform: rotate(60deg);
+    }
+
+    @keyframes s3 {
+        100% {
+            transform: rotate(1turn)
+        }
+    }
+</style>
+@endsection
+<link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
 @section('page-script')
-    <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/test-review.js') }}"></script>
+<script>
+    const GETTYPES_ROUTE = "{{ route('gettypes') }}";
+    const GETSELFMADEQUESTION_ROUTE = "{{ route('getSelfMadeTestQuestion') }}";
+    const ADD_MISTAKE_TYPE_ROUTE = "{{ route('addMistakeType') }}";
+    const ADD_NOTES_ROUTE = "{{ route('addNotesToQuestionReview') }}";
+    const PRACTICE_TEST_SECTION_ID = @json($practice_test_section_ids);
+</script>
+<script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
+<script src="{{ asset('js/test-review.js') }}"></script>
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+    function handleNotesChange(e, questionId) {
+        console.log(e.value, questionId);
+        const notes = e.value;
+        $.ajax({
+            type: "POST",
+            url: ADD_NOTES_ROUTE,
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            data: {
+                notes,
+                questionId,
+            },
+            success: function(res) {},
+        });
+    }
+
+    function showLoaderAndOpenModal(questionId) {
+        // Show the loader
+        $('#loader').show();
+
+        // Show the modal immediately
+        $('#modal-block-large-q1r_' + questionId).modal('show');
+
+        // Hide the loader (you may choose to hide it after a delay if needed)
+        $('#loader').hide();
+    }
+</script>
+@endsection
+<link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
+@section('page-style')
+<link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
 @endsection

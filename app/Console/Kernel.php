@@ -21,6 +21,8 @@ class Kernel extends ConsoleKernel
         $schedule->call('App\Http\Controllers\Cronjob\SendReminder@index')->everyMinute();
         $schedule->call('App\Http\Controllers\Cronjob\FetchCollegeInformation@index')->daily();
         $schedule->call('App\Http\Controllers\Cronjob\CollegeMajorInformationc@index')->daily();
+        $schedule->call('App\Http\Controllers\Cronjob\FreeSubscriptionController@index')->daily();
+        $schedule->call('App\Http\Controllers\Cronjob\FreeSubscriptionController@subscriptionRenewalAlert')->daily();
     }
 
     /**

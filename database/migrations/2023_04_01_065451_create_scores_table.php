@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('section_type');
             $table->integer('test_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

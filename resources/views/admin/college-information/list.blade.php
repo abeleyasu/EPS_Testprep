@@ -24,6 +24,94 @@
         <h3 class="block-title">College Information List</h3>
       </div>
       <div class="block-content block-content-full">
+        <div class="row">
+          <form class="row" action=" {{ route('admin.admission-management.college-information.import_csv')}}" method="post" enctype="multipart/form-data">
+            @csrf
+        
+            <div class="mb-3 col-sm-12 col-md-6">
+                <label for="csv_file" class="form-label">Import Peterson Data Using CSV:</label>
+                <input required type="file" class="form-control" id="csv_file" name="csv_file" accept=".csv">
+            </div>
+        
+            <div class="col-sm-12 col-md-6 d-flex align-items-center justify-content-end">
+              <button type="submit" class="btn btn-primary">Import CSV</button>
+            </div>
+          </form>
+        </div>
+        <div class="row">
+          {{-- <form class="row" action=" {{ route('admin.admission-management.college-information.import_ug_expense_asgns')}}" method="post" enctype="multipart/form-data">
+            @csrf
+        
+            <div class="mb-3 col-sm-12 col-md-6">
+                <label for="csv_file" class="form-label">Import UG Expense Data Using CSV:</label>
+                <input required type="file" class="form-control" id="ug_expense_asgns" name="ug_expense_asgns" accept=".csv">
+            </div>
+        
+            <div class="col-sm-12 col-md-6 d-flex align-items-center justify-content-end">
+              <button type="submit" class="btn btn-primary">Import CSV</button>
+            </div>
+          </form>
+          <form class="row" action=" {{ route('admin.admission-management.college-information.import_ug_admis')}}" method="post" enctype="multipart/form-data">
+            @csrf
+        
+            <div class="mb-3 col-sm-12 col-md-6">
+                <label for="csv_file" class="form-label">Import UG Admis Data Using CSV:</label>
+                <input required type="file" class="form-control" id="ug_admis" name="ug_admis" accept=".csv">
+            </div>
+        
+            <div class="col-sm-12 col-md-6 d-flex align-items-center justify-content-end">
+              <button type="submit" class="btn btn-primary">Import UG Admission</button>
+            </div>
+          </form>
+          <form class="row" action=" {{ route('admin.admission-management.college-information.import_ux_inst')}}" method="post" enctype="multipart/form-data">
+            @csrf
+        
+            <div class="mb-3 col-sm-12 col-md-6">
+                <label for="csv_file" class="form-label">Import UX INST data using CSV:</label>
+                <input required type="file" class="form-control" id="ux_inst" name="ux_inst" accept=".csv">
+            </div>
+        
+            <div class="col-sm-12 col-md-6 d-flex align-items-center justify-content-end">
+              <button type="submit" class="btn btn-primary">Import UG Admission</button>
+            </div>
+          </form>
+          <form class="row" action=" {{ route('admin.admission-management.college-information.import_ug_campus')}}" method="post" enctype="multipart/form-data">
+            @csrf
+        
+            <div class="mb-3 col-sm-12 col-md-6">
+                <label for="csv_file" class="form-label">Import UG Campus Data Using CSV:</label>
+                <input required type="file" class="form-control" id="ug_campus" name="ug_campus" accept=".csv">
+            </div>
+        
+            <div class="col-sm-12 col-md-6 d-flex align-items-center justify-content-end">
+              <button type="submit" class="btn btn-primary">Import UG Campus</button>
+            </div>
+          </form>
+          <form class="row" action=" {{ route('admin.admission-management.college-information.import_ux_inst')}}" method="post" enctype="multipart/form-data">
+            @csrf
+        
+            <div class="mb-3 col-sm-12 col-md-6">
+                <label for="csv_file" class="form-label">Import UX Inst Data Using CSV:</label>
+                <input required type="file" class="form-control" id="ux_inst" name="ux_inst" accept=".csv">
+            </div>
+        
+            <div class="col-sm-12 col-md-6 d-flex align-items-center justify-content-end">
+              <button type="submit" class="btn btn-primary">Import UX INST</button>
+            </div>
+          </form>
+          <form class="row" action=" {{ route('admin.admission-management.college-information.import_ug_enroll')}}" method="post" enctype="multipart/form-data">
+            @csrf
+        
+            <div class="mb-3 col-sm-12 col-md-6">
+                <label for="csv_file" class="form-label">Import UG Enroll Data Using CSV:</label>
+                <input required type="file" class="form-control" id="ux_inst" name="ug_enroll" accept=".csv">
+            </div>
+        
+            <div class="col-sm-12 col-md-6 d-flex align-items-center justify-content-end">
+              <button type="submit" class="btn btn-primary">Import UG Enroll</button>
+            </div> --}}
+          </form>
+        </div>
         <table id="college-information" class="table table-bordered table-striped table-vcenter">
           <thead>
             <tr>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CollegeApplicationDeadlineController;
 use App\Http\Controllers\CourseManagement\CourseController;
 use App\Http\Controllers\CourseManagement\MilestoneController;
 use App\Http\Controllers\CourseManagement\ModuleController;
@@ -45,7 +46,6 @@ Route::group(['middleware' =>'api'],function() {
     Route::post('task/{task}/change-status', [TaskController::class, 'changeStatusJson']);
     Route::post('sections/{id}/tasks', [TaskController::class, 'taskBySection']);
 	Route::post('tasks/{id}/reorder',[TaskController::class,'reorder']);
-
 });
 
 Route::post('custom/send-sms', [SMSController::class, 'sendSMS']);

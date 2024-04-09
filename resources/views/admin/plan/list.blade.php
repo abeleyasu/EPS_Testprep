@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.3.3/css/rowReorder.dataTables.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 @endsection
 
 @section('admin-content')
@@ -27,7 +28,7 @@
                     <a href="{{route('admin.plan.create')}}" class="btn btn-sm btn-alt-success"><i class="fa fa-plus mr-1"></i> Add New Plan</a>
                 </div>
             </div>
-            <div class="block-content block-content-full">
+            <div class="table-responsive">
                 <table id="plan" class="table table-bordered table-striped table-vcenter">
                     <thead>
                         <tr>
@@ -38,9 +39,13 @@
                             <th>Interval</th>
                             <th>Interval Count</th>
                             <th>Currency</th>
-                            <th>Price</th>
+                            <th>Total Amount</th>
+                            <th>Cost per Interval</th>
                             <th>order</th>
-                            <th style="width: 10%;">Action</th>
+                            <th>Plan status</th>
+                            <th>Created at</th>
+                            <th>plan Inactivated</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                 </table>
@@ -55,7 +60,7 @@
 
 @section('admin-script')
     <script src="https://cdn.datatables.net/rowreorder/1.2.6/js/dataTables.rowReorder.min.js"></script> 
-
+    <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script>
 
         const dataTable = $('#plan').DataTable({
@@ -80,7 +85,11 @@
                 { "data": "interval_count", "name": "interval_count", "orderable": false },
                 { "data": "currency", "name": "currency", "orderable": false },
                 { "data": "price", "name": "price", "orderable": false },
+                { "data": "amount", "name": "amount", "orderable": false },
                 { "data": "order_index", "name": "order_index", "orderable": false },
+                { "data": "plan_status", "name": "plan_status", "orderable": false },
+                { "data": "plan_created", "name": "plan_created", "orderable": false },
+                { "data": "plan_inactivated", "name": "plan_inactivated", "orderable": false },
                 { "data": "action", "name": "action", "orderable": false },
             ],
             rowReorder: {
@@ -119,12 +128,34 @@
                         'data': {id: $(this).data('id')},
                         'headers': {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
                     }).done(function(data){
-                        dataTable.ajax.reload();
+                        if (data.success) {
+                            dataTable.ajax.reload();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: data.message,
+                            })
+                        }
                     });
                 }
             });
         });
-
         
+        function updateStatus(id){
+            $.ajax({
+                'url': "{{ route('admin.plan.changePlanStatus','') }}/"+id,
+            }).done(function(data){
+                if (data.success) {
+                    dataTable.ajax.reload();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: data.message,
+                    })
+                }
+            });
+        }
     </script>
 @endsection

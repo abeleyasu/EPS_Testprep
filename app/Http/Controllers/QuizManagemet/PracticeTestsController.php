@@ -16,23 +16,49 @@ use App\Models\Score;
 use App\Models\SuperCategory;
 use App\Models\UserAnswers;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cache;
+
 
 class PracticeTestsController extends Controller
 {
     use CRUD;
-	public $testformat = ['SAT'=>'SAT PRACTICE TEST','ACT'=>'ACT PRACTICE TEST', 'PSAT' => 'PSAT PRACTICE TEST'];
-	public $questionformat = ['ACT'=> 'ACT Question', 'SAT'=>'SAT Question', 'PSAT'=>'PSAT Question'];
+    public $testformat = [
+        'SAT' => 'SAT PRACTICE TEST',
+        'ACT' => 'ACT PRACTICE TEST',
+        'PSAT' => 'PSAT PRACTICE TEST',
+        'DSAT' => 'Digital SAT',
+        'DPSAT' => 'Digital PSAT'
+    ];
+    public $questionformat = [
+        'ACT' => 'ACT Question',
+        'SAT' => 'SAT Question',
+        'PSAT' => 'PSAT Question',
+        'DSAT' => 'Digital SAT Question',
+        'DPSAT' => 'Digital PSAT Question'
+    ];
     public $testSource = ['0' => 'College Prep System Practice Test', '1' => 'Official Released Practice Test', '2' => 'Quiz Questions'];
-	public function __construct(){
-		View::share('testformats', $this->testformat);
-		View::share('questionformats', $this->questionformat);
+    public function __construct()
+    {
+        View::share('testformats', $this->testformat);
+        View::share('questionformats', $this->questionformat);
         View::share('passages', Passage::get());
         View::share('testsources', $this->testSource);
     }
-	
-	public function index()
+
+    public function index()
     {
-        $tests = PracticeTest::get();
+        $tests1 = PracticeTest::where('test_source', '!=', 2)
+            ->orderBy('id', 'DESC')
+            ->get();
+        // dd($tests1);
+        $tests2 = PracticeTest::where('test_source', 2)
+            ->where('user_id', null)
+            ->orderBy('id', 'DESC')
+            ->get();
+            // dd($tests2);
+        $tests = $tests1->merge($tests2);
+        // $tests = PracticeTest::orderBy('id', 'DESC')->get();
         $getQuestionTypes = PracticeTest::get();
         return view('admin.quiz-management.practicetests.index', compact('tests'));
     }
@@ -44,10 +70,10 @@ class PracticeTestsController extends Controller
      */
     public function create()
     {
-		$tests = PracticeTest::get();
+        $tests = PracticeTest::get();
         $getQuestionTypes = QuestionType::get();
         $getCategoryTypes = PracticeCategoryType::get();
-        return view('admin.quiz-management.practicetests.create' ,  ['tests' => $tests , 'getCategoryTypes' => $getCategoryTypes ,'getQuestionTypes' => $getQuestionTypes]);
+        return view('admin.quiz-management.practicetests.create',  ['tests' => $tests, 'getCategoryTypes' => $getCategoryTypes, 'getQuestionTypes' => $getQuestionTypes]);
     }
 
     /**
@@ -59,58 +85,108 @@ class PracticeTestsController extends Controller
     public function store(Request $request)
     {
 
-        
-        if(!empty($request->get_question_id))
-        {
+
+        if (!empty($request->get_question_id)) {
             $practices = PracticeTest::where('id', $request->get_question_id)->get();
-            
-            foreach($practices as $practice) {
+
+            foreach ($practices as $practice) {
                 $practice->description = $request->description;
                 $practice->save();
             }
-            
         }
-		// $practice = new PracticeTest();
-		// $practice->title = $request->title;
-		// $practice->format = $request->format;
-		// $practice->description = $request->description;
+        // $practice = new PracticeTest();
+        // $practice->title = $request->title;
+        // $practice->format = $request->format;
+        // $practice->description = $request->description;
         // $practice->is_test_completed = '';
-        
+
         // $practice->save();
-		
-		// $sections = PracticeTestSection::where('testid', 0)->get();
-		// foreach($sections as $section) {
-		// 	$section->testid = $practice->id;
-		// 	$section->save();
-		// }
-		
-        return redirect()->route('practicetests.index')->with('message','Test created successfully');
+
+        // $sections = PracticeTestSection::where('testid', 0)->get();
+        // foreach($sections as $section) {
+        // 	$section->testid = $practice->id;
+        // 	$section->save();
+        // }
+
+        return redirect()->route('practicetests.index')->with('message', 'Test created successfully');
     }
 
     public function addPracticeTest(Request $request)
     {
-        if(empty($request->get_test_id))
-        {
-            $practice = new PracticeTest();
-            $practice->title = $request->title;
-            $practice->format = $request->format;
-            $practice->test_source = $request->source;
-            $practice->is_test_completed = '';
-            $practice->save();
-        }
-        else if(!empty($request->get_test_id))
-        {
-            $practices = PracticeTest::where('id', $request->get_test_id)->get();
-            
-            foreach($practices as $practice) {
+        DB::beginTransaction();
+        try {
+            $rules = [
+                'title' => 'required',
+                'format' => 'required',
+                'source' => 'required',
+                'status' => 'required',
+                'products' => 'required_if:status,paid|array|min:1',
+            ];
+
+            $customMessages = [
+                'title.required' => 'Title is required',
+                'format.required' => 'Test type is required',
+                'source.required' => 'Test source is required',
+                'status.required' => 'Test status is required',
+                'products.required_if' => 'Product is required',
+                'products.min' => 'Product is required',
+                'products.array' => 'Product is required',
+            ];
+
+            $validate = Validator::make($request->all(), $rules, $customMessages);
+            if ($validate->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $validate->errors()->first(),
+                ]);
+            }
+            if (empty($request->get_test_id)) {
+                $practice = new PracticeTest();
                 $practice->title = $request->title;
                 $practice->format = $request->format;
                 $practice->test_source = $request->source;
+                $practice->is_test_completed = '';
+                $practice->status = $request->status;
                 $practice->save();
+
+                if ($request->status == 'paid') {
+                    $practice->practice_tests_products()->attach($request->products);
+                }
+            } else if (!empty($request->get_test_id)) {
+                $practice = PracticeTest::where('id', $request->get_test_id)->first();
+
+                if (!$practice) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Test not found',
+                    ]);
+                }
+                $practice->title = $request->title;
+                $practice->format = $request->format;
+                $practice->test_source = $request->source;
+                $practice->status = $request->status;
+                $practice->save();
+
+                $get_all_attach_products = $practice->practice_tests_products()->pluck('product_id')->toArray();
+                if (count($get_all_attach_products) > 0) {
+                    $practice->practice_tests_products()->detach($get_all_attach_products);
+                }
+                if ($request->status == 'paid') {
+                    $practice->practice_tests_products()->attach($request->products);
+                }
             }
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'test_id' => $practice->id,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
-        
-        return $practice->id;
     }
 
     /**
@@ -133,19 +209,14 @@ class PracticeTestsController extends Controller
     public function edit($id)
     {
         $practicetests = PracticeTest::find($id);
-		$tests = PracticeTest::get();
+        $tests = PracticeTest::get();
         $p_test_section = PracticeTestSection::find($id);
-        if(!empty($p_test_section)) {
-            $testQuestions = $p_test_section->getPracticeQuestions;
-        } else {
-            $testQuestions = null;
-        }
+        $testQuestions = $p_test_section ? $p_test_section->getPracticeQuestions : null;
         $testsections = PracticeTestSection::where('testid', $id)->orderBy('section_order')->get();
-
         $getQuestionTypes = QuestionType::get();
         $getCategoryTypes = PracticeCategoryType::get();
 
-        return view('admin.quiz-management.practicetests.edit', compact('practicetests', 'tests', 'testQuestions', 'testsections','getQuestionTypes', 'getCategoryTypes'));
+        return view('admin.quiz-management.practicetests.edit', compact('practicetests', 'tests', 'testQuestions', 'testsections', 'getQuestionTypes', 'getCategoryTypes'));
     }
 
     /**
@@ -158,17 +229,17 @@ class PracticeTestsController extends Controller
     public function update(Request $request, PracticeTest $practicetests)
     {
         $tags = '';
-        if(is_array($request->tags)){
+        if (is_array($request->tags)) {
             $tags = implode(",", $request->tags);
         }
-		$practice = PracticeTest::find($request->id);
-		$practice->title = $request->title;
-		/*$practice->format = $request->format;*/
-		$practice->description = $request->description;
+        $practice = PracticeTest::find($request->id);
+        $practice->title = $request->title;
+        /*$practice->format = $request->format;*/
+        $practice->description = $request->description;
         $practice->tags = $tags;
         // $practice->category_type = $request->category_type;
-		$practice->save();
-        return redirect()->route('practicetests.index')->with('message','Question updated successfully');
+        $practice->save();
+        return redirect()->route('practicetests.index')->with('message', 'Question updated successfully');
     }
 
     /**
@@ -179,19 +250,39 @@ class PracticeTestsController extends Controller
      */
     public function destroy(PracticeTest $practicetests, $id)
     {
-        UserAnswers::where('test_id',$id)->delete();
-		Score::where('test_id',$id)->delete();
-        PracticeTestSection::where('testid',$id)->delete();
-		$practicetests = PracticeTest::find($id);
+        UserAnswers::where('test_id', $id)->delete();
+        Score::where('test_id', $id)->delete();
+        PracticeTestSection::where('testid', $id)->delete();
+
+        $practicetests = PracticeTest::find($id);
+        $practicetests->practice_tests_products()->detach();
         $practicetests->delete();
-        return redirect()->route('practicetests.index')->with('message','Question deleted successfully');
+        return redirect()->route('practicetests.index')->with('message', 'Question deleted successfully');
     }
 
-    public function addDropdownOption(Request $request){
-        $super_option = SuperCategory::where('format',$request['format'])->get();
-        $category = PracticeCategoryType::where('format',$request['format'])->get();
-        $questionType = QuestionType::where('format',$request['format'])->get();
-        
-        return response()->json(['super' => $super_option,'category' => $category, 'questionType' => $questionType]);
+
+    public function addDropdownOption(Request $request)
+    {
+        $format = $request['format'];
+
+        // Define cache keys for each type of data
+        $superCacheKey = "super_option_$format";
+        $categoryCacheKey = "category_$format";
+        $questionTypeCacheKey = "questionType_$format";
+
+        // Attempt to retrieve data from cache
+        $superOption = Cache::remember($superCacheKey, $minutes = 10, function () use ($format) {
+            return SuperCategory::where('format', $format)->get();
+        });
+
+        $category = Cache::remember($categoryCacheKey, $minutes = 10, function () use ($format) {
+            return PracticeCategoryType::where('format', $format)->get();
+        });
+
+        $questionType = Cache::remember($questionTypeCacheKey, $minutes = 10, function () use ($format) {
+            return QuestionType::where('format', $format)->get();
+        });
+
+        return response()->json(['super' => $superOption, 'category' => $category, 'questionType' => $questionType]);
     }
 }

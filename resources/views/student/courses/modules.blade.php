@@ -26,7 +26,7 @@
                         {{ $milestone->name }}
                     </h1>
                     <h2 class="h4 fw-normal text-white-75">
-                        {{ $milestone->modules->count() }} Modules
+                        {{ $modules->count() }} Modules
                     </h2>
                 </div>
             </div>
@@ -66,6 +66,11 @@
         <!-- END Navigation -->
     <!-- Page Content -->
     <div class="content content-boxed">
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{session('error')}}
+            </div>
+        @endif
         <div class="row coursedesc">
             {!! $milestone->description !!}
 		</div>
@@ -113,7 +118,7 @@
 					@endforeach				
                 
                     @php
-						foreach($milestone->modules as $key => $module){
+						foreach($modules as $key => $module){
 
 							$sectionpercentage = 0;					
 							$completedsection = 0;
@@ -132,10 +137,10 @@
 								$completion_percent = floor($totalCompTasks/$totalTasks * 100);
 							}
 							
-							$sections = $module->sections();
-							$totalSections = $sections->count();
+							$sections = $module->sections;
+							$totalSections = count($sections);
 							$comSections=0;
-								foreach($module->sections as $section_key => $section){
+								foreach($sections as $section_key => $section){
 									$sectasks = $section->sectionTasks(auth()->id());
 									$sectotaltasks = $sectasks->count();
 									$seccompleteTasks = $section->sectionCompleteTasks(auth()->id());
@@ -165,7 +170,7 @@
                                         <div class="col-11" style="float:left;">
 										    <h3 style="line-height:0px;">
 																					
-											@if($module->status == 'paid')
+											@if($module->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($module->user_module_products()->pluck('product_id')->toArray()))
 												<a href="javascript:;" class="font-grayed">{{ $module->title }}</a>
 											@else
 											<a href="{{ route('modules.detail',['module'=>$module->id]) }}">{{ $module->title }}</a>
@@ -218,7 +223,7 @@
                                             
 												<span class="mx-4">
 																								
-												@if($section->status == 'paid')
+												@if($section->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($section->user_section_products()->pluck('product_id')->toArray()))
 													<a href="javascript:;" class="font-grayed"><i class="fa-solid fa-list"></i>  {{$key+1}}.{{$section_key+1}} {!! $section->title !!}</a>
 												@else
 												<a href="{{ route('sections.detail',['section'=>$section->id]) }}"><i class="fa-solid fa-list"></i>  {{$key+1}}.{{$section_key+1}} {!! $section->title !!} </a>
@@ -262,7 +267,7 @@
                             <tr>
                                 <td>
                                     <i class="fa fa-fw fa-book me-1"></i>
-                                    {{ $milestone->modules->count() }} modules
+                                    {{ $modules->count() }} modules
                                 </td>
                             </tr>
 {{--                            <tr>--}}

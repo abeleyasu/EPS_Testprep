@@ -56,6 +56,11 @@
         <!-- END Navigation -->
     <!-- Page Content -->
     <div class="content content-boxed">
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{session('error')}}
+            </div>
+        @endif
         <div class="row coursedesc">
             {!! $course->description !!}
 		</div>
@@ -72,7 +77,7 @@
 					
 						foreach($milestones as $mkey=>$milestone){
 							$totalMilestone=0;
-						 $completion_percent=0;
+						    $completion_percent=0;
 							$completedmodule=0;
 							$totalmodules=0;
 							 $modulepercentage=0;
@@ -84,24 +89,27 @@
 							$totalTasks =  $tasks->count();
 							$completeTasks =  $milestone->completeTasks(auth()->id());
 							$totalCompleteTasks =  $completeTasks->count();
-							 $totalMilestone=$totalMilestone+1;
-							 if($totalCompleteTasks>0){
-								 $completion_percent = floor(($totalCompleteTasks/$totalTasks)*100);
-							 }
+                            
+                            $totalMilestone=$totalMilestone+1;
+
+                            if($totalCompleteTasks>0){
+                                $completion_percent = floor(($totalCompleteTasks/$totalTasks)*100);
+                            }
 							 
 							 
-							 foreach($milestone->modules as $mmkey=>$module){
-								 $mtotaltasks = $module->tasks()->count();
-								 $mtotalcompletetasks = $module->completeTasks(auth()->id())->count();
-								 if($mtotaltasks>0){
-									 if($mtotaltasks == $mtotalcompletetasks){
-										$completedmodule=$completedmodule+1;
-									 }
-								 }
-							 }
-							 if($completedmodule>0 && $totalmodules){
-								$modulepercentage = floor(($completedmodule/$totalmodules)*100);	
-							 }
+                            foreach($milestone->modules as $mmkey=>$module){
+                                $mtotaltasks = $module->tasks()->count();
+                                $mtotalcompletetasks = $module->completeTasks(auth()->id())->count();
+                                if($mtotaltasks>0){
+                                    if($mtotaltasks == $mtotalcompletetasks){
+                                    $completedmodule=$completedmodule+1;
+                                    }
+                                }
+                            }
+
+                            if($completedmodule>0 && $totalmodules){
+                                $modulepercentage = floor(($completedmodule/$totalmodules)*100);	
+                            }
 							 
 						@endphp
                         <div class="block block-rounded">
@@ -115,7 +123,7 @@
 									<div class="col-12 colapHead" >
                                         <div class="col-11" style="float:left;">
 										    <h3>
-											@if($milestone->status == 'paid')
+											@if($milestone->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($milestone->user_milestone_products()->pluck('product_id')->toArray()))
 												<a href="javascript:;" class="font-grayed">{{ $milestone->name }}</a>
 											@else
 											<a href="{{ route('milestone.detail',['milestone'=>$milestone->id]) }}">{{ $milestone->name }}</a>

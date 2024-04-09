@@ -145,6 +145,9 @@
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
                             </div>
+                            @include('admin.courses.components.user-role-dropdown', [
+                                'selected_user_roles' => $module_user_roles    
+                            ])
                             <div class="mb-2">
                                 <label class="form-label" for="order">Order</label>
 
@@ -190,6 +193,11 @@
                                     <option value="unpaid" @php if($module->status == 'unpaid'){ echo 'selected';} @endphp >Unpaid</option>
                                 </select>
                             </div>
+
+                            @include('admin.courses.components.product-dropdown', [
+                                'product' => $module->user_module_products()->pluck('product_id')->toArray(),
+                                'status' => $module->status
+                            ])
                         </div>
                     </div>
                 </div>
@@ -197,7 +205,7 @@
         </form>
     </div>
 </main>
-
+@include('admin.courses.components.create-new-product')
 <!-- END Main Container -->
 <div class="modal fade" id="dragModal"
 
@@ -230,6 +238,7 @@
     <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
 
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
+    <script src="{{ asset('js/admin/course.js') }}"></script>
 
     <script>
 	var currentmodid = '<?php echo $module->id; ?>';

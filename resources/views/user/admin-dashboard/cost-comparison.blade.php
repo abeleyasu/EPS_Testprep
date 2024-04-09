@@ -37,7 +37,7 @@
   }
 
   .td-width {
-    width: 10%
+    width: 15%
   }
 
   .delete-option {
@@ -46,9 +46,14 @@
 </style>
 @endsection
 
+@php
+$stateActiveId = session('costComparisonActiveStateId') ?: $user->state_id;
+@endphp
+
 @section('user-content')
+@can('Access Cost Comparison Tool')
 <main id="main-container">
-  <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">  
+  <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
     <div class="bg-black-10">
       <div class="content content-full text-center">
         <br>
@@ -63,7 +68,7 @@
     </div>
   </div>
   <div class="college-application-wrapper">
-    Enter costs for each college <b><u>PER YEAR</u></b>. This is to calculate annual costs, NOT total 4-year costs. 
+    Enter costs for each college <b><u>PER YEAR</u></b>. This is to calculate annual costs, NOT total 4-year costs.
     <div class="block block-rounded">
       <div class="block-header block-header-default block-header-main">
         <h3 class="block-title">DIRECT COLLEGE COMPARISON: COST & AID</h3>
@@ -78,7 +83,7 @@
                     <i class="fa fa-2x fa-angle-down" id="toggle"></i>
                     <i class="fa fa-2x fa-bars"></i>
                     <span>COMPARISON SUMMARY</span>
-                  </a> 
+                  </a>
                 </div>
                 <div id="collapse" class="collapse show" aria-labelledby="headingOne" data-bs-parent=".accordionExample">
                   <div class="college-content-wrapper college-content">
@@ -109,7 +114,22 @@
         <h3 class="block-title">YOUR COLLEGE LIST'S COSTS & AID</h3>
         <button type="button" class="btn btn-sm btn btn-alt-success" data-bs-toggle="modal" data-bs-target="#add_new_college">+ Add College</button>
         <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hidden Colleges</button>
+        <button type="button" class="btn btn-sm btn-alt-danger ms-2" id="reset-all-cost-comparion-data" data-id="${costComparisonData.id}">Reset All</button>
       </div>
+
+      <div class="college-states px-3 my-3">
+        <label for="choose_state_options" class="form-label">Choose State:</label>
+        <select class="js-example-basic-single js-states form-control" id="choose_state_options" name="choose_state_options" style="width: 100%;" data-placeholder="Select One.">
+            <option></option>
+            @foreach($states as $st)
+                <option value="{!! $st->id !!}" data-statecode="{{ $st->state_code }}"
+                    @if($st->id == $stateActiveId) selected @endif>{!! $st->state_name !!}</option>
+            @endforeach
+        </select>
+        <input type="hidden" id="cost_comparison_active_state_id" value="{{ $stateActiveId }}">
+        <input type="hidden" id="user_state_code" value="{{ $user->state_code }}">
+      </div>
+
       <div class="block-content">
         <div class="tab-content" id="college-list-cost">
           <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
@@ -161,6 +181,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-sm btn-alt-danger" data-type="search-list" id="remove-all-college">Remove All College</button>
       </div>
     </div>
   </div>
@@ -195,8 +216,14 @@
     </div>
   </div>
 </div>
+@endcan
+
+@cannot('Access Cost Comparison Tool')
+  @include('components.subscription-warning')
+@endcan
 @endsection
 
+@can('Access Cost Comparison Tool')
 @section('user-script')
 <script src="{{asset('assets/js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js')}}"></script>
@@ -209,9 +236,16 @@
 <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 <script src="{{asset('js/cost-comparison.js')}}"></script>
 <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
-<script src="{{asset('js/college-list.js')}}"></script>
 <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
+<script src="{{asset('js/college-list.js')}}"></script>
 <script>
+
+var global = {
+    userState: $('#user_state_code').val(),
+    currentSelectedState: $('select[name=choose_state_options]').find('option:selected').data('statecode'),
+    stateChanged: false
+  }
+
   toastr.options = {
     "closeButton": true,
     "newestOnTop": false,
@@ -309,7 +343,7 @@
       }
     })
   })
-  
+
   $(document).on('click', '#save-cost', function (e) {
     e.preventDefault();
     if ($('#cost-form').valid()) {
@@ -336,10 +370,8 @@
 
   function checkNumber(value) {
     let number = value;
-    const regexNumberWithDeciaml = /^\d+(\.\d{1,2})?$/;
-    if (!regexNumberWithDeciaml.test(value)) {
-      toastr.error('Please enter valid number')
-      return;
+    if (!number) {
+      number = '0'
     }
     if (value.includes('.')) {
       const decimal = +(value.split('.')[1]);
@@ -352,11 +384,37 @@
     return number;
   }
 
+  function validNumber(e) {
+    const charCode = (e.which) ? e.which : e.keyCode;
+    console.log(charCode);
+    if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
+      e.preventDefault();
+    } else {
+      return true;
+    }
+  }
+
+  $(document).on('keypress', '.edit-value', function (e) {
+    const validate = validNumber(e);
+    if (!validate) {
+      return;
+    }
+  })
+
+  $(document).on('keypress', '.edit-outside-aid', function (e) {
+    const validate = validNumber(e);
+    if (!validate) {
+      return;
+    }
+  })
+
   $(document).on('change', '.edit-value', function (e) {
+    if (!e.target.name) return;
     const value = checkNumber(e.target.value);
     if (!value) {
       return;
     }
+
     e.target.value = value;
     const data = {
       [e.target.name] : e.target.value,
@@ -438,15 +496,38 @@
     })
   })
 
-  function refreshdata (index, response) {
+const getFormatMoney = (value) => {
+    // return `$${(value || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    // const number = (value || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    const number = (parseFloat(value) || 0).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
+    if (number.includes('.')) {
+        const decimal = +(number.split('.')[1]);
+        if (decimal === 0) {
+            return `$${number.split('.')[0]}`
+        } else {
+            return `$${number}`
+        }
+    }
+
+    return `$${number}`
+}
+
+function updateField(index, fieldName, data) {
+    const value = getFormatMoney(data[fieldName]);
+    $(`#${fieldName}-${index}`).html(value);
+}
+
+function refreshdata(index, response) {
     $('#costcomparison-summary').DataTable().ajax.reload();
-    $('#total_direct_cost-' + index).html(response.data.total_direct_cost ? '$'+ response.data.total_direct_cost : '$0')
-    $('#total_merit_aid-' + index).html(response.data.total_merit_aid ? '$'+ response.data.total_merit_aid : '$0')
-    $('#total_need_based_aid-' + index).html(response.data.total_need_based_aid ? '$'+ response.data.total_need_based_aid : '$0')
-    $('#total_outside_scholarship-' + index).html(response.data.total_outside_scholarship ? '$'+ response.data.total_outside_scholarship : '$0')
-    $('#total_cost_attendance-' + index).html(response.data.total_cost_attendance ? '$'+ response.data.total_cost_attendance : '$0')
-  }
-  
+
+    updateField(index, 'total_direct_cost', response.data);
+    updateField(index, 'total_merit_aid', response.data);
+    updateField(index, 'total_need_based_aid', response.data);
+    updateField(index, 'total_outside_scholarship', response.data);
+    updateField(index, 'total_cost_attendance', response.data);
+}
+
 
   $(document).on('focus', '.edit-value, .edit-outside-aid', function (e) {
     e.target.select();
@@ -508,6 +589,53 @@
       }
     })
   })
+
+  $(document).on('click', '.reset-cost-comparion-data', function (e) {
+    resetCostComparisonData("You want to reset all data for this college? Once you reset, you can't undo this action.", e.target.dataset.id)
+  })
+
+  $(document).on('click', '#reset-all-cost-comparion-data', function (e) {
+    resetCostComparisonData("You want to reset all data for all colleges? Once you reset, you can't undo this action.", 0, true)
+  })
+
+  function resetCostComparisonData(text, id = 0, isAll = false) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: text,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, reset it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const data = {
+          isall: isAll,
+        }
+        if (!isAll) {
+          data.id = id;
+        }
+        $.ajax({
+          url: "{{ route('admin-dashboard.cost_comparison.reset-cost-comparion-data') }}",
+          method: 'POST',
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          data: data,
+        }).done((response) => {
+          if (response.success) {
+            toastr.success(response.message)
+            $('#costcomparison-summary').DataTable().ajax.reload();
+            getCollegeListForCostComparison();
+          } else {
+            toastr.error(response.message)
+          }
+        })
+      }
+    })
+  }
+
 </script>
 
 @endsection
+@endcan

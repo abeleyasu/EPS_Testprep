@@ -25,7 +25,26 @@ class MilestoneRequest extends FormRequest
     {
         return [
             'name' => 'required|max:220',
+            'user_type' => 'required|array',
+            'products' => 'required_if:status,paid|array|min:1',
 //            'description' => 'required'
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, mixed>
+     */
+    public function messages() {
+        return [
+            'name.required' => 'Milestone name is required',
+            'user_type.required' => 'User type is required',
+            'user_type.array' => 'User type is required',
+            'products.required_if' => 'Product is required',
+            'products.min' => 'Product is required',
+            'products.array' => 'Product is required',
+            'is_addmission_lesson.boolean' => 'checkbox must be boolean',
         ];
     }
 }

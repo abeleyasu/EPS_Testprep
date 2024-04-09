@@ -33,7 +33,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link active" href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.honors') }}" id="step3-tab">
+                        <a class="nav-link active" href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.honors') }}" id="step3-tab">
                             <p>3</p>
                             <i class="fa-solid fa-check"></i>
                             <h6>Honors </h6>
@@ -83,6 +83,22 @@
                         <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
                     @endif
                     <div class="tab-content" id="myTabContent">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div class="prev-btn next-btn">
+                                <a href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/education-info?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.educationInfo') }}"
+                                    class="btn btn-alt-success prev-step "> Previous Step
+                                </a>
+                            </div>
+                            @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
+                            <div class="next-btn d-flex">
+                                @if (!isset($resume_id))
+                                    <div>
+                                        @include('components.reset-all-drafts-button')
+                                    </div>
+                                @endif
+                                <input type="submit" class="btn btn-alt-success next-step" value="Next Step">
+                            </div>
+                        </div>
                         <div class="setup-content">
                             <div class="accordion accordionExample2">
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
@@ -103,25 +119,21 @@
                                                             <td>
                                                                 <label class="form-label" for="position">
                                                                     Status
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="honor_achievement_award">
                                                                     Honor/Achievement/Award
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="location">
                                                                     Location
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -130,9 +142,9 @@
                                                         </tr>
                                                         @if (!empty($honor->honors_data))
                                                             @foreach ($honor->honors_data as $index => $honors_data)
-                                                                <tr class="honors_data_table_row {{ $loop->first ? '' : 'remove_honors_data' }}">
+                                                                <tr class="honors_data_table_row {{ $loop->last ? '' : 'remove_honors_data' }}">
                                                                     <td style=" min-width: 300px;">
-                                                                        <select class="js-select2 form-select honors-select2-class" id="honor_position_{{ $index }}" name="honors_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Status" multiple="multiple">
+                                                                        <select class="js-select2 form-select honors-select2-class" id="honor_position_{{ $index }}" name="honors_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Status">
                                                                             <option value="">Select Status</option>
                                                                             @foreach($status as $sta)
                                                                                 <option value="{{ $sta->status }}" {{ isset($honors_data['position']) && $honors_data['position'] != null ? ($honors_data['position'] == $sta->status ? 'selected' : '') : '' }} > {{ $sta->status }} </option>
@@ -140,7 +152,7 @@
                                                                         </select>
                                                                     </td>
                                                                     <td style=" min-width: 300px;">
-                                                                        <select class="js-select2 form-select honors-select2-class" id="honor_award_{{ $index }}" name="honors_data[{{ $index }}][honor_achievement_award]" style="width: 100%;" data-placeholder="Select Award" multiple="multiple">
+                                                                        <select class="js-select2 form-select honors-select2-class" id="honor_award_{{ $index }}" name="honors_data[{{ $index }}][honor_achievement_award]" style="width: 100%;" data-placeholder="Select Award">
                                                                             <option value="">Select Award</option>
                                                                             @foreach($awards as $award)
                                                                                 <option value="{{ $award->award }}" {{ isset($honors_data['honor_achievement_award']) && $honors_data['honor_achievement_award'] != null ? ($honors_data['honor_achievement_award'] == $award->award ? 'selected' : '') : '' }}  > {{ $award->award }} </option>
@@ -171,8 +183,8 @@
                                                                         <a href="javascript:void(0)"
                                                                             class="add-btn d-flex plus-icon">
                                                                             <i data-count="{{ count($honor->honors_data) != 0 ? count($honor->honors_data) - 1 : 0 }}"
-                                                                                class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}"
-                                                                                onclick="{{ $loop->first ? 'addHonorsData(this)' : 'removeHonorsData(this)' }}"></i>
+                                                                                class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}"
+                                                                                onclick="{{ $loop->last ? 'addHonorsData(this)' : 'removeHonorsData(this)' }}"></i>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -181,7 +193,7 @@
                                                             <tr class="honors_data_table_row">
                                                                 <td style="min-width:220px;">
                                                                     <div class="select2-container_main ">
-                                                                        <select class="js-select2 form-select honors-select2-class" data-placeholder="Select Status" id="honor_position_0" name="honors_data[0][position]" style="width: 100%;" multiple="multiple">
+                                                                        <select class="js-select2 form-select honors-select2-class" data-placeholder="Select Status" id="honor_position_0" name="honors_data[0][position]" style="width: 100%;">
                                                                             <option value="" style='display: none'></option>
                                                                             @foreach($status as $sta)
                                                                                 <option value="{{ $sta->status }}" > {{ $sta->status }} </option>
@@ -191,7 +203,7 @@
                                                                 </td>
                                                                 <td style="min-width:220px;">
                                                                     <div class="select2-container_main ">
-                                                                        <select class="js-select2 form-select honors-select2-class" data-placeholder="Select Award" id="honor_award_0" name="honors_data[0][honor_achievement_award]" style="width: 100%;" multiple="multiple">
+                                                                        <select class="js-select2 form-select honors-select2-class" data-placeholder="Select Award" id="honor_award_0" name="honors_data[0][honor_achievement_award]" style="width: 100%;">
                                                                             <option value="" style='display: none'></option>
                                                                             @foreach($awards as $award)
                                                                                 <option value="{{ $award->award }}" > {{ $award->award }} </option>
@@ -239,6 +251,7 @@
                                     class="btn btn-alt-success prev-step "> Previous Step
                                 </a>
                             </div>
+                            @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                             <div class="next-btn d-flex">
                                 @if (!isset($resume_id))
                                     <div>
@@ -342,19 +355,8 @@
         $(document).ready(function() {
 
             $('.honors-select2-class').select2({
-                maximumSelectionLength: 1,
                 tags: true,
-                language: {
-                    maximumSelected: function () {
-                        return '';
-                    }
-                }
-            }).on('select2:opening', function (event) {
-                var selectedOptions = $(this).val();
-                if (selectedOptions && selectedOptions.length >= 1) {
-                    event.preventDefault();
-                }
-            });
+            })
 
             let validations_rules = @json($validations_rules);
             let validations_messages = @json($validations_messages);
@@ -393,40 +395,40 @@
                 },
             });
 
-            let honors_data = $('input[name^="honors_data"]');
+            // let honors_data = $('input[name^="honors_data"]');
 
-            $('select[name^="honors_data"]').filter('select[name$="[position]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Status field is required"
-                    }
-                });
-            });
-            $('select[name^="honors_data"]').filter('select[name$="[honor_achievement_award]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Achivement award field is required"
-                    }
-                });
-            });
-            $('select[name^="honors_data"]').filter('select[name$="[grade][]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Grade field is required"
-                    }
-                });
-            });
-            honors_data.filter('input[name$="[location]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Location field is required"
-                    }
-                });
-            });
+            // $('select[name^="honors_data"]').filter('select[name$="[position]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Status field is required"
+            //         }
+            //     });
+            // });
+            // $('select[name^="honors_data"]').filter('select[name$="[honor_achievement_award]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Achivement award field is required"
+            //         }
+            //     });
+            // });
+            // $('select[name^="honors_data"]').filter('select[name$="[grade][]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Grade field is required"
+            //         }
+            //     });
+            // });
+            // honors_data.filter('input[name$="[location]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Location field is required"
+            //         }
+            //     });
+            // });
         });
 
         function errorMsgOld() {

@@ -22,6 +22,9 @@ return new class extends Migration
                 $table->tinyInteger('order')->default(0);
                 $table->unsignedBigInteger('milestone_id');
                 $table->unsignedBigInteger('added_by');
+                $table->string('coverimage');
+                $table->boolean('published')->default(false);
+                $table->foreignId('product_id')->nullable()->references('id')->on('product')->onDelete('cascade');
                 $table->timestamps();
                 $table->softDeletes();
 

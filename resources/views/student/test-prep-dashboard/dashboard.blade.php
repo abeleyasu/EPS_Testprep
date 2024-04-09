@@ -3,6 +3,7 @@
 @section('title', 'Student View Dashboard : CPS')
 
 @section('user-content')
+@can('Access Test Prep Dashboard')
     <!-- Main Container -->
 
     <main id="main-container">
@@ -25,40 +26,9 @@
         <!-- Stats -->
         <div class="bg-body-extra-light">
             <div class="content content-boxed">
-                <div class="row text-center">
-                    <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow" style="background: #000">
-                            <br>
-                            <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Primary Test</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase">ACT</div>
-                            <br>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow" style="background: #000">
-                            <br>
-                            <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Initial Score</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase">27</div>
-                            <br>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow" style="background: #000">
-                            <br>
-                            <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Last Test</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase">31</div>
-                            <br>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow" style="background: #000">
-                            <br>
-                            <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Goal Score</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase">34</div>
-                            <br>
-                        </div>
-                    </div>
-                </div>
+                @include('components.test-prep.test-score', [
+                    'getTestScores' => $getTestScores,
+                ])
             </div>
         </div>
         <!-- END Stats -->
@@ -96,53 +66,9 @@
                                             <!-- Calendar -->
                                             <div class="block block-rounded">
                                                 <div class="block-content">
-                                                    <div class="row items-push">
-                                                        <div class="col-md-12 col-lg-12 col-xl-12"
-                                                            style='padding: 0 !important'>
-                                                            <!-- Calendar Container -->
-                                                            <div id="js-calendar"></div>
-                                                        </div>
-                                                        <div class="col-md-6 col-lg-6 col-xl-6">
-                                                            <!-- Add Event Form -->
-                                                            <form class="js-form-add-event push">
-                                                                <div class="input-group">
-                                                                    <input type="text" name="title" id="event-title"
-                                                                        class="js-add-event form-control"
-                                                                        placeholder="Add Event..">
-                                                                    <span class="input-group-text" style="cursor: pointer"
-                                                                        onclick="addTitle()">
-                                                                        <i class="fa fa-fw fa-plus-circle"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </form>
-                                                            <!-- END Add Event Form -->
-
-                                                            <!-- Event List -->
-                                                            @if (!empty($events))
-                                                                <ul id="js-events" class="list list-events">
-                                                                    @foreach ($events as $event)
-                                                                        <li class="event-list-{{ $event->id }}">
-                                                                            <div class="js-event p-2 fs-sm fw-medium rounded bg-{{ $event->color }}-light text-{{ $event->color }}"
-                                                                                data-url="{{ route('calendar.assignEvent') }}"
-                                                                                data-id="{{ $event->id }}">
-                                                                                {{ $event->title }}<span
-                                                                                    class="main-event-trash"
-                                                                                    onclick="mainEventTrash({{ $event->id }})"><i
-                                                                                        class="fa-solid fa-trash"></i></span>
-                                                                            </div>
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            @endif
-                                                            <div class="text-center">
-                                                                <p class="fs-sm text-muted">
-                                                                    <i class="fa fa-arrows-alt"></i> Drag and drop events on
-                                                                    the calendar
-                                                                </p>
-                                                            </div>
-                                                            <!-- END Event List -->
-                                                        </div>
-                                                    </div>
+                                                    @include('components.test-prep.calendar', [
+                                                        'events' => $events
+                                                    ])
                                                 </div>
                                             </div>
                                             <!-- END Calendar -->
@@ -1139,113 +1065,7 @@
                 <!-- END TEST PREP LESSONS CONTENT BOX -->
             </div>
         </div>
-        <div class="modal" id="event-click-model" tabindex="-1" role="dialog" aria-labelledby="modal-block-small"
-            aria-hidden="true">
-            <div class="modal-dialog  modal-dialog-centered " role="document">
-                <div class="modal-content">
-                    <div class="block block-rounded block-transparent mb-0">
-                        <div class="block-header block-header-default">
-                            <h3 class="block-title">Edit Event Details</h3>
-                            <div class="block-options">
-                                <button type="button" class="btn-block-option" data-bs-dismiss="modal"
-                                    aria-label="Close">
-                                    <i class="fa fa-fw fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="block-content fs-sm">
-                            <form id="EditEventModel">
-                                <div class="mb-3">
-                                    <label for="exampleInputEventTitle" class="form-label">Event Title</label>
-                                    <input type="text" class="form-control" placeholder="Enter Event Title"
-                                        name="title" id="exampleInputEventTitle" autocomplete="off">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="exampleInputEventColor" class="form-label">Event Color</label>
-                                    <select class="form-select form-select-lg mb-3" id="exampleInputEventColor"
-                                        name="color" aria-label=".form-select-lg example">
-                                        <option value="">Select Color</option>
-                                        <option value="success">Success</option>
-                                        <option value="warning">Warning</option>
-                                        <option value="info">Info</option>
-                                        <option value="danger">Danger</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="exampleInputEventTime" class="form-label">Event Time</label>
-                                    {{-- <input type="time" class="form-control" name="time" id="exampleInputEventTime"> --}}
-                                    <input type="text" class="js-flatpickr form-control" id="exampleInputEventTime" name="time" data-enable-time="true" data-no-calendar="true" data-date-format="H:i">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="exampleInputEventDescription" class="form-label">Event Description</label>
-                                    <textarea class="form-control" name="description" id="exampleInputEventDescription"></textarea>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="block-content block-content-full text-end bg-body">
-                            <button type="button" class="btn btn-sm btn-info" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-main-id btn-sm btn-primary" id="editEvent">Update
-                                Event</button>
-                            <button type="button" class="btn btn-main-id btn-sm btn-secondary me-1" id="deleteEvent"><i
-                                    class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal" id="event-select-model" tabindex="-1" role="dialog" aria-labelledby="modal-block-small"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered " role="document">
-                <div class="modal-content">
-                    <div class="block block-rounded block-transparent mb-0">
-                        <div class="block-header block-header-default">
-                            <h3 class="block-title">Add Event Details</h3>
-                            <div class="block-options">
-                                <button type="button" class="btn-block-option" data-bs-dismiss="modal"
-                                    aria-label="Close">
-                                    <i class="fa fa-fw fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="block-content fs-sm">
-                            <form id="AddEventModel">
-                                <div class="mb-3">
-                                    <label for="AddInputEventTitle" class="form-label">Event Title</label>
-                                    <input type="text" class="form-control" placeholder="Enter Event Title"
-                                        name="title" id="AddInputEventTitle" autocomplete="off">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="AddInputEventColor" class="form-label">Event Color</label>
-                                    <select class="form-select form-select-lg mb-3" id="AddInputEventColor"
-                                        name="color" aria-label=".form-select-lg example">
-                                        <option value="">Select Color</option>
-                                        <option value="success">Success</option>
-                                        <option value="warning">Warning</option>
-                                        <option value="info">Info</option>
-                                        <option value="danger">Danger</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="AddInputEventTime" class="form-label">Event Time</label>
-                                    {{-- <input type="time" class="form-control" data-plugin="timepicker" name="time" id="AddInputEventTime"> --}}
-                                    <input type="text" class="js-flatpickr form-control" id="AddInputEventTime" name="time" data-enable-time="true" data-no-calendar="true" data-date-format="H:i">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="AddInputEventDescription" class="form-label">Event Description</label>
-                                    <textarea class="form-control" name="description" id="AddInputEventDescription"></textarea>
-                                </div>
-                                <input type="hidden" name="start_date" id="AddInputStartDate">
-                                <input type="hidden" name="end_date" id="AddInputEndDate">
-                            </form>
-                        </div>
-                        <div class="block-content block-content-full text-end bg-body">
-                            <button type="button" class="btn btn-sm btn-info" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-sm btn-primary" id="addEvent">Add Event</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('components.test-prep.calender-modal')
     </main>
 	
     <div id="loadingIndicator" class="loading-indicator" style="display: none;">
@@ -1253,8 +1073,15 @@
     </div>
 
     <!-- End Main Container -->
+@endcan
+
+@cannot('Access Test Prep Dashboard')
+    @include('components.subscription-warning')
+@endcan
+
 @endsection
 
+@can('Access Test Prep Dashboard')
 @section('page-script')
     <script src="{{ asset('assets/js/plugins/fullcalendar/main.min.js') }}"></script>
     <script src="{{ asset('assets/js/moment/moment.min.js') }}"></script>
@@ -1262,7 +1089,6 @@
     <script src="{{ asset('assets/_js/pages/be_comp_calendar.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
     
-    <script src="{{asset('assets/js/lib/jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/flatpickr/flatpickr.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js')}}"></script>
@@ -1272,17 +1098,189 @@
     <script src="{{asset('assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/dropzone/min/dropzone.min.js')}}"></script>
 
+    <!-- Data Table -->
+    <script src="{{asset('assets/js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/datatables-responsive-bs5/js/responsive.bootstrap5.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/datatables-buttons/dataTables.buttons.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js')}}"></script>
+
+    <script src="{{ asset('js/calender.js') }}"></script>
+
     <script>One.helpersOnLoad(['js-flatpickr', 'jq-datepicker', 'jq-maxlength', 'jq-select2', 'jq-masked-inputs', 'jq-rangeslider', 'jq-colorpicker']);</script>
 
 
     <script>
-        let eventObj = @json($final_arr);
-
-        pageCompCalendar.init(eventObj);
+        // $(document).ready(function () {
+        //     let eventObj = @json($final_arr);
+    
+        // })
+        pageCompCalendar.init(@json($final_arr));
+		
+		var testTypeDropdown = $('#testTypeDropdown').val();
+        if(testTypeDropdown) {
+            $.ajax({
+                url: "{{ route('update_test_type') }}",
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    updtvalue: 'primary_test_type',
+                    field_value: testTypeDropdown
+                },
+                success: function(response) {
+                    $('.lastTestCls').text(response.scaled_score);
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        } else {
+            $('.editInitialScore').hide();
+            $('.editGoalScore').hide();
+        }
 
         $(document).ready(function() {
             $("#categoryQuestion1").click(function() {
                 $(this).toggleClass("show");
+            });
+			
+            $(".editPrimaryTest").click(function() {
+                $('#editDropdownContainer').toggle();
+                $('.selectedPrimaryTest').toggle();
+            });
+
+            $("#testTypeDropdown").change(function() {
+                // var testTypeValue = $('.selectedPrimaryTest').text().trim();
+                var newTestType = this.value;
+
+                if(newTestType != '') {
+                    $.ajax({
+                        url: "{{ route('update_test_type') }}",
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            updtvalue: 'primary_test_type',
+                            field_value: newTestType
+                        },
+                        success: function(response) {
+                            // console.log(response.scaled_score);
+
+                            $('.selectedPrimaryTest').text(newTestType);
+                            $('.lastTestCls').text(response.scaled_score);
+                            
+                            $('#editDropdownContainer').toggle();
+                            $('.selectedPrimaryTest').toggle();
+							
+							$('.editInitialScore').show();
+                            $('.editGoalScore').show();
+
+                            toastr.options = {
+                                "progressBar": true,
+                                "closeButton": true,
+                                "timeOut": 4000,
+                            };
+                            toastr.success("PRIMARY TEST UPDATED!");
+                        },
+                        error: function(xhr) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                }
+            });
+
+
+            $(".editInitialScore").click(function() {
+                $('.initialScoreCls').toggle();
+                $('#editInitialScoreContainer').toggle();
+                $('#txtinitialScore').focus().select();
+            });
+
+            $('#txtinitialScore').on('keypress', function(event) {
+                // Allow backspace, delete, and arrow keys
+                if (event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39) {
+                    return true;
+                }
+                // Ensure only numeric characters are allowed (ASCII codes 48 to 57)
+                if (event.keyCode < 48 || event.keyCode > 57) {
+                    event.preventDefault();
+                }
+                if (event.which === 13) {
+                    var old_initialScore = $('.initialScoreCls').text().trim();
+                    var new_initialScore = this.value;
+                    if(new_initialScore != '' && new_initialScore != old_initialScore) {
+                        $.ajax({
+                            url: "{{ route('update_test_type') }}",
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                updtvalue: 'initial_score',
+                                field_value: new_initialScore
+                            },
+                            success: function(response) {
+                                $('.initialScoreCls').text(new_initialScore);
+                                $('.initialScoreCls').toggle();
+                                $('#editInitialScoreContainer').toggle();
+
+                                toastr.options = {
+                                    "progressBar": true,
+                                    "closeButton": true,
+                                    "timeOut": 4000,
+                                };
+                                toastr.success("INITIAL SCORE UPDATED!");
+                            },
+                            error: function(xhr) {
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    }
+                }
+            });
+
+            $(".editGoalScore").click(function() {
+                $('.goalScoreCls').toggle();
+                $('#editGoalScoreContainer').toggle();
+                $('#txtgoalScore').focus().select();
+            });
+
+            $('#txtgoalScore').on('keypress', function(event) {
+                // Allow backspace, delete, and arrow keys
+                if (event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39) {
+                    return true;
+                }
+                // Ensure only numeric characters are allowed (ASCII codes 48 to 57)
+                if (event.keyCode < 48 || event.keyCode > 57) {
+                    event.preventDefault();
+                }
+                if (event.which === 13) {
+                    var old_goalScore = $('.goalScoreCls').text().trim();
+                    var new_goalScore = this.value;
+                    if(new_goalScore != '' && new_goalScore != old_goalScore) {
+                        $.ajax({
+                            url: "{{ route('update_test_type') }}",
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                updtvalue: 'goal_score',
+                                field_value: new_goalScore
+                            },
+                            success: function(response) {
+                                $('.goalScoreCls').text(new_goalScore);
+                                $('.goalScoreCls').toggle();
+                                $('#editGoalScoreContainer').toggle();
+                                toastr.options = {
+                                    "progressBar": true,
+                                    "closeButton": true,
+                                    "timeOut": 4000,
+                                };
+                                toastr.success("GOAL SCORE UPDATED!");
+                            },
+                            error: function(xhr) {
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    }
+                }
             });
         });
 
@@ -1375,6 +1373,7 @@
         }
     </script>
 @endsection
+@endcan
 
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/fullcalendar/main.min.css') }}">
@@ -1388,8 +1387,34 @@
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/ion-rangeslider/css/ion.rangeSlider.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/dropzone/min/dropzone.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/flatpickr/flatpickr.min.css') }}">
+    <!-- data table -->
+    <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
 
     <style>
+    .loader {
+        margin: auto;
+        border: 5px solid #EAF0F6;
+        border-radius: 50%;
+        border-top: 5px solid #FF7A59;
+        width: 100px;
+        height: 100px;
+        animation: spinner 4s linear infinite;
+    }
+
+    @keyframes spinner {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    </style>
+    <style>
+		.test-block {
+            height: 105px;
+        }
+		.toast-success {
+            background-color: #51A351 !important;
+        }
 		.loading-indicator {
 			display: flex;
 			justify-content: center;

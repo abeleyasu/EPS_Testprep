@@ -29,6 +29,17 @@
                             <div class="invalid-feedback">{{$message}}</div>
                         @enderror
                     </div>
+                    <div class="mb-4">
+                        <label class="from-label">Category Type:</label>
+                        <select id="type" name="type" class="form-control form-control-lg form-control-alt {{$errors->has('type') ? 'is-invalid' : ''}}">
+                            <option value="">Select Cateogry Type</option>
+                            <option value="subscription">Subscription</option>
+                            <option value="one-time">One Time</option>
+                        </select>
+                        @error('type')
+                            <div class="invalid-feedback">{{$message}}</div>
+                        @enderror
+                    </div>
                     <div class="row mb-4">
                         <div class="col-md-6 col-xl-5">
                             <button type="submit" class="btn w-100 btn-alt-success">

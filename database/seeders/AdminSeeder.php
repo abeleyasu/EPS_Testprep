@@ -23,7 +23,8 @@ class AdminSeeder extends Seeder
             "email" => "admin@example.com",
             "phone" => "1524521548",
             "role" => 1,
-            "password" => Hash::make('123456')
+            "password" => Hash::make('123456'),
+            'email_verified_at' => '2021-09-11 07:32:10'
         ]);
     }
 }

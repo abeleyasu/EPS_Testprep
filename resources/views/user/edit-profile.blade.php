@@ -47,8 +47,12 @@
                                 <img id="preview" src="" alt="" style="max-width: 100px; margin-top: 10px;">
                             </div>
                             <div class="form-group" style="margin-left: 2rem;">
-                                <img class="profile_pic" id="preview" src="{{ $user->profile_pic ? asset('profile_images/' . $user->profile_pic) : asset('images/no_image.png') }}" alt="No Image" height="150">
+                                <img class="profile_pic" id="preview" src="{{ $user->profile_pic ? asset('profile_images/' . $user->profile_pic) :  asset('assets/media/avatars/no-user-image.png') }}" alt="No Image" height="150" style="mix-blend-mode: multiply;">
                             </div>
+                        </div>
+                        <div class="mb-4 col-md-5">
+                            <label for="">User Role</label>
+                            <div class="form-control form-control-lg form-control-alt">{{ $user->userrole->name }}</div>
                         </div>
                         <div class="mb-4 col-md-5">
                             <label for="">First Name</label>
@@ -68,6 +72,13 @@
                             <label for="">Phone Number</label>
                             <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('phone') ? 'is-invalid' : ''}}" id="phone" name="phone" placeholder="Phone" value="{{$user->phone}}">
                             @error('phone')
+                            <div class="invalid-feedback">{{$message}}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-4 col-md-5">
+                            <label for="">Parent Phone Number (Optional)</label>
+                            <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('parent_phone') ? 'is-invalid' : ''}}" id="parent_phone" name="parent_phone" placeholder="Parent Phone Number (Optional)" value="{{$user->parent_phone}}">
+                            @error('parent_phone')
                             <div class="invalid-feedback">{{$message}}</div>
                             @enderror
                         </div>

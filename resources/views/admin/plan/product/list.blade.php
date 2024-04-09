@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.3.3/css/rowReorder.dataTables.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 @endsection
 
 @section('admin-content')
@@ -20,6 +21,18 @@
         <div class="alert alert-warning">
             To order the products, please drag and drop "<b>Title</b>" of the product.
         </div>
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{session('success')}}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{session('error')}}
+            </div>
+        @endif
+
         <div class="block block-rounded">
             <div class="block-header block-header-default">
                 <h3 class="block-title">Product List</h3>
@@ -52,7 +65,7 @@
 
 @section('admin-script')
     <script src="https://cdn.datatables.net/rowreorder/1.2.6/js/dataTables.rowReorder.min.js"></script>
-
+    <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script>
 
         const dataTable = $('#products').DataTable({
@@ -113,7 +126,15 @@
                         'data': {id: $(this).data('id')},
                         'headers': {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
                     }).done(function(data){
-                        dataTable.ajax.reload();
+                        if (data.success) {
+                            dataTable.ajax.reload();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: data.message,
+                            })
+                        }
                     });
                 }
             });

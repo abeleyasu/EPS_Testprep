@@ -1,15 +1,15 @@
-function getApplicationDeadlineOrganizerData() {
-    $.ajax({
+async function getApplicationDeadlineOrganizerData() {
+    await $.ajax({
         url: core.applicationOrganizer,
         type: 'GET',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-    }).done(function(data){
+    }).done(function (data) {
         if (data.success) {
             if (data.data.length > 0) {
                 setApplicationHTML(data.data)
-            } else{
+            } else {
                 $('#userSelectedCollegeList').html('<div class="no-data">No record found.</div>')
             }
         }
@@ -30,12 +30,14 @@ function setApplicationHTML(records) {
 
                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                     <div class="block-header block-header-tab row ${data.college_deadline.is_application_checklist == 1 ? 'bg-success' : ''}" id="block-header-${i}">
-                        <div class="col-10" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true">
-                            <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle${i}"></i>${data.college_name}</a> 
+                        <div class="col-9" type="button" data-toggle="collapse" data-target="#collapse${i}" data-id="${data.id}" aria-expanded="true">
+                            <a class="text-white fw-600 collapsed drag-handle"><i class="fa fa-2x fa-angle-right" id="toggle${i}"></i><i class="fa fa-bars fa-2x"></i>${data.college_name}</a>
                         </div>
-                        <div class="col-2">
-                            <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="${data.id}">Hide</button>
-                            ${data.college_deadline.is_application_checklist == 1 ? '<i class="fa fa-2x fa-circle-check text-white"></i>' : '' }
+                        <div class="col-3 text-end">
+                            <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list me-2" data-id="${data.id}">Hide</button>
+                            <button type="button" class="btn btn-sm btn-alt-danger deadline-college-btn--reset-one me-2" data-id="${data.id}">Reset</button>
+                            <button type="button" class="btn btn-sm btn-alt-danger remove-user-college" data-type="college-application-deadline" data-id="${data.id}">Remove</button>
+                            ${data.college_deadline.is_application_checklist == 1 ? '<i class="fa fa-2x fa-circle-check text-white ms-2 me-0"></i>' : ''}
                         </div>
                     </div>
                     <div id="collapse${i}" class="collapse" aria-labelledby="headingOne" data-id="${i}" data-college="${data.college_deadline.id}" data-parent=".accordionExample">
@@ -49,11 +51,88 @@ function setApplicationHTML(records) {
 
 function getStatsOption(options, selectedvalue) {
     let option = '';
-    option += `<option value="">Select One</option>` 
+    option += `<option value="">Select One</option>`
     for (let i = 0; i < options.length; i++) {
         option += `<option value="${options[i]}" ${selectedvalue == options[i] ? 'selected' : ''}>${options[i]}</option>`
     }
     return option;
+}
+
+function getAvailableTypesOfApplication(collegeData) {
+    const type_of_application = ['common_app', 'coalition_app', 'universal_app', 'college_system_app', 'apply_directly']
+    const available_type_of_application = type_of_application.filter((item) => {
+        if (collegeData[item] == 1) {
+            return item
+        }
+    })
+    return available_type_of_application
+}
+
+const typeOfApplications = [{
+    name: 'common_app',
+    label: 'Common App'
+}, {
+    name: 'coalition_app',
+    label: 'Coalition App'
+}, {
+    name: 'universal_app',
+    label: 'Universal App'
+}, {
+    name: 'college_system_app',
+    label: 'College System App'
+}, {
+    name: 'apply_directly',
+    label: 'Apply Directly'
+}]
+
+const getOptionsTypeOfApplications = (options, selectedValue) => {
+    let option = '';
+    option += `<option value="">Select One</option>`
+    for (let i = 0; i < options.length; i++) {
+        const opt = options[i]
+        option += `<option value="${opt.name}" ${selectedValue == opt.name ? 'selected' : ''}>${opt.label}</option>`
+    }
+    return option;
+}
+
+function convertUnderscoredToSpace(str) {
+    return str.replace(/_/g, ' ')
+}
+
+function populateApplicationDeadline(collegeInformation) {
+    if (collegeInformation.AP_DL_EACT_DAY && collegeInformation.AP_DL_EACT_MONTH) {
+        // Function Name: generateDate
+        // Function Arguments: day, month
+        // Return Type of Function: Date (dd/mm/yyyy) based on the day and month and if the year is not provided then it will take the current year and if the date has passed then it will take the next year
+        function generateDate(day, month) {
+            let year = new Date().getFullYear()
+            let date = new Date(year, month - 1, day)
+            if (date < new Date()) {
+                year++
+                date = new Date(year, month - 1, day)
+            }
+            return date
+        }
+
+    }
+
+}
+function generateDate(day, month) {
+    let year = new Date().getFullYear()
+    let date = new Date(year, month - 1, day)
+    if (date < new Date()) {
+        year++
+        date = new Date(year, month - 1, day)
+    }
+    return date
+}
+
+function getDateInDMYFormat(date) {
+    let d = new Date(date)
+    let month = d.getMonth() + 1
+    let day = d.getDate()
+    let year = d.getFullYear()
+    return `${day}/${month}/${year}`
 }
 
 function getSingleApplicationData(dataset, staticdata, elementid) {
@@ -67,27 +146,47 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
     }).done((response) => {
         if (response.success) {
             const data = response.data
+            // console.log('getSingleApplicationData', data)
+
             $('#toggle' + dataset.id).removeClass('fa-angle-right').addClass('fa-angle-down');
             $('#' + elementid).html('')
             let content = '';
+            // let availableTypesOfApplication = (getAvailableTypesOfApplication(data.college_details.college_information))
+            // console.log('getSingleApplicationData', data)
+            // console.log(getDateInDMYFormat(generateDate(15,9)))
+            // console.log(generateDate(15,1))
+
+            // filter typeOfApplications by data.college_details.college_information
+            const filteredTypeOfApplications = typeOfApplications.filter((item) => {
+                if (data.college_details.college_information[item.name] == 1) {
+                    return item
+                }
+            })
+            // console.log('filteredTypeOfApplications', filteredTypeOfApplications)
+
+            // const collegeInformationString = JSON.stringify(data.college_details.college_information)
+            const appOrganizerString = JSON.stringify(data)
+
+            onChangeAdminisionOption(dataset.id)
 
             content += `
+            <textarea name="app_organizer_json" class="d-none">${appOrganizerString}</textarea>
                 <div class="college-content-wrapper college-content">
                     <div class="row mb-3 list-content">
                         <label class="form-label" for="type_of_application-${dataset.id}">Type of Application</label>
                         <div class="col-10">
                             <select class="form-select update-form" id="type_of_application-${dataset.id}" name="type_of_application" data-index="${dataset.id}">
-                                ${getStatsOption(staticdata.applications, data.type_of_application)}
+                                ${getOptionsTypeOfApplications(filteredTypeOfApplications, data.type_of_application)}
                             </select>
                         </div>
                         <div class="col-2">
                         </div>
                     </div>
                     <div class="row mb-3 list-content">
-                        <label class="form-label" for="admission_option-${dataset.id}">Admission Open</label>
+                        <label class="form-label" for="admission_option-${dataset.id}">Admission Option</label>
                         <div class="col-10">
-                            <select class="form-select update-form" id="admission_option-${dataset.id}" name="admission_option" data-index="${dataset.id}">
-                                ${getStatsOption(staticdata.admision_option, data.admission_option)}
+                            <select class="form-select update-form" id="admission_option-${dataset.id}" name="admission_option" data-index="${dataset.id}" onchange="onChangeAdminisionOption(${dataset.id})">
+                                ${getStatsOption(staticdata.admission_option, data.admission_option)}
                             </select>
                         </div>
                         <div class="col-2">
@@ -97,7 +196,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                         <label class="form-label" for="number_of_essaya-${dataset.id}">Number of Essays</label>
                         <div class="col-10">
                             <select class="form-select update-form" id="number_of_essaya-${dataset.id}" name="number_of_essaya" data-index="${dataset.id}">
-                                ${getStatsOption([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], data.number_of_essaya)}
+                                ${getStatsOption([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], data.number_of_essaya)}
                             </select>
                         </div>
                         <div class="col-2">
@@ -108,7 +207,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                             <div class="row">
                                 <div class="col-6">
                                     <label class="form-label" for="admissions_deadline-${dataset.id}">Admissions Deadline</label>
-                                    <input type="text" class="date-own form-control update-form" id="admissions_deadline-${dataset.id}" data-index="${dataset.id}" name="admissions_deadline" value="${data.admissions_deadline ? data.admissions_deadline : ''}" placeholder="mm/dd/yy" autocomplete="off">
+                                    <input type="text" class="date-own form-control update-form" id="admissions_deadline-${dataset.id}" data-index="${dataset.id}" value="${getAdmissionDeadline(data)}" name="admissions_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="ad_status">Status</label>
@@ -286,14 +385,198 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                         </div>
                     </div>
                 </div>
+                <script>
+                // console.log(${dataset.id})
+                $.ajax({
+                    url: core.getSingleApplicationOrganizer.replace(':id', ${dataset.id}),
+                    type: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                }).done((response) => {
+                    if (response.success) {
+                        const data = response.data;
+                        console.log(data);
+                    }
+                });
+
+                document.getElementById('admission_option-${dataset.id}').addEventListener('change', function(element){
+                    console.log(element.target.value);
+                    if(element.target.value == 'Early Action'){
+                    }
+                });
+                // Attach Event Listener to admission_option
+                </script>
             `
             $('#' + elementid).append(content)
             $('.date-own').datepicker({
-                format: 'yyyy-mm-dd',
+                format: 'mm-dd-yyyy',
                 // startDate: '-3d',
                 autoclose: true
             });
             One.layout('header_loader_off');
+        }
+    })
+}
+
+const getAdmissionDeadline = (data) => {
+
+    // console.log('is_admission_deadline_from_user', data.is_admission_deadline_from_user)
+    if (parseInt(data.is_admission_deadline_from_user) == 1) {
+        return data.admissions_deadline ? data.admissions_deadline : 'dd/mm/yy'
+    } else {
+        const collegeInformation = data.college_details.college_information
+        // console.log('collegeInformation', collegeInformation)
+
+        let deadlineDay = 0
+        let deadlineMonth = 0
+
+        if (data.admission_option === 'Early Action') {
+            // console.log('Early Action')
+            deadlineDay = collegeInformation.early_action_day ?? collegeInformation.AP_DL_EACT_DAY
+            deadlineMonth = collegeInformation.early_action_month ?? collegeInformation.AP_DL_EACT_MON
+        } else if (data.admission_option === 'Early Decision' || data.admission_option === 'Early Decision 1' ||  data.admission_option === 'Early Decision I') {
+            // console.log('Early Decision 1')
+            deadlineDay = collegeInformation.early_decision_i_day ?? collegeInformation.AP_DL_EDEC_1_DAY
+            deadlineMonth = collegeInformation.early_decision_i_month ?? collegeInformation.AP_DL_EDEC_1_MON
+        } else if (data.admission_option === 'Early Decision 2' || data.admission_option === 'Early Decision II') {
+            // console.log('Early Decision 2')
+            deadlineDay = collegeInformation.early_decision_ii_day ?? collegeInformation.AP_DL_EDEC_2_DAY
+            deadlineMonth = collegeInformation.early_decision_ii_month ?? collegeInformation.AP_DL_EDEC_2_MON
+        } else if (data.admission_option === 'Regular Decision') {
+            // console.log('Regular Decision')
+            deadlineDay = collegeInformation.regular_decision_day ?? collegeInformation.AP_DL_FRSH_DAY
+            deadlineMonth = collegeInformation.regular_decision_month ?? collegeInformation.AP_DL_FRSH_MON
+        } else if (data.admission_option === 'Rolling Admission') {
+            // console.log('Rolling Admission')
+            deadlineDay = 0
+            deadlineMonth = 0
+        }
+
+        // console.log('deadlineDay', deadlineDay)
+        // console.log('deadlineMonth', deadlineMonth)
+
+        let deadlineDate = 'dd/mm/yy'
+
+        // set deadlineDate to YYYY-MM-DD format, MM from deadlineMonth, DD from deadlineDay
+        // if deadlineDate has been passed, then set deadlineDate to the next year
+        if (deadlineDay && deadlineMonth) {
+            const year = new Date().getFullYear()
+            const date = new Date(year, deadlineMonth - 1, deadlineDay)
+            deadlineMonth = deadlineMonth < 10 ? `0${deadlineMonth}` : deadlineMonth
+            deadlineDay = deadlineDay < 10 ? `0${deadlineDay}` : deadlineDay
+            if (date < new Date()) {
+                deadlineDate = `${deadlineMonth}-${deadlineDay}-${year + 1}`
+            } else {
+                deadlineDate = `${deadlineMonth}-${deadlineDay}-${year}`
+            }
+        }
+
+        // console.log('deadlineDate', deadlineDate)
+
+        return deadlineDate
+    }
+
+}
+
+const onChangeAdminisionOption = (datasetID) => {
+    console.log('onChangeAdminisionOption', datasetID)
+
+    // get collegeInformationString from textarea
+    // const collegeInformationString = $(`textarea[name="colleg_information_${datasetID}"]`).val()
+    // const collegeInformationString = $(`textarea[name="colleg_information_json"]`).val()
+    const appOrganizerString = $(`textarea[name="app_organizer_json"]`).val()
+
+    // check if collegeInformationString is not empty
+    if (!appOrganizerString) return
+
+    const appOrganizerData = JSON.parse(appOrganizerString)
+    // console.log('appOrganizerData', appOrganizerData)
+
+    const collegeInformation = appOrganizerData.college_details.college_information
+
+    // get admission_option value
+    const admissionOptionSelected = $(`#admission_option-${datasetID}`).val()
+    // console.log('admissionOptionSelected', admissionOptionSelected)
+
+    // admission deadline:
+    // Early Action: AP_DL_EACT_DAY, AP_DL_EACT_MON
+    // Early Decision 1: AP_DL_EDEC_1_DAY, AP_DL_EDEC_1_MON
+    // Early Decision 2: AP_DL_EDEC_2_DAY, AP_DL_EDEC_2_MON
+    // Regular Decision: AP_DL_FRSH_DAY, AP_DL_FRSH_MON
+    // Rolling Admission: No
+
+    let deadlineDay = 0
+    let deadlineMonth = 0
+
+    if (admissionOptionSelected === 'Early Action') {
+        // console.log('Early Action')
+        deadlineDay = collegeInformation.early_action_day ?? collegeInformation.AP_DL_EACT_DAY
+        deadlineMonth = collegeInformation.early_action_month ?? collegeInformation.AP_DL_EACT_MON
+    } else if (admissionOptionSelected === 'Early Decision' || admissionOptionSelected === 'Early Decision 1' ||  admissionOptionSelected === 'Early Decision I') {
+        // console.log('Early Decision 1')
+        deadlineDay = collegeInformation.early_decision_i_day ?? collegeInformation.AP_DL_EDEC_1_DAY
+        deadlineMonth = collegeInformation.early_decision_i_month ?? collegeInformation.AP_DL_EDEC_1_MON
+    } else if (admissionOptionSelected === 'Early Decision 2' || admissionOptionSelected === 'Early Decision II') {
+        // console.log('Early Decision 2')
+        deadlineDay = collegeInformation.early_decision_ii_day ?? collegeInformation.AP_DL_EDEC_2_DAY
+        deadlineMonth = collegeInformation.early_decision_ii_month ?? collegeInformation.AP_DL_EDEC_2_MON
+    } else if (admissionOptionSelected === 'Regular Decision') {
+        // console.log('Regular Decision')
+        deadlineDay = collegeInformation.regular_decision_day ?? collegeInformation.AP_DL_FRSH_DAY
+        deadlineMonth = collegeInformation.regular_decision_month ?? collegeInformation.AP_DL_FRSH_MON
+    } else if (admissionOptionSelected === 'Rolling Admission') {
+        // console.log('Rolling Admission')
+        deadlineDay = 0
+        deadlineMonth = 0
+    }
+
+    // console.log('deadlineDay', deadlineDay)
+    // console.log('deadlineMonth', deadlineMonth)
+
+    let deadlineDate = ''
+
+    // set deadlineDate to YYYY-MM-DD format, MM from deadlineMonth, DD from deadlineDay
+    // if deadlineDate has been passed, then set deadlineDate to the next year
+    if (deadlineDay && deadlineMonth) {
+        const year = new Date().getFullYear()
+        const date = new Date(year, deadlineMonth - 1, deadlineDay)
+        if (date < new Date()) {
+            deadlineDate = `${deadlineMonth}-${deadlineDay}-${year + 1}`
+        } else {
+            deadlineDate = `${deadlineMonth}-${deadlineDay}-${year}`
+        }
+    }
+
+    console.log('deadlineDate', deadlineDate)
+
+    $(`#admissions_deadline-${datasetID}`).datepicker('setDate', deadlineDate)
+}
+
+const resetApplicationDeadline = (id = null) => {
+    $.ajax({
+        url: core.resetApplicationDeadline,
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            id
+        }
+    }).done(async (response) => {
+        // console.log('resetApplicationDeadline', response)
+        if (response.success) {
+            await getApplicationDeadlineOrganizerData()
+
+            if (id) {
+                // get collapse index data by from data-toggle that has data-id attribute = id
+                const collapseTargetID = $(`[data-toggle="collapse"][data-id="${id}"]`).attr('data-target')
+
+                // show the collapseTargetID
+                if (collapseTargetID) {
+                    $(collapseTargetID).collapse('show')
+                }
+            }
         }
     })
 }

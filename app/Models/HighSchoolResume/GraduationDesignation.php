@@ -13,5 +13,6 @@ class GraduationDesignation extends Model
 
     protected $fillable = [
         'designation',
+        'user_id',
     ];
 }

@@ -11,6 +11,7 @@ class IntendedCollegeList extends Model
 
     protected $fillable = [
         'name',
-        'type'
+        'type',
+        'user_id'
     ];
 }

@@ -41,6 +41,7 @@ class ProductCategoryController extends Controller
                 'title' => $category['title'],
                 'description' => $category['description'],
                 'order_index' => $category['order_index'] + 1,
+                'type' => $category['type'],
                 'action' => '<div class="btn-group">
                                 <a href="' . route('admin.category.edit', ['id' => $category['id']]) . '" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Category">
                                     <i class="fa fa-fw fa-pencil-alt"></i>
@@ -67,7 +68,8 @@ class ProductCategoryController extends Controller
     public function create(Request $request) {
         $rules = [
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'type' => 'required',
         ];
         $request->validate($rules);
         $lastOrderIndex = ProductCategory::max('order_index');
@@ -75,7 +77,8 @@ class ProductCategoryController extends Controller
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'description' => $request->description,
-            'order_index' => $lastOrderIndex + 1
+            'order_index' => $lastOrderIndex + 1,
+            'type' => $request->type
         ]);
         if ($create) {
             return redirect()->intended(route('admin.category.list'));
@@ -90,12 +93,14 @@ class ProductCategoryController extends Controller
     public function edit(Request $request) {
         $rules = [
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'type' => 'required',
         ];
         $request->validate($rules);
         $category = ProductCategory::find($request->id);
         $category->title = $request->title;
         $category->description = $request->description;
+        $category->type = $request->type;
         $category->save();
         return redirect()->intended(route('admin.category.list'));
     }
@@ -111,5 +116,26 @@ class ProductCategoryController extends Controller
             $category = ProductCategory::find($value['id'])->update(['order_index' => $value['order_index']]);
         }
         return "success";
+    }
+
+    public function ajaxCategories(Request $request) {
+        $page = isset($request->page) ? $request->page : 1;
+        $search = isset($request->search) ? $request->search : null;
+        $limit = $page * 25;
+
+        $categories = ProductCategory::orderBy('id', 'asc')->select('id', 'title as text');
+
+        if (!empty($search)) {
+            $categories = $categories->where(function ($category) use ($search) {
+                return $category->where('title', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $categories = $categories->paginate($limit);
+        $categories = $categories->toArray();
+        return response()->json([
+            'data' => $categories['data'],
+            'total' => $categories['total']
+        ]);
     }
 }

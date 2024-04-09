@@ -22,10 +22,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use GuzzleHttp\Client;
+use App\Service\ResumeService;
 
 
 class EducationController extends Controller
 {
+
+    protected $resumeService;
+
+    public function __construct(ResumeService $resumeService) {
+        $this->resumeService = $resumeService;
+    }
+
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
@@ -36,7 +44,7 @@ class EducationController extends Controller
         $ap_courses = Config::get('constants.ap_courses');
 
         // $graduation_designations = Config::get('constants.graduation_designation');
-        $graduation_designations = GraduationDesignation::select('id','designation')->orderBY('designation', 'asc')->get();
+        $graduation_designations = GraduationDesignation::select('id','designation')->whereNull('user_id')->orWhere('user_id' , Auth::id())->orderBY('designation', 'asc')->get();
 
         if (isset($resume_id) && $resume_id != null) {
             $resumedata = HighSchoolResume::where('id', $resume_id)->with([
@@ -100,12 +108,12 @@ class EducationController extends Controller
 
         $user = Auth::user();
 
+        $colleges_list = CollegeInformation::all();
         if($user->role == 1) {   
-            $college_list = CollegeInformation::all();
             $courses_list = EducationCourse::all();
             $honors_course_list = HonorCourseNameList::all();
         } else {
-            $colleges_list = CollegeInformation::whereNull('user_id')->orWhere('user_id' , Auth::id())->get();
+            // $college_list = CollegeInformation::all();
             $courses_list = EducationCourse::whereNull('user_id')->orWhere('user_id' , Auth::id())->get();
             $honors_course_list = HonorCourseNameList::whereNull('user_id')->orWhere('user_id' , Auth::id())->get();
         }
@@ -113,7 +121,7 @@ class EducationController extends Controller
         $validations_rules = Config::get('validation.educations.rules');
         $validations_messages = Config::get('validation.educations.messages');
 
-        $grades = Grade::all();
+        $grades = $this->resumeService->getGrades(config('constants.grades_types.current_grades'));
 
         $intended_major = IntendedCollegeList::whereType('1')->orderBy('name','ASC')->get();
         $intended_minor = IntendedCollegeList::whereType('2')->orderBy('name','ASC')->get();
@@ -124,6 +132,7 @@ class EducationController extends Controller
 
     public function store(EducationRequest $request)
     {
+        // dd(config('constants.grades_types.current_grades'));
         $data = $request->validated();
         // echo 'store<pre>';
         // print_r($data);
@@ -200,45 +209,24 @@ class EducationController extends Controller
             }
         }
 
-        $grade_ids = Grade::pluck('id')->toArray();
+        $grade_ids = Grade::where('user_id', Auth::id())->pluck('id')->toArray();
         
         $gpa_unweighted = sprintf("%.2f", $data['cumulative_gpa_unweighted']);
         $gpa_weighted = sprintf("%.2f", $data['cumulative_gpa_weighted']);
         
         if (isset($data['current_grade']) && !empty($data['current_grade'])) {
-            foreach ($data['current_grade'] as $grade) {
-                if (!in_array($grade, $grade_ids)) {
-                    $grade_info = Grade::create(['name' => $grade]);
-                    $index = array_search($grade, $data['current_grade']);
-                    $grade_array = array_replace($data['current_grade'], [$index => $grade_info->id]);
-                    $data['current_grade'] = $grade_array;
-                }
-            }
+            $data['current_grade'] = $this->resumeService->createGrade($data['current_grade'], config('constants.grades_types.current_grades'));
         }
 
-        $intended_major_ids = IntendedCollegeList::whereType('1')->pluck('id')->toArray();
-        $intended_minor_ids = IntendedCollegeList::whereType('2')->pluck('id')->toArray();
+        // $intended_major_ids = IntendedCollegeList::whereType('1')->pluck('id')->toArray();
+        // $intended_minor_ids = IntendedCollegeList::whereType('2')->pluck('id')->toArray();
         
         if(isset($data['intended_college_major']) && !empty($data['intended_college_major'])){
-            foreach ($data['intended_college_major'] as $major) {
-                if (!in_array($major, $intended_major_ids)) {                
-                    $major_info = IntendedCollegeList::create(['name' => $major,'type' => 1]);                
-                    $index = array_search($major, $data['intended_college_major']);                
-                    $major_array = array_replace($data['intended_college_major'], [$index => $major_info->id]);
-                    $data['intended_college_major'] = $major_array;
-                }
-            }
+            $data['intended_college_major'] = $this->resumeService->CreateIntendedCollegeList($data['intended_college_major'], '1');
         }
 
         if(isset($data['intended_college_minor']) && !empty($data['intended_college_minor'])){
-            foreach ($data['intended_college_minor'] as $minor) {            
-                if (!in_array($minor, $intended_minor_ids)) {                
-                    $minor_info = IntendedCollegeList::create(['name' => $minor,'type' => 2]);                
-                    $index = array_search($minor, $data['intended_college_minor']);                
-                    $minor_array = array_replace($data['intended_college_minor'], [$index => $minor_info->id]);                
-                    $data['intended_college_minor'] = $minor_array;
-                }
-            }
+            $data['intended_college_minor'] = $this->resumeService->CreateIntendedCollegeList($data['intended_college_minor'], '2');
         }
         
         if (!empty($data['cumulative_gpa_unweighted'])) {
@@ -263,10 +251,7 @@ class EducationController extends Controller
 
         if (!empty($data['graduation_designation'])) {
             $data['graduation_designation'] = $data['graduation_designation'];
-            $existingGraduations = GraduationDesignation::pluck('designation')->toArray();
-            if (!in_array($data['graduation_designation'], $existingGraduations)) {
-                GraduationDesignation::create(['designation' => $data['graduation_designation']]);
-            }
+            $this->resumeService->createGraduationDesignation($data['graduation_designation']);
         }
 
         if (isset($data['honor_course_data']) && !empty($data['honor_course_data'])) {
@@ -318,6 +303,7 @@ class EducationController extends Controller
 			// Update the city and state properties in the $data array with their respective names
 			$data['high_school_city'] = $city->city_name;
 			$data['high_school_state'] = $state->state_name;
+            // dd($data);
             Education::create($data);
             return redirect()->route('admin-dashboard.highSchoolResume.honors');
         }
@@ -352,10 +338,11 @@ class EducationController extends Controller
 
         if (!empty($data['graduation_designation'])) {
             $data['graduation_designation'] = $data['graduation_designation'];
-            $existingGraduations = GraduationDesignation::pluck('designation')->toArray();
-            if (!in_array($data['graduation_designation'], $existingGraduations)) {
-                GraduationDesignation::create(['designation' => $data['graduation_designation']]);
-            }
+            $this->resumeService->createGraduationDesignation($data['graduation_designation']);
+            // $existingGraduations = GraduationDesignation::pluck('designation')->toArray();
+            // if (!in_array($data['graduation_designation'], $existingGraduations)) {
+            //     GraduationDesignation::create(['designation' => $data['graduation_designation']]);
+            // }
         }
 
         $honor_course_name_ids = HonorCourseNameList::pluck('id')->toArray();
@@ -416,36 +403,13 @@ class EducationController extends Controller
         $grade_ids = Grade::pluck('id')->toArray();
 
         if(isset($data['current_grade']) && !empty($data['current_grade'])){
-            foreach ($data['current_grade'] as $grade) {
-                if (!in_array($grade, $grade_ids)) {
-                    $grade_info = Grade::create(['name' => $grade]);
-                    $index = array_search($grade, $data['current_grade']);
-                    $grade_array = array_replace($data['current_grade'], [$index => $grade_info->id]);
-                    $data['current_grade'] = $grade_array;
-                }
-            }
+            $data['current_grade'] = $this->resumeService->createGrade($data['current_grade'], config('constants.grades_types.current_grades'));
         }
-        $intended_major_ids = IntendedCollegeList::whereType('1')->pluck('id')->toArray();
-        $intended_minor_ids = IntendedCollegeList::whereType('2')->pluck('id')->toArray();
         if(isset($data['intended_college_major']) && !empty($data['intended_college_major'])){
-            foreach ($data['intended_college_major'] as $major) {            
-                if (!in_array($major, $intended_major_ids)) {                
-                    $major_info = IntendedCollegeList::create(['name' => $major,'type' => 1]);                
-                    $index = array_search($major, $data['intended_college_major']);                
-                    $major_array = array_replace($data['intended_college_major'], [$index => $major_info->id]);                
-                    $data['intended_college_major'] = $major_array;
-                }
-            }
+            $data['intended_college_major'] = $this->resumeService->CreateIntendedCollegeList($data['intended_college_major'], '1');
         }
         if (isset($data['intended_college_minor']) && !empty($data['intended_college_minor'])) {
-            foreach ($data['intended_college_minor'] as $minor) {
-                if (!in_array($minor, $intended_minor_ids)) {
-                    $minor_info = IntendedCollegeList::create(['name' => $minor, 'type' => 2]);
-                    $index = array_search($minor, $data['intended_college_minor']);
-                    $minor_array = array_replace($data['intended_college_minor'], [$index => $minor_info->id]);
-                    $data['intended_college_minor'] = $minor_array;
-                }
-            }
+            $data['intended_college_minor'] = $this->resumeService->CreateIntendedCollegeList($data['intended_college_minor'], '2');
         }
 
         $resume_id = isset($request->resume_id) ? $request->resume_id : null;
@@ -520,7 +484,6 @@ class EducationController extends Controller
 			// Update the city and state properties in the $data array with their respective names
 			$data['high_school_city'] = $city->city_name;
 			$data['high_school_state'] = $state->state_name;
-			
             $education->update($data);
 
             //SBZ starts here

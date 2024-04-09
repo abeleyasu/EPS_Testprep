@@ -80,6 +80,17 @@
                         </a>
                     </li>
                 </ul>
+				<div class="d-flex justify-content-between mb-3">
+                    <div class="prev-btn next-btn">
+                        <a href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.featuresAttributes') }}"
+                            class="btn btn-alt-success prev-step"> Previous
+                        </a>
+                    </div>
+                    <div class="next-btn">
+                        <a href="{{ isset($resume_id) && $resume_id != null ? route('admin-dashboard.highSchoolResume.list') : route('admin-dashboard.highSchoolResume.resume.complete') }}"
+                            class="btn btn-alt-success submit_btn">{{ isset($resume_id) && $resume_id != null ? 'Update' : 'Submit' }}</a>
+                    </div>
+                </div>
                 <div class="tab-content" id="myTabContent">
                     <div class="setup-content">
                         <div class="header-area">
@@ -89,6 +100,13 @@
                         <div class="mb-5">
                             <a href="{{ 'chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/' . isset($resume_id) && $resume_id != null ? route('admin-dashboard.highSchoolResume.resume.download', ['id' => $resume_id, 'type' => 'preview']) : route('admin-dashboard.highSchoolResume.pdf.preview') }}"
                                 target="_blank" class="btn btn-alt-primary">SAVE RESUME AS FILE</a>
+							<!-- <button type="button" class="btn btn-alt-success">
+								<i class="fa fa-2x fa-print me-1"></i>	
+								PRINT
+							</buton> -->
+							<button type="button" id="print" class="btn btn-alt-success me-1">
+								<i class="fa fa-print me-1"></i> PRINT
+							</button>
                         </div>
                         @if (isset($resume_id) && $resume_id != null)
                             <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
@@ -244,16 +262,23 @@
 													{{ $education->college_state != '' ? $education->college_state : '' }}
 												</li>
 											@endif
+											{{---<li>
+												<span>Current Grade:</span>
+												{{ implode(',', ($current_grade)) }}
+											</li>--}}
 											<li>
 												{{-- <span class="d-block mb-2">School Name / City / State /
 													District :
 												</span> --}}
-												{{ $education->high_school_name }} /
-												{{ $education->high_school_city }} /
-												{{ $education->high_school_state }} /
+												<b>{{ implode(',', ($current_grade)) }},</b> 
+												{{ $education->high_school_name }},
+												{{ $education->high_school_city }},
+												{{ $education->high_school_state }}
 												<!-- {{ $education->high_school_district }} -->
 												@if (isset($education->graduation_designation) && $education->graduation_designation != null)
-													({{$education->graduation_designation}})
+													, ({{$education->graduation_designation}})
+												@else 
+													.
 												@endif
 												@if(!empty($education->cumulative_gpa_weighted) || !empty($education->cumulative_gpa_unweighted))
 													<li>
@@ -283,10 +308,6 @@
 													@endphp
 													{{-- @foreach ($testing_data as $data)<b>{{ isset($data['name_of_test']) ? $data['name_of_test'] : '' }} </b>: {{ isset($data['results_score']) ? $data['results_score'] : ''}}{{ !$loop->last ? ';' : '' }}@endforeach --}}
 												@endif
-											</li>
-											<li>
-												<span>Current Grade:
-												</span>{{ implode(',', ($current_grade)) }}
 											</li>
 											{{-- <li>
 												<span> Month / Year :
@@ -528,36 +549,24 @@
 											@endphp
 
 											@foreach ($community_service_data as $data)
-												@php
-													if (isset($data['level'])) {
-														$community_service_array['level'][] = $data['level'];
-													}
-													if (isset($data['service'])) {
-														$community_service_array['service'][] = $data['service'];
-													}
-													if (isset($data['grade'])) {
-														$community_service_array['grade'][] = $data['grade'];
-													}
-													if (isset($data['location'])) {
-														$community_service_array['location'][] = $data['location'];
-													}
-												@endphp
+												<li class="list-type">
+													@if (isset($data['grade']))
+														<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
+													@endif
+													@if (isset($data['level']))
+														{{ $data['level'] }}
+														@if ((isset($data['level']) && !empty($data['level'])) || (isset($data['service']) && !empty($data['service']))),@endif
+													@endif
+													@if (isset($data['service']))
+														{{ $data['service'] }}
+														@if ((isset($data['service']) && !empty($data['service'])) || (isset($data['location']) && !empty($data['location']))),@endif
+													@endif
+													@if (isset($data['location']))
+														{{ $data['location'] }}
+													@endif
+												</li>
 											@endforeach
-
-											<li class="list-type">
-												@if (isset($community_service_array['grade']) && !empty($community_service_array['grade']))
-													<b>{{ \App\Helpers\Helper::getGradeAllByIdArray($community_service_array['grade']) }}: </b>
-												@endif
-												@if (isset($community_service_array['level']) && !empty($community_service_array['level']))
-													{{ implode(',', $community_service_array['level']) }}@if ((isset($community_service_array['service']) && !empty($community_service_array['service'])) || (isset($community_service_array['location']) && !empty($community_service_array['location']))),@endif
-												@endif
-												@if (isset($community_service_array['service']) && !empty($community_service_array['service']))
-													{{ implode(',', $community_service_array['service']) }}@if (isset($community_service_array['location']) && !empty($community_service_array['location'])),@endif
-												@endif
-												@if (isset($community_service_array['location']) && !empty($community_service_array['location']))
-													{{ implode(',', $community_service_array['location']) }}
-												@endif
-											</li>
+											
 										</ul>
 									</div>
 								</div>
@@ -654,7 +663,22 @@
 @section('user-script')
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
+	<script src="{{ asset('assets/js/printThis.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
 	<script src="{{ asset('js/no-browser-back.js') }}"></script>
+	<script>
+		$('#print').on('click', function (e) {
+			e.preventDefault();
+			$('.printableArea').printThis({
+				debug:false,
+				importCSS: true,
+				importStyle: true,
+				loadCSS: "{{ asset('css/high-school-resume.css') }}",
+				pageTitle: "High School Resume",
+				header: null,
+    			footer: null,
+			});
+		})
+	</script>
 @endsection

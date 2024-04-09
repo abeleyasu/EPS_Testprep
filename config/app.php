@@ -69,8 +69,8 @@ return [
     |
     */
 
-    //'timezone' => 'UTC',
-    'timezone' => 'America/Los_Angeles',
+    'timezone' => 'UTC',
+    // 'timezone' => 'America/Los_Angeles',
 
     /*
     |--------------------------------------------------------------------------
@@ -182,6 +182,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /*
          * Package Service Providers...

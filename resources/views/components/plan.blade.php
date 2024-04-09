@@ -41,29 +41,45 @@
                   @foreach($product->plans as $plan)
                     <div class="block-content pricing-price">
                       <div class="py-2 pricing-description">
-                        <p class="currency">${{ $plan->display_amount }}
+                        <p class="currency">${{ number_format($plan->display_amount) }}
                           @if($plan->interval === 'month')
                             <span class="text-muted interval">/Per <span class="text-capitalize">{{ $plan->interval }}</span></span>
-                          @else
+                          @elseif($plan->interval === 'year')
                             <span class="text-muted interval"><span class="text-capitalize">/year</span></span>
                           @endif
                         </p>
-                        @if($plan->interval === 'month')
-                          <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Month Plan</span></p>
+                        @if($plan->interval === 'month' || $plan->interval === 'year')
+                          <span class="text-muted interval">(${{ number_format($plan->amount) }} total)</span>
+                          <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} {{ $plan->interval === 'year' ? 'Year' : 'Month' }} Plan</span></p>
+                        @elseif($plan->interval === 'hour')
+                          <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Hour Plan</span></p>
                         @endif
                       </div>
+                      @php 
+                        $code = '';
+                        $params = [
+                          'plan' => $plan->id,
+                        ];
+                        if (isset($_GET['code'])) {
+                          $params['code'] = $_GET['code'];
+                        }
+                        $url = route('plans.show', $params);
+                      @endphp
                       @if(auth()->user())
-                        @if(Auth::user()->subscribed('default'))
-                          @if(Auth::user()->subscriptions()->active()->first()->stripe_price == $plan->stripe_plan_id)
-                            <div class="btn btn-light px-4">Purchased</div>
+                        @if(Auth::user()->isUserSubscriptionToAnyPlan())
+                          @php
+                            $subscriptions = Auth::user()->subscriptions()->active()->where('stripe_status', '!=','consumed')->get()->pluck('stripe_price')->toArray();
+                          @endphp
+                          @if(in_array($plan->stripe_plan_id, $subscriptions))
+                            <div class="btn btn-light px-4">{{ $plan->interval == 'hour' ? 'Added' : 'Current Subscription'  }}</div>
                           @else
-                            <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Upgrade</a>
+                            <a href="{{ $url }}" class="btn btn-secondary px-4">{{ $plan->interval == 'hour' ? 'Add Package' : 'Upgrade'  }}</a>
                           @endif
                         @else 
-                          <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>
+                          <a href="{{ $url }}" class="btn btn-secondary px-4">Choose</a>
                         @endif
                       @else
-                        <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>
+                        <a href="{{ $url }}" class="btn btn-secondary px-4">Choose</a>
                       @endif
                     </div>
                   @endforeach
@@ -71,7 +87,7 @@
                   <div class="block-content">
                     <div class="fs-sm py-2">
                         @foreach($product->inclusions as $inc)
-                            <p class="text-start d-flex align-items-center inclusion"><i class="fa fa-fw fa-check me-1 inclusion-check-icon"></i> {!! $inc->inclusion !!}</p>
+                          <p class="text-start d-flex align-items-center inclusion"><i class="fa fa-fw fa-check me-1 inclusion-check-icon"></i> {!! $inc->inclusion !!}</p>
                         @endforeach
                     </div>
                   </div>

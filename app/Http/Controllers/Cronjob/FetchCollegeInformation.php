@@ -18,24 +18,26 @@ class FetchCollegeInformation extends Controller
         $page = 0;
         $perPage = 100;
         $totalRecords = 0;
-
+        
         Log::channel('fetchcollegeinfo')->info("Cronjob Started");
         try {
             do {
                 // $apiEndpoint = "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=$college_scorecard_api_key&page={$page}&per_page={$perPage}";
                 // $apiEndpoint = $apiEndpoint . '&fields=id,school.name,school.city,school.state,latest.student.size,school.branches,school.locale,school.ownership,school.degrees_awarded.predominant,latest.academics.program_reporter.programs_offered,latest.cost.avg_net_price.overall,latest.completion.consumer_rate,latest.earnings.10_yrs_after_entry.median,latest.earnings.6_yrs_after_entry.percent_greater_than_25000,school.under_investigation,latest.completion.outcome_percentage_suppressed.all_students.8yr.award_pooled,latest.completion.rate_suppressed.four_year,latest.completion.rate_suppressed.lt_four_year_150percent,latest.programs.cip_4_digit';
-            
+                
                 $apiEndpoint = env('COLLEGE_RECORD_API') . '?'.'api_key='. env('COLLEGE_RECORD_API_KEY').'&page='.$page . '&per_page='.$perPage . '&sort=latest.earnings.6_yrs_after_entry.gt_threshold_suppressed:desc';
                 $apiEndpoint = $apiEndpoint . '&fields=id,school.name,school.city,school.state,latest.student.size,school.locale,school.ownership,latest.admissions.admission_rate.overall,latest.cost.avg_net_price.overall,latest.completion.consumer_rate,latest.earnings.10_yrs_after_entry.median,latest.admissions';
-
+                
                 // Make the API request
                 $guzzleClient = new GuzzleClient();
                 $response = $guzzleClient->get($apiEndpoint);
                 $data = json_decode($response->getBody()->getContents(), true);
-    
+
+                
                 // Check if we received any records
-                if (!empty($data['results'])) {
+                if (count($data['results']) > 0) {
                     $totalRecords = $data['metadata']['total'];
+                    // dd($data);
                     // Process the retrieved college data
                     // echo "<pre>";
                     // print_r($data['results']);
@@ -82,7 +84,7 @@ class FetchCollegeInformation extends Controller
                                 'ownership' => $ownership,
                                 'consumer_rate' => $consumer_rate,
                                 'earnings_median' => $earnings_median,
-                                'overall_admission_rate' => $overall_admission_rate,
+                                'overall_admission_rate' => $admission_rate,
                                 'avg_act_score' => $act_avg,
                                 'avg_sat_score' => $sat_avg,
                             ]);

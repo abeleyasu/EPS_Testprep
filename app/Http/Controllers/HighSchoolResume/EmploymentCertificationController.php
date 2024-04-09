@@ -13,9 +13,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Config;
+use App\Service\ResumeService;
 
 class EmploymentCertificationController extends Controller
 {
+    protected $resumeService;
+
+    public function __construct(ResumeService $resumeService) {
+        $this->resumeService = $resumeService;
+    }
+
     public function index(Request $request)
     {
         try {
@@ -41,7 +48,7 @@ class EmploymentCertificationController extends Controller
                 $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
             }
             $details = 0;
-            $grades = Grade::all();
+            $grades = $this->resumeService->getEmploymentCertification();
             $validations_rules = Config::get('validation.employment_certifications.rules');
             $validations_messages = Config::get('validation.employment_certifications.messages');
             $demonstrated_positions = DemonstratedPositions::select('position_name')->orderBY('position_name', 'asc')->get();
@@ -51,9 +58,12 @@ class EmploymentCertificationController extends Controller
         }
     }
 
-    public function store(EmploymentCertificationRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
+        $data = $request->only([
+            'employment_data',
+            'significant_data',
+        ]);
 
         $grade_ids = Grade::pluck('id')->toArray();
 
@@ -66,14 +76,9 @@ class EmploymentCertificationController extends Controller
                     }
                 }
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['employment_data'][$key]['grade']);
-                            $grade_array = array_replace($data['employment_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['employment_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    $data['employment_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.employment_grades'));
+                } else {
+                    $data['employment_data'][$key]['grade'] = [];
                 }
             }
             $data['employment_data'] = array_values($data['employment_data']);
@@ -82,14 +87,9 @@ class EmploymentCertificationController extends Controller
         if (!empty($data['significant_data'])) {
             foreach ($data['significant_data'] as $key => $value) {
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['significant_data'][$key]['grade']);
-                            $grade_array = array_replace($data['significant_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['significant_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    $data['significant_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.other_significant_grades'));
+                } else {
+                    $data['significant_data'][$key]['grade'] = [];
                 }
             }
             $data['significant_data'] = array_values($data['significant_data']);
@@ -103,9 +103,12 @@ class EmploymentCertificationController extends Controller
         }
     }
 
-    public function update(EmploymentCertificationRequest $request, EmploymentCertification $employmentCertification)
+    public function update(Request $request, EmploymentCertification $employmentCertification)
     {
-        $data = $request->validated();
+        $data = $request->only([
+            'employment_data',
+            'significant_data',
+        ]);
         $resume_id = isset($request->resume_id) ? $request->resume_id : null;
 
         $grade_ids = Grade::pluck('id')->toArray();
@@ -119,14 +122,9 @@ class EmploymentCertificationController extends Controller
                     }
                 }
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['employment_data'][$key]['grade']);
-                            $grade_array = array_replace($data['employment_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['employment_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    $data['employment_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.employment_grades'));
+                } else {
+                    $data['employment_data'][$key]['grade'] = [];
                 }
             }
             $data['employment_data'] = array_values($data['employment_data']);
@@ -135,14 +133,9 @@ class EmploymentCertificationController extends Controller
         if (!empty($data['significant_data'])) {
             foreach ($data['significant_data'] as $key => $value) {
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['significant_data'][$key]['grade']);
-                            $grade_array = array_replace($data['significant_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['significant_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    $data['significant_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.other_significant_grades'));
+                } else {
+                    $data['significant_data'][$key]['grade'] = [];
                 }
             }
             $data['significant_data'] = array_values($data['significant_data']);
