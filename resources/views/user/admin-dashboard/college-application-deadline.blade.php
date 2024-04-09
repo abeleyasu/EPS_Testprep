@@ -412,6 +412,10 @@
 
     $(document).on('click', '#add-college', function (e) {
         e.preventDefault();
+
+        // disabled the save button
+        $('#add-college').prop('disabled', true);
+
         $.ajax({
             url: "{{ route('admin-dashboard.collegeApplicationDeadline.college_save') }}",
             method: 'POST',
@@ -429,6 +433,9 @@
             } else {
                 toastr.error(response.message)
             }
+
+            // enabled the save button
+            $('#add-college').prop('disabled', false);
         })
     })
 
