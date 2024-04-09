@@ -498,8 +498,8 @@ var global = {
 
 const getFormatMoney = (value) => {
     // return `$${(value || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-
-    const number = (value || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    // const number = (value || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    const number = (parseFloat(value) || 0).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
     if (number.includes('.')) {
         const decimal = +(number.split('.')[1]);
