@@ -167,7 +167,7 @@ class InititalCollegeListController extends Controller
 
             $guzzleClient = new GuzzleClient();
             $response = $guzzleClient->get($api, [
-                'timeout' => 0,
+                'timeout' => 0
             ]);
             $data = json_decode($response->getBody()->getContents(), true);
             $totalRecords = $data['metadata']['total'];
@@ -506,23 +506,75 @@ class InititalCollegeListController extends Controller
         $api = env('COLLEGE_RECORD_API') . '?' . 'api_key=' . env('COLLEGE_RECORD_API_KEY') . '&id=' . $id;
         $data = Http::get($api);
         $data = json_decode($data->body());
+
+        $apiData = null;
         if (count($data->results) > 0) {
             // error_log('DATA VALUE');
             // error_log(json_encode($data));
-            $data = $data->results[0];
-            $college_info = CollegeInformation::where('college_id', $data->id)->first();
+            $apiData = $data->results[0];
+            $college_info = CollegeInformation::where('college_id', $apiData->id)->first();
             if ($college_info) {
-                $data->latest->college_info = $college_info;
+                $apiData->latest->college_info = $college_info;
             }
-        } else {
-            $data = null;
         }
-        error_log('Smack');
+
+        if (!$apiData) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No data found',
+            ]);
+        }
+
+        $programs = [];
+        if (isset($apiData->latest->programs->cip_4_digit)) {
+            $programs = $apiData->latest->programs->cip_4_digit;
+        }
+
+        $fieldsOfStudy = array_reduce($programs, function ($carry, $item) {
+            // Check if the ID already exists in the associative array
+            if (!isset($carry[$item->code])) {
+                // If the ID is not found, add the object to the result and mark the ID as seen
+                $carry[$item->code] = $item;
+            }
+            return $carry;
+        }, []);
+
+        $programs_api_data = [];
+        foreach ($fieldsOfStudy as $fieldOfStudy) {
+            $fosTemp = [
+                'code' => $fieldOfStudy->code,
+                'description' => $fieldOfStudy->description ?? "",
+                'debt_after_graduation' => $fieldOfStudy->debt->parent_plus->all->all_inst->median ?? 0,
+                'median_earning' => $fieldOfStudy->earnings->highest->{'1_yr'}->overall_median_earnings ?? 0,
+                'title' => $fieldOfStudy->title ?? "No Title"
+            ];
+            array_push($programs_api_data, $fosTemp);
+        }
+
+        $fieldsOfStudyLocal = FieldsOfStudy::where('college_information_id', $college_info->id)->get();
+
+        if ($fieldsOfStudyLocal->count() < 1) {
+            foreach ($fieldsOfStudy as $fieldOfStudy) {
+                FieldsOfStudy::firstOrCreate([
+                    'college_information_id' => $college_info->id,
+                    'code' => $fieldOfStudy->code,
+                ], [
+                    'description' => $fieldOfStudy->description ?? "",
+                    'debt_after_graduation' => $fieldOfStudy->debt->parent_plus->all->all_inst->median ?? 0,
+                    'median_earning' => $fieldOfStudy->earnings->highest->{'1_yr'}->overall_median_earnings ?? 0,
+                    'title' => $fieldOfStudy->title ?? "No Title"
+                ]);
+            }
+
+            $fieldsOfStudyLocal = FieldsOfStudy::where('college_information_id', $college_info->id)->get();
+        }
+
         return response()->json([
             'id' => $id,
             'success' => $data ? true : false,
-            'data' => $data,
-            'programmes' => FieldsOfStudy::where('college_information_id', $college_info->id)->get()
+            'data' => $apiData,
+            // 'programmes' => FieldsOfStudy::where('college_information_id', $college_info->id)->get()
+            'programmes' => $fieldsOfStudyLocal,
         ]);
     }
 
@@ -734,7 +786,6 @@ class InititalCollegeListController extends Controller
             $user = Auth::user();
             $user->state_id = $state->id;
             $user->save();
-
         } else {
             session(['costComparisonActiveStateId' => '']);
         }

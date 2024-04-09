@@ -503,6 +503,7 @@ class CollegeInformationController extends Controller
         error_log($api);
         $data = Http::get($api);
         $data = json_decode($data->body());
+        $apiData = null;
         if (count($data->results) > 0) {
             // error_log('DATA VALUE');
             // error_log(json_encode($data));
@@ -511,8 +512,13 @@ class CollegeInformationController extends Controller
             if ($college_info) {
                 $apiData->latest->college_info = $college_info;
             }
-        } else {
-            $apiData = null;
+        }
+
+        if (!$apiData) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No data found',
+            ]);
         }
 
         $programs = [];
@@ -561,19 +567,25 @@ class CollegeInformationController extends Controller
             ];
             array_push($programs_api_data, $fosTemp);
         }
-        if ($college_detail->fieldsOfStudy()->count() < 1) {
+
+        $fieldsOfStudyLocal = FieldsOfStudy::where('college_information_id', $college_info->id)->get();
+
+        if ($fieldsOfStudyLocal->count() < 1) {
             foreach ($fieldsOfStudy as $fieldOfStudy) {
-                // ddd($fieldOfStudy);
-                FieldsOfStudy::create([
+                FieldsOfStudy::firstOrCreate([
+                    'college_information_id' => $college_info->id,
                     'code' => $fieldOfStudy->code,
+                ], [
                     'description' => $fieldOfStudy->description ?? "",
                     'debt_after_graduation' => $fieldOfStudy->debt->parent_plus->all->all_inst->median ?? 0,
                     'median_earning' => $fieldOfStudy->earnings->highest->{'1_yr'}->overall_median_earnings ?? 0,
-                    'college_information_id' => $college_detail->id,
                     'title' => $fieldOfStudy->title ?? "No Title"
                 ]);
             }
+
+            $fieldsOfStudyLocal = FieldsOfStudy::where('college_information_id', $college_info->id)->get();
         }
+
         if ($college_detail) {
             $admin_editable_date_inputs =
                 array(
@@ -586,7 +598,7 @@ class CollegeInformationController extends Controller
             return view('admin.college-information.edit', [
                 'info' => $college_detail,
                 'date_inputs' => $admin_editable_date_inputs,
-                'programs_local_data' => $college_detail->fieldsOfStudy,
+                'programs_local_data' => $fieldsOfStudyLocal,
                 'programs_api_data' => $programs_api_data,
                 'apiData' => $apiData,
             ]);
